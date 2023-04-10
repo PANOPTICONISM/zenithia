@@ -1,10 +1,24 @@
-const express = require('express');
+import express from 'express';
+import pkg from 'body-parser';
 const app = express();
+const port = 4000;
+import { getProjects } from './endpoints/projects.js';
 
-app.get('/api', (req, res) => {
-    res.json({ users: ['one', 'two'] });
-});
+const { json, urlencoded } = pkg;
 
-app.listen(4000, () => {
-    console.log('Server started on port 4000');
-});
+app.use(json())
+app.use(
+  urlencoded({
+    extended: true,
+  })
+)
+
+app.get('/', (request, response) => {
+    response.json({ info: 'Node.js' })
+})
+
+app.get('/projects', getProjects);
+
+app.listen(port, () => {
+    console.log(`App running on port ${port}.`)
+})
