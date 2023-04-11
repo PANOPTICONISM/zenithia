@@ -41,17 +41,19 @@ export const useColumnsAndRows = () => {
   const columns: GridColDef[] = [
     { field: 'id', 
       headerName: 'ID', 
-      width: 90,
+      width: 60,
     },
     {
       field: 'title',
       headerName: 'Title',
+      minWidth: 120,
       flex: 1,
       editable: true,
     },
     {
       field: 'company',
       headerName: 'Company',
+      minWidth: 100,
       flex: 1,
       editable: true,
       renderCell: ({ value }) => <Box sx={{ background: '#F7F8FF', padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
@@ -59,7 +61,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'start_date',
       headerName: 'Start',
-      width: 200,
+      width: 150,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
       editable: true,
@@ -67,7 +69,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'finish_date',
       headerName: 'Finish',
-      width: 200,
+      width: 150,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
       editable: true,
@@ -94,7 +96,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'revenue',
       headerName: 'Revenue',
-      width: 200,
+      width: 150,
       type: 'singleSelect',
       valueOptions: ['Hourly', 'Project'],
       editable: true,
@@ -102,7 +104,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'actions',
       headerName: 'Actions',
-      flex: 1,
+      width: 120,
       renderCell: (params) => 
         <Button onClick={deleteUser(params.id)} 
           variant='contained' 
