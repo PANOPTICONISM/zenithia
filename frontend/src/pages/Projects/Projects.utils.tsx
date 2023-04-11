@@ -2,8 +2,21 @@ import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import React from 'react';
 import { ProductProps } from './types';
 import axios from 'axios';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HdrStrongIcon from '@mui/icons-material/HdrStrong';
+
+const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
+  return (
+    <Button 
+      sx={{ padding: 0 }}
+      variant="text" 
+      color="inherit"
+      endIcon={<HdrStrongIcon color={color} />}>
+      {value}
+    </Button>
+  );
+};
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProductProps[]>([]);
@@ -38,6 +51,7 @@ export const useColumnsAndRows = () => {
       headerName: 'Company',
       flex: 1,
       editable: true,
+      renderCell: ({value}) => <Box sx={{background: '#F7F8FF', padding: '6px 10px', borderRadius: '4px'}}>{value}</Box>
     },
     {
       field: 'start_date',
@@ -62,6 +76,17 @@ export const useColumnsAndRows = () => {
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
+      renderCell: ({value}) => {
+        if (value === 'Archived') {
+          return (<CustomButton color='inherit' value={value} />);
+        }
+
+        if (value === 'Active') {
+          return (<CustomButton color='success' value={value} />);
+        }
+
+        return (<CustomButton color='warning' value={value} />);
+      }
     },
     {
       field: 'revenue',
