@@ -13,8 +13,11 @@ app.use(
   })
 )
 
-app.get('/', (request, response) => {
-    response.json({ info: 'Node.js' })
+app.get('/', (req, res) => {
+  const path = `/projects`;
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+  res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
 })
 
 app.get('/projects', getProjects);
@@ -22,3 +25,5 @@ app.get('/projects', getProjects);
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
+
+export default app;
