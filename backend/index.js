@@ -14,13 +14,13 @@ app.use(
 )
 
 app.get('/', (req, res) => {
-  const path = `/projects`;
+  const path = `/api/projects`;
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
 })
 
-app.get('/projects', getProjects);
+app.use('/api/projects', getProjects);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
