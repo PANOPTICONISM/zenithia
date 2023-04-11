@@ -26,10 +26,13 @@ export const useColumnsAndRows = () => {
       .then((res) => setRows(res.data));
   }, []);
   
+  // all is missing is communication with the endpoint
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        axios.post('/api/projects')
+          .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
+          .catch((error) => { console.log('Error: ' + error.message); });
       });
     },
     [],
