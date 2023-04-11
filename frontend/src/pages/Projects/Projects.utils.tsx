@@ -41,7 +41,7 @@ export const useColumnsAndRows = () => {
   const columns: GridColDef[] = [
     { field: 'id', 
       headerName: 'ID', 
-      width: 90 
+      width: 90,
     },
     {
       field: 'title',
@@ -54,7 +54,7 @@ export const useColumnsAndRows = () => {
       headerName: 'Company',
       flex: 1,
       editable: true,
-      renderCell: ({value}) => <Box sx={{background: '#F7F8FF', padding: '6px 10px', borderRadius: '4px'}}>{value}</Box>
+      renderCell: ({ value }) => <Box sx={{ background: '#F7F8FF', padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
     },
     {
       field: 'start_date',
