@@ -30,7 +30,7 @@ const Header = ({ title, handleClick, buttonText, searchValue, setSearchValue }:
   
   return (
     <Header>
-      <h1 style={{ fontSize: '48px' }}>{title}</h1>
+      <h1 style={{ fontSize: '48px', marginTop: 0 }}>{title}</h1>
       <Stack direction={mobileBreakpoint ? 'column' : 'row'} spacing={2} paddingBottom="16px" justifyContent="flex-end">
         <TextField
           size='small'
