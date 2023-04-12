@@ -7,7 +7,7 @@ import { ProductProps } from './types';
 import Main from '../../components/Main/Main';
 
 const Projects = () => {
-  const { columns, rows } = useColumnsAndRows();
+  const { columns, rows, setRows } = useColumnsAndRows();
 
   const handleProcessRowUpdate = React.useCallback((newRow: ProductProps, oldRow: ProductProps) => {
     const fixDateFormat = (date: string) => {
@@ -25,7 +25,21 @@ const Projects = () => {
   }, []);
 
   const addProject = () => {
-    console.log('oi');
+    const date = new Date().toLocaleDateString();
+
+    const obj = {
+      id: Math.floor(Math.random() * 10000),
+      title: '', 
+      company: 'Phoenix', 
+      start_date: date, 
+      finish_date: date, 
+      status: 'Standby', 
+      revenue: 'Hourly'
+    };
+
+    setRows((current) => [...current, obj]);
+
+    axios.post('/api/projects', obj);
   };
 
   const [search, setSearch] = React.useState<string>('');

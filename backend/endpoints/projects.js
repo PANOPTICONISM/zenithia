@@ -23,7 +23,7 @@ export const updateProjects = async (req, res) => {
         if (error) {
           throw error;
         }
-        res.status(200).send(`User modified with id: ${params.id}`);
+        res.status(200).send(`Project with id: ${params.id} has been modified`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while updating your entry' });
@@ -39,9 +39,29 @@ export const deleteProject = async (req, res) => {
         if (error) {
           throw error;
         }
-        res.status(200).send(`User deleted with id: ${params.id}`);
+        res.status(200).send(`Project with id: ${params.id} has been deleted`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while deleting your entry' });
+    }
+}
+
+export const postProject = async (req, res) => {
+    const { body } = req;
+    const obj = {
+        ...body,
+        id: undefined,
+    }
+
+    try {
+        const { error } = await supabase.from('Projects').insert(obj);
+
+        if (error) {
+          throw error;
+        }
+        res.status(200).send(`Project added successfully`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while adding your data' });
     }
 }
