@@ -32,7 +32,9 @@ export const useColumnsAndRows = () => {
       setTimeout(() => {
         axios.post('/api/projects')
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-          .catch((error) => { console.log('Error: ' + error.message); });
+          .catch((error) => {
+            console.log('Error: ' + error.message); 
+          });
       });
     },
     [],
@@ -81,7 +83,7 @@ export const useColumnsAndRows = () => {
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
-      renderCell: ({value}) => {
+      renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<CustomButton color='inherit' value={value} />);
         }
