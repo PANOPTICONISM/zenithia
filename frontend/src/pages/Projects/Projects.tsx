@@ -42,12 +42,8 @@ const Projects = () => {
     axios.post('/api/projects', obj).catch((error) => console.log('Posting: ' + error));
   };
 
-  const [search, setSearch] = React.useState<string>('');
-
-  console.log(search, 'oi');
-
   return (
-    <Main title='Projects' handleClick={addProject} buttonText='Add project' searchValue={search} setSearchValue={setSearch}>
+    <Main title='Projects' handleClick={addProject} buttonText='Add project'>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
           columns={columns}
