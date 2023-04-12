@@ -28,8 +28,12 @@ const Projects = () => {
     console.log('oi');
   };
 
+  const [search, setSearch] = React.useState<string>('');
+
+  console.log(search, 'oi');
+
   return (
-    <Main title='Projects' handleClick={addProject} buttonText='Add project'>
+    <Main title='Projects' handleClick={addProject} buttonText='Add project' searchValue={search} setSearchValue={setSearch}>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
           columns={columns}
