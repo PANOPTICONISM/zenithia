@@ -1,10 +1,17 @@
 import React from 'react';
 import Header from '../Header/Header';
 
-const Main = ({ children } : { children: React.ReactNode}) => {
+
+type HeaderProps = {
+    title: string;
+    handleClick: () => void;
+    buttonText: string;
+}
+
+const Main = ({ children, title, handleClick, buttonText } : { children: React.ReactNode } & HeaderProps) => {
   return (
     <>
-      <Header />
+      <Header title={title} handleClick={handleClick} buttonText={buttonText} />
       <main>{children}</main>
     </>
   );
