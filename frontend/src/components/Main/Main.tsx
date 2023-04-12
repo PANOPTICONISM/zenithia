@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
-
+import { styled } from '@mui/material/styles';
 
 type HeaderProps = {
     title: string;
@@ -10,9 +10,22 @@ type HeaderProps = {
     setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Main = ({ children, title, handleClick, buttonText, searchValue, setSearchValue } : { children: React.ReactNode } & HeaderProps) => {
+const Main = ({ 
+  children, 
+  title, 
+  handleClick, 
+  buttonText, 
+  searchValue, 
+  setSearchValue } : { children: React.ReactNode } & HeaderProps) => {
+  const Box = styled('div')(({ theme }) => ({
+    padding: '20px',
+    [theme.breakpoints.up('md')]: {
+      padding: '50px',
+    },
+  }));
+    
   return (
-    <>
+    <Box>
       <Header 
         title={title} 
         handleClick={handleClick} 
@@ -20,7 +33,7 @@ const Main = ({ children, title, handleClick, buttonText, searchValue, setSearch
         searchValue={searchValue} 
         setSearchValue={setSearchValue} />
       <main>{children}</main>
-    </>
+    </Box>
   );
 };
 

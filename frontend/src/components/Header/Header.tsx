@@ -1,6 +1,8 @@
 import { AddBoxOutlined } from '@mui/icons-material';
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 type HeaderProps = {
     title: string;
@@ -11,14 +13,25 @@ type HeaderProps = {
 }
 
 const Header = ({ title, handleClick, buttonText, searchValue, setSearchValue }: HeaderProps) => {
+  const mobileBreakpoint = useMediaQuery('(max-width:400px)');
+
+
   const handleChange = (event: { target: { value: string; }; }) => {
     setSearchValue(event.target.value);
   };
+
+  const Header = styled('header')(({ theme }) => ({
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'baseline'
+    },
+  }));
   
   return (
-    <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+    <Header>
       <h1 style={{ fontSize: '48px' }}>{title}</h1>
-      <Stack direction="row" spacing={2}>
+      <Stack direction={mobileBreakpoint ? 'column' : 'row'} spacing={2} paddingBottom="16px" justifyContent="flex-end">
         <TextField
           size='small'
           id="search"
@@ -33,7 +46,7 @@ const Header = ({ title, handleClick, buttonText, searchValue, setSearchValue }:
           onClick={handleClick} 
           startIcon={<AddBoxOutlined />}>{buttonText}</Button>
       </Stack>
-    </header>
+    </Header>
   );
 };
 
