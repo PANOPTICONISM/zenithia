@@ -48,13 +48,8 @@ export const deleteProject = async (req, res) => {
 
 export const postProject = async (req, res) => {
     const { body } = req;
-    const obj = {
-        ...body,
-        id: undefined,
-    }
-
     try {
-        const { error } = await supabase.from('Projects').insert(obj);
+        const { error } = await supabase.from('Projects').insert(body);
 
         if (error) {
           throw error;

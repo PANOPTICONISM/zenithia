@@ -16,7 +16,7 @@ const Projects = () => {
 
     const row = { ...newRow, start_date: fixDateFormat(newRow.start_date), finish_date: fixDateFormat(newRow.finish_date) };
 
-    axios.put(`/api/projects/${oldRow.id}`, row);
+    axios.put(`/api/projects/${oldRow.id}`, row).catch((error) => console.log('Updating: ' + error));
     return newRow;
   }, []);
 
@@ -39,7 +39,7 @@ const Projects = () => {
 
     setRows((current) => [...current, obj]);
 
-    axios.post('/api/projects', obj);
+    axios.post('/api/projects', obj).catch((error) => console.log('Posting: ' + error));
   };
 
   const [search, setSearch] = React.useState<string>('');
