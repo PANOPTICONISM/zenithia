@@ -40,9 +40,10 @@ export const useColumnsAndRows = () => {
   );
   
   const columns: GridColDef[] = [
-    { field: 'id', 
+    { field: 'project_id', 
       headerName: 'ID', 
-      width: 60,
+      width: 120,
+      valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: 'title',
@@ -114,5 +115,5 @@ export const useColumnsAndRows = () => {
     },
   ];
 
-  return { columns, rows };
+  return { columns, rows, setRows };
 };

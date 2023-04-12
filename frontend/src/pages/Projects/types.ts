@@ -1,5 +1,6 @@
 export type ProductProps = {
-    id: number,
+    id?: number,
+    project_id?: string,
     title: string,
     company: string,
     start_date: string,
