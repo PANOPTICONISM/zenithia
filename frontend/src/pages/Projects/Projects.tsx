@@ -27,7 +27,7 @@ const Projects = () => {
   }, []);
 
   const addProject = () => {
-    const date = new Date().toLocaleDateString();
+    const date = new Date().toLocaleDateString('en-US');
 
     const obj = {
       id: Math.floor(Math.random() * 10000),
