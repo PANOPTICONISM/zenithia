@@ -7,7 +7,6 @@ export type SearchBarContextValues = {
   
 const defaultValues = {
   searchValue: '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSearchValue: () => {},
 };
   
