@@ -5,9 +5,12 @@ import { useColumnsAndRows } from './Projects.utils';
 import axios from 'axios';
 import { ProductProps } from './types';
 import Main from '../../components/Main/Main';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
+  const { filterModel, handleFilterChange } = useFiltering({ columnField: 'title' });
 
   const handleProcessRowUpdate = React.useCallback((newRow: ProductProps, oldRow: ProductProps) => {
     const fixDateFormat = (date: string) => {
@@ -43,17 +46,18 @@ const Projects = () => {
   };
 
   return (
-    <Main title='Projects' handleClick={addProject} buttonText='Add project'>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid 
-          columns={columns}
-          rows={rows}
-          editMode="row"
-          processRowUpdate={handleProcessRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-        />
-      </Box>
-    </Main>
+    <Box sx={{ height: 400, width: '100%' }}>
+      <SearchBar />
+      <DataGrid 
+        columns={columns}
+        rows={rows}
+        editMode="row"
+        processRowUpdate={handleProcessRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
+        filterModel={filterModel}
+        onFilterModelChange={handleFilterChange}
+      />
+    </Box>
   );
 };
 
