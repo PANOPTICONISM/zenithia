@@ -5,7 +5,6 @@ import { useColumnsAndRows } from './Projects.utils';
 import axios from 'axios';
 import { ProductProps } from './types';
 import Main from '../../components/Main/Main';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 
 const Projects = () => {
@@ -46,18 +45,19 @@ const Projects = () => {
   };
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      <SearchBar />
-      <DataGrid 
-        columns={columns}
-        rows={rows}
-        editMode="row"
-        processRowUpdate={handleProcessRowUpdate}
-        onProcessRowUpdateError={handleProcessRowUpdateError}
-        filterModel={filterModel}
-        onFilterModelChange={handleFilterChange}
-      />
-    </Box>
+    <Main title="Projects" handleClick={addProject} buttonText='Add project'>
+      <Box sx={{ height: 400, width: '100%' }}>
+        <DataGrid 
+          columns={columns}
+          rows={rows}
+          editMode="row"
+          processRowUpdate={handleProcessRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
+          filterModel={filterModel}
+          onFilterModelChange={handleFilterChange}
+        />
+      </Box>
+    </Main>
   );
 };
 
