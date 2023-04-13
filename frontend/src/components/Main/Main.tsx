@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
-import { styled } from '@mui/material/styles';
+import { Box, useMediaQuery } from '@mui/material';
 
 type HeaderProps = {
     title: string;
@@ -13,15 +13,10 @@ const Main = ({
   title, 
   handleClick, 
   buttonText } : { children: React.ReactNode } & HeaderProps) => {
-  const Box = styled('div')(({ theme }) => ({
-    padding: '20px',
-    [theme.breakpoints.up('md')]: {
-      padding: '50px',
-    },
-  }));
+  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
     
   return (
-    <Box>
+    <Box sx={{ padding: tabletBreakpoint ? '20px' : '50px' }}>
       <Header 
         title={title} 
         handleClick={handleClick} 

@@ -5,18 +5,12 @@ import { useSearchBar } from '../../contexts/SearchBarProvider';
 export const useFiltering = ({ columnField }: { columnField: string }) => {
   const [search, setSearch] = useSearchBar();
 
-  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: []
-  });
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({ items: [] });
 
   React.useEffect(() => {
     setFilterModel((model) => {
-      const filters = model.items.filter(
-        (item) =>
-          !(
-            item.field === columnField &&
-                        item.operator === 'contains'
-          )
+      const filters = model.items.filter((item) =>
+        !(item.field === columnField && item.operator === 'contains')
       );
       if (search !== '') {
         filters.push({
@@ -29,29 +23,19 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
     });
   }, [columnField, search]);
 
-  const handleFilterChange: NonNullable<
-        DataGridProps['onFilterModelChange']
-    > = React.useCallback(
-      (model) => {
-        const nameFilter = model.items.find(
-          (item) =>
-            item.field === columnField &&
-                    item.operator === 'contains'
-        );
-        if (
-          model.items.some(
-            (item) =>
-              item.field === columnField &&
-                        item.operator !== 'contains'
-          ) ||
-                nameFilter === undefined
-        ) {
-          setSearch('');
-        }
-        setFilterModel(model);
-      },
-      [columnField, setSearch]
-    );
+  const handleFilterChange: NonNullable<DataGridProps['onFilterModelChange']> = React.useCallback(
+    (model) => {
+      const nameFilter = model.items.find(
+        (item) => item.field === columnField && item.operator === 'contains'
+      );
+      if (model.items.some((item) => item.field === columnField &&item.operator !== 'contains'
+      ) || nameFilter === undefined) {
+        setSearch('');
+      }
+      setFilterModel(model);
+    },
+    [columnField, setSearch]
+  );
 
   return {
     filterModel,
