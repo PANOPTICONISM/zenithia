@@ -37,4 +37,4 @@ rules:
     - error
     - 1tbs
   no-empty-function: off
-  @typescript-eslint/no-empty-function: error
+  no-empty: 0

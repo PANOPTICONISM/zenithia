@@ -5,12 +5,7 @@ export type SearchBarContextValues = {
     setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   };
   
-const defaultValues = {
-  searchValue: '',
-  setSearchValue: () => {},
-};
-  
-export const SearchBarContext = React.createContext<SearchBarContextValues>(defaultValues);
+export const SearchBarContext = React.createContext<SearchBarContextValues | null>(null);
   
 export const SearchBarProvider = (({ children }: { children: React.ReactNode; }) => {
   const [searchValue, setSearchValue] = React.useState<string>('');
@@ -28,8 +23,17 @@ export const SearchBarProvider = (({ children }: { children: React.ReactNode; })
     </SearchBarContext.Provider>
   );
 });
+
+const useNullableSearchBar = () => {
+  const context = React.useContext(SearchBarContext);
+
+  if (context === null) {
+    throw new Error('SearchBarContext is missing');
+  }
+  return context;
+};
   
 export const useSearchBar = () => {
-  const { searchValue, setSearchValue } = React.useContext(SearchBarContext);
+  const { searchValue, setSearchValue } = useNullableSearchBar();
   return React.useMemo(() => [searchValue, setSearchValue] as const, [searchValue, setSearchValue]);
 };

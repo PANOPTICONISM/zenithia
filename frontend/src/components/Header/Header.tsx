@@ -11,21 +11,6 @@ type HeaderProps = {
     buttonText: string;
 }
 
-const SearchBar = () => {
-  const [searchValue, setSearchValue] = useSearchBar();
-
-  return (
-    <TextField
-      size='small'
-      id="search"
-      type="search"
-      label="Search"
-      value={searchValue}
-      onChange={(e) => setSearchValue(e.target.value)}
-    />
-  );
-};
-
 const Header = ({ title, handleClick, buttonText }: HeaderProps) => {
   const mobileBreakpoint = useMediaQuery('(max-width:400px)');
 
@@ -41,7 +26,6 @@ const Header = ({ title, handleClick, buttonText }: HeaderProps) => {
     <Header>
       <h1 style={{ fontSize: '48px', marginTop: 0 }}>{title}</h1>
       <Stack direction={mobileBreakpoint ? 'column' : 'row'} spacing={2} paddingBottom="16px" justifyContent="flex-end">
-        <SearchBar />
         <Button 
           sx={{ background: '#1F2C4F', fontWeight: 'bold' }}
           variant='contained' 

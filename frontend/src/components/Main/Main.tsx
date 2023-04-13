@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
 import { styled } from '@mui/material/styles';
-import { SearchBarProvider } from '../../contexts/SearchBarProvider';
 
 type HeaderProps = {
     title: string;
@@ -23,13 +22,11 @@ const Main = ({
     
   return (
     <Box>
-      <SearchBarProvider>
-        <Header 
-          title={title} 
-          handleClick={handleClick} 
-          buttonText={buttonText} />
-        <main>{children}</main>
-      </SearchBarProvider>
+      <Header 
+        title={title} 
+        handleClick={handleClick} 
+        buttonText={buttonText} />
+      <main>{children}</main>
     </Box>
   );
 };
