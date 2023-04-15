@@ -13,6 +13,10 @@ app.use(
   })
 );
 
+const whitelist = [
+  '*'
+];
+
 app.use((req, res, next) => {
   const origin = req.get('referer');
   const isWhitelisted = whitelist.find((w) => origin && origin.includes(w));
