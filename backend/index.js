@@ -5,6 +5,13 @@ const port = 4000;
 import { deleteProject, getProjects, postProject, updateProjects } from './endpoints/projects.js';
 import cors from 'cors';
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+
 const { json, urlencoded } = pkg;
 
 app.use(json());
@@ -13,8 +20,6 @@ app.use(
     extended: true,
   })
 );
-
-app.use(cors());
 
 app.get('/', (req, res) => {
   const path = `/api/projects`;
