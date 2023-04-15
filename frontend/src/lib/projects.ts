@@ -18,8 +18,8 @@ export const getProjects = async (): Promise<ProjectProps[]> => {
 };
 
 export const postProject = async (body: ProjectProps): Promise<string> => {
-  const path = '/api/projects';  
-  console.log(body, 'hello hello');
+  const path = '/api/projects';
+
   try {
     const response = await requester.post(path, body);
     return response.data as string;
@@ -33,7 +33,8 @@ export const updateProject = async (
   id: number,
   body: ProjectProps
 ): Promise<string> => {
-  const path = `/api/projects/${id}`;  
+  const path = `/api/projects/${id}`;
+
   try {
     const response = await requester.put(path, body);
     return response.data as string;
@@ -44,7 +45,8 @@ export const updateProject = async (
 };
 
 export const deleteProject = async (id: GridRowId): Promise<string> => {
-  const path = `/api/projects/${id}`;  
+  const path = `/api/projects/${id}`;
+  
   try {
     const response = await requester.delete(path);
     return response.data as string;
