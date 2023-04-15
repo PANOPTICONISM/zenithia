@@ -5,6 +5,12 @@
        { "src": "./index.js", "use": "@vercel/node" }
     ],
     "routes": [
-       { "src": "/(.*)", "dest": "/", "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] }
+       { "src": "/(.*)", "dest": "/", "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] },
+       { "src": "/api/(.*)", "dest": "/", "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+       "headers": {
+         "Access-Control-Allow-Origin": "*",
+         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+         "Access-Control-Allow-Credentials": "true"
+       } }
     ]
  }
