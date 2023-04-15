@@ -1,6 +1,7 @@
 import supabase from "../supabaseClient.js";
 
 export const getProjects = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     try {
         const { data, error } = await supabase.from('projects').select();
     
