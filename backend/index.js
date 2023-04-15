@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
 })
 
-app.get('/api/projects', getProjects);
+app.get('/api/projects', cors(), getProjects);
 app.put('/api/projects/:id', updateProjects);
 app.delete('/api/projects/:id', deleteProject);
 app.post('/api/projects', postProject);
