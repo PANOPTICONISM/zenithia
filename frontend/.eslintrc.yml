@@ -30,3 +30,11 @@ rules:
   semi:
     - error
     - always
+  object-curly-spacing:
+    - error
+    - always
+  brace-style:
+    - error
+    - 1tbs
+  no-empty-function: off
+  no-empty: 0

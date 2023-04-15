@@ -2,7 +2,7 @@ import express from 'express';
 import pkg from 'body-parser';
 const app = express();
 const port = 4000;
-import { getProjects, updateProjects } from './endpoints/projects.js';
+import { deleteProject, getProjects, postProject, updateProjects } from './endpoints/projects.js';
 
 const { json, urlencoded } = pkg;
 
@@ -22,6 +22,8 @@ app.get('/', (req, res) => {
 
 app.get('/api/projects', getProjects);
 app.put('/api/projects/:id', updateProjects);
+app.delete('/api/projects/:id', deleteProject);
+app.post('/api/projects', postProject);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

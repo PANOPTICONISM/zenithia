@@ -26,22 +26,24 @@ export const useColumnsAndRows = () => {
       .then((res) => setRows(res.data));
   }, []);
   
-  // all is missing is communication with the endpoint
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        axios.post('/api/projects')
+        axios.delete(`/api/projects/${id}`)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-          .catch((error) => { console.log('Error: ' + error.message); });
+          .catch((error) => {
+            console.log('Error: ' + error.message); 
+          });
       });
     },
     [],
   );
   
   const columns: GridColDef[] = [
-    { field: 'id', 
+    { field: 'project_id', 
       headerName: 'ID', 
-      width: 60,
+      width: 120,
+      valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: 'title',
@@ -81,7 +83,7 @@ export const useColumnsAndRows = () => {
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
-      renderCell: ({value}) => {
+      renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<CustomButton color='inherit' value={value} />);
         }
@@ -113,5 +115,5 @@ export const useColumnsAndRows = () => {
     },
   ];
 
-  return { columns, rows };
+  return { columns, rows, setRows };
 };
