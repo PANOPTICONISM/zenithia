@@ -18,7 +18,7 @@ const Projects = () => {
 
     const row = { ...newRow, start_date: fixDateFormat(newRow.start_date), finish_date: fixDateFormat(newRow.finish_date) };
 
-    axios.put(`/api/projects/${oldRow.id}`, row).catch((error) => console.log('Updating: ' + error));
+    axios.put(`${process.env.API_URL}/api/projects/${oldRow.id}`, row).catch((error) => console.log('Updating: ' + error));
     return newRow;
   }, []);
 
