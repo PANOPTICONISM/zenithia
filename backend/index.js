@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   const path = `/api/projects`;
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-  res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
+  res.end(`Hello! Go: <a href="${path}">${path}</a>`);
 })
 
 app.get('/api/projects', getProjects);
