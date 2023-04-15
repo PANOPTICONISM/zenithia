@@ -22,14 +22,14 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProductProps[]>([]);
 
   React.useEffect(() => {
-    axios.get('/api/projects')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/projects`)
       .then((res) => setRows(res.data));
   }, []);
   
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        axios.delete(`/api/projects/${id}`)
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/projects/${id}`)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => {
             console.log('Error: ' + error.message); 
