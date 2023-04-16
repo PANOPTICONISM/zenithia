@@ -6,7 +6,7 @@ import { deleteProject, getProjects, postProject, updateProjects } from './proje
 import cors from 'cors';
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'https://zenithia-frontend-git-deployment-panopticonism.vercel.app',
 }
 
 app.use(cors(corsOptions));
