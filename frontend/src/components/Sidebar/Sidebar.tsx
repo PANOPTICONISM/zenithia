@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import AllOutIcon from '@mui/icons-material/AllOut';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -126,15 +126,15 @@ export default function Sidebar() {
     <Box>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <AllOutIcon sx={{ fontSize: '50px', margin: '16px auto' }} />
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
-            sx={{ marginTop: 8, right: open ? '-48px' : '0', position: 'absolute' }}
+            sx={{ marginTop: -3, right: open ? '-46px' : '-25px', position: 'absolute' }}
           >
-            {open ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />}
+            {open ? <ArrowBackIosIcon /> : <MenuIcon />}
           </IconButton>
+          <AllOutIcon sx={{ fontSize: '50px', margin: '16px auto' }} />
         </DrawerHeader>
         <List disablePadding={open}>
           <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} />
