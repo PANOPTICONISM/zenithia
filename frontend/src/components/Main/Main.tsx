@@ -20,9 +20,9 @@ const Main = ({
   const [open] = useIsSidebarOpen();
     
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Box sx={ !tabletBreakpoint ? { display: 'flex', justifyContent: 'space-between' } : {}}>
       <Sidebar />
-      <Box sx={{ padding: tabletBreakpoint ? '20px' : '50px', width: open ? `calc(100% - (160px + ${drawerWidth}px))` : 'calc(100% - 225px)' }}>
+      <Box sx={tabletBreakpoint ? { padding: '20px' } : { width: open ? `calc(100% - (160px + ${drawerWidth}px))` : 'calc(100% - 225px)', padding: '50px' }}>
         <Header 
           title={title} 
           handleClick={handleClick} 
