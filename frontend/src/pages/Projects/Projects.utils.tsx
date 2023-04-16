@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
+import { getProjects } from '../../lib/projects';
 
 const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
   return (
@@ -22,8 +23,8 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProductProps[]>([]);
 
   React.useEffect(() => {
-    axios.get('/api/projects')
-      .then((res) => setRows(res.data));
+    getProjects()
+      .then((res) => setRows(res));
   }, []);
   
   const deleteUser = React.useCallback(
