@@ -78,22 +78,6 @@ export default function Sidebar() {
 
   return (
     <Box>
-      {/* {tabletBreakpoint ?
-        <>
-          <Stack direction="row" justifyContent="space-between" padding={2}>
-            <AllOutIcon sx={{ fontSize: '50px' }} />
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <ArrowBackIosIcon /> : <MenuIcon />}
-            </IconButton>
-          </Stack>
-          <SwipeableDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
-            <Navigation open={open} />
-          </SwipeableDrawer>
-        </> :  */}
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
@@ -107,6 +91,7 @@ export default function Sidebar() {
             </IconButton>
           </Stack>
           <SwipeableDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
+            <Toolbar />
             <Navigation open={open} />
           </SwipeableDrawer>
         </>
