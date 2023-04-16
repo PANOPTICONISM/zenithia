@@ -5,7 +5,11 @@ const port = 4000;
 import { deleteProject, getProjects, postProject, updateProjects } from './projects.js';
 import cors from 'cors';
 
-app.options('*', cors())
+const corsOptions = {
+    origin: 'http://localhost:3000',
+}
+
+app.use(cors(corsOptions));
 
 const { json, urlencoded } = pkg;
 
