@@ -80,7 +80,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 200,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
@@ -99,7 +99,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'revenue',
       headerName: 'Revenue',
-      width: 150,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Hourly', 'Project'],
       editable: true,
