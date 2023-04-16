@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import AllOutIcon from '@mui/icons-material/AllOut';
@@ -14,12 +12,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { GridViewColumnIcon } from '@mui/x-data-grid';
 import { AccountTreeOutlined, AnalyticsOutlined, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, PeopleAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -49,14 +44,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   position: 'relative',
   minHeight: '140px',
-  zIndex: '999'
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     ...(open && {
       ...openedMixin(theme),
@@ -69,14 +61,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const ListLink = ({ open, text, icon } : {open: boolean, text: string, icon: React.ReactNode}) => {
+const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon?: React.ReactNode }) => {
   return (
-    <ListItem>
+    <ListItem disablePadding>
       <ListItemButton sx={{
         minHeight: 48,
         justifyContent: open ? 'initial' : 'center',
         px: 2.5,
       }}>
+        {icon && 
         <ListItemIcon
           sx={{
             minWidth: 0,
@@ -85,7 +78,7 @@ const ListLink = ({ open, text, icon } : {open: boolean, text: string, icon: Rea
           }}
         >
           {icon}
-        </ListItemIcon>
+        </ListItemIcon>}
         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>
     </ListItem>
@@ -105,7 +98,7 @@ export default function Sidebar() {
 
   const linkIconsSecondGroup = (index: number) => {
     if (index === 0) {
-      return <CalendarMonthOutlined />;
+      return <AccountTreeOutlined />;
     } else if (index === 1) {
       return <ListAltOutlined />;
     }
@@ -130,13 +123,15 @@ export default function Sidebar() {
             color="inherit"
             aria-label="open drawer"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
-            sx={{ marginTop: 10, right: '-10px', position: 'absolute' }}
+            sx={{ marginTop: 10, right: '-18px', position: 'absolute' }}
           >
             {open ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />}
           </IconButton>
         </DrawerHeader>
-        <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} />
-        <Divider />
+        <List>
+          <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} />
+        </List>
+        {open ? <ListLink text='Dashboard' open={open} /> : <Divider />}
         <List>
           {['Calendar', 'Tasks'].map((text, index) => (
             <ListLink 
@@ -146,7 +141,7 @@ export default function Sidebar() {
               icon={index === 0 ? <CalendarMonthOutlined /> : <ListAltOutlined /> } />
           ))}
         </List>
-        <Divider />
+        {open ? <ListLink text='Data' open={open} /> : <Divider />}
         <List>
           {['Projects', 'Clients', 'Hours'].map((text, index) => (
             <ListLink 
@@ -156,7 +151,7 @@ export default function Sidebar() {
               icon={linkIconsSecondGroup(index)} />
           ))}
         </List>
-        <Divider />
+        {open ? <ListLink text='Performance' open={open} /> : <Divider />}
         <List>
           {['Revenue', 'Yearly', 'Monthly'].map((text, index) => (
             <ListLink 
