@@ -1,17 +1,24 @@
 import express from 'express';
 import pkg from 'body-parser';
+import { deleteProject, getProjects, postProject, updateProjects } from './projects.js';
+import cors from 'cors';
+
 const app = express();
 const port = 4000;
-import { deleteProject, getProjects, postProject, updateProjects } from './endpoints/projects.js';
-
 const { json, urlencoded } = pkg;
 
-app.use(json())
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+}
+
+app.use(cors(corsOptions));
+
+app.use(json());
 app.use(
   urlencoded({
     extended: true,
   })
-)
+);
 
 app.get('/', (req, res) => {
   const path = `/api/projects`;
