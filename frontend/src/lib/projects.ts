@@ -15,3 +15,39 @@ export const getProjects = async (): Promise<ProductProps[]> => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const postProject = async (id: number): Promise<string> => {
+  const path = `/api/projects/${id}`;
+  
+  try {
+    const response = await requester.post(path);
+    return response.data as string;
+  } catch (err) {
+    const error = err as AxiosError<ServerError>;
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const updateProject = async (id: number, body: ProductProps): Promise<string> => {
+  const path = `/api/projects/${id}`;
+    
+  try {
+    const response = await requester.put(path, body);
+    return response.data as string;
+  } catch (err) {
+    const error = err as AxiosError<ServerError>;
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const deleteProject = async (id: number): Promise<string> => {
+  const path = `/api/projects/${id}`;
+    
+  try {
+    const response = await requester.delete(path);
+    return response.data as string;
+  } catch (err) {
+    const error = err as AxiosError<ServerError>;
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
