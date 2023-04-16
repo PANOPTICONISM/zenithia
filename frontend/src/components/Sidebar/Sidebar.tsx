@@ -8,9 +8,10 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountTreeOutlined, AnalyticsOutlined, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle } from './Sidebar.utils';
+import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
 
 export default function Sidebar() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useIsSidebarOpen();
 
   const handleDrawerOpen = () => {
     setOpen(true);
