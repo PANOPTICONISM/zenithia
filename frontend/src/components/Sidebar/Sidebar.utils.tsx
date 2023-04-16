@@ -5,6 +5,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
 
 export const drawerWidth = 200;
+export const drawerWidthMobile = 65;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -34,7 +35,6 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'baseline',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  position: 'relative',
   minHeight: '100px',
 }));
 
