@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { ProductProps } from '../pages/Projects/types';
 import { requester } from './axios';
+import { GridRowId } from '@mui/x-data-grid';
 
 type ServerError = { message: string; }
 
@@ -16,11 +17,11 @@ export const getProjects = async (): Promise<ProductProps[]> => {
   }
 };
 
-export const postProject = async (id: number): Promise<string> => {
-  const path = `/api/projects/${id}`;
+export const postProject = async (body: ProductProps): Promise<string> => {
+  const path = '/api/projects/';
   
   try {
-    const response = await requester.post(path);
+    const response = await requester.post(path, body);
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -40,7 +41,7 @@ export const updateProject = async (id: number, body: ProductProps): Promise<str
   }
 };
 
-export const deleteProject = async (id: number): Promise<string> => {
+export const deleteProject = async (id: GridRowId): Promise<string> => {
   const path = `/api/projects/${id}`;
     
   try {

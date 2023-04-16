@@ -1,11 +1,10 @@
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import React from 'react';
 import { ProductProps } from './types';
-import axios from 'axios';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
-import { getProjects } from '../../lib/projects';
+import { deleteProject, getProjects } from '../../lib/projects';
 
 const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
   return (
@@ -24,16 +23,17 @@ export const useColumnsAndRows = () => {
 
   React.useEffect(() => {
     getProjects()
-      .then((res) => setRows(res));
+      .then((res) => setRows(res))
+      .catch((error) => console.log('GET: ' + error));
   }, []);
   
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        axios.delete(`/api/projects/${id}`)
+        deleteProject(id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => {
-            console.log('Error: ' + error.message); 
+            console.log('DELETE: ' + error.message); 
           });
       });
     },
