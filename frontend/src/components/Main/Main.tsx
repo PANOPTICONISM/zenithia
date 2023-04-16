@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../Header/Header';
 import { Box, useMediaQuery } from '@mui/material';
+import Sidebar from '../Sidebar/Sidebar';
 
 type HeaderProps = {
     title: string;
@@ -16,12 +17,15 @@ const Main = ({
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
     
   return (
-    <Box sx={{ padding: tabletBreakpoint ? '20px' : '50px' }}>
-      <Header 
-        title={title} 
-        handleClick={handleClick} 
-        buttonText={buttonText} />
-      <main>{children}</main>
+    <Box sx={{ display: 'flex' }}>
+      <Sidebar />
+      <Box sx={{ padding: tabletBreakpoint ? '20px' : '50px' }}>
+        <Header 
+          title={title} 
+          handleClick={handleClick} 
+          buttonText={buttonText} />
+        <main>{children}</main>
+      </Box>
     </Box>
   );
 };
