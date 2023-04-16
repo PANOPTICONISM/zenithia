@@ -14,6 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { AccountTreeOutlined, AnalyticsOutlined, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, PeopleAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 200;
 
@@ -64,26 +65,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon: React.ReactNode }) => {
+const ListLink = ({ open, text, icon, path } : { open: boolean, text: string, icon: React.ReactNode, path: string }) => {
   return (
-    <ListItem disablePadding>
-      <ListItemButton sx={{
-        minHeight: 48,
-        justifyContent: open ? 'initial' : 'center',
-        px: 2.5,
-      }}>
-        <ListItemIcon
-          sx={{
-            minWidth: 0,
-            mr: open ? 3 : 'auto',
-            justifyContent: 'center',
-          }}
-        >
-          {icon}
-        </ListItemIcon>
-        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-      </ListItemButton>
-    </ListItem>
+    <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <ListItem disablePadding>
+        <ListItemButton sx={{
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+          px: 2.5,
+        }}>
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : 'auto',
+              justifyContent: 'center',
+            }}
+          >
+            {icon}
+          </ListItemIcon>
+          <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+        </ListItemButton>
+      </ListItem>
+    </Link>
   );
 };
 
@@ -137,13 +140,14 @@ export default function Sidebar() {
           <AllOutIcon sx={{ fontSize: '50px', margin: '16px auto' }} />
         </DrawerHeader>
         <List disablePadding={open}>
-          <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} />
+          <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} path="/" />
         </List>
         {open ? <Subtitle text='Pages' /> : <Divider />}
         <List disablePadding={open}>
           {['Calendar', 'Tasks'].map((text, index) => (
             <ListLink 
               key={index} 
+              path='/'
               open={open} 
               text={text} 
               icon={index === 0 ? <CalendarMonthOutlined /> : <ListAltOutlined /> } />
@@ -154,6 +158,7 @@ export default function Sidebar() {
           {['Projects', 'Clients', 'Hours'].map((text, index) => (
             <ListLink 
               key={index} 
+              path='/projects'
               open={open} 
               text={text} 
               icon={linkIconsSecondGroup(index)} />
@@ -163,7 +168,8 @@ export default function Sidebar() {
         <List disablePadding={open}>
           {['Revenue', 'Yearly', 'Monthly'].map((text, index) => (
             <ListLink 
-              key={index} 
+              key={index}
+              path='/' 
               open={open} 
               text={text} 
               icon={linkIconsThirdGroup(index)} />
