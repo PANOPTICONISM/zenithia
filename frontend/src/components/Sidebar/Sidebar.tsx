@@ -13,11 +13,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { AccountTreeOutlined, AnalyticsOutlined, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, PeopleAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
+import { Typography } from '@mui/material';
 
 const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
+  padding: '30px',
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -26,6 +28,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+  padding: '30px',
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -43,7 +46,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   position: 'relative',
-  minHeight: '140px',
+  minHeight: '100px',
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -61,7 +64,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon?: React.ReactNode }) => {
+const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon: React.ReactNode }) => {
   return (
     <ListItem disablePadding>
       <ListItemButton sx={{
@@ -69,7 +72,6 @@ const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon?: R
         justifyContent: open ? 'initial' : 'center',
         px: 2.5,
       }}>
-        {icon && 
         <ListItemIcon
           sx={{
             minWidth: 0,
@@ -78,15 +80,21 @@ const ListLink = ({ open, text, icon } : { open: boolean, text: string, icon?: R
           }}
         >
           {icon}
-        </ListItemIcon>}
+        </ListItemIcon>
         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>
     </ListItem>
   );
 };
 
+const Subtitle = ({ text } : { text: string }) => {
+  return (
+    <Typography padding="6px 12px 4px 12px">{text}</Typography>
+  );
+};
+
 export default function Sidebar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -123,16 +131,16 @@ export default function Sidebar() {
             color="inherit"
             aria-label="open drawer"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
-            sx={{ marginTop: 10, right: '-18px', position: 'absolute' }}
+            sx={{ marginTop: 8, right: open ? '-48px' : '0', position: 'absolute' }}
           >
             {open ? <ArrowBackIosIcon /> : <ArrowForwardIosIcon />}
           </IconButton>
         </DrawerHeader>
-        <List>
+        <List disablePadding={open}>
           <ListLink open={open} text="Dashboard" icon={<GridViewOutlined />} />
         </List>
-        {open ? <ListLink text='Dashboard' open={open} /> : <Divider />}
-        <List>
+        {open ? <Subtitle text='Pages' /> : <Divider />}
+        <List disablePadding={open}>
           {['Calendar', 'Tasks'].map((text, index) => (
             <ListLink 
               key={index} 
@@ -141,8 +149,8 @@ export default function Sidebar() {
               icon={index === 0 ? <CalendarMonthOutlined /> : <ListAltOutlined /> } />
           ))}
         </List>
-        {open ? <ListLink text='Data' open={open} /> : <Divider />}
-        <List>
+        {open ? <Subtitle text='Data' /> : <Divider />}
+        <List disablePadding={open}>
           {['Projects', 'Clients', 'Hours'].map((text, index) => (
             <ListLink 
               key={index} 
@@ -151,8 +159,8 @@ export default function Sidebar() {
               icon={linkIconsSecondGroup(index)} />
           ))}
         </List>
-        {open ? <ListLink text='Performance' open={open} /> : <Divider />}
-        <List>
+        {open ? <Subtitle text='Performance' /> : <Divider />}
+        <List disablePadding={open}>
           {['Revenue', 'Yearly', 'Monthly'].map((text, index) => (
             <ListLink 
               key={index} 
