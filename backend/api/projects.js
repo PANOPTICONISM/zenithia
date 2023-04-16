@@ -2,7 +2,7 @@ import supabase from "../supabaseClient.js";
 
 export const getProjects = async (req, res) => {
     try {
-        const { data, error } = await supabase.from('Projects').select();
+        const { data, error } = await supabase.from('projects').select();
     
         if (error) {
           throw error;
@@ -18,7 +18,7 @@ export const updateProjects = async (req, res) => {
     const { body, params } = req;
 
     try {
-        const { error } = await supabase.from('Projects').update(body).eq('id', params.id);
+        const { error } = await supabase.from('projects').update(body).eq('id', params.id);
     
         if (error) {
           throw error;
@@ -34,7 +34,7 @@ export const deleteProject = async (req, res) => {
     const { params } = req;
     
     try {
-        const { error } = await supabase.from('Projects').delete().eq('id', params.id);
+        const { error } = await supabase.from('projects').delete().eq('id', params.id);
     
         if (error) {
           throw error;
@@ -49,7 +49,7 @@ export const deleteProject = async (req, res) => {
 export const postProject = async (req, res) => {
     const { body } = req;
     try {
-        const { error } = await supabase.from('Projects').insert(body);
+        const { error } = await supabase.from('projects').insert(body);
 
         if (error) {
           throw error;
