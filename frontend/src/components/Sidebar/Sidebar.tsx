@@ -10,7 +10,7 @@ import { AccountTreeOutlined, AnalyticsOutlined, ArrowForwardIos, CalendarMonthO
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
 import { AppBar, Stack, SwipeableDrawer, Toolbar, useMediaQuery } from '@mui/material';
-import { white } from '../../App';
+import { darkBlue, white } from '../../App';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -48,7 +48,7 @@ export default function Sidebar() {
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
-            <AllOutIcon sx={{ fontSize: '50px', color: white }} />
+            <AllOutIcon sx={{ fontSize: '50px' }} />
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -57,9 +57,13 @@ export default function Sidebar() {
               {open ? <ArrowBackIosIcon /> : <MenuIcon />}
             </IconButton>
           </Stack>
-          <SwipeableDrawer open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)}>
-            <Toolbar />
-            <Navigation open={open} />
+          <SwipeableDrawer
+            open={open} onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}>
+            <Box sx={{ background: darkBlue, height: '100%' }}>
+              <Toolbar />
+              <Navigation open={open} />
+            </Box>
           </SwipeableDrawer>
         </>
         :
