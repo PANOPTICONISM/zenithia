@@ -2,6 +2,7 @@ import { InputAdornment, TextField } from '@mui/material';
 import { useSearchBar } from '../../contexts/SearchBarProvider';
 import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { darkBlue } from '../../App';
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useSearchBar();
@@ -17,7 +18,7 @@ export const SearchBar = () => {
       InputProps={{
         startAdornment: <InputAdornment position="start"><SearchIcon fontSize='small' /></InputAdornment>,
       }}
-      sx={{ color: '#1F2C4F' }}
+      sx={{ color: darkBlue }}
       focused
     />
   );

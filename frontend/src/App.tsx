@@ -5,6 +5,10 @@ import React from 'react';
 import { SearchBarProvider } from './contexts/SearchBarProvider';
 import { SidebarProvider } from './contexts/SidebarProvider';
 
+export const white = '#fff';
+export const darkBlue = '#1F2C4F';
+export const lightBlue = '#F7F8FF';
+
 function App() {
   return (
     <div className="App">
