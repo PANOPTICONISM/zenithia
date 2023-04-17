@@ -5,6 +5,7 @@ import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
 import { deleteProject, getProjects } from '../../lib/projects';
+import { lightBlue } from '../../App';
 
 const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
   return (
@@ -59,7 +60,7 @@ export const useColumnsAndRows = () => {
       minWidth: 100,
       flex: 1,
       editable: true,
-      renderCell: ({ value }) => <Box sx={{ background: '#F7F8FF', padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
+      renderCell: ({ value }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
     },
     {
       field: 'start_date',
@@ -80,7 +81,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 200,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
@@ -99,7 +100,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'revenue',
       headerName: 'Revenue',
-      width: 150,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Hourly', 'Project'],
       editable: true,
