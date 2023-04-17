@@ -3,11 +3,13 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from
 import { Link } from 'react-router-dom';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
+import { darkBlue, white } from '../../App';
 
 export const drawerWidth = 200;
 export const drawerWidthMobile = 65;
 
 const openedMixin = (theme: Theme): CSSObject => ({
+  background: darkBlue,
   width: drawerWidth,
   padding: '30px',
   transition: theme.transitions.create('width', {
@@ -18,6 +20,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+  background: darkBlue,
   padding: '30px',
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -61,6 +64,7 @@ export const ListLink = ({ open, text, icon, path } : { open: boolean, text: str
           minHeight: 48,
           justifyContent: open ? 'initial' : 'center',
           px: 2.5,
+          color: white
         }}>
           <ListItemIcon
             sx={{
@@ -80,6 +84,6 @@ export const ListLink = ({ open, text, icon, path } : { open: boolean, text: str
 
 export const Subtitle = ({ text } : { text: string }) => {
   return (
-    <Typography padding="6px 12px 4px 12px">{text}</Typography>
+    <Typography padding="6px 12px 4px 12px" color={white}>{text}</Typography>
   );
 };
