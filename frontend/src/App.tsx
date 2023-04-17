@@ -6,8 +6,9 @@ import { SearchBarProvider } from './contexts/SearchBarProvider';
 import { SidebarProvider } from './contexts/SidebarProvider';
 
 export const white = '#fff';
-export const darkBlue = '#1F2C4F';
+export const darkBlue = '#191E38';
 export const lightBlue = '#F7F8FF';
+export const highlight = '#1F2C4F';
 
 function App() {
   return (

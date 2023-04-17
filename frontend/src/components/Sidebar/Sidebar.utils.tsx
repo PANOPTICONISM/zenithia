@@ -1,9 +1,9 @@
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
-import { darkBlue, white } from '../../App';
+import { darkBlue, highlight, white } from '../../App';
 
 export const drawerWidth = 200;
 export const drawerWidthMobile = 65;
@@ -57,6 +57,8 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
 );
 
 export const ListLink = ({ open, text, icon, path } : { open: boolean, text: string, icon: React.ReactNode, path: string }) => {
+  const { pathname } = useLocation();
+
   return (
     <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
       <ListItem disablePadding>
@@ -64,7 +66,9 @@ export const ListLink = ({ open, text, icon, path } : { open: boolean, text: str
           minHeight: 48,
           justifyContent: open ? 'initial' : 'center',
           px: 2.5,
-          color: white
+          color: white,
+          background: path === pathname ? highlight : 'inherit',
+          borderRadius: '4px',
         }}>
           <ListItemIcon
             sx={{
