@@ -43,34 +43,27 @@ const initialData: InitialProps = {
 const Tasks = () => {
   const [items, setItems] = React.useState(initialData.tasks);
 
-  const handleDragEnd = (result: DropResult) => {  
-    const handleDragEnd = (result: DropResult) => {
-      if (!result.destination) {
-        return;
-      }
-      const newItems = [...items];
-      const [removed] = newItems.splice(result.source.index, 1);
-      newItems.splice(result.destination.index, 0, removed);
-      setItems(newItems);
-    }; 
-  };
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+    console.log(result);
+    const newItems = [...items];
+    const [removed] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, removed);
+    setItems(newItems);
+  }; 
   
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {initialData.columnOrder.map((columnId) => {
-                const column = initialData.columns[columnId];
-                const tasks = items.filter((task) => column.taskIds.includes(task.id));
-                return <Column key={column.id} column={column} tasks={tasks} />;
-              })}
-            </div>)}
-        </Droppable>
+        <div>
+          {initialData.columnOrder.map((columnId) => {
+            const column = initialData.columns[columnId];
+            const tasks = items.filter((task) => column.taskIds.includes(task.id));
+            return <Column key={column.id} column={column} tasks={tasks} />;
+          })}
+        </div>
       </DragDropContext>
     </Main>
   );
