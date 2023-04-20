@@ -12,6 +12,7 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          style={{ border: '1px solid black', margin: '10px', padding: '10px', ...provided.draggableProps.style }}
         >
           {task.content}
         </div>
