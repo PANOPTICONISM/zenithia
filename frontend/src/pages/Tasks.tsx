@@ -42,6 +42,10 @@ const Tasks = () => {
     if (!result.destination) {
       return;
     }
+    const newItems = [...items];
+    const [removed] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, removed);
+    setItems(newItems);
   };
   
   return (
@@ -55,7 +59,7 @@ const Tasks = () => {
             >
               {initialData.columnOrder.map((columnId) => {
                 const column = initialData.columns[columnId];
-                const tasks = initialData.tasks.filter((task) => column.taskIds.includes(task.id));
+                const tasks = items.filter((task) => column.taskIds.includes(task.id));
                 return <Column key={column.id} column={column} tasks={tasks} />;
               })}
             </div>)}
