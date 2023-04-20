@@ -1,21 +1,22 @@
-import { Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
+import { grey, lightBlue } from '../../App';
 
 
 const Task = ({ task, index } : {task: {id: string, content: string}, index: number}) => {
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
-      {(provided, snapshot) => (
-        <div
+      {(provided) => (
+        <Box
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={{ border: '1px solid black', margin: '10px', padding: '10px', ...provided.draggableProps.style }}
+          sx={{ background: lightBlue, padding: '24px', ...provided.draggableProps.style }}
         >
           {task.content}
-        </div>
+        </Box>
       )}
     </Draggable>
   );
@@ -24,20 +25,22 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
 const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {id: string, content: string}[], columnId: string}) => {
 
   return (
-    <div>
+    <Stack spacing={3} sx={{ border: `1px solid ${grey}`, width: '100%' }}>
       <Typography>{column.title}</Typography>
       <Droppable droppableId={columnId} key={columnId}>
         {(provided) => (
-          <div
+          <Stack
+            sx={{ padding: '24px' }}
+            spacing={2}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => <Task task={task} key={task.id} index={index} />)}
             {provided.placeholder}
-          </div>
+          </Stack>
         )}
       </Droppable>
-    </div>
+    </Stack>
   );
 };
 
