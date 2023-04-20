@@ -29,23 +29,30 @@ const initialData: InitialProps = {
     'column-1': {
       id: 'column-1',
       title: 'To do',
-      taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
+      taskIds: ['task-1', 'task-2'],
+    },
+    'column-2': {
+      id: 'column-2',
+      title: 'In progress',
+      taskIds: ['task-3', 'task-4'],
     },
   },
-  columnOrder: ['column-1'],
+  columnOrder: ['column-1', 'column-2'],
 };
 
 const Tasks = () => {
   const [items, setItems] = React.useState(initialData.tasks);
 
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return;
-    }
-    const newItems = [...items];
-    const [removed] = newItems.splice(result.source.index, 1);
-    newItems.splice(result.destination.index, 0, removed);
-    setItems(newItems);
+  const handleDragEnd = (result: DropResult) => {  
+    const handleDragEnd = (result: DropResult) => {
+      if (!result.destination) {
+        return;
+      }
+      const newItems = [...items];
+      const [removed] = newItems.splice(result.source.index, 1);
+      newItems.splice(result.destination.index, 0, removed);
+      setItems(newItems);
+    }; 
   };
   
   return (
