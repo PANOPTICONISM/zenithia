@@ -1,7 +1,7 @@
 import React from 'react';
 import Main from '../components/Main/Main';
-import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import { Typography } from '@mui/material';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import { Stack, useMediaQuery } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 
 type InitialProps = {
@@ -37,6 +37,7 @@ const columnsFromBackend: InitialProps = {
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState(columnsFromBackend);
+  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -77,11 +78,11 @@ const Tasks = () => {
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div>
+        <Stack spacing={2} direction={tabletBreakpoint ? 'column' : 'row'}>
           {Object.entries(columns).map(([columnId, column]) => {
             return <Column key={columnId} column={column} columnId={columnId} tasks={column.items} />;
           })}
-        </div>
+        </Stack>
       </DragDropContext>
     </Main>
   );

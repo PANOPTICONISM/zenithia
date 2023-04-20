@@ -10,6 +10,7 @@ export const white = '#fff';
 export const darkBlue = '#191E38';
 export const lightBlue = '#F7F8FF';
 export const highlight = '#1F2C4F';
+export const grey = '#DBDBDB';
 
 function App() {
   return (
