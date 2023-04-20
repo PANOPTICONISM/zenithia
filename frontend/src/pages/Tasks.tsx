@@ -3,6 +3,7 @@ import Main from '../components/Main/Main';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Typography } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
+import { OnDragEndResponder } from 'react-beautiful-dnd';
 
 type InitialProps = {
   tasks: {
@@ -39,14 +40,31 @@ const initialData: InitialProps = {
 };
 
 const Tasks = () => {
-  const column = initialData.columns['column-1'];
-  const tasks = column.taskIds.map(taskId => initialData.tasks[taskId]);
+  const [items, setItems] = React.useState(initialData.tasks);
+
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+  };
   
   return (
     <Main title="Tasks">
-      {initialData.columnOrder.map(() => {
-        return <Column key={column.id} column={column} tasks={tasks} />;
-      })}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {initialData.columnOrder.map((columnId) => {
+                const column = initialData.columns[columnId];
+                const tasks = column.taskIds.map(taskId => initialData.tasks[taskId]);
+                return <Column key={column.id} column={column} tasks={tasks} />;
+              })}
+            </div>)}
+        </Droppable>
+      </DragDropContext>
     </Main>
   );
 };
