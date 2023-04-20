@@ -5,63 +5,81 @@ import { Typography } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 
 type InitialProps = {
-  tasks: {
-      id: string,
-      content: string
-  }[],
-  columns: {
     [key: string]: {
-      id: string,
       title: string,
-      taskIds: string[]
+      items: {
+        id: string,
+        content: string
+    }[],
     }
-  }
-  columnOrder: string[]
 }
 
-const initialData: InitialProps = {
-  tasks: [
-    { id: 'task-1', content: 'Take out the garbage' },
-    { id: 'task-2', content: 'Watch my favorite show' },
-    { id: 'task-3', content: 'Charge my phone' },
-    { id: 'task-4', content: 'Cook dinner' }],
-  columns: {
-    'column-1': {
-      id: 'column-1',
-      title: 'To do',
-      taskIds: ['task-1', 'task-2'],
-    },
-    'column-2': {
-      id: 'column-2',
-      title: 'In progress',
-      taskIds: ['task-3', 'task-4'],
-    },
+const tasks = [
+  { id: 'task-1', content: 'Take out the garbage' },
+  { id: 'task-2', content: 'Watch my favorite show' },
+  { id: 'task-3', content: 'Charge my phone' },
+  { id: 'task-4', content: 'Cook dinner' }];
+
+const columnsFromBackend: InitialProps = {
+  ['column-1']: {
+    title: 'To-do',
+    items: tasks,
   },
-  columnOrder: ['column-1', 'column-2'],
+  ['column-2']: {
+    title: 'In Progress',
+    items: [],
+  },
+  ['column-3']: {
+    title: 'Done',
+    items: [],
+  },
 };
 
 const Tasks = () => {
-  const [items, setItems] = React.useState(initialData.tasks);
+  const [columns, setColumns] = React.useState(columnsFromBackend);
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return;
+    if (!result.destination) return;
+    const { source, destination } = result;
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
     }
-    console.log(result);
-    const newItems = [...items];
-    const [removed] = newItems.splice(result.source.index, 1);
-    newItems.splice(result.destination.index, 0, removed);
-    setItems(newItems);
   }; 
   
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
         <div>
-          {initialData.columnOrder.map((columnId) => {
-            const column = initialData.columns[columnId];
-            const tasks = items.filter((task) => column.taskIds.includes(task.id));
-            return <Column key={column.id} column={column} tasks={tasks} />;
+          {Object.entries(columns).map(([columnId, column]) => {
+            return <Column key={columnId} column={column} columnId={columnId} tasks={column.items} />;
           })}
         </div>
       </DragDropContext>

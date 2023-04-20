@@ -21,12 +21,12 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
   );
 };
 
-const Column = ({ column, tasks } : {column: {title: string, id: string}, tasks: {id: string, content: string}[]}) => {
+const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {id: string, content: string}[], columnId: string}) => {
 
   return (
     <div>
       <Typography>{column.title}</Typography>
-      <Droppable droppableId={column.id}>
+      <Droppable droppableId={columnId} key={columnId}>
         {(provided) => (
           <div
             ref={provided.innerRef}
