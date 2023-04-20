@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
-
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 const Task = ({ task, index } : {task: {id: string, content: string}, index: number}) => {
 
@@ -25,8 +25,11 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
 const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {id: string, content: string}[], columnId: string}) => {
 
   return (
-    <Stack spacing={3} sx={{ border: `1px solid ${grey}`, width: '100%' }}>
-      <Typography>{column.title}</Typography>
+    <Stack sx={{ border: `1px solid ${grey}`, width: '100%' }}>
+      <Stack sx={{ padding: '24px 24px 0 24px' }} direction="row" spacing={1}>
+        <ReceiptLongIcon />
+        <Typography>{column.title}</Typography>
+      </Stack>
       <Droppable droppableId={columnId} key={columnId}>
         {(provided) => (
           <Stack
