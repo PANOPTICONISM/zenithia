@@ -1,11 +1,11 @@
 import React from 'react';
-import Sidebar from '../components/Sidebar/Sidebar';
+import Main from '../components/Main/Main';
 
 const Dashboard = () => {
   return (
-    <div>
-      <Sidebar />
-    </div>
+    <Main title="Dashboard">
+      Dashboard
+    </Main>
   );
 };
 
