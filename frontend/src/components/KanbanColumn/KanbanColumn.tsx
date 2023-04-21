@@ -6,10 +6,22 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColumnProps } from '../../pages/Tasks';
 
-const Task = ({ task, index } : {task: {id: string, content: string}, index: number}) => {
+type DataProps = {
+  columns: ColumnProps[],
+  setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
+  column?: ColumnProps,
+}
+
+const Task = ({ task, index, columns, setColumns, column } : { task: { id: string, content: string }, index: number } & DataProps) => {
 
   const handleOnClick = () => {
-    console.log('close');
+    if (!column) {
+      return;
+    }
+    const cleanItemsArr = column.items.filter((item) => item.id !== task.id);
+    const updatedColumn = { ...column, items: cleanItemsArr };
+    const cleanColumns = columns.filter((col) => col.id !== column.id);
+    setColumns([...cleanColumns, updatedColumn].sort((a, b) => a.orderBy - b.orderBy));
   };
 
   return (
@@ -31,7 +43,7 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
   );
 };
 
-const Column = ({ column } : {column: ColumnProps}) => {
+const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
 
   return (
     <Stack sx={{ border: `1px solid ${grey}`, width: '100%' }}>
@@ -47,7 +59,16 @@ const Column = ({ column } : {column: ColumnProps}) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {column.items.map((task, index) => <Task task={task} key={task.id} index={index} />)}
+            {column.items.map((task, index) => 
+              <Task 
+                task={task}
+                key={task.id}
+                index={index}
+                columns={columns} 
+                setColumns={setColumns}
+                column={column}
+              />
+            )}
             {provided.placeholder}
           </Stack>
         )}
