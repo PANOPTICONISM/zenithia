@@ -46,6 +46,15 @@ const Task = ({ task, index, columns, setColumns, column } : { task: { id: strin
 
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
 
+  const addItem = () => {
+    console.log('add', column.id);
+
+    const columnCopy = { ...column };
+    columnCopy.items.push({ id: 'task-6', content: 'cheers' });
+    const cleanColumns = columns.filter((col) => col.id !== column.id);
+    setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
+  };
+
   return (
     <Stack sx={{ border: `1px solid ${grey}`, width: '100%' }}>
       <Stack sx={{ padding: '24px 24px 0 24px' }} direction="row" spacing={1} justifyContent="space-between" alignItems="center">
@@ -53,7 +62,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
           <ReceiptLongIcon />
           <Typography>{column.title}</Typography>
         </Stack>
-        <IconButton>
+        <IconButton onClick={addItem}>
           <AddIcon />
         </IconButton>
       </Stack>
