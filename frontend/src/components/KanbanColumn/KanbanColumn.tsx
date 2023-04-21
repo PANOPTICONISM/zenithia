@@ -1,10 +1,15 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Task = ({ task, index } : {task: {id: string, content: string}, index: number}) => {
+
+  const handleOnClick = () => {
+    console.log('close');
+  };
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -13,8 +18,11 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          sx={{ background: lightBlue, padding: '24px', ...provided.draggableProps.style }}
+          sx={{ background: lightBlue, padding: '24px', position: 'relative', ...provided.draggableProps.style }}
         >
+          <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
+            <CloseIcon fontSize='small' />
+          </IconButton>
           {task.content}
         </Box>
       )}
