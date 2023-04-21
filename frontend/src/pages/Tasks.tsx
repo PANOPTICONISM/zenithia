@@ -72,13 +72,15 @@ const Tasks = () => {
       setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));
     }
   }; 
+
+  console.log(columns);
   
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
         <Stack spacing={2} direction={tabletBreakpoint ? 'column' : 'row'}>
           {columns.map((column) => {
-            return <Column key={column.id} column={column} />;
+            return <Column key={column.id} column={column} columns={columns} setColumns={setColumns} />;
           })}
         </Stack>
       </DragDropContext>
