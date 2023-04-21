@@ -72,8 +72,6 @@ const Tasks = () => {
       setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));
     }
   }; 
-
-  console.log(columns);
   
   return (
     <Main title="Tasks">
