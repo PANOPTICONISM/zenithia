@@ -5,6 +5,7 @@ import { grey, lightBlue } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColumnProps } from '../../pages/Tasks';
+import AddIcon from '@mui/icons-material/Add';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -47,9 +48,14 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
 
   return (
     <Stack sx={{ border: `1px solid ${grey}`, width: '100%' }}>
-      <Stack sx={{ padding: '24px 24px 0 24px' }} direction="row" spacing={1}>
-        <ReceiptLongIcon />
-        <Typography>{column.title}</Typography>
+      <Stack sx={{ padding: '24px 24px 0 24px' }} direction="row" spacing={1} justifyContent="space-between" alignItems="center">
+        <Stack direction="row" spacing={1}>
+          <ReceiptLongIcon />
+          <Typography>{column.title}</Typography>
+        </Stack>
+        <IconButton>
+          <AddIcon />
+        </IconButton>
       </Stack>
       <Droppable droppableId={column.id} key={column.id}>
         {(provided) => (
