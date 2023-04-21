@@ -4,7 +4,7 @@ import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { Stack, useMediaQuery } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 
-type InitialProps = {
+export type ColumnProps = {
   id: string,
   title: string;
   orderBy: number,
@@ -20,7 +20,7 @@ const tasks = [
   { id: 'task-3', content: 'Charge my phone' },
   { id: 'task-4', content: 'Cook dinner' }];
 
-const columnsFromBackend: InitialProps[] = [
+const columnsFromBackend: ColumnProps[] = [
   {
     id: 'to-do',
     title: 'To-do',
@@ -78,7 +78,7 @@ const Tasks = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Stack spacing={2} direction={tabletBreakpoint ? 'column' : 'row'}>
           {columns.map((column) => {
-            return <Column key={column.id} column={column} columnId={column.id} tasks={column.items} />;
+            return <Column key={column.id} column={column} />;
           })}
         </Stack>
       </DragDropContext>
