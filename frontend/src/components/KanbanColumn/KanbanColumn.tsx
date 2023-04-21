@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, IconButton, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
@@ -40,16 +40,20 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
           sx={{ background: lightBlue, padding: '24px', position: 'relative', ...provided.draggableProps.style }}
           onDoubleClick={handleDoubleClick}
         >
-          <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
-            <CloseIcon fontSize='small' />
-          </IconButton>
-          <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
-          <Stack direction="row" justifyContent="space-between" paddingTop="16px">
-            <Box>
-              <Typography fontSize="14px">{task.deadline}</Typography>
-            </Box>
-            <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
-          </Stack>
+          {isEdit ? <>
+            <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
+              <CloseIcon fontSize='small' />
+            </IconButton>
+            <TextField value={task.content} label="title" size='small' variant='standard' />
+          </> : 
+            <>
+              <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
+              <Stack direction="row" justifyContent="space-between" paddingTop="16px">
+                <Box>
+                  <Typography fontSize="14px">{task.deadline}</Typography>
+                </Box>
+                <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
+              </Stack></>}
         </Box>
       )}
     </Draggable>
