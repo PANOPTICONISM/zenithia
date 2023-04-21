@@ -18,7 +18,7 @@ type DataProps = {
 
 const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
-  const [company, setCompany] = React.useState(task.project);
+  const [editableTask, setEditableTask] = React.useState(task);
 
   const handleDoubleClick = () => {
     setIsEdit(!isEdit);
@@ -38,6 +38,8 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
     console.log('oi');
   };
 
+  console.log(editableTask);
+
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided) => (
@@ -53,24 +55,33 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
               <CloseIcon fontSize='small' />
             </IconButton>
             <Stack spacing={2}>
-              <TextField value={task.content} label="title" size='small' variant='standard' />
+              <TextField 
+                value={editableTask.content} 
+                label="title" 
+                size='small' 
+                variant='standard'
+                onChange={(event) => setEditableTask((current) => ({ ...current, content: event.target.value }))}
+              />
               <Box>
                 <LocalizationProvider dateAdapter={AdapterLuxon}>
-                  <DatePicker slotProps={{ textField: { size: 'small' } }} label="Deadline" />
+                  <DatePicker 
+                    slotProps={{ textField: { size: 'small' } }} 
+                    label="Deadline" 
+                    onChange={(value) => setEditableTask((current) => ({ ...current, deadline: value as string }))} />
                 </LocalizationProvider>
               </Box>
               <FormControl size="small">
                 <InputLabel>Project</InputLabel>
                 <Select
-                  value={company}
+                  value={editableTask.project}
                   label="Project"
-                  onChange={(event) => setCompany(event.target.value)}
+                  onChange={(event) => setEditableTask((current) => ({ ...current, project: event.target.value }))}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
+                  <MenuItem value="personal">
+                    Personal
                   </MenuItem>
-                  <MenuItem value={company}>{company}</MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={task.project}>{task.project}</MenuItem>
+                  <MenuItem value={10}>Nissan</MenuItem>
                 </Select>
               </FormControl>
             </Stack>
