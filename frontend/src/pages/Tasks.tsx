@@ -5,14 +5,14 @@ import { Stack, useMediaQuery } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 
 type InitialProps = {
-    [key: string]: {
-      title: string,
-      items: {
-        id: string,
-        content: string
-    }[],
-    }
-}
+  id: string,
+  title: string;
+  orderBy: number,
+  items: {
+    id: string;
+    content: string;
+  }[];
+};
 
 const tasks = [
   { id: 'task-1', content: 'Take out the garbage' },
@@ -20,20 +20,26 @@ const tasks = [
   { id: 'task-3', content: 'Charge my phone' },
   { id: 'task-4', content: 'Cook dinner' }];
 
-const columnsFromBackend: InitialProps = {
-  ['column-1']: {
+const columnsFromBackend: InitialProps[] = [
+  {
+    id: 'to-do',
     title: 'To-do',
     items: tasks,
+    orderBy: 1,
   },
-  ['column-2']: {
+  {
+    id: 'in-progress',
     title: 'In Progress',
     items: [],
+    orderBy: 2,
   },
-  ['column-3']: {
+  {
+    id: 'done',
     title: 'Done',
     items: [],
+    orderBy: 3,
   },
-};
+];
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState(columnsFromBackend);
@@ -43,35 +49,27 @@ const Tasks = () => {
     if (!result.destination) return;
     const { source, destination } = result;
     if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
+      const sourceColumn = columns.filter((column) => column.id === source.droppableId);
+      const destColumn = columns.filter((column) => column.id === destination.droppableId);
+      const sourceItems = [...sourceColumn][0].items;
+      const destItems = [...destColumn][0].items;
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems,
-        },
-      });
+
+      const removedSourceColumn = columns.filter((column) => column.id !== sourceColumn[0].id);
+      const removedDestColumn = removedSourceColumn.filter((column) => column.id !== destColumn[0].id);
+      const joinColumnChanges = [sourceColumn, destColumn, removedDestColumn].flat();
+      
+      setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));
     } else {
-      const column = columns[source.droppableId];
-      const copiedItems = [...column.items];
+      const sourceColumn = columns.filter((column) => column.id == source.droppableId);
+      const copiedItems = [...sourceColumn][0].items;
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copiedItems,
-        },
-      });
+      
+      const removedSourceColumn = columns.filter((column) => column.id !== sourceColumn[0].id);
+      const joinColumnChanges = [sourceColumn, removedSourceColumn].flat();
+      setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));
     }
   }; 
   
@@ -79,8 +77,8 @@ const Tasks = () => {
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
         <Stack spacing={2} direction={tabletBreakpoint ? 'column' : 'row'}>
-          {Object.entries(columns).map(([columnId, column]) => {
-            return <Column key={columnId} column={column} columnId={columnId} tasks={column.items} />;
+          {columns.map((column) => {
+            return <Column key={column.id} column={column} columnId={column.id} tasks={column.items} />;
           })}
         </Stack>
       </DragDropContext>
