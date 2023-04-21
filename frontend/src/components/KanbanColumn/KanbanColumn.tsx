@@ -8,6 +8,7 @@ import { ColumnProps, TaskProps } from '../../pages/Tasks';
 import AddIcon from '@mui/icons-material/Add';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -23,7 +24,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
     setIsEdit(!isEdit);
   };
 
-  const handleOnClick = () => {
+  const handleDelete = () => {
     if (!column) {
       return;
     }
@@ -31,6 +32,10 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
     const updatedColumn = { ...column, items: cleanItemsArr };
     const cleanColumns = columns.filter((col) => col.id !== column.id);
     setColumns([...cleanColumns, updatedColumn].sort((a, b) => a.orderBy - b.orderBy));
+  };
+
+  const handleSave = () => {
+    console.log('oi');
   };
 
   return (
@@ -44,7 +49,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
           onDoubleClick={handleDoubleClick}
         >
           {isEdit ? <>
-            <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
+            <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: '4px', top: '4px' }}>
               <CloseIcon fontSize='small' />
             </IconButton>
             <Stack spacing={2}>
@@ -69,6 +74,11 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
                 </Select>
               </FormControl>
             </Stack>
+            <Box sx={{ textAlign: 'right', paddingTop: '16px' }}>
+              <IconButton onClick={handleSave}>
+                <SaveAsIcon fontSize='small' />
+              </IconButton>
+            </Box>
           </> : 
             <>
               <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
