@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
@@ -6,6 +6,8 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColumnProps, TaskProps } from '../../pages/Tasks';
 import AddIcon from '@mui/icons-material/Add';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -15,6 +17,7 @@ type DataProps = {
 
 const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
+  const [company, setCompany] = React.useState(task.project);
 
   const handleDoubleClick = () => {
     setIsEdit(!isEdit);
@@ -44,7 +47,28 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
               <CloseIcon fontSize='small' />
             </IconButton>
-            <TextField value={task.content} label="title" size='small' variant='standard' />
+            <Stack spacing={2}>
+              <TextField value={task.content} label="title" size='small' variant='standard' />
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                  <DatePicker slotProps={{ textField: { size: 'small' } }} label="Deadline" />
+                </LocalizationProvider>
+              </Box>
+              <FormControl size="small">
+                <InputLabel>Project</InputLabel>
+                <Select
+                  value={company}
+                  label="Project"
+                  onChange={(event) => setCompany(event.target.value)}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={company}>{company}</MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
           </> : 
             <>
               <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
