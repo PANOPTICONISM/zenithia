@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
+import { DateTime } from 'luxon';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -93,7 +94,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
           </> : 
             <>
               <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
-              <Stack direction="row" justifyContent="space-between" paddingTop="16px">
+              <Stack direction="row" justifyContent="space-between" paddingTop="16px" spacing={4}>
                 <Box>
                   <Typography fontSize="14px">{task.deadline}</Typography>
                 </Box>
@@ -109,7 +110,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
 
   const addItem = () => {
     const columnCopy = { ...column };
-    columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: 'Fri' });
+    columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: DateTime.now().toFormat('dd MMMM') });
     const cleanColumns = columns.filter((col) => col.id !== column.id);
     setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
   };

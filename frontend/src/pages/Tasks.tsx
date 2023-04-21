@@ -3,13 +3,14 @@ import Main from '../components/Main/Main';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { Stack, useMediaQuery } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
+import { DateTime } from 'luxon';
 
 export type TaskProps = {
   id: string;
   content: string;
   importance: string,
   project: string,
-  deadline: string,
+  deadline: string | null,
 }
 
 export type ColumnProps = {
@@ -20,10 +21,10 @@ export type ColumnProps = {
 };
 
 const tasks = [
-  { id: 'task-1', content: 'Take out the garbage', importance: 'medium', project: 'walmart', deadline: 'Fri' },
-  { id: 'task-2', content: 'Watch my favorite show', importance: 'high', project: 'walmart', deadline: 'Fri' },
-  { id: 'task-3', content: 'Charge my phone', importance: 'low', project: 'walmart', deadline: 'Mon' },
-  { id: 'task-4', content: 'Cook dinner', importance: 'medium', project: 'walmart', deadline: 'Fri' }];
+  { id: 'task-1', content: 'Take out the garbage', importance: 'medium', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
+  { id: 'task-2', content: 'Watch my favorite show', importance: 'high', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
+  { id: 'task-3', content: 'Charge my phone', importance: 'low', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
+  { id: 'task-4', content: 'Cook dinner', importance: 'medium', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') }];
 
 const columnsFromBackend: ColumnProps[] = [
   {
