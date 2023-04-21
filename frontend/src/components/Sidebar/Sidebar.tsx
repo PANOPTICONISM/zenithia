@@ -18,18 +18,18 @@ const Navigation = ({ open } : { open: boolean; }) => {
       <List disablePadding={open}>
         <ListLink open={open} text="Dashboard" icon={<GridViewOutlined sx={{ color: white }} />} path="/" />
       </List>
-      {open ? <Subtitle text='Pages' /> : <Divider />}
+      {open ? <Subtitle text='Pages' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Calendar" icon={<CalendarMonthOutlined sx={{ color: white }} />} path="/calendar" />
         <ListLink open={open} text="Tasks" icon={<ListAltOutlined sx={{ color: white }} />} path="/tasks" />
       </List>
-      {open ? <Subtitle text='Data' /> : <Divider />}
+      {open ? <Subtitle text='Data' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Projects" icon={<AccountTreeOutlined sx={{ color: white }} />} path="/projects" />
         <ListLink open={open} text="Clients" icon={<ListAltOutlined sx={{ color: white }} />} path="/clients" />
         <ListLink open={open} text="Hours" icon={<HourglassBottomOutlined sx={{ color: white }} />} path="/hours" />
       </List>
-      {open ? <Subtitle text='Performance' /> : <Divider />}
+      {open ? <Subtitle text='Performance' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Revenue" icon={<TrackChangesOutlined sx={{ color: white }} />} path="/revenue" />
         <ListLink open={open} text="Yearly" icon={<AnalyticsOutlined sx={{ color: white }} />} path="/yearly" />
