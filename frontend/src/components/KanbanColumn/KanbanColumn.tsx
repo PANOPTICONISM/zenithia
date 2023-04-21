@@ -4,7 +4,7 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
-import { ColumnProps } from '../../pages/Tasks';
+import { ColumnProps, TaskProps } from '../../pages/Tasks';
 import AddIcon from '@mui/icons-material/Add';
 
 type DataProps = {
@@ -13,7 +13,12 @@ type DataProps = {
   column?: ColumnProps,
 }
 
-const Task = ({ task, index, columns, setColumns, column } : { task: { id: string, content: string }, index: number } & DataProps) => {
+const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
+  const [isEdit, setIsEdit] = React.useState(false);
+
+  const handleDoubleClick = () => {
+    setIsEdit(!isEdit);
+  };
 
   const handleOnClick = () => {
     if (!column) {
@@ -33,11 +38,18 @@ const Task = ({ task, index, columns, setColumns, column } : { task: { id: strin
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           sx={{ background: lightBlue, padding: '24px', position: 'relative', ...provided.draggableProps.style }}
+          onDoubleClick={handleDoubleClick}
         >
           <IconButton onClick={handleOnClick} sx={{ position: 'absolute', right: '3px', top: '3px' }}>
             <CloseIcon fontSize='small' />
           </IconButton>
-          {task.content}
+          <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
+          <Stack direction="row" justifyContent="space-between" paddingTop="16px">
+            <Box>
+              <Typography fontSize="14px">{task.deadline}</Typography>
+            </Box>
+            <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
+          </Stack>
         </Box>
       )}
     </Draggable>
@@ -47,10 +59,8 @@ const Task = ({ task, index, columns, setColumns, column } : { task: { id: strin
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
 
   const addItem = () => {
-    console.log('add', column.id);
-
     const columnCopy = { ...column };
-    columnCopy.items.push({ id: 'task-6', content: 'cheers' });
+    columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: 'Fri' });
     const cleanColumns = columns.filter((col) => col.id !== column.id);
     setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
   };

@@ -4,21 +4,26 @@ import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { Stack, useMediaQuery } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 
+export type TaskProps = {
+  id: string;
+  content: string;
+  importance: string,
+  project: string,
+  deadline: string,
+}
+
 export type ColumnProps = {
   id: string,
   title: string;
   orderBy: number,
-  items: {
-    id: string;
-    content: string;
-  }[];
+  items: TaskProps[];
 };
 
 const tasks = [
-  { id: 'task-1', content: 'Take out the garbage' },
-  { id: 'task-2', content: 'Watch my favorite show' },
-  { id: 'task-3', content: 'Charge my phone' },
-  { id: 'task-4', content: 'Cook dinner' }];
+  { id: 'task-1', content: 'Take out the garbage', importance: 'medium', project: 'walmart', deadline: 'Fri' },
+  { id: 'task-2', content: 'Watch my favorite show', importance: 'high', project: 'walmart', deadline: 'Fri' },
+  { id: 'task-3', content: 'Charge my phone', importance: 'low', project: 'walmart', deadline: 'Mon' },
+  { id: 'task-4', content: 'Cook dinner', importance: 'medium', project: 'walmart', deadline: 'Fri' }];
 
 const columnsFromBackend: ColumnProps[] = [
   {
