@@ -4,6 +4,7 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
+import { ColumnProps } from '../../pages/Tasks';
 
 const Task = ({ task, index } : {task: {id: string, content: string}, index: number}) => {
 
@@ -30,7 +31,7 @@ const Task = ({ task, index } : {task: {id: string, content: string}, index: num
   );
 };
 
-const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {id: string, content: string}[], columnId: string}) => {
+const Column = ({ column } : {column: ColumnProps}) => {
 
   return (
     <Stack sx={{ border: `1px solid ${grey}`, width: '100%' }}>
@@ -38,7 +39,7 @@ const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {
         <ReceiptLongIcon />
         <Typography>{column.title}</Typography>
       </Stack>
-      <Droppable droppableId={columnId} key={columnId}>
+      <Droppable droppableId={column.id} key={column.id}>
         {(provided) => (
           <Stack
             sx={{ padding: '24px' }}
@@ -46,7 +47,7 @@ const Column = ({ column, tasks, columnId } : {column: {title: string}, tasks: {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks.map((task, index) => <Task task={task} key={task.id} index={index} />)}
+            {column.items.map((task, index) => <Task task={task} key={task.id} index={index} />)}
             {provided.placeholder}
           </Stack>
         )}
