@@ -13,6 +13,7 @@ import { ColumnProps, TaskProps, deleteTask, getTasks, postTask, updateTask } fr
 import { v4 as uuidv4 } from 'uuid';
 
 type DataProps = {
+  columns: ColumnProps[],
   setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
   column?: ColumnProps,
 }
@@ -78,7 +79,7 @@ const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: st
   );
 };
 
-const Task = ({ task, index, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
+const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
@@ -86,8 +87,16 @@ const Task = ({ task, index, setColumns, column } : { task: TaskProps, index: nu
     if (!column) {
       return;
     }
+    const specificColumn = columns.filter((col) => col.id === column.id);
+    const cleanTasks = specificColumn[0].items.filter((item) => item.id !== task.id);
+    specificColumn[0].items = cleanTasks;
+
+    const otherColumns = columns.filter((col) => col.id !== column.id);
+    const joinColumns = [specificColumn, otherColumns].flat();
+    const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
+
     deleteTask(task.id)
-      // .then(() => setTasks((current) => current.filter((item) => item.id !== task.id)))
+      .then(() => setColumns(sortedColumns))
       .catch((error) => console.log(console.log('Delete task failed: ' + error)));
   };
 
@@ -218,6 +227,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps, columns
                 task={task}
                 key={task.id}
                 index={index}
+                columns={columns}
                 setColumns={setColumns}
                 column={column}
               />
