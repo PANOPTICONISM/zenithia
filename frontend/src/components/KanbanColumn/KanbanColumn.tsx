@@ -20,7 +20,7 @@ type DataProps = {
 const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | null }) => {
   if (level === 'low') {
     return (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
         <Typography 
           fontSize="14px" 
           marginRight="6px" 
@@ -35,7 +35,7 @@ const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | 
   }
   if (level === 'medium') {
     return (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
         <Typography 
           fontSize="14px" 
           marginRight="6px" 
@@ -50,7 +50,7 @@ const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | 
   }
   if (level === 'high') {
     return (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
         <Typography 
           fontSize="14px" 
           marginRight="6px" 
@@ -64,7 +64,7 @@ const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | 
     );
   }
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
       <Typography 
         fontSize="14px" 
         marginRight="6px" 
@@ -99,8 +99,6 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
   const handleSave = () => {
     console.log('oi');
   };
-
-  console.log(editableTask);
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -154,10 +152,10 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             </Box>
           </> : 
             <>
-              <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
-              <Stack direction="row" justifyContent="space-between" paddingTop="16px" spacing={4}>
+              <Typography fontWeight={700} fontSize="16px">{task.content}</Typography>
+              <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
                 <DateAndLevel deadline={task.deadline} level={task.importance} />
-                <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
+                <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography>
               </Stack></>}
         </Box>
       )}
