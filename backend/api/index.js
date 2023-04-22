@@ -34,7 +34,7 @@ app.delete('/api/projects/:id', deleteProject);
 app.post('/api/projects', postProject);
 
 app.get('/api/tasks', getTasksColumns);
-app.get('/api/tasks/all', getTasks);
+app.get('/api/tasks/all/:id', getTasks);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

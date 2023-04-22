@@ -30,8 +30,8 @@ export const getTasksColumns = async (): Promise<ColumnProps[]> => {
   }
 };
 
-export const getTasks = async (): Promise<TaskProps[]> => {
-  const path = '/api/tasks/all';
+export const getTasks = async (id: string): Promise<TaskProps[]> => {
+  const path = `/api/tasks/all/${id}`;
 
   try {
     const response = await requester.get(path);
