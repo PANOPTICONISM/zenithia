@@ -58,6 +58,8 @@ const Tasks = () => {
     }
     
   };
+
+  console.log(columns[0]?.items);
   
   return (
     <Main title="Tasks">
