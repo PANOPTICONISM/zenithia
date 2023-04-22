@@ -11,6 +11,9 @@ export const darkBlue = '#191E38';
 export const lightBlue = '#F7F8FF';
 export const highlight = '#1F2C4F';
 export const grey = '#DBDBDB';
+export const green = '#007D58';
+export const yellow = '#ECB800';
+export const red = '#E42C2C';
 
 function App() {
   return (

@@ -24,7 +24,7 @@ const tasks = [
   { id: 'task-1', content: 'Take out the garbage', importance: 'medium', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
   { id: 'task-2', content: 'Watch my favorite show', importance: 'high', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
   { id: 'task-3', content: 'Charge my phone', importance: 'low', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') },
-  { id: 'task-4', content: 'Cook dinner', importance: 'medium', project: 'walmart', deadline: DateTime.now().toFormat('dd MMMM') }];
+  { id: 'task-4', content: 'Cook dinner', importance: 'medium', project: 'walmart', deadline: DateTime.now().toFormat('MMM, dd') }];
 
 const columnsFromBackend: ColumnProps[] = [
   {
