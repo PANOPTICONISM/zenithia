@@ -17,7 +17,7 @@ type DataProps = {
   column?: ColumnProps,
 }
 
-const DateAndLevel = ({ level, deadline } : { level: string, deadline: string }) => {
+const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: string }) => {
   if (level === 'low') {
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
@@ -181,6 +181,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
 
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+
   React.useEffect(() => {
     getTasks(column.id)
       .then((data) => setTasks(data))
@@ -188,10 +189,8 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
   }, []);
 
   const addItem = () => {
-    // const columnCopy = { ...column };
-    // columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: DateTime.now().toFormat('dd MMMM') });
-    // const cleanColumns = columns.filter((col) => col.id !== column.id);
-    // setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
+    const task = { id: 'sdfsdfdsf', title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    setTasks([...tasks, task]);
   };
 
   return (
