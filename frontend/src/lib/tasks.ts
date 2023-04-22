@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
+import { ProductProps } from '../pages/Projects/types';
 
 type ServerError = { message: string; }
 
@@ -7,12 +8,10 @@ export type TaskProps = {
   id: string;
   title: string;
   importance: string | null,
-  project_id?: string,
+  project_id?: number,
   column_id: string,
   deadline: string,
-  projects?: {
-    title: string,
-  }
+  projects?: ProductProps | null;
 }
 
 export type ColumnProps = {

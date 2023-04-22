@@ -1,4 +1,4 @@
-import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue, red, green, yellow, white, highlight } from '../../App';
@@ -11,6 +11,7 @@ import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
 import { ColumnProps, TaskProps, deleteTask, getTasks, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductProps } from '../../pages/Projects/types';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -79,7 +80,7 @@ const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: st
   );
 };
 
-const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
+const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProductProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
@@ -101,10 +102,14 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
   };
 
   const handleSave = () => {
-    updateTask(task.id, editableTask)
+    const copyTask = { ...editableTask };
+    delete copyTask.projects;
+    updateTask(task.id, copyTask)
       .then(() => setIsEdit(false))
       .catch((error) => console.log('Update: ' + error));
   };
+
+  console.log(editableTask);
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -151,20 +156,15 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
                   <MenuItem value="high">High</MenuItem>
                 </Select>
               </FormControl>
-              {/* <FormControl size="small">
-                <InputLabel>Project</InputLabel>
-                <Select
-                  value={editableTask.project}
-                  label="Project"
-                  onChange={(event) => setEditableTask((current) => ({ ...current, project: event.target.value }))}
-                >
-                  <MenuItem value="personal">
-                    Personal
-                  </MenuItem>
-                  <MenuItem value={task.project}>{task.project}</MenuItem>
-                  <MenuItem value={10}>Nissan</MenuItem>
-                </Select>
-              </FormControl> */}
+              <Autocomplete
+                value={editableTask?.projects}
+                disablePortal
+                id="combo-box"
+                options={projects}
+                getOptionLabel={(option) => option.title}
+                renderInput={(params) => <TextField {...params} label="project" />}
+                onChange={(event, newValue) => setEditableTask((current) => ({ ...current, projects: newValue, project_id: newValue?.id }))}
+              />
             </Stack>
             <Box sx={{ textAlign: 'right', paddingTop: '16px' }}>
               <IconButton onClick={handleSave}>
@@ -185,7 +185,8 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
   );
 };
 
-const Column = ({ column, columns, setColumns } : { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>> }) => {
+const Column = ({ column, columns, setColumns, projects } : 
+  { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>, projects: ProductProps[] }) => {
   const randomId = uuidv4();
 
   const addItem = () => {
@@ -230,6 +231,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps, columns
                 columns={columns}
                 setColumns={setColumns}
                 column={column}
+                projects={projects}
               />
             )}
             {provided.placeholder}

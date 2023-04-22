@@ -18,7 +18,7 @@ export const getTasks = async (req, res) => {
     try {
         const { data, error } = await supabase.from('tasks').select(`
         *,
-        projects("title")
+        projects("*")
     `);
     
         if (error) {
