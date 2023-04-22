@@ -125,11 +125,26 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
               <Box>
                 <LocalizationProvider dateAdapter={AdapterLuxon}>
                   <DatePicker 
-                    slotProps={{ textField: { size: 'small' } }} 
+                    slotProps={{ textField: { size: 'small', fullWidth: true } }} 
                     label="Deadline" 
                     onChange={(value) => setEditableTask((current) => ({ ...current, deadline: value as string }))} />
                 </LocalizationProvider>
               </Box>
+              <FormControl size="small">
+                <InputLabel>Difficulty Level</InputLabel>
+                <Select
+                  value={editableTask.importance}
+                  label="difficulty levels"
+                  onChange={(event) => setEditableTask((current) => ({ ...current, importance: event.target.value }))}
+                >
+                  <MenuItem value="personal">
+                    Blank
+                  </MenuItem>
+                  <MenuItem value="low">Low</MenuItem>
+                  <MenuItem value="medium">Medium</MenuItem>
+                  <MenuItem value="high">High</MenuItem>
+                </Select>
+              </FormControl>
               <FormControl size="small">
                 <InputLabel>Project</InputLabel>
                 <Select
@@ -156,7 +171,8 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
                 <DateAndLevel deadline={task.deadline} level={task.importance} />
                 <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography>
-              </Stack></>}
+              </Stack></>
+          }
         </Box>
       )}
     </Draggable>
