@@ -16,6 +16,7 @@ export type ColumnProps = {
   id: string,
   title: string;
   orderBy: number,
+  items: TaskProps[]
 };
 
 export const getTasksColumns = async (): Promise<ColumnProps[]> => {
@@ -30,8 +31,8 @@ export const getTasksColumns = async (): Promise<ColumnProps[]> => {
   }
 };
 
-export const getTasks = async (id: string): Promise<TaskProps[]> => {
-  const path = `/api/tasks/all/${id}`;
+export const getTasks = async (): Promise<TaskProps[]> => {
+  const path = '/api/tasks/all';
 
   try {
     const response = await requester.get(path);
@@ -54,7 +55,7 @@ export const postTask = async (body: TaskProps): Promise<string> => {
   }
 };
 
-export const updateTask = async (id: string, body: TaskProps): Promise<string> => {
+export const updateTask = async (id: string, body: TaskProps | {column_id: string}): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
     
   try {

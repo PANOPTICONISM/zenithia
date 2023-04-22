@@ -13,7 +13,7 @@ import { ColumnProps, TaskProps, deleteTask, getTasks, postTask, updateTask } fr
 import { v4 as uuidv4 } from 'uuid';
 
 type DataProps = {
-  setTasks: React.Dispatch<React.SetStateAction<TaskProps[]>>;
+  setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
   column?: ColumnProps,
 }
 
@@ -78,7 +78,7 @@ const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: st
   );
 };
 
-const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: number } & DataProps) => {
+const Task = ({ task, index, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
@@ -87,7 +87,7 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
       return;
     }
     deleteTask(task.id)
-      .then(() => setTasks((current) => current.filter((item) => item.id !== task.id)))
+      // .then(() => setTasks((current) => current.filter((item) => item.id !== task.id)))
       .catch((error) => console.log(console.log('Delete task failed: ' + error)));
   };
 
@@ -176,20 +176,13 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
   );
 };
 
-const Column = ({ column } : { column: ColumnProps }) => {
-  const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+const Column = ({ column, columns, setColumns } : { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>> }) => {
   const randomId = uuidv4();
-
-  React.useEffect(() => {
-    getTasks(column.id)
-      .then((data) => setTasks(data))
-      .catch((error) => console.log(error));
-  }, []);
 
   const addItem = () => {
     const task = { id: randomId, title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
     postTask(task)
-      .then(() => setTasks((current) => [...current, task]))
+      // .then(() => setTasks((current) => [...current, task]))
       .catch((error) => console.log('POST: ' + error));
   };
 
@@ -212,12 +205,12 @@ const Column = ({ column } : { column: ColumnProps }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks.map((task, index) => 
+            {column.items.map((task, index) => 
               <Task 
                 task={task}
                 key={task.id}
                 index={index}
-                setTasks={setTasks}
+                setColumns={setColumns}
                 column={column}
               />
             )}
