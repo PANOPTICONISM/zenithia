@@ -1,7 +1,7 @@
 import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { grey, lightBlue } from '../../App';
+import { grey, lightBlue, red, green, yellow } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColumnProps, TaskProps } from '../../pages/Tasks';
@@ -16,6 +16,43 @@ type DataProps = {
   setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
   column?: ColumnProps,
 }
+
+const Bars = ({ level } : { level: string }) => {
+  if (level === 'low') {
+    return (
+      <Stack spacing={0.5} direction="row">
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: green }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+      </Stack>
+    );
+  }
+  if (level === 'medium') {
+    return (
+      <Stack spacing={0.5} direction="row">
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+      </Stack>
+    );
+  }
+  if (level === 'high') {
+    return (
+      <Stack spacing={0.5} direction="row">
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+      </Stack>
+    );
+  }
+  return (
+    <Stack spacing={0.5} direction="row">
+      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+    </Stack>
+  );
+};
 
 const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
@@ -95,8 +132,9 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             <>
               <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
               <Stack direction="row" justifyContent="space-between" paddingTop="16px" spacing={4}>
-                <Box>
-                  <Typography fontSize="14px">{task.deadline}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography fontSize="14px" marginRight="6px">{task.deadline}</Typography>
+                  <Bars level={task.importance} />
                 </Box>
                 <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
               </Stack></>}
