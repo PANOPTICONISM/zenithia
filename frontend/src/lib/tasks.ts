@@ -6,8 +6,8 @@ type ServerError = { message: string; }
 export type TaskProps = {
   id: string;
   title: string;
-  importance: string,
-  project_id: string,
+  importance: string | null,
+  project_id?: string,
   column_id: string,
   deadline: string,
 }
