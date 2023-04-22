@@ -1,15 +1,9 @@
 import React from 'react';
-import Header from '../Header/Header';
+import Header, { HeaderProps } from '../Header/Header';
 import { Box, useMediaQuery } from '@mui/material';
 import Sidebar from '../Sidebar/Sidebar';
 import { drawerWidth } from '../Sidebar/Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
-
-type HeaderProps = {
-    title: string;
-    handleClick: () => void;
-    buttonText: string;
-}
 
 const Main = ({ 
   children, 
