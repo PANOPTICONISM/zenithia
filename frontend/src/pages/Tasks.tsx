@@ -3,10 +3,17 @@ import Main from '../components/Main/Main';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { Grid } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
-import { ColumnProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
+import { TaskProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
 import lodash from 'lodash';
 import { getProjects } from '../lib/projects';
 import { ProjectProps } from './Projects/types';
+
+export type ColumnProps = {
+  id: string,
+  title: string;
+  orderBy: number,
+  items: TaskProps[]
+};
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);

@@ -9,9 +9,10 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
+import { TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
 import { ProjectProps } from '../../pages/Projects/types';
+import { ColumnProps } from '../../pages/Tasks';
 
 type DataProps = {
   columns: ColumnProps[],
