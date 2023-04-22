@@ -9,7 +9,7 @@ export type TaskProps = {
   importance: string,
   project_id: string,
   column_id: string,
-  deadline: string | null,
+  deadline: string,
 }
 
 export type ColumnProps = {

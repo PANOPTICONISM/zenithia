@@ -17,7 +17,7 @@ type DataProps = {
   column?: ColumnProps,
 }
 
-const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | null }) => {
+const DateAndLevel = ({ level, deadline } : { level: string, deadline: string }) => {
   if (level === 'low') {
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
@@ -169,7 +169,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             <>
               <Typography fontWeight={700} fontSize="16px">{task.title}</Typography>
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
-                <DateAndLevel deadline={task.deadline} level={task.importance} />
+                <DateAndLevel deadline={DateTime.fromISO(task.deadline).toFormat('MMMM, dd')} level={task.importance} />
                 {/* <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography> */}
               </Stack></>
           }
