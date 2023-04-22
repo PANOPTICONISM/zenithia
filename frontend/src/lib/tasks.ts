@@ -41,3 +41,15 @@ export const getTasks = async (id: string): Promise<TaskProps[]> => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const postTask = async (body: TaskProps): Promise<string> => {
+  const path = '/api/tasks/all';
+  
+  try {
+    const response = await requester.post(path, body);
+    return response.data as string;
+  } catch (err) {
+    const error = err as AxiosError<ServerError>;
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
