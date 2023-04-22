@@ -9,7 +9,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, getTasks } from '../../lib/tasks';
+import { ColumnProps, TaskProps, getTasks, postTask } from '../../lib/tasks';
+import { v4 as uuidv4 } from 'uuid';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -97,8 +98,9 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
   };
 
   const handleSave = () => {
-    console.log('oi');
+    postTask(editableTask).catch((error) => console.log('POST: ' + error)).then(() => setIsEdit(false));
   };
+  console.log(editableTask);
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -133,7 +135,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
               <FormControl size="small">
                 <InputLabel>Difficulty Level</InputLabel>
                 <Select
-                  value={editableTask.importance}
+                  value={editableTask.importance || ''}
                   label="difficulty levels"
                   onChange={(event) => setEditableTask((current) => ({ ...current, importance: event.target.value }))}
                 >
@@ -181,6 +183,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
 
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+  const randomId = uuidv4();
 
   React.useEffect(() => {
     getTasks(column.id)
@@ -189,8 +192,8 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
   }, []);
 
   const addItem = () => {
-    const task = { id: 'sdfsdfdsf', title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
-    setTasks([...tasks, task]);
+    const task = { id: randomId, title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    setTasks((current) => [...current, task]);
   };
 
   return (

@@ -29,3 +29,18 @@ export const getTasks = async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching your data' });
     }
 }
+
+export const postTask = async (req, res) => {
+    const { body } = req;
+    try {
+        const { error } = await supabase.from('tasks').insert(body);
+
+        if (error) {
+          throw error;
+        }
+        res.status(200).send(`Task added successfully`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while adding your data' });
+    }
+}
