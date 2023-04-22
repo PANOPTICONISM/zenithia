@@ -181,9 +181,8 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
 
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
-
   React.useEffect(() => {
-    getTasks()
+    getTasks(column.id)
       .then((data) => setTasks(data))
       .catch((error) => console.log(error));
   }, []);
@@ -214,8 +213,8 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks?.map((task, index) => 
-              task.column_id === column.id ? <Task 
+            {tasks.map((task, index) => 
+              <Task 
                 task={task}
                 key={task.id}
                 index={index}
@@ -223,7 +222,6 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
                 setColumns={setColumns}
                 column={column}
               />
-                : null
             )}
             {provided.placeholder}
           </Stack>

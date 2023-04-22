@@ -15,8 +15,10 @@ export const getTasksColumns = async (req, res) => {
 }
 
 export const getTasks = async (req, res) => {
+    const { params } = req;
+
     try {
-        const { data, error } = await supabase.from('tasks').select();
+        const { data, error } = await supabase.from('tasks').select().eq('column_id', params.id);
     
         if (error) {
           throw error;
