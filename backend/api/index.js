@@ -2,6 +2,7 @@ import express from 'express';
 import pkg from 'body-parser';
 import { deleteProject, getProjects, postProject, updateProjects } from './projects.js';
 import cors from 'cors';
+import { getTasks, getTasksColumns } from './tasks.js';
 
 const app = express();
 const port = 4000;
@@ -31,6 +32,9 @@ app.get('/api/projects', getProjects);
 app.put('/api/projects/:id', updateProjects);
 app.delete('/api/projects/:id', deleteProject);
 app.post('/api/projects', postProject);
+
+app.get('/api/tasks', getTasksColumns);
+app.get('/api/tasks/all', getTasks);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

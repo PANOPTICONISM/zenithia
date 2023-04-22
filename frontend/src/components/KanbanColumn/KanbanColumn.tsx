@@ -4,12 +4,12 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { grey, lightBlue, red, green, yellow, white, highlight } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
-import { ColumnProps, TaskProps } from '../../pages/Tasks';
 import AddIcon from '@mui/icons-material/Add';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
+import { ColumnProps, TaskProps, getTasks } from '../../lib/tasks';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -90,10 +90,10 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
     if (!column) {
       return;
     }
-    const cleanItemsArr = column.items.filter((item) => item.id !== task.id);
-    const updatedColumn = { ...column, items: cleanItemsArr };
-    const cleanColumns = columns.filter((col) => col.id !== column.id);
-    setColumns([...cleanColumns, updatedColumn].sort((a, b) => a.orderBy - b.orderBy));
+    // const cleanItemsArr = column.items.filter((item) => item.id !== task.id);
+    // const updatedColumn = { ...column, items: cleanItemsArr };
+    // const cleanColumns = columns.filter((col) => col.id !== column.id);
+    // setColumns([...cleanColumns, updatedColumn].sort((a, b) => a.orderBy - b.orderBy));
   };
 
   const handleSave = () => {
@@ -116,11 +116,11 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             </IconButton>
             <Stack spacing={2}>
               <TextField 
-                value={editableTask.content} 
+                value={editableTask.title} 
                 label="title" 
                 size='small' 
                 variant='standard'
-                onChange={(event) => setEditableTask((current) => ({ ...current, content: event.target.value }))}
+                onChange={(event) => setEditableTask((current) => ({ ...current, title: event.target.value }))}
               />
               <Box>
                 <LocalizationProvider dateAdapter={AdapterLuxon}>
@@ -145,7 +145,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
                   <MenuItem value="high">High</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl size="small">
+              {/* <FormControl size="small">
                 <InputLabel>Project</InputLabel>
                 <Select
                   value={editableTask.project}
@@ -158,7 +158,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
                   <MenuItem value={task.project}>{task.project}</MenuItem>
                   <MenuItem value={10}>Nissan</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </Stack>
             <Box sx={{ textAlign: 'right', paddingTop: '16px' }}>
               <IconButton onClick={handleSave}>
@@ -167,10 +167,10 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             </Box>
           </> : 
             <>
-              <Typography fontWeight={700} fontSize="16px">{task.content}</Typography>
+              <Typography fontWeight={700} fontSize="16px">{task.title}</Typography>
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
                 <DateAndLevel deadline={task.deadline} level={task.importance} />
-                <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography>
+                {/* <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography> */}
               </Stack></>
           }
         </Box>
@@ -180,12 +180,19 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
 };
 
 const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
+  const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+
+  React.useEffect(() => {
+    getTasks()
+      .then((data) => setTasks(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const addItem = () => {
-    const columnCopy = { ...column };
-    columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: DateTime.now().toFormat('dd MMMM') });
-    const cleanColumns = columns.filter((col) => col.id !== column.id);
-    setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
+    // const columnCopy = { ...column };
+    // columnCopy.items.push({ id: 'task-6', content: 'cheers', importance: '', project: '', deadline: DateTime.now().toFormat('dd MMMM') });
+    // const cleanColumns = columns.filter((col) => col.id !== column.id);
+    // setColumns([...cleanColumns, columnCopy].sort((a, b) => a.orderBy - b.orderBy));
   };
 
   return (
@@ -207,8 +214,8 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {column.items.map((task, index) => 
-              <Task 
+            {tasks?.map((task, index) => 
+              task.column_id === column.id ? <Task 
                 task={task}
                 key={task.id}
                 index={index}
@@ -216,6 +223,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
                 setColumns={setColumns}
                 column={column}
               />
+                : null
             )}
             {provided.placeholder}
           </Stack>
