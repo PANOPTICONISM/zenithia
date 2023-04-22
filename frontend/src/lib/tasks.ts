@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
-import { ProductProps } from '../pages/Projects/types';
+import { ProjectProps } from '../pages/Projects/types';
 
 type ServerError = { message: string; }
 
@@ -11,7 +11,7 @@ export type TaskProps = {
   project_id?: number,
   column_id: string,
   deadline: string,
-  projects?: ProductProps | null;
+  projects?: ProjectProps | null;
 }
 
 export type ColumnProps = {

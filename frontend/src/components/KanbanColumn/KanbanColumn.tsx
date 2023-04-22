@@ -9,9 +9,9 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, deleteTask, getTasks, postTask, updateTask } from '../../lib/tasks';
+import { ColumnProps, TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
-import { ProductProps } from '../../pages/Projects/types';
+import { ProjectProps } from '../../pages/Projects/types';
 
 type DataProps = {
   columns: ColumnProps[],
@@ -80,7 +80,7 @@ const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: st
   );
 };
 
-const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProductProps[] } & DataProps) => {
+const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProjectProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
@@ -108,8 +108,6 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
       .then(() => setIsEdit(false))
       .catch((error) => console.log('Update: ' + error));
   };
-
-  console.log(editableTask);
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -186,7 +184,7 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
 };
 
 const Column = ({ column, columns, setColumns, projects } : 
-  { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>, projects: ProductProps[] }) => {
+  { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>, projects: ProjectProps[] }) => {
   const randomId = uuidv4();
 
   const addItem = () => {

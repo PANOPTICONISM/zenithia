@@ -1,4 +1,4 @@
-export type ProductProps = {
+export type ProjectProps = {
     id?: number,
     project_id?: string,
     title: string,

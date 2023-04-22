@@ -1,6 +1,6 @@
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import React from 'react';
-import { ProductProps } from './types';
+import { ProjectProps } from './types';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
@@ -20,7 +20,7 @@ const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warnin
 };
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<ProductProps[]>([]);
+  const [rows, setRows] = React.useState<ProjectProps[]>([]);
 
   React.useEffect(() => {
     getProjects()
