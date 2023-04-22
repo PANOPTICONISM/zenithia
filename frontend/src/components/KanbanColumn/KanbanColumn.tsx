@@ -180,10 +180,18 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps, columns
   const randomId = uuidv4();
 
   const addItem = () => {
-    const task = { id: randomId, title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    const specificColumn = columns.filter((col) => col.id === column.id);
+    const otherColumns = columns.filter((col) => col.id !== column.id);
+    const task = { id: randomId, title: 'Title', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    specificColumn[0].items.push(task);
+
+    const joinColumns = [specificColumn, otherColumns].flat();
+    const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
+
     postTask(task)
-      // .then(() => setTasks((current) => [...current, task]))
+      .then(() => setColumns(sortedColumns))
       .catch((error) => console.log('POST: ' + error));
+
   };
 
   return (
