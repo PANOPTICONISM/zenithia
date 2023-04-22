@@ -6,13 +6,16 @@ import Column from '../components/KanbanColumn/KanbanColumn';
 import { DateTime } from 'luxon';
 import { ColumnProps, TaskProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
 import lodash from 'lodash';
+import { getProjects } from '../lib/projects';
+import { ProductProps } from './Projects/types';
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
+  const [projects, setProjects] = React.useState<ProductProps[]>([]);
 
   React.useEffect(() => {
     const fetchAll = async () => {
-      const [columnsRes, tasksRes] = await Promise.all([getTasksColumns(), getTasks()]);
+      const [columnsRes, tasksRes, projectsRes] = await Promise.all([getTasksColumns(), getTasks(), getProjects()]);
       
       const grouppedTasks = lodash.groupBy(tasksRes, 'column_id');
 
@@ -22,6 +25,7 @@ const Tasks = () => {
       });
 
       setColumns(jointArrays);
+      setProjects(projectsRes);
     };
 
     fetchAll().catch((error) => console.log(error));
@@ -58,8 +62,6 @@ const Tasks = () => {
     }
     
   };
-
-  console.log(columns[0]?.items);
   
   return (
     <Main title="Tasks">
@@ -68,7 +70,7 @@ const Tasks = () => {
           {columns.map((column) => {
             return (
               <Grid item key={column.id} xs={12} lg={4}>
-                <Column column={column} columns={columns} setColumns={setColumns} />
+                <Column column={column} columns={columns} setColumns={setColumns} projects={projects} />
               </Grid>);
           })}
         </Grid>
