@@ -1,7 +1,7 @@
 import React from 'react';
 import Main from '../components/Main/Main';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { Stack, useMediaQuery } from '@mui/material';
+import { Grid } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
 import { DateTime } from 'luxon';
 
@@ -49,7 +49,6 @@ const columnsFromBackend: ColumnProps[] = [
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState(columnsFromBackend);
-  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -82,11 +81,14 @@ const Tasks = () => {
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Stack spacing={2} direction={tabletBreakpoint ? 'column' : 'row'}>
+        <Grid container spacing={2}>
           {columns.map((column) => {
-            return <Column key={column.id} column={column} columns={columns} setColumns={setColumns} />;
+            return (
+              <Grid item key={column.id} xs={12} lg={4}>
+                <Column column={column} columns={columns} setColumns={setColumns} />
+              </Grid>);
           })}
-        </Stack>
+        </Grid>
       </DragDropContext>
     </Main>
   );
