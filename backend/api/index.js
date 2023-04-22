@@ -34,7 +34,7 @@ app.delete('/api/projects/:id', deleteProject);
 app.post('/api/projects', postProject);
 
 app.get('/api/tasks', getTasksColumns);
-app.get('/api/tasks/all/:id', getTasks);
+app.get('/api/tasks/all', getTasks);
 app.post('/api/tasks/all', postTask);
 app.put('/api/tasks/all/:id', updateTask);
 app.delete('/api/tasks/all/:id', deleteTask);
