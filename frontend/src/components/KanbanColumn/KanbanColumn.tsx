@@ -1,7 +1,7 @@
 import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { grey, lightBlue, red, green, yellow } from '../../App';
+import { grey, lightBlue, red, green, yellow, white, highlight } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import { ColumnProps, TaskProps } from '../../pages/Tasks';
@@ -17,40 +17,64 @@ type DataProps = {
   column?: ColumnProps,
 }
 
-const Bars = ({ level } : { level: string }) => {
+const DateAndLevel = ({ level, deadline } : { level: string, deadline: string | null }) => {
   if (level === 'low') {
     return (
-      <Stack spacing={0.5} direction="row">
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: green }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-      </Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Typography 
+          fontSize="14px" 
+          marginRight="6px" 
+          sx={{ background: green, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
+        <Stack spacing={0.5} direction="row">
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: green }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+        </Stack>
+      </Box>
     );
   }
   if (level === 'medium') {
     return (
-      <Stack spacing={0.5} direction="row">
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-      </Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Typography 
+          fontSize="14px" 
+          marginRight="6px" 
+          sx={{ background: yellow, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
+        <Stack spacing={0.5} direction="row">
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+        </Stack>
+      </Box>
     );
   }
   if (level === 'high') {
     return (
-      <Stack spacing={0.5} direction="row">
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-      </Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Typography 
+          fontSize="14px" 
+          marginRight="6px" 
+          sx={{ background: red, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
+        <Stack spacing={0.5} direction="row">
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
+        </Stack>
+      </Box>
     );
   }
   return (
-    <Stack spacing={0.5} direction="row">
-      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-      <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-    </Stack>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Typography 
+        fontSize="14px" 
+        marginRight="6px" 
+        sx={{ background: highlight, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
+      <Stack spacing={0.5} direction="row">
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
+      </Stack>
+    </Box>
   );
 };
 
@@ -132,10 +156,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
             <>
               <Typography fontWeight={700} fontSize="14px">{task.content}</Typography>
               <Stack direction="row" justifyContent="space-between" paddingTop="16px" spacing={4}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography fontSize="14px" marginRight="6px">{task.deadline}</Typography>
-                  <Bars level={task.importance} />
-                </Box>
+                <DateAndLevel deadline={task.deadline} level={task.importance} />
                 <Typography fontWeight={100} fontSize="14px">{task.project}</Typography>
               </Stack></>}
         </Box>
