@@ -9,12 +9,11 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, getTasks, postTask } from '../../lib/tasks';
+import { ColumnProps, TaskProps, deleteTask, getTasks, postTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
 
 type DataProps = {
-  columns: ColumnProps[],
-  setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
+  setTasks: React.Dispatch<React.SetStateAction<TaskProps[]>>;
   column?: ColumnProps,
 }
 
@@ -79,7 +78,7 @@ const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: st
   );
 };
 
-const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, index: number } & DataProps) => {
+const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: number } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
@@ -91,16 +90,14 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
     if (!column) {
       return;
     }
-    // const cleanItemsArr = column.items.filter((item) => item.id !== task.id);
-    // const updatedColumn = { ...column, items: cleanItemsArr };
-    // const cleanColumns = columns.filter((col) => col.id !== column.id);
-    // setColumns([...cleanColumns, updatedColumn].sort((a, b) => a.orderBy - b.orderBy));
+    deleteTask(task.id)
+      .then(() => setTasks((current) => current.filter((item) => item.id !== task.id)))
+      .catch((error) => console.log(console.log('Delete task failed: ' + error)));
   };
 
   const handleSave = () => {
     postTask(editableTask).catch((error) => console.log('POST: ' + error)).then(() => setIsEdit(false));
   };
-  console.log(editableTask);
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -181,7 +178,7 @@ const Task = ({ task, index, columns, setColumns, column } : { task: TaskProps, 
   );
 };
 
-const Column = ({ column, columns, setColumns } : { column: ColumnProps } & DataProps) => {
+const Column = ({ column } : { column: ColumnProps }) => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
   const randomId = uuidv4();
 
@@ -220,8 +217,7 @@ const Column = ({ column, columns, setColumns } : { column: ColumnProps } & Data
                 task={task}
                 key={task.id}
                 index={index}
-                columns={columns} 
-                setColumns={setColumns}
+                setTasks={setTasks}
                 column={column}
               />
             )}
