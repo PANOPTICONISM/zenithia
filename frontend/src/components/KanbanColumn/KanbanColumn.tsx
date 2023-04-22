@@ -9,7 +9,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, deleteTask, getTasks, postTask } from '../../lib/tasks';
+import { ColumnProps, TaskProps, deleteTask, getTasks, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
 
 type DataProps = {
@@ -82,10 +82,6 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
-  const handleDoubleClick = () => {
-    setIsEdit(!isEdit);
-  };
-
   const handleDelete = () => {
     if (!column) {
       return;
@@ -96,7 +92,9 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
   };
 
   const handleSave = () => {
-    postTask(editableTask).catch((error) => console.log('POST: ' + error)).then(() => setIsEdit(false));
+    updateTask(task.id, editableTask)
+      .then(() => setIsEdit(false))
+      .catch((error) => console.log('Update: ' + error));
   };
 
   return (
@@ -107,7 +105,7 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           sx={{ background: lightBlue, padding: '24px', position: 'relative', ...provided.draggableProps.style }}
-          onDoubleClick={handleDoubleClick}
+          onDoubleClick={() => setIsEdit(true)}
         >
           {isEdit ? <>
             <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: '4px', top: '4px' }}>
@@ -166,9 +164,9 @@ const Task = ({ task, index, setTasks, column } : { task: TaskProps, index: numb
             </Box>
           </> : 
             <>
-              <Typography fontWeight={700} fontSize="16px">{task.title}</Typography>
+              <Typography fontWeight={700} fontSize="16px">{editableTask.title}</Typography>
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
-                <DateAndLevel deadline={DateTime.fromISO(task.deadline).toFormat('MMMM, dd')} level={task.importance} />
+                <DateAndLevel deadline={DateTime.fromISO(editableTask.deadline).toFormat('MMMM, dd')} level={editableTask.importance} />
                 {/* <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.project}</Typography> */}
               </Stack></>
           }
@@ -190,7 +188,9 @@ const Column = ({ column } : { column: ColumnProps }) => {
 
   const addItem = () => {
     const task = { id: randomId, title: 'cheers', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
-    setTasks((current) => [...current, task]);
+    postTask(task)
+      .then(() => setTasks((current) => [...current, task]))
+      .catch((error) => console.log('POST: ' + error));
   };
 
   return (
