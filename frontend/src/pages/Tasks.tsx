@@ -3,15 +3,14 @@ import Main from '../components/Main/Main';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { Grid } from '@mui/material';
 import Column from '../components/KanbanColumn/KanbanColumn';
-import { DateTime } from 'luxon';
-import { ColumnProps, TaskProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
+import { ColumnProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
 import lodash from 'lodash';
 import { getProjects } from '../lib/projects';
-import { ProductProps } from './Projects/types';
+import { ProjectProps } from './Projects/types';
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
-  const [projects, setProjects] = React.useState<ProductProps[]>([]);
+  const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
   React.useEffect(() => {
     const fetchAll = async () => {

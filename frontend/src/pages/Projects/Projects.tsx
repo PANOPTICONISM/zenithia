@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { useColumnsAndRows } from './Projects.utils';
-import { ProductProps } from './types';
+import { ProjectProps } from './types';
 import Main from '../../components/Main/Main';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { postProject, updateProject } from '../../lib/projects';
@@ -11,7 +11,7 @@ const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({ columnField: 'title' });
 
-  const handleProcessRowUpdate = React.useCallback((newRow: ProductProps, oldRow: ProductProps) => {
+  const handleProcessRowUpdate = React.useCallback((newRow: ProjectProps, oldRow: ProjectProps) => {
     if (!oldRow.id) {
       return oldRow;
     }
