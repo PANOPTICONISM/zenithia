@@ -14,7 +14,7 @@ export type TaskProps = {
   projects?: ProjectProps | null;
 }
 
-export type ColumnProps = {
+type ColumnProps = {
   id: string,
   title: string;
   orderBy: number,
