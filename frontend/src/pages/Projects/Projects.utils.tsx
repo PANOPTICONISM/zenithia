@@ -40,11 +40,16 @@ export const useColumnsAndRows = () => {
     },
     [],
   );
+
+  const valueFormatter = Intl.NumberFormat('da-DK', {
+    style: 'currency',
+    currency: 'DKK',
+  });
   
   const columns: GridColDef[] = [
     { field: 'project_id', 
       headerName: 'ID', 
-      width: 120,
+      flex: 1,
       valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
@@ -65,7 +70,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'start_date',
       headerName: 'Start',
-      width: 150,
+      flex: 1,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
       editable: true,
@@ -73,7 +78,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'finish_date',
       headerName: 'Finish',
-      width: 150,
+      flex: 1,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
       editable: true,
@@ -81,7 +86,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'status',
       headerName: 'Status',
-      flex: 1,
+      width: 110,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
@@ -96,6 +101,14 @@ export const useColumnsAndRows = () => {
 
         return (<CustomButton color='warning' value={value} />);
       }
+    },
+    {
+      field: 'base_price',
+      headerName: 'Base Price',
+      flex: 1,
+      type: 'number',
+      editable: true,
+      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
     },
     {
       field: 'revenue',
