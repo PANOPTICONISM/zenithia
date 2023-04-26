@@ -17,6 +17,7 @@ export const useColumnsAndRows = () => {
       .catch((error) => console.log('GET: ' + error));
   }, []);
 
+  const [selectedId, setSelectedId] = React.useState<string | undefined>(undefined);
   const [count, setCount] = React.useState(0);
   const [isRunning, setIsRunning] = React.useState(false);
 
@@ -25,21 +26,30 @@ export const useColumnsAndRows = () => {
       const interval = setInterval(() => {
         setCount((count) => count + 1000);
       }, 1000);
+      rows.map((entry) => {
+        if (entry.id === selectedId) {
+          entry.finish_time = entry.date + 'T' + Duration.fromMillis(count).toISOTime();
+        }
+      });
       return () => {
         clearInterval(interval);
       };
     } 
-  }, [isRunning]);
+  }, [isRunning, count]);
 
-  const stopWatch = (time: string) => {
+
+  const stopWatch = (time: string, id: string) => {
     const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
     const timeInMilliseconds = Duration.fromISOTime(timestamp).as('milliseconds');
-    setCount(timeInMilliseconds);
+    if (!isRunning) {
+      setCount(timeInMilliseconds);
+      setSelectedId(id);
+    } else {
+      setSelectedId(undefined);
+    }
 
     setIsRunning(!isRunning);
   };
-
-  console.log(Duration.fromMillis(count).toFormat('hh:mm:ss'), count);
 
   const columns: GridColDef[] = [
     {
@@ -81,7 +91,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       renderCell: ({ row }) => 
         <>
-          <IconButton color="success" onClick={() => stopWatch(row.start_time)}> <NotStartedIcon /> </IconButton>
+          <IconButton color="success" onClick={() => stopWatch(row.start_time, row.id)}> <NotStartedIcon /> </IconButton>
           <IconButton color="error"> <DeleteIcon /> </IconButton>
         </>
     },
