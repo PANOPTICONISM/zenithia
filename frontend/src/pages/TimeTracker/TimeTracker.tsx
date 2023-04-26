@@ -23,8 +23,7 @@ export const TimeTracker = () => {
       total: null,
       project_id: null,
     };
-    setRows((current) => [...current, obj]);
-    postTimeTracker(obj).catch((error) => console.log('POST: ' + error));
+    postTimeTracker(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
 
   };
 
