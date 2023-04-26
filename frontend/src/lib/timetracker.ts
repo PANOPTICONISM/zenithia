@@ -39,7 +39,12 @@ export const postTimeTracker = async (body: TimeTrackerProps): Promise<string> =
   }
 };
 
-export const updateTimeTracker = async (id: string, body: TimeTrackerProps): Promise<string> => {
+type TimeTrackerUpdateProps = {
+  finish_time?: string,
+  project_id?: string,
+} | TimeTrackerProps
+
+export const updateTimeTracker = async (id: string, body: TimeTrackerUpdateProps): Promise<string> => {
   const path = `/api/timetracker/${id}`;
     
   try {
