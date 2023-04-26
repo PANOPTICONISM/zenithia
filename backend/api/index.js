@@ -3,6 +3,7 @@ import pkg from 'body-parser';
 import { deleteProject, getProjects, postProject, updateProjects } from './projects.js';
 import cors from 'cors';
 import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './tasks.js';
+import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
 
 const app = express();
 const port = 4000;
@@ -38,6 +39,11 @@ app.get('/api/tasks/all', getTasks);
 app.post('/api/tasks/all', postTask);
 app.put('/api/tasks/all/:id', updateTask);
 app.delete('/api/tasks/all/:id', deleteTask);
+
+app.get('/api/timetracker', getTimeTracker);
+app.post('/api/timetracker', postTimeTracker);
+app.put('/api/timetracker/:id', updateTimeTracker);
+app.delete('/api/timetracker/:id', deleteTimeTracker);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

@@ -5,6 +5,7 @@ import React from 'react';
 import { SearchBarProvider } from './contexts/SearchBarProvider';
 import { SidebarProvider } from './contexts/SidebarProvider';
 import Tasks from './pages/Tasks';
+import { TimeTracker } from './pages/TimeTracker/TimeTracker';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -25,7 +26,7 @@ function App() {
           <Route path="tasks" element={<Tasks/> } />
           <Route path="projects" element={<Projects/> } />
           <Route path="clients" element={<Projects/> } />
-          <Route path="hours" element={<Projects/> } />
+          <Route path="timetracker" element={<TimeTracker/> } />
           <Route path="revenue" element={<Projects/> } />
         </Routes>
       </SearchBarProvider>

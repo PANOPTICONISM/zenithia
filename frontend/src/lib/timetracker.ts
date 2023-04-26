@@ -1,24 +1,23 @@
 import { AxiosError } from 'axios';
-import { ProjectProps } from '../pages/Projects/types';
 import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
 
 type ServerError = { message: string; }
 
-export const getProjects = async (): Promise<ProjectProps[]> => {
-  const path = '/api/projects';
+export const getTimeTracker = async (): Promise<string[]> => {
+  const path = '/api/timetracker';
 
   try {
     const response = await requester.get(path);
-    return response.data as ProjectProps[];
+    return response.data as string[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postProject = async (body: ProjectProps): Promise<string> => {
-  const path = '/api/projects';
+export const postTimeTracker = async (body: string): Promise<string> => {
+  const path = '/api/timetracker';
   
   try {
     const response = await requester.post(path, body);
@@ -29,8 +28,8 @@ export const postProject = async (body: ProjectProps): Promise<string> => {
   }
 };
 
-export const updateProject = async (id: number, body: ProjectProps): Promise<string> => {
-  const path = `/api/projects/${id}`;
+export const updateTimeTracker = async (id: number, body: string): Promise<string> => {
+  const path = `/api/timetracker/${id}`;
     
   try {
     const response = await requester.put(path, body);
@@ -41,8 +40,8 @@ export const updateProject = async (id: number, body: ProjectProps): Promise<str
   }
 };
 
-export const deleteProject = async (id: GridRowId): Promise<string> => {
-  const path = `/api/projects/${id}`;
+export const deleteTimeTracker = async (id: GridRowId): Promise<string> => {
+  const path = `/api/timetracker/${id}`;
     
   try {
     const response = await requester.delete(path);
