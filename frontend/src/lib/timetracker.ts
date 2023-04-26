@@ -8,7 +8,7 @@ type ServerError = { message: string; }
 export type TimeTrackerProps = {
   id: string,
   date: string,
-  start_time: string,
+  start_time: string | null,
   finish_time: string | null,
   total: number | null,
   project_id: number | null,

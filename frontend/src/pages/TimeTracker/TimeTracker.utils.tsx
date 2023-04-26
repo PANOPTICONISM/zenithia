@@ -32,7 +32,7 @@ export const useColumnsAndRows = () => {
       field: 'start_time',
       headerName: 'Start',
       flex: 1,
-      valueFormatter: params => params.value ? DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS) : '',
+      valueFormatter: params => DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS),
       editable: true,
     },
     {

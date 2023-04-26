@@ -15,7 +15,7 @@ export const TimeTracker = () => {
   const addTracking = () => {
     const randomId = uuidv4();
     const date = DateTime.now().setLocale('en').toLocaleString(DateTime.DATE_SHORT);
-    const startTime = DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss');
+    const startTime = DateTime.now().toISO();
    
     const obj = {
       id: randomId,
@@ -29,11 +29,6 @@ export const TimeTracker = () => {
     postTimeTracker(obj).catch((error) => console.log('POST: ' + error));
 
   };
-
-  const date = DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss');
-
-  console.log(date, 'oi');
-
   
   return (
     <Main title="TimeTracker" handleClick={addTracking} buttonText='Add hours'>
