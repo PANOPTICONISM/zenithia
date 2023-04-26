@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { DateTime } from 'luxon';
-import { postTimeTracker } from '../../lib/timetracker';
+import { TimeTrackerProps, postTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { v4 as uuidv4 } from 'uuid';
 
 export const TimeTracker = () => {
@@ -29,6 +29,34 @@ export const TimeTracker = () => {
     postTimeTracker(obj).catch((error) => console.log('POST: ' + error));
 
   };
+
+  const handleProcessRowUpdate = React.useCallback((newRow: TimeTrackerProps, oldRow: TimeTrackerProps) => {
+    if (!oldRow.id) {
+      return oldRow;
+    }
+
+    const fixDateFormat = (date: string) => {
+      return new Date(date).toLocaleDateString('en-US');
+    };
+
+    const fixTimeFormat = (time: string) => {
+      return new Date(time).toLocaleDateString('en-US');
+    };
+
+    const row = { 
+      ...newRow,
+      date: fixDateFormat(newRow.date),
+      start_time: newRow.start_time ?  fixTimeFormat(newRow.start_time) : null, 
+      finish_time: newRow.finish_time ? fixTimeFormat(newRow.finish_time) : null 
+    };
+
+    updateTimeTracker(oldRow.id, row).catch((error) => console.log('UPDATE: ' + error));
+    return newRow;
+  }, []);
+
+  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    console.log(error);
+  }, []);
   
   return (
     <Main title="TimeTracker" handleClick={addTracking} buttonText='Add hours'>
@@ -37,8 +65,8 @@ export const TimeTracker = () => {
           columns={columns}
           rows={rows}
           editMode="row"
-          //   processRowUpdate={handleProcessRowUpdate}
-          //   onProcessRowUpdateError={handleProcessRowUpdateError}
+          processRowUpdate={handleProcessRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
           filterModel={filterModel}
           onFilterModelChange={handleFilterChange}
         />
