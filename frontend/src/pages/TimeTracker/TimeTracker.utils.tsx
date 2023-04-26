@@ -38,7 +38,7 @@ export const useColumnsAndRows = () => {
   }, [isRunning, count]);
 
 
-  const stopWatch = React.useCallback((time: string, id: string, date: string) => {
+  const stopWatch = (time: string, id: string, date: string) => {
     const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
     const timeInMilliseconds = Duration.fromISOTime(timestamp).as('milliseconds');
     if (!isRunning) {
@@ -52,7 +52,7 @@ export const useColumnsAndRows = () => {
     }
 
     setIsRunning(!isRunning);
-  }, []);
+  };
 
   const deleteEntry = React.useCallback((id: GridRowId) => {
     deleteTimeTracker(id)

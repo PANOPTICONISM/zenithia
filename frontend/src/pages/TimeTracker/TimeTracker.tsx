@@ -14,8 +14,8 @@ export const TimeTracker = () => {
 
   const addTracking = () => {
     const randomId = uuidv4();
-    const date = DateTime.now().setLocale('en').toLocaleString(DateTime.DATE_SHORT);
-    const startTime = DateTime.now().toISO();
+    const date = DateTime.now().toFormat('yyyy-MM-dd');
+    const startTime = DateTime.now().toFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSS');
    
     const obj = {
       id: randomId,
