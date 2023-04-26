@@ -4,14 +4,36 @@ import { useColumnsAndRows } from './TimeTracker.utils';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
+import { DateTime } from 'luxon';
+import { postTimeTracker } from '../../lib/timetracker';
+import { v4 as uuidv4 } from 'uuid';
 
 export const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({ columnField: 'title' });
 
   const addTracking = () => {
-    console.log('add');
+    const randomId = uuidv4();
+    const date = DateTime.now().setLocale('en').toLocaleString(DateTime.DATE_SHORT);
+    const startTime = DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss');
+   
+    const obj = {
+      id: randomId,
+      date,
+      start_time: startTime,
+      finish_time: null,
+      total: null,
+      project_id: null,
+    };
+    setRows((current) => [...current, obj]);
+    postTimeTracker(obj).catch((error) => console.log('POST: ' + error));
+
   };
+
+  const date = DateTime.now().toFormat('yyyy-MM-dd HH:mm:ss');
+
+  console.log(date, 'oi');
+
   
   return (
     <Main title="TimeTracker" handleClick={addTracking} buttonText='Add hours'>
