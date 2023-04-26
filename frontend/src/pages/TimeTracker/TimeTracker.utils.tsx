@@ -62,6 +62,12 @@ export const useColumnsAndRows = () => {
       });
   }, []);
 
+  const formatHours = (finish: string, start: string) => {
+    const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), ['hours', 'minutes', 'seconds']);
+
+    return duration.hours + 'h ' +  Math.ceil(duration.seconds) + 's';
+  };
+
   const columns: GridColDef[] = [
     {
       field: 'date',
@@ -87,6 +93,7 @@ export const useColumnsAndRows = () => {
       field: 'hours',
       headerName: 'Hours',
       flex: 1,
+      valueGetter: params => params.row.finish_time ? formatHours(params.row.finish_time, params.row.start_time) : ''	
     },
     {
       field: 'project',
