@@ -9,9 +9,10 @@ export type HeaderProps = {
     title: string;
     handleClick?: () => void;
     buttonText?: string;
+    isSearch?: boolean,
 }
 
-const Header = ({ title, handleClick, buttonText }: HeaderProps) => {
+const Header = ({ title, handleClick, buttonText, isSearch = false }: HeaderProps) => {
   const mobileBreakpoint = useMediaQuery('(max-width:500px)');
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
 
@@ -20,7 +21,7 @@ const Header = ({ title, handleClick, buttonText }: HeaderProps) => {
       <h1 style={{ fontSize: '48px', marginTop: 0 }}>{title}</h1>
       {buttonText ? 
         <Stack direction={mobileBreakpoint ? 'column' : 'row'} spacing={2} paddingBottom="16px" justifyContent="flex-end">
-          <SearchBar />
+          {isSearch ? <SearchBar /> : null}
           <Button 
             sx={{ background: highlight, fontWeight: 'bold' }}
             variant='contained' 
