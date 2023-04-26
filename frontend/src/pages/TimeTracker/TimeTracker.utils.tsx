@@ -1,7 +1,7 @@
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridParamsApi } from '@mui/x-data-grid';
 import React from 'react';
 import { TimeTrackerProps, getTimeTracker } from '../../lib/timetracker';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { lightBlue } from '../../App';
@@ -17,7 +17,29 @@ export const useColumnsAndRows = () => {
       .catch((error) => console.log('GET: ' + error));
   }, []);
 
-  console.log(rows);
+  const [count, setCount] = React.useState(0);
+  const [isRunning, setIsRunning] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isRunning) {
+      const interval = setInterval(() => {
+        setCount((count) => count + 1000);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    } 
+  }, [isRunning]);
+
+  const stopWatch = (time: string) => {
+    const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
+    const timeInMilliseconds = Duration.fromISOTime(timestamp).as('milliseconds');
+    setCount(timeInMilliseconds);
+
+    setIsRunning(!isRunning);
+  };
+
+  console.log(Duration.fromMillis(count).toFormat('hh:mm:ss'), count);
 
   const columns: GridColDef[] = [
     {
@@ -57,9 +79,9 @@ export const useColumnsAndRows = () => {
       field: 'actions',
       headerName: 'Actions',
       flex: 1,
-      renderCell: (params) => 
+      renderCell: ({ row }) => 
         <>
-          <IconButton color="success"> <NotStartedIcon /> </IconButton>
+          <IconButton color="success" onClick={() => stopWatch(row.start_time)}> <NotStartedIcon /> </IconButton>
           <IconButton color="error"> <DeleteIcon /> </IconButton>
         </>
     },
