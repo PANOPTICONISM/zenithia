@@ -1,4 +1,4 @@
-import { GridColDef, GridRowId } from '@mui/x-data-grid';
+import { GridColDef, GridRowId, ValueOptions } from '@mui/x-data-grid';
 import React from 'react';
 import { TimeTrackerProps, deleteTimeTracker, getTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { DateTime, Duration } from 'luxon';
@@ -7,13 +7,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { lightBlue } from '../../App';
 import NotStartedIcon from '@mui/icons-material/NotStarted';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
+import { getProjects } from '../../lib/projects';
+import { ProjectProps } from '../Projects/types';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
+  const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
   React.useEffect(() => {
     getTimeTracker()
       .then((res) => setRows(res))
+      .catch((error) => console.log('GET: ' + error));
+    
+    getProjects()
+      .then((res) => setProjects(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
 
@@ -36,7 +43,6 @@ export const useColumnsAndRows = () => {
       };
     } 
   }, [isRunning, count]);
-
 
   const stopWatch = (time: string, id: string, date: string) => {
     const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
@@ -65,7 +71,7 @@ export const useColumnsAndRows = () => {
   const formatHours = (finish: string, start: string) => {
     const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), ['hours', 'minutes', 'seconds']);
 
-    return duration.hours + 'h ' +  Math.ceil(duration.seconds) + 's';
+    return duration.hours + 'h ' +  duration.minutes + 'm';
   };
 
   const columns: GridColDef[] = [
@@ -96,12 +102,17 @@ export const useColumnsAndRows = () => {
       valueGetter: params => params.row.finish_time ? formatHours(params.row.finish_time, params.row.start_time) : ''	
     },
     {
-      field: 'project',
+      field: 'project_id',
       headerName: 'Project',
       minWidth: 100,
       flex: 1,
       editable: true,
-      renderCell: ({ row }) => row?.projects && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{row.projects.title}</Box>
+      type: 'singleSelect',
+      valueOptions: projects,
+      getOptionValue: (value: any)=> value.id,
+      getOptionLabel: (value: any) => value.title,
+      valueGetter: params => params.value ? params.value : '',
+      renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
     },
     {
       field: 'actions',
