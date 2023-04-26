@@ -49,12 +49,12 @@ export const useColumnsAndRows = () => {
       editable: true,
     },
     {
-      field: 'project_id',
+      field: 'project',
       headerName: 'Project',
       minWidth: 100,
       flex: 1,
       editable: true,
-      renderCell: ({ value }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
+      renderCell: ({ row }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{row.projects.title}</Box>
     },
     {
       field: 'actions',
