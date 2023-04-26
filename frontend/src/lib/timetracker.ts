@@ -1,22 +1,33 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
+import { ProjectProps } from '../pages/Projects/types';
 
 type ServerError = { message: string; }
 
-export const getTimeTracker = async (): Promise<string[]> => {
+export type TimeTrackerProps = {
+  id: string,
+  date: string,
+  start_time: string,
+  finish_time: string | null,
+  total: number | null,
+  project_id: number | null,
+  projects?: ProjectProps
+}
+
+export const getTimeTracker = async (): Promise<TimeTrackerProps[]> => {
   const path = '/api/timetracker';
 
   try {
     const response = await requester.get(path);
-    return response.data as string[];
+    return response.data as TimeTrackerProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postTimeTracker = async (body: string): Promise<string> => {
+export const postTimeTracker = async (body: TimeTrackerProps): Promise<string> => {
   const path = '/api/timetracker';
   
   try {
@@ -28,7 +39,7 @@ export const postTimeTracker = async (body: string): Promise<string> => {
   }
 };
 
-export const updateTimeTracker = async (id: number, body: string): Promise<string> => {
+export const updateTimeTracker = async (id: number, body: TimeTrackerProps): Promise<string> => {
   const path = `/api/timetracker/${id}`;
     
   try {

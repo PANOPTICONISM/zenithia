@@ -1,6 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
-import { getTimeTracker } from '../../lib/timetracker';
+import { TimeTrackerProps, getTimeTracker } from '../../lib/timetracker';
 import { DateTime } from 'luxon';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,7 +9,7 @@ import NotStartedIcon from '@mui/icons-material/NotStarted';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<string[]>([]);
+  const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
 
   React.useEffect(() => {
     getTimeTracker()
@@ -32,14 +32,14 @@ export const useColumnsAndRows = () => {
       field: 'start_time',
       headerName: 'Start',
       flex: 1,
-      valueFormatter: params => DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS),
+      valueFormatter: params => params.value ? DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS) : '',
       editable: true,
     },
     {
       field: 'finish_time',
       headerName: 'Finish',
       flex: 1,
-      valueFormatter: params => DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS),
+      valueFormatter: params => params.value ? DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS) : '',
       editable: true,
     },
     {
@@ -54,7 +54,7 @@ export const useColumnsAndRows = () => {
       minWidth: 100,
       flex: 1,
       editable: true,
-      renderCell: ({ row }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{row.projects.title}</Box>
+      renderCell: ({ row }) => row?.projects && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{row.projects.title}</Box>
     },
     {
       field: 'actions',
