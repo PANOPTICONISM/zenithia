@@ -2,7 +2,10 @@ import supabase from "../supabaseClient.js";
 
 export const getTimeTracker = async (req, res) => {
     try {
-        const { data, error } = await supabase.from('time_tracker').select();
+        const { data, error } = await supabase.from('time_tracker').select(`
+        *,
+        projects("*")
+    `);
     
         if (error) {
           throw error;
