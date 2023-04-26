@@ -49,7 +49,7 @@ const Projects = () => {
   };
 
   return (
-    <Main title="Projects" handleClick={addProject} buttonText='Add project'>
+    <Main title="Projects" handleClick={addProject} buttonText='Add project' isSearch>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
           columns={columns}

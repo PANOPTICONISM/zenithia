@@ -1,4 +1,4 @@
-import { GridColDef, GridRowId, ValueOptions } from '@mui/x-data-grid';
+import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import React from 'react';
 import { TimeTrackerProps, deleteTimeTracker, getTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { DateTime, Duration } from 'luxon';
@@ -109,9 +109,9 @@ export const useColumnsAndRows = () => {
       editable: true,
       type: 'singleSelect',
       valueOptions: projects,
-      getOptionValue: (value: any)=> value.id,
+      getOptionValue: (value: any)=> value?.id,
       getOptionLabel: (value: any) => value.title,
-      valueGetter: params => params.value ? params.value : '',
+      valueGetter: params => params.value,
       renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
     },
     {

@@ -9,7 +9,9 @@ const Main = ({
   children, 
   title, 
   handleClick, 
-  buttonText } : { children: React.ReactNode } & HeaderProps) => {
+  buttonText,
+  isSearch
+} : { children: React.ReactNode } & HeaderProps) => {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const [open] = useIsSidebarOpen();
     
@@ -20,7 +22,9 @@ const Main = ({
         <Header 
           title={title} 
           handleClick={handleClick} 
-          buttonText={buttonText} />
+          buttonText={buttonText} 
+          isSearch={isSearch}
+        />
         <main>{children}</main>
       </Box>
     </Box>
