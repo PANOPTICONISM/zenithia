@@ -3,14 +3,12 @@ import Main from '../../components/Main/Main';
 import { useColumnsAndRows } from './TimeTracker.utils';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { DateTime } from 'luxon';
 import { TimeTrackerProps, postTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { v4 as uuidv4 } from 'uuid';
 
 export const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
-  const { filterModel, handleFilterChange } = useFiltering({ columnField: 'title' });
 
   const addTracking = () => {
     const randomId = uuidv4();
@@ -63,8 +61,6 @@ export const TimeTracker = () => {
           editMode="row"
           processRowUpdate={handleProcessRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
-          filterModel={filterModel}
-          onFilterModelChange={handleFilterChange}
         />
       </Box>
     </Main>
