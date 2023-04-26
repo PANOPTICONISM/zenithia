@@ -39,15 +39,11 @@ export const TimeTracker = () => {
       return new Date(date).toLocaleDateString('en-US');
     };
 
-    const fixTimeFormat = (time: string) => {
-      return new Date(time).toLocaleDateString('en-US');
-    };
+    delete newRow.projects;
 
     const row = { 
       ...newRow,
       date: fixDateFormat(newRow.date),
-      start_time: newRow.start_time ?  fixTimeFormat(newRow.start_time) : null, 
-      finish_time: newRow.finish_time ? fixTimeFormat(newRow.finish_time) : null 
     };
 
     updateTimeTracker(oldRow.id, row).catch((error) => console.log('UPDATE: ' + error));
