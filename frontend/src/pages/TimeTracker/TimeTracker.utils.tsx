@@ -91,7 +91,9 @@ export const useColumnsAndRows = () => {
       flex: 1,
       renderCell: ({ row }) => 
         <>
-          <IconButton color="success" onClick={() => stopWatch(row.start_time, row.id)}> <NotStartedIcon /> </IconButton>
+          <IconButton color="success" onClick={() => stopWatch(row.start_time, row.id)} disabled={row.finish_time !== null && !isRunning}> 
+            {isRunning && row.id === selectedId ? <StopCircleIcon /> : <NotStartedIcon />} 
+          </IconButton>
           <IconButton color="error"> <DeleteIcon /> </IconButton>
         </>
     },
