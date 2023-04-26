@@ -46,7 +46,6 @@ export const useColumnsAndRows = () => {
       field: 'hours',
       headerName: 'Hours',
       flex: 1,
-      editable: true,
     },
     {
       field: 'project',
