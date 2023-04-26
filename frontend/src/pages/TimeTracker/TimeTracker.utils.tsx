@@ -1,6 +1,6 @@
-import { GridColDef, GridParamsApi } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
-import { TimeTrackerProps, getTimeTracker } from '../../lib/timetracker';
+import { TimeTrackerProps, getTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { DateTime, Duration } from 'luxon';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -38,14 +38,17 @@ export const useColumnsAndRows = () => {
   }, [isRunning, count]);
 
 
-  const stopWatch = (time: string, id: string) => {
+  const stopWatch = (time: string, id: string, date: string) => {
     const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
     const timeInMilliseconds = Duration.fromISOTime(timestamp).as('milliseconds');
     if (!isRunning) {
       setCount(timeInMilliseconds);
       setSelectedId(id);
     } else {
+      const finalTimestamp = date + 'T' + Duration.fromMillis(count).toISOTime();
       setSelectedId(undefined);
+      updateTimeTracker(id, { finish_time: finalTimestamp })
+        .catch((error) => console.log('Update: ' + error));
     }
 
     setIsRunning(!isRunning);
@@ -91,7 +94,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       renderCell: ({ row }) => 
         <>
-          <IconButton color="success" onClick={() => stopWatch(row.start_time, row.id)} disabled={row.finish_time !== null && !isRunning}> 
+          <IconButton color="success" onClick={() => stopWatch(row.start_time, row.id, row.date)} disabled={row.finish_time !== null && selectedId !== row.id}> 
             {isRunning && row.id === selectedId ? <StopCircleIcon /> : <NotStartedIcon />} 
           </IconButton>
           <IconButton color="error"> <DeleteIcon /> </IconButton>
