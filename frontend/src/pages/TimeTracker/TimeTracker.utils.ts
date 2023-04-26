@@ -11,6 +11,8 @@ export const useColumnsAndRows = () => {
       .catch((error) => console.log('GET: ' + error));
   }, []);
 
+  console.log(rows);
+
   const columns: GridColDef[] = [
     { field: 'id', 
       headerName: 'ID', 

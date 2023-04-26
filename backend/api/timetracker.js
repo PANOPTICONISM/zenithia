@@ -2,7 +2,7 @@ import supabase from "../supabaseClient.js";
 
 export const getTimeTracker = async (req, res) => {
     try {
-        const { data, error } = await supabase.from('timetracker').select();
+        const { data, error } = await supabase.from('time_tracker').select();
     
         if (error) {
           throw error;
@@ -17,7 +17,7 @@ export const getTimeTracker = async (req, res) => {
 export const postTimeTracker = async (req, res) => {
     const { body } = req;
     try {
-        const { error } = await supabase.from('timetracker').insert(body);
+        const { error } = await supabase.from('time_tracker').insert(body);
 
         if (error) {
           throw error;
@@ -33,7 +33,7 @@ export const updateTimeTracker = async (req, res) => {
     const { body, params } = req;
 
     try {
-        const { error } = await supabase.from('timetracker').update(body).eq('id', params.id);
+        const { error } = await supabase.from('time_tracker').update(body).eq('id', params.id);
     
         if (error) {
           throw error;
@@ -49,7 +49,7 @@ export const deleteTimeTracker = async (req, res) => {
     const { params } = req;
     
     try {
-        const { error } = await supabase.from('timetracker').delete().eq('id', params.id);
+        const { error } = await supabase.from('time_tracker').delete().eq('id', params.id);
     
         if (error) {
           throw error;
