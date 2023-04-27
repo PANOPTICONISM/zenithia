@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import AllOutIcon from '@mui/icons-material/AllOut';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountTreeOutlined, AnalyticsOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
@@ -11,6 +10,7 @@ import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobil
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
 import { AppBar, Stack, SwipeableDrawer, Toolbar, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from '../../App';
+import { Logo } from '../../icons/logo';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -48,7 +48,7 @@ export default function Sidebar() {
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
-            <AllOutIcon sx={{ fontSize: '50px' }} />
+            <Logo color='black' background="white" />
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -88,7 +88,7 @@ export default function Sidebar() {
           </AppBar>
           <Drawer variant="permanent" open={open}>
             <DrawerHeader>
-              <AllOutIcon sx={{ fontSize: '50px', margin: '16px auto', color: white }} />
+              <Logo color='white' background='#191E38' />
             </DrawerHeader>
             <Navigation open={open} />
           </Drawer>
