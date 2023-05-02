@@ -54,9 +54,29 @@ const Revenue = () => {
   const handleFilterChange: NonNullable<DataGridProps['onFilterModelChange']> = React.useCallback(
     (model) => {
       console.log(model);
-      const filteringData = model.items[0]?.value !== undefined ? rows.filter((entry) => {
-        if (model.items[0]?.field === 'start_date')
-          return model.items[0]?.field === 'start_date' && model.items[0]?.value <= entry.start_date;
+      const filteringData = model.items[0].value !== undefined ? rows.filter((entry) => {
+        if (model.items[0].field === 'start_date' && model.items[0].operator === 'onOrAfter') {
+          return model.items[0].value <= entry.start_date;
+        }
+        if (model.items[0].field === 'start_date' && model.items[0].operator === 'is') {
+          return model.items[0].value === entry.start_date;
+        }
+        if (model.items[0].field === 'start_date' && model.items[0].operator === 'not') {
+          return model.items[0].value !== entry.start_date;
+        }
+
+        if (model.items[0].field === 'finish_date' && model.items[0].operator === 'onOrAfter') {
+          return model.items[0].value <= entry.finish_date;
+        }
+        if (model.items[0].field === 'finish_date' && model.items[0].operator === 'onOrBefore') {
+          return model.items[0].value >= entry.finish_date;
+        }
+        if (model.items[0].field === 'finish_date' && model.items[0].operator === 'is') {
+          return model.items[0].value === entry.finish_date;
+        }
+        if (model.items[0].field === 'finish_date' && model.items[0].operator === 'not') {
+          return model.items[0].value !== entry.finish_date;
+        }
       }) : filteredData;
       setFilteredData(filteringData);
       
