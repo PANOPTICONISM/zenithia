@@ -1,8 +1,10 @@
 import supabase from "../supabaseClient.js";
 
 export const getProjects = async (req, res) => {
+    const { query } = req;
+
     try {
-        const { data, error } = await supabase.from('projects').select();
+        const { data, error } = await supabase.from('projects').select(query.filter);
     
         if (error) {
           throw error;

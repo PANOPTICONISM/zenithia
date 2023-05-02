@@ -15,7 +15,7 @@ export const useColumnsAndRows = () => {
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
   React.useEffect(() => {
-    getTimeTracker()
+    getTimeTracker('*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
     
@@ -53,12 +53,15 @@ export const useColumnsAndRows = () => {
     } else {
       const finalTimestamp = date + 'T' + Duration.fromMillis(count).toISOTime();
       setSelectedId(undefined);
-      updateTimeTracker(id, { finish_time: finalTimestamp })
+
+      const duration = DateTime.fromISO(finalTimestamp).diff(DateTime.fromISO(time), ['hours', 'minutes', 'seconds']).as('milliseconds');
+      updateTimeTracker(id, { finish_time: finalTimestamp, total: duration })
         .catch((error) => console.log('Update: ' + error));
     }
 
     setIsRunning(!isRunning);
   };
+
 
   const deleteEntry = React.useCallback((id: GridRowId) => {
     deleteTimeTracker(id)
@@ -111,7 +114,7 @@ export const useColumnsAndRows = () => {
       valueOptions: projects,
       getOptionValue: (value: any)=> value?.id,
       getOptionLabel: (value: any) => value.title,
-      valueGetter: params => params.value,
+      valueGetter: params => params.value || '',
       renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
     },
     {

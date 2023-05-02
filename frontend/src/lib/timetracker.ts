@@ -15,11 +15,11 @@ export type TimeTrackerProps = {
   projects?: ProjectProps
 }
 
-export const getTimeTracker = async (): Promise<TimeTrackerProps[]> => {
+export const getTimeTracker = async (param?: string): Promise<TimeTrackerProps[]> => {
   const path = '/api/timetracker';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path,  { params: { filter: param } } );
     return response.data as TimeTrackerProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
