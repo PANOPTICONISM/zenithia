@@ -15,7 +15,7 @@ export const useColumnsAndRows = () => {
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
   React.useEffect(() => {
-    getTimeTracker()
+    getTimeTracker('*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
     

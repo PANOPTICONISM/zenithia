@@ -2,18 +2,21 @@ import { Box } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { lightBlue } from 'App';
 import { getProjects } from 'lib/projects';
+import { TimeTrackerProps, getTimeTracker } from 'lib/timetracker';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import { ProjectProps } from 'pages/Projects/types';
 import React from 'react';
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<ProjectProps[]>([]);
+  const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
   
   React.useEffect(() => {
-    getProjects('*, clients(*)')
+    getTimeTracker('*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
+
+  console.log(rows, 'oi');
     
   const columns: GridColDef[] = [
     { field: 'project_id', 
