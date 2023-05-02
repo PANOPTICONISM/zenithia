@@ -74,6 +74,7 @@ export const useColumnsAndRows = () => {
       headerName: 'Total',
       minWidth: 120,
       flex: 1,
+      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
     }
   ];
 
@@ -86,6 +87,9 @@ export const useColumnsAndRows = () => {
       initialValue
     );
 
+    const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
+    const totalPrice = entry.base_price && hoursTotal ?  (entry.base_price / 100) * Number(totalMinutes) : 0;
+
     const obj = {
       id: entry.id,
       title: entry.title,
@@ -95,6 +99,7 @@ export const useColumnsAndRows = () => {
       base_price: entry.base_price,
       revenue: entry.revenue,
       total: hoursTotal,
+      price_total: totalPrice,
     };
     return obj;
   });
