@@ -2,10 +2,12 @@ import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Main from 'components/Main/Main';
 import React from 'react';
-import { useColumnsAndRows } from './Revenue.utils';
+import { finalizeTotals, useColumnsAndRows } from './Revenue.utils';
 import PublicIcon from '@mui/icons-material/Public';
 import TodayIcon from '@mui/icons-material/Today';
 import { grey } from 'App';
+import { DateTime } from 'luxon';
+import { valueFormatter } from 'pages/Projects/Projects.utils';
 
 const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, icon: React.ReactNode}) => {
 
@@ -23,11 +25,19 @@ const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, 
 const Revenue = () => {
   const { columns, data } = useColumnsAndRows();
 
+  const currentYear = new Date().getFullYear();
+  const thisYearLogs = data.filter((entry) => entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-mm-dd').year === currentYear));
+  const totalYearlySum = finalizeTotals(thisYearLogs).reduce((partialSum, a) => partialSum + a, 0);
+
+  const currentMonth = new Date().getMonth();
+  const thisMonthLogs = data.filter((entry) => entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-mm-dd').month === currentMonth));
+  const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
+
   return (
     <Main title="Revenue">
       <Stack direction="row" spacing={2} paddingBottom="24px">
-        <EarningsTimeline text="Earnings this year" total="0" icon={<PublicIcon sx={{ height: '100%', width: '70px' }} />} />
-        <EarningsTimeline text="Earnings this month" total="0" icon={<TodayIcon sx={{ height: '100%', width: '70px' }} />} />
+        <EarningsTimeline text="Earnings this year" total={valueFormatter.format(Number(totalYearlySum))} icon={<PublicIcon sx={{ height: '100%', width: '70px' }} />} />
+        <EarningsTimeline text="Earnings this month" total={valueFormatter.format(Number(totalMonthlySum))} icon={<TodayIcon sx={{ height: '100%', width: '70px' }} />} />
       </Stack>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
