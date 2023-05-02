@@ -15,8 +15,6 @@ export const useColumnsAndRows = () => {
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
-
-  console.log(rows, 'oi');
     
   const columns: GridColDef[] = [
     { field: 'id', 
@@ -89,7 +87,6 @@ export const useColumnsAndRows = () => {
 
     const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
     let totalPrice = 0;
-    
     if (entry.base_price && hoursTotal) {
       if (entry.revenue === 'Project') {
         totalPrice = entry.base_price;
