@@ -64,7 +64,7 @@ export const useColumnsAndRows = () => {
     },
     {
       field: 'total',
-      headerName: 'Hours',
+      headerName: 'Time',
       minWidth: 120,
       flex: 1,
       valueFormatter: ({ value }) => Duration.fromMillis(value).toFormat('hh:mm')
@@ -88,7 +88,15 @@ export const useColumnsAndRows = () => {
     );
 
     const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
-    const totalPrice = entry.base_price && hoursTotal ?  (entry.base_price / 100) * Number(totalMinutes) : 0;
+    let totalPrice = 0;
+    
+    if (entry.base_price && hoursTotal) {
+      if (entry.revenue === 'Project') {
+        totalPrice = entry.base_price;
+      } else {
+        totalPrice = (entry.base_price / 100) * Number(totalMinutes);
+      }
+    }
 
     const obj = {
       id: entry.id,
