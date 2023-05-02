@@ -20,6 +20,12 @@ const Projects = () => {
       return new Date(date).toLocaleDateString('en-US');
     };
 
+    delete newRow.clients;
+
+    if (newRow.client_id === '') {
+      newRow.client_id = null;
+    }
+
     const row = { ...newRow, start_date: fixDateFormat(newRow.start_date), finish_date: fixDateFormat(newRow.finish_date) };
 
     updateProject(oldRow.id, row).catch((error) => console.log('UPDATE: ' + error));
@@ -36,11 +42,11 @@ const Projects = () => {
     const obj = {
       id: Math.floor(Math.random() * 10000),
       title: '', 
-      company: 'Phoenix', 
       start_date: date, 
       finish_date: date, 
       status: 'Standby', 
-      revenue: 'Hourly'
+      revenue: 'Hourly',
+      client_id: null,
     };
 
     postProject(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
