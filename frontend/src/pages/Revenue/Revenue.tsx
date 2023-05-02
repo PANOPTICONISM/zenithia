@@ -114,7 +114,7 @@ const Revenue = () => {
           total={valueFormatter.format(Number(absoluteTotal))} 
           icon={<SavingsIcon sx={{ height: '100%', width: '70px' }} />} />
       </Stack>
-      <Box sx={{ height: 400, width: '100%' }}>
+      <Box sx={{ height: 360, width: '100%' }}>
         <DataGrid 
           columns={columns}
           rows={rows}
