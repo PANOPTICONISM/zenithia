@@ -10,7 +10,7 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
   
   React.useEffect(() => {
-    getProjects()
+    getProjects('*, clients(*)')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
@@ -28,7 +28,6 @@ export const useColumnsAndRows = () => {
       flex: 1,
       editable: true,
       renderCell: ({ value }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
-
     },
     {
       field: 'client',
@@ -70,7 +69,7 @@ export const useColumnsAndRows = () => {
       editable: true,
     },
     {
-      field: 'hours_total',
+      field: 'hours',
       headerName: 'Hours',
       minWidth: 120,
       flex: 1,

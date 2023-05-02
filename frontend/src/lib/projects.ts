@@ -5,11 +5,11 @@ import { GridRowId } from '@mui/x-data-grid';
 
 type ServerError = { message: string; }
 
-export const getProjects = async (): Promise<ProjectProps[]> => {
+export const getProjects = async (param?: string): Promise<ProjectProps[]> => {
   const path = '/api/projects';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path, { params: { filter: param } });
     return response.data as ProjectProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
