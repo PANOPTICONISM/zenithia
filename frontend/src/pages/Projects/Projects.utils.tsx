@@ -19,6 +19,11 @@ const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warnin
   );
 };
 
+export const valueFormatter = Intl.NumberFormat('da-DK', {
+  style: 'currency',
+  currency: 'DKK',
+});
+
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
 
@@ -40,11 +45,6 @@ export const useColumnsAndRows = () => {
     },
     [],
   );
-
-  const valueFormatter = Intl.NumberFormat('da-DK', {
-    style: 'currency',
-    currency: 'DKK',
-  });
   
   const columns: GridColDef[] = [
     { field: 'project_id', 

@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Projects from './pages/Projects/Projects';
+import Dashboard from 'pages/Dashboard';
+import Projects from 'pages/Projects/Projects';
 import React from 'react';
-import { SearchBarProvider } from './contexts/SearchBarProvider';
-import { SidebarProvider } from './contexts/SidebarProvider';
-import Tasks from './pages/Tasks';
-import { TimeTracker } from './pages/TimeTracker/TimeTracker';
+import { SearchBarProvider } from 'contexts/SearchBarProvider';
+import { SidebarProvider } from 'contexts/SidebarProvider';
+import Tasks from 'pages/Tasks';
+import TimeTracker from 'pages/TimeTracker/TimeTracker';
+import Revenue from 'pages/Revenue/Revenue';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -27,7 +28,7 @@ function App() {
           <Route path="projects" element={<Projects/> } />
           <Route path="clients" element={<Projects/> } />
           <Route path="timetracker" element={<TimeTracker/> } />
-          <Route path="revenue" element={<Projects/> } />
+          <Route path="revenue" element={<Revenue/> } />
         </Routes>
       </SearchBarProvider>
     </SidebarProvider>

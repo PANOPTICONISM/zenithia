@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { TimeTrackerProps, postTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { v4 as uuidv4 } from 'uuid';
 
-export const TimeTracker = () => {
+const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
 
   const addTracking = () => {
@@ -65,3 +65,5 @@ export const TimeTracker = () => {
     </Main>
   );
 };
+
+export default TimeTracker;
