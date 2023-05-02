@@ -1,4 +1,5 @@
 import { ClientProps } from 'lib/clients';
+import { TimeTrackerProps } from 'lib/timetracker';
 
 export type ProjectProps = {
     id?: number,
@@ -11,4 +12,5 @@ export type ProjectProps = {
     base_price: number | null,
     client_id: string | null,
     clients?: ClientProps,
+    time_tracker?: TimeTrackerProps[]
 }
