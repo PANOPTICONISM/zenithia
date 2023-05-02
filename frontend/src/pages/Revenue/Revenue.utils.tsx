@@ -2,17 +2,16 @@ import { Box } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { lightBlue } from 'App';
 import { getProjects } from 'lib/projects';
-import { TimeTrackerProps, getTimeTracker } from 'lib/timetracker';
 import { Duration } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import { ProjectProps } from 'pages/Projects/types';
 import React from 'react';
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
+  const [rows, setRows] = React.useState<ProjectProps[]>([]);
   
   React.useEffect(() => {
-    getTimeTracker('*, projects(*, clients(*))')
+    getProjects('*, time_tracker(*), clients(*)')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
@@ -23,7 +22,6 @@ export const useColumnsAndRows = () => {
     { field: 'id', 
       headerName: 'ID', 
       flex: 1,
-      valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: 'title',
@@ -79,17 +77,24 @@ export const useColumnsAndRows = () => {
     }
   ];
 
+  console.log(rows, 'rows');
+
   const data = rows.map((entry) => {
-    console.log(entry, 'hello');
+    const initialValue = 0;
+    const hoursTotal = entry?.time_tracker?.reduce(
+      (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
+      initialValue
+    );
+
     const obj = {
       id: entry.id,
-      title: entry.projects?.title,
-      client: entry.projects?.clients?.name,
-      start_date: entry.projects?.start_date,
-      finish_date: entry.projects?.finish_date,
-      base_price: entry.projects?.base_price,
-      revenue: entry.projects?.revenue,
-      total: entry.total
+      title: entry.title,
+      client: entry.clients?.name,
+      start_date: entry.start_date,
+      finish_date: entry.finish_date,
+      base_price: entry.base_price,
+      revenue: entry.revenue,
+      total: hoursTotal,
     };
     return obj;
   });
