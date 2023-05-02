@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
 import { deleteProject, getProjects } from '../../lib/projects';
 import { lightBlue } from '../../App';
+import { ClientProps, getClients } from 'lib/clients';
 
 const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
   return (
@@ -26,10 +27,15 @@ export const valueFormatter = Intl.NumberFormat('da-DK', {
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
+  const [clients, setClients] = React.useState<ClientProps[]>([]);
 
   React.useEffect(() => {
-    getProjects()
+    getProjects('*, clients(*)')
       .then((res) => setRows(res))
+      .catch((error) => console.log('GET: ' + error));
+
+    getClients()
+      .then((res) => setClients(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
   
@@ -60,12 +66,17 @@ export const useColumnsAndRows = () => {
       editable: true,
     },
     {
-      field: 'company',
-      headerName: 'Company',
+      field: 'client_id',
+      headerName: 'Client',
       minWidth: 100,
       flex: 1,
+      type: 'singleSelect',
       editable: true,
-      renderCell: ({ value }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
+      valueOptions: clients,
+      getOptionValue: (value: any)=> value?.id,
+      getOptionLabel: (value: any) => value.name,
+      valueGetter: params => params.value,
+      renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
     },
     {
       field: 'start_date',
