@@ -47,6 +47,7 @@ const Projects = () => {
       status: 'Standby', 
       revenue: 'Hourly',
       client_id: null,
+      base_price: null,
     };
 
     postProject(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));

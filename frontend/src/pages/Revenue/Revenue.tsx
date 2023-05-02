@@ -5,7 +5,7 @@ import React from 'react';
 import { useColumnsAndRows } from './Revenue.utils';
 
 const Revenue = () => {
-  const { columns, rows } = useColumnsAndRows();
+  const { columns, data } = useColumnsAndRows();
 
   //   const handleProcessRowUpdate = React.useCallback((newRow: ProjectProps, oldRow: ProjectProps) => {
   //     if (!oldRow.id) {
@@ -31,8 +31,7 @@ const Revenue = () => {
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
           columns={columns}
-          rows={rows}
-          editMode="row"
+          rows={data}
         //   processRowUpdate={handleProcessRowUpdate}
         //   onProcessRowUpdateError={handleProcessRowUpdateError}
         />
