@@ -28,7 +28,7 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
       const nameFilter = model.items.find(
         (item) => item.field === columnField && item.operator === 'contains'
       );
-      if (model.items.some((item) => item.field === columnField &&item.operator !== 'contains'
+      if (model.items.some((item) => item.field === columnField && item.operator !== 'contains'
       ) || nameFilter === undefined) {
         setSearch('');
       }

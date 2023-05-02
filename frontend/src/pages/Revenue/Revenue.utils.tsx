@@ -4,16 +4,50 @@ import { lightBlue } from 'App';
 import { getProjects } from 'lib/projects';
 import { Duration } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
-import { ProjectProps } from 'pages/Projects/types';
 import React from 'react';
 import { ProjectFormattedProps } from './types';
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<ProjectProps[]>([]);
+  const [rows, setRows] = React.useState<ProjectFormattedProps[]>([]);
+  const [filteredData, setFilteredData] = React.useState<ProjectFormattedProps[]>([]);
   
   React.useEffect(() => {
     getProjects('*, time_tracker(*), clients(*)')
-      .then((res) => setRows(res))
+      .then((res) => {
+        const result = res.map((entry) => {
+          const initialValue = 0;
+          const hoursTotal = entry?.time_tracker?.reduce(
+            (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
+            initialValue
+          );
+      
+          const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
+          let totalPrice = 0;
+          if (entry.base_price && hoursTotal) {
+            if (entry.revenue === 'Project') {
+              totalPrice = entry.base_price;
+            } else {
+              totalPrice = (entry.base_price / 100) * Number(totalMinutes);
+            }
+          }
+      
+          const obj = {
+            id: entry.id,
+            title: entry.title,
+            client: entry.clients?.name,
+            start_date: entry.start_date,
+            finish_date: entry.finish_date,
+            base_price: entry.base_price,
+            revenue: entry.revenue,
+            total: hoursTotal,
+            price_total: totalPrice,
+            time_tracker: entry.time_tracker,
+          };
+          return obj;
+        });
+        setRows(result);
+        setFilteredData(result);
+      })
       .catch((error) => console.log('GET: ' + error));
   }, []);
     
@@ -76,40 +110,8 @@ export const useColumnsAndRows = () => {
       valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
     }
   ];
-
-  const data = rows.map((entry) => {
-    const initialValue = 0;
-    const hoursTotal = entry?.time_tracker?.reduce(
-      (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
-      initialValue
-    );
-
-    const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
-    let totalPrice = 0;
-    if (entry.base_price && hoursTotal) {
-      if (entry.revenue === 'Project') {
-        totalPrice = entry.base_price;
-      } else {
-        totalPrice = (entry.base_price / 100) * Number(totalMinutes);
-      }
-    }
-
-    const obj = {
-      id: entry.id,
-      title: entry.title,
-      client: entry.clients?.name,
-      start_date: entry.start_date,
-      finish_date: entry.finish_date,
-      base_price: entry.base_price,
-      revenue: entry.revenue,
-      total: hoursTotal,
-      price_total: totalPrice,
-      time_tracker: entry.time_tracker,
-    };
-    return obj;
-  });
   
-  return { columns, data, setRows };
+  return { columns, rows, setRows, filteredData, setFilteredData };
 };
 
 export const finalizeTotals = (logs: ProjectFormattedProps[]) => logs.map((entry) => {
