@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, DataGridProps, GridFilterModel } from '@mui/x-data-grid';
 import Main from 'components/Main/Main';
 import React from 'react';
 import { finalizeTotals, useColumnsAndRows } from './Revenue.utils';
@@ -48,23 +48,36 @@ const DataGridInfo = ({ text, total, icon } : {text: string, total: string, icon
 };
 
 const Revenue = () => {
-  const { columns, data } = useColumnsAndRows();
+  const { columns, rows, filteredData, setFilteredData } = useColumnsAndRows();
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({ items: [] });
+
+  const handleFilterChange: NonNullable<DataGridProps['onFilterModelChange']> = React.useCallback(
+    (model) => {
+      console.log(model);
+      const filteringData = model.items[0]?.value !== undefined ? rows.filter((entry) => {
+        if (model.items[0]?.field === 'start_date')
+          return model.items[0]?.field === 'start_date' && model.items[0]?.value <= entry.start_date;
+      }) : filteredData;
+      setFilteredData(filteringData);
+      
+      setFilterModel(model);
+    }, [filteredData]);
 
   const currentYear = new Date().getFullYear();
-  const thisYearLogs = data.map((entry) => {
+  const thisYearLogs = rows.map((entry) => {
     const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').year === currentYear);
     return { ...entry, time_tracker: entries };
   });
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce((partialSum, a) => partialSum + a, 0);
 
   const currentMonth = new Date().getMonth();
-  const thisMonthLogs = data.map((entry) => {
+  const thisMonthLogs = rows.map((entry) => {
     const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').month === currentMonth + 1);
     return { ...entry, time_tracker: entries };
   });
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
 
-  const absoluteTotal = finalizeTotals(data).reduce((partialSum, a) => partialSum + a, 0);
+  const absoluteTotal = finalizeTotals(filteredData).reduce((partialSum, a) => partialSum + a, 0);
 
   return (
     <Main title="Revenue">
@@ -85,7 +98,9 @@ const Revenue = () => {
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid 
           columns={columns}
-          rows={data}
+          rows={rows}
+          filterModel={filterModel}
+          onFilterModelChange={handleFilterChange}
         />
       </Box>
     </Main>
