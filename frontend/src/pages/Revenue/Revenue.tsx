@@ -58,6 +58,8 @@ const Revenue = () => {
   const thisMonthLogs = data.filter((entry) => entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-mm-dd').month === currentMonth));
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
 
+  const absoluteTotal = finalizeTotals(data).reduce((partialSum, a) => partialSum + a, 0);
+
   return (
     <Main title="Revenue">
       <Stack direction="row" spacing={2} paddingBottom="24px">
@@ -67,11 +69,11 @@ const Revenue = () => {
       <Stack direction="row" spacing={2} paddingBottom="24px">
         <SuggestionBox 
           title="Earnings as shown below" 
-          tagline="Add date filters in the table below to find out how much you earned in a specific timeframe." 
+          tagline="Add date filters in the table below to find out how much you earned under specific filters." 
           icon={<EmojiObjectsIcon sx={{ height: '100%', width: '70px' }} />} />
-        <EarningsTimeline 
-          text="Earnings this month" 
-          total={valueFormatter.format(Number(totalMonthlySum))} 
+        <DataGridInfo 
+          text="Estimated total of earnings" 
+          total={valueFormatter.format(Number(absoluteTotal))} 
           icon={<SavingsIcon sx={{ height: '100%', width: '70px' }} />} />
       </Stack>
       <Box sx={{ height: 400, width: '100%' }}>
