@@ -51,11 +51,17 @@ const Revenue = () => {
   const { columns, data } = useColumnsAndRows();
 
   const currentYear = new Date().getFullYear();
-  const thisYearLogs = data.filter((entry) => entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-mm-dd').year === currentYear));
+  const thisYearLogs = data.map((entry) => {
+    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').year === currentYear);
+    return { ...entry, time_tracker: entries };
+  });
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce((partialSum, a) => partialSum + a, 0);
 
   const currentMonth = new Date().getMonth();
-  const thisMonthLogs = data.filter((entry) => entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-mm-dd').month === currentMonth));
+  const thisMonthLogs = data.map((entry) => {
+    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').month === currentMonth + 1);
+    return { ...entry, time_tracker: entries };
+  });
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
 
   const absoluteTotal = finalizeTotals(data).reduce((partialSum, a) => partialSum + a, 0);

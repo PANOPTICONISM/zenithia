@@ -77,8 +77,6 @@ export const useColumnsAndRows = () => {
     }
   ];
 
-  console.log(rows, 'rows');
-
   const data = rows.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
