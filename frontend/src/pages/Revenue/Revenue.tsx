@@ -75,7 +75,7 @@ const Revenue = () => {
       <Stack direction="row" spacing={2} paddingBottom="24px">
         <SuggestionBox 
           title="Earnings as shown below" 
-          tagline="Add date filters in the table below to find out how much you earned under specific filters." 
+          tagline="Add date filters in the table below to find out how much you earned under a specific timeframe." 
           icon={<EmojiObjectsIcon sx={{ height: '100%', width: '70px' }} />} />
         <DataGridInfo 
           text="Estimated total of earnings" 
