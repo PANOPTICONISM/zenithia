@@ -4,6 +4,7 @@ import { deleteProject, getProjects, postProject, updateProjects } from './proje
 import cors from 'cors';
 import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './tasks.js';
 import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
+import { getClients } from './clients.js';
 
 const app = express();
 const port = 4000;
@@ -44,6 +45,8 @@ app.get('/api/timetracker', getTimeTracker);
 app.post('/api/timetracker', postTimeTracker);
 app.put('/api/timetracker/:id', updateTimeTracker);
 app.delete('/api/timetracker/:id', deleteTimeTracker);
+
+app.get('/api/clients', getClients);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
