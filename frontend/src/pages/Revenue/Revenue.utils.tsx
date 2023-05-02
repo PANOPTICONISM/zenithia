@@ -3,6 +3,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { lightBlue } from 'App';
 import { getProjects } from 'lib/projects';
 import { TimeTrackerProps, getTimeTracker } from 'lib/timetracker';
+import { Duration } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import { ProjectProps } from 'pages/Projects/types';
 import React from 'react';
@@ -11,7 +12,7 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
   
   React.useEffect(() => {
-    getTimeTracker('*, projects(*)')
+    getTimeTracker('*, projects(*, clients(*))')
       .then((res) => setRows(res))
       .catch((error) => console.log('GET: ' + error));
   }, []);
@@ -19,7 +20,7 @@ export const useColumnsAndRows = () => {
   console.log(rows, 'oi');
     
   const columns: GridColDef[] = [
-    { field: 'project_id', 
+    { field: 'id', 
       headerName: 'ID', 
       flex: 1,
       valueFormatter: ({ value }) => value?.slice(0, 8),
@@ -29,7 +30,6 @@ export const useColumnsAndRows = () => {
       headerName: 'Project',
       minWidth: 120,
       flex: 1,
-      editable: true,
       renderCell: ({ value }) => <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>
     },
     {
@@ -37,7 +37,6 @@ export const useColumnsAndRows = () => {
       headerName: 'Client',
       minWidth: 120,
       flex: 1,
-      editable: true,
     },
     {
       field: 'start_date',
@@ -45,7 +44,6 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
-      editable: true,
     },
     {
       field: 'finish_date',
@@ -53,39 +51,48 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: params => new Date(params.value).toLocaleDateString(),
       type: 'date',
-      editable: true,
     },
     {
       field: 'base_price',
       headerName: 'Base Price',
       flex: 1,
       type: 'number',
-      editable: true,
       valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
     },
     {
       field: 'revenue',
       headerName: 'Revenue',
       flex: 1,
-      type: 'singleSelect',
-      valueOptions: ['Hourly', 'Project'],
-      editable: true,
     },
     {
-      field: 'hours',
+      field: 'total',
       headerName: 'Hours',
       minWidth: 120,
       flex: 1,
-      editable: true,
+      valueFormatter: ({ value }) => Duration.fromMillis(value).toFormat('hh:mm')
     },
     {
       field: 'price_total',
       headerName: 'Total',
       minWidth: 120,
       flex: 1,
-      editable: true,
     }
   ];
+
+  const data = rows.map((entry) => {
+    console.log(entry, 'hello');
+    const obj = {
+      id: entry.id,
+      title: entry.projects?.title,
+      client: entry.projects?.clients?.name,
+      start_date: entry.projects?.start_date,
+      finish_date: entry.projects?.finish_date,
+      base_price: entry.projects?.base_price,
+      revenue: entry.projects?.revenue,
+      total: entry.total
+    };
+    return obj;
+  });
   
-  return { columns, rows, setRows };
+  return { columns, data, setRows };
 };

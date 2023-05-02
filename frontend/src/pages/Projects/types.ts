@@ -8,6 +8,7 @@ export type ProjectProps = {
     finish_date: string,
     status: string,
     revenue: string,
+    base_price: number | null,
     client_id: string | null,
     clients?: ClientProps,
 }
