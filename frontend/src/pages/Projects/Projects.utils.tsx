@@ -75,7 +75,7 @@ export const useColumnsAndRows = () => {
       valueOptions: clients,
       getOptionValue: (value: any)=> value?.id,
       getOptionLabel: (value: any) => value.name,
-      valueGetter: params => params.value,
+      valueGetter: params => params.value || '',
       renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
     },
     {
