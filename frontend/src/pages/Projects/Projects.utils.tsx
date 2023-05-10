@@ -3,22 +3,10 @@ import React from 'react';
 import { ProjectProps } from './types';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import HdrStrongIcon from '@mui/icons-material/HdrStrong';
 import { deleteProject, getProjects } from '../../lib/projects';
 import { lightBlue } from '../../App';
 import { ClientProps, getClients } from 'lib/clients';
-
-const CustomButton = ({ color, value } : {color: 'inherit' | 'success' | 'warning', value: string}) => {
-  return (
-    <Button 
-      sx={{ padding: 0 }}
-      variant="text" 
-      color="inherit"
-      endIcon={<HdrStrongIcon color={color} />}>
-      {value}
-    </Button>
-  );
-};
+import StatusTag from 'components/StatusTag/StatusTag';
 
 export const valueFormatter = Intl.NumberFormat('da-DK', {
   style: 'currency',
@@ -39,7 +27,7 @@ export const useColumnsAndRows = () => {
       .catch((error) => console.log('GET: ' + error));
   }, []);
   
-  const deleteUser = React.useCallback(
+  const deleteEntry = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
         deleteProject(id)
@@ -103,14 +91,14 @@ export const useColumnsAndRows = () => {
       editable: true,
       renderCell: ({ value }) => {
         if (value === 'Archived') {
-          return (<CustomButton color='inherit' value={value} />);
+          return (<StatusTag color='inherit' value={value} />);
         }
 
         if (value === 'Active') {
-          return (<CustomButton color='success' value={value} />);
+          return (<StatusTag color='success' value={value} />);
         }
 
-        return (<CustomButton color='warning' value={value} />);
+        return (<StatusTag color='warning' value={value} />);
       }
     },
     {
@@ -134,7 +122,7 @@ export const useColumnsAndRows = () => {
       headerName: 'Actions',
       width: 120,
       renderCell: (params) => 
-        <Button onClick={deleteUser(params.id)} 
+        <Button onClick={deleteEntry(params.id)} 
           variant='contained' 
           startIcon={<DeleteIcon />}
           color='error'>Delete</Button>
