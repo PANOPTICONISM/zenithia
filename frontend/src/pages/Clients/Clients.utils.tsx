@@ -1,10 +1,11 @@
-import { Box, Button } from '@mui/material';
+import { Avatar, Box, Button, Stack, Typography } from '@mui/material';
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import { ClientProps, deleteClient, getClients } from 'lib/clients';
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StatusTag from 'components/StatusTag/StatusTag';
 import { lightBlue } from 'App';
+import { deepOrange } from '@mui/material/colors';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ClientProps[]>([]);
@@ -35,18 +36,27 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       flex: 1,
       editable: true,
+      renderCell: ({ value }) => <Stack direction="row" spacing={1} alignItems="center">
+        <Avatar
+          sx={{ bgcolor: deepOrange[500], width: 26, height: 26, fontSize: '12px' }}
+          alt={value}
+        >
+          {value.slice(0, 1)}
+        </Avatar>
+        <Typography fontSize="14px">{value}</Typography>
+      </Stack>
     },
     {
       field: 'occupation',
       headerName: 'Occupation',
       minWidth: 100,
       flex: 1,
-      editable: true,    
+      editable: true,
     },
     {
       field: 'status',
       headerName: 'Status',
-      width: 110,
+      width: 130,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived'],
       editable: true,
