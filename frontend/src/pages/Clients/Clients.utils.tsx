@@ -1,10 +1,10 @@
 import { Box, Button } from '@mui/material';
-import { lightBlue } from '@mui/material/colors';
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import { ClientProps, deleteClient, getClients } from 'lib/clients';
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StatusTag from 'components/StatusTag/StatusTag';
+import { lightBlue } from 'App';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ClientProps[]>([]);
@@ -69,7 +69,7 @@ export const useColumnsAndRows = () => {
       field: 'company',
       headerName: 'Company',
       flex: 1,
-      renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>,
+      renderCell: ({ value }) => value && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{value}</Box>,
       editable: true,
     },
     {
