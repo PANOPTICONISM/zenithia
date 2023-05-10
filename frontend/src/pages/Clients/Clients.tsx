@@ -43,7 +43,7 @@ const Clients = () => {
 
   return (
     <Main title="Clients" handleClick={addUser} buttonText='Add client' isSearch>
-      <Box sx={{ height: 400, width: '100%' }}>
+      <Box sx={{ height: 620, width: '100%' }}>
         <DataGrid 
           columns={columns}
           rows={rows}
