@@ -6,12 +6,12 @@ type ServerError = { message: string; }
 
 export type ClientProps = {
   id: string,
-  name: string,
-  occupation: string,
+  name: string | null,
+  occupation: string | null,
   status: string,
-  location: string,
-  email: string,
-  phone_number: string,
+  location: string | null,
+  email: string | null,
+  phone_number: string | null,
   
 }
 

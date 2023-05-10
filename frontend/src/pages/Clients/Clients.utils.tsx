@@ -41,7 +41,7 @@ export const useColumnsAndRows = () => {
           sx={{ bgcolor: deepOrange[500], width: 26, height: 26, fontSize: '12px' }}
           alt={value}
         >
-          {value.slice(0, 1)}
+          {value?.slice(0, 1)}
         </Avatar>
         <Typography fontSize="14px">{value}</Typography>
       </Stack>
