@@ -5,9 +5,11 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { postClient } from 'lib/clients';
 import { v4 as uuidv4 } from 'uuid';
+import { useFiltering } from 'components/SearchBar/SearchBar.utils';
 
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
+  const { filterModel, handleFilterChange } = useFiltering({ columnField: 'name' });
 
   const addUser = () => {
     const randomId = uuidv4();
@@ -33,10 +35,10 @@ const Clients = () => {
           columns={columns}
           rows={rows}
           editMode="row"
-        //   processRowUpdate={handleProcessRowUpdate}
-        //   onProcessRowUpdateError={handleProcessRowUpdateError}
-        //   filterModel={filterModel}
-        //   onFilterModelChange={handleFilterChange}
+          //   processRowUpdate={handleProcessRowUpdate}
+          //   onProcessRowUpdateError={handleProcessRowUpdateError}
+          filterModel={filterModel}
+          onFilterModelChange={handleFilterChange}
         />
       </Box>
     </Main>
