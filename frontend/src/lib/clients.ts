@@ -39,7 +39,7 @@ export const postClient = async (body: ClientProps): Promise<string> => {
   }
 };
 
-export const updateClient = async (id: number, body: ClientProps): Promise<string> => {
+export const updateClient = async (id: string, body: ClientProps): Promise<string> => {
   const path = `/api/clients/${id}`;
     
   try {
