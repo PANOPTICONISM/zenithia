@@ -3,7 +3,7 @@ import React from 'react';
 import { useColumnsAndRows } from './Clients.utils';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { postClient } from 'lib/clients';
+import { ClientProps, postClient, updateClient } from 'lib/clients';
 import { v4 as uuidv4 } from 'uuid';
 import { useFiltering } from 'components/SearchBar/SearchBar.utils';
 
@@ -28,6 +28,19 @@ const Clients = () => {
     postClient(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
   };
 
+  const handleProcessRowUpdate = React.useCallback((newRow: ClientProps, oldRow: ClientProps) => {
+    if (!oldRow.id) {
+      return oldRow;
+    }
+
+    updateClient(oldRow.id, newRow).catch((error) => console.log('UPDATE: ' + error));
+    return newRow;
+  }, []);
+
+  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    console.log(error);
+  }, []);
+
   return (
     <Main title="Clients" handleClick={addUser} buttonText='Add client' isSearch>
       <Box sx={{ height: 400, width: '100%' }}>
@@ -35,8 +48,8 @@ const Clients = () => {
           columns={columns}
           rows={rows}
           editMode="row"
-          //   processRowUpdate={handleProcessRowUpdate}
-          //   onProcessRowUpdateError={handleProcessRowUpdateError}
+          processRowUpdate={handleProcessRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
           filterModel={filterModel}
           onFilterModelChange={handleFilterChange}
         />
