@@ -54,7 +54,7 @@ export const useColumnsAndRows = () => {
   const columns: GridColDef[] = [
     { field: 'id', 
       headerName: 'ID', 
-      flex: 1,
+      width: 80,
     },
     {
       field: 'title',
