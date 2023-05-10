@@ -7,6 +7,7 @@ import { SidebarProvider } from 'contexts/SidebarProvider';
 import Tasks from 'pages/Tasks';
 import TimeTracker from 'pages/TimeTracker/TimeTracker';
 import Revenue from 'pages/Revenue/Revenue';
+import Clients from 'pages/Clients/Clients';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -26,7 +27,7 @@ function App() {
           <Route path="calendar" element={<Projects/> } />
           <Route path="tasks" element={<Tasks/> } />
           <Route path="projects" element={<Projects/> } />
-          <Route path="clients" element={<Projects/> } />
+          <Route path="clients" element={<Clients/> } />
           <Route path="timetracker" element={<TimeTracker/> } />
           <Route path="revenue" element={<Revenue/> } />
         </Routes>
