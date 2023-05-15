@@ -39,8 +39,8 @@ export const useColumnsAndRows = () => {
             finish_date: entry.finish_date,
             base_price: entry.base_price,
             revenue: entry.revenue,
-            total: hoursTotal,
-            price_total: totalPrice,
+            tracked_time_in_milliseconds: hoursTotal,
+            estimated_earnings: totalPrice,
             time_tracker: entry.time_tracker,
           };
           return obj;
@@ -103,7 +103,7 @@ export const useColumnsAndRows = () => {
       valueFormatter: ({ value }) => Duration.fromMillis(value).toFormat('hh:mm')
     },
     {
-      field: 'price_total',
+      field: 'estimated_earnings',
       headerName: 'Total',
       minWidth: 120,
       flex: 1,
