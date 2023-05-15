@@ -103,7 +103,7 @@ const MonthlyStats = () => {
   }
 
   return (
-    <Main title='Bar chart'>
+    <Main title='Monthly Revenue'>
       <Box height="600px">
         <ResponsiveLine
           data={total}
@@ -123,7 +123,7 @@ const MonthlyStats = () => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Yearly Revenue Insights',
+            legend: 'Monthly Revenue Insights',
             legendOffset: 36,
             legendPosition: 'middle'
           }}
