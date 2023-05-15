@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 import LineChart from 'components/Charts/LineChart';
 import lodash from 'lodash';
+import Loading from 'components/Loading/Loading';
 
 const useRevenueData = () => {
   const { projects, setProjects } = useGetProjectsFormatted();
@@ -53,7 +54,7 @@ const MonthlyStats = () => {
   const { result } = useRevenueData();
 
   if (!result) {
-    return <>Is Loading...</>;
+    return <Loading />;
   }
 
   return (
