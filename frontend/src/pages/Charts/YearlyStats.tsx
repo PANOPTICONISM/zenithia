@@ -61,26 +61,26 @@ const useRevenueData = () => {
 
   const currentMonth = new Date().getMonth();
   const monthlyLogs = React.useMemo(() => {
-    return data.map((entry) => {
+    const monthlyEntries = data.map((entry) => {
       const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').month === currentMonth + 1);
       return { ...entry, time_tracker: entries };
     });
+    const result = monthlyEntries.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+    return result;
   }, [data]);
-
-  console.log(yearlyLogs);
 
   return { data, setData, yearlyLogs, monthlyLogs };
 };
 
 const YearlyStats = () => {
-  const { data, yearlyLogs } = useRevenueData();
+  const { data, monthlyLogs } = useRevenueData();
 
   const [total] = React.useMemo(() => {
     if (!data) {
       return [];
     }
 
-    const groupedByLogs = yearlyLogs.reduce(
+    const groupedByLogs = monthlyLogs.reduce(
       (entryMap, e) => 
         entryMap.set(DateTime.fromISO(e.finish_date).monthLong, 
           [...entryMap.get(DateTime.fromISO(e.finish_date).monthLong)||[], e]),
@@ -102,7 +102,7 @@ const YearlyStats = () => {
     });
 
     const total = { 
-      id: 'yearlyRevenue', 
+      id: 'monthlyRevenue', 
       color: darkBlue, 
       data: totalData
     };
