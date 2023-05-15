@@ -89,7 +89,7 @@ const YearlyStats = () => {
     groupedByLogs.forEach((value, key) => {
       const initialValue = 0;
       const total = value.reduce(
-        (accumulator: number, currentValue: { total: number; }) => accumulator + (currentValue?.total || 0),
+        (accumulator: number, currentValue: { price_total: number; }) => accumulator + (currentValue?.price_total || 0),
         initialValue
       );
       const obj = {
