@@ -38,8 +38,8 @@ const useRevenueData = () => {
             finish_date: entry.finish_date,
             base_price: entry.base_price,
             revenue: entry.revenue,
-            total: hoursTotal,
-            price_total: totalPrice,
+            tracked_time_in_milliseconds: hoursTotal,
+            estimated_earnings: totalPrice,
             time_tracker: entry.time_tracker,
           };
           return obj;
@@ -67,6 +67,8 @@ const useRevenueData = () => {
     });
   }, [data]);
 
+  console.log(yearlyLogs);
+
   return { data, setData, yearlyLogs, monthlyLogs };
 };
 
@@ -89,7 +91,7 @@ const YearlyStats = () => {
     groupedByLogs.forEach((value, key) => {
       const initialValue = 0;
       const total = value.reduce(
-        (accumulator: number, currentValue: { price_total: number; }) => accumulator + (currentValue?.price_total || 0),
+        (accumulator: number, currentValue: { estimated_earnings: number; }) => accumulator + (currentValue?.estimated_earnings || 0),
         initialValue
       );
       const obj = {
