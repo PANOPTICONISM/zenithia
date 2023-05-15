@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MenuIcon from '@mui/icons-material/Menu';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import { AccountTreeOutlined, AnalyticsOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
@@ -32,8 +33,8 @@ const Navigation = ({ open } : { open: boolean; }) => {
       {open ? <Subtitle text='Performance' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Revenue" icon={<TrackChangesOutlined sx={{ color: white }} />} path="/revenue" />
-        <ListLink open={open} text="Yearly" icon={<AnalyticsOutlined sx={{ color: white }} />} path="/yearly" />
         <ListLink open={open} text="Monthly" icon={<InsightsOutlined sx={{ color: white }} />} path="/monthly" />
+        <ListLink open={open} text="Yearly" icon={<DonutLargeIcon sx={{ color: white }} />} path="/yearly" />
       </List>
     </>
   );
