@@ -32,8 +32,8 @@ function App() {
           <Route path="clients" element={<Clients/> } />
           <Route path="timetracker" element={<TimeTracker/> } />
           <Route path="revenue" element={<Revenue/> } />
-          <Route path="yearly" element={<YearlyStats/> } />
           <Route path="monthly" element={<MonthlyStats/> } />
+          <Route path="yearly" element={<YearlyStats/> } />
         </Routes>
       </SearchBarProvider>
     </SidebarProvider>
