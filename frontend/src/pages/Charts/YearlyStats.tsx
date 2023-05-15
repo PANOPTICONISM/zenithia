@@ -81,8 +81,6 @@ const useRevenueData = () => {
 const YearlyStats = () => {
   const { yearlyLogsTotals } = useRevenueData();
 
-  console.log(yearlyLogsTotals, 'ahou');
-
   return (
     <Main title='Yearly Revenue'>
       <Box height="500px">
