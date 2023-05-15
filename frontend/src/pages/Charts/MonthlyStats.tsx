@@ -3,61 +3,21 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import { darkBlue } from 'App';
 import { Box } from '@mui/material';
-import { getProjects } from 'lib/projects';
-import { DateTime, Duration } from 'luxon';
-import { ProjectFormattedProps } from 'pages/Revenue/types';
+import { DateTime } from 'luxon';
+import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 
 const useRevenueData = () => {
-  const [data, setData] = React.useState<ProjectFormattedProps[]>([]);
-
-  React.useEffect(() => {
-    getProjects('*, time_tracker(*), clients(*)')
-      .then((res) => {
-        const result = res.map((entry) => {
-          const initialValue = 0;
-          const hoursTotal = entry?.time_tracker?.reduce(
-            (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
-            initialValue
-          );
-      
-          const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
-          let totalPrice = 0;
-          if (entry.base_price && hoursTotal) {
-            if (entry.revenue === 'Project') {
-              totalPrice = entry.base_price;
-            } else {
-              totalPrice = (entry.base_price / 100) * Number(totalMinutes);
-            }
-          }
-      
-          const obj = {
-            id: entry.id,
-            title: entry.title,
-            client: entry.clients?.name,
-            start_date: entry.start_date,
-            finish_date: entry.finish_date,
-            base_price: entry.base_price,
-            revenue: entry.revenue,
-            tracked_time_in_milliseconds: hoursTotal,
-            estimated_earnings: totalPrice,
-            time_tracker: entry.time_tracker,
-          };
-          return obj;
-        });
-        setData(result);
-      })
-      .catch((error) => console.log('GET: ' + error));
-  }, []);
+  const { projects, setProjects } = useGetProjectsFormatted();
 
   const yearlyLogs = React.useMemo(() => {
-    return data.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
-  }, [data]);
+    return projects.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+  }, [projects]);
 
   const monthlyLogs = React.useMemo(() => {
-    return data.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
-  }, [data]);
+    return projects.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+  }, [projects]);
 
-  return { data, setData, yearlyLogs, monthlyLogs };
+  return { data: projects, setData: setProjects, yearlyLogs, monthlyLogs };
 };
 
 const MonthlyStats = () => {
