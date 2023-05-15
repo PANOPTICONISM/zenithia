@@ -96,7 +96,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
     },
     {
-      field: 'total',
+      field: 'tracked_time_in_milliseconds',
       headerName: 'Time',
       minWidth: 120,
       flex: 1,
