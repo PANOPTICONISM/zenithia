@@ -1,55 +1,20 @@
 import { Box } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { lightBlue } from 'App';
-import { getProjects } from 'lib/projects';
+import { ProjectFormattedProps, useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 import { Duration } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import React from 'react';
-import { ProjectFormattedProps } from './types';
 
 export const useColumnsAndRows = () => {
+  const { projects } = useGetProjectsFormatted();
   const [rows, setRows] = React.useState<ProjectFormattedProps[]>([]);
   const [filteredData, setFilteredData] = React.useState<ProjectFormattedProps[]>([]);
-  
+
   React.useEffect(() => {
-    getProjects('*, time_tracker(*), clients(*)')
-      .then((res) => {
-        const result = res.map((entry) => {
-          const initialValue = 0;
-          const hoursTotal = entry?.time_tracker?.reduce(
-            (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
-            initialValue
-          );
-      
-          const totalMinutes = hoursTotal && Duration.fromMillis(hoursTotal).toFormat('mm');
-          let totalPrice = 0;
-          if (entry.base_price && hoursTotal) {
-            if (entry.revenue === 'Project') {
-              totalPrice = entry.base_price;
-            } else {
-              totalPrice = (entry.base_price / 100) * Number(totalMinutes);
-            }
-          }
-      
-          const obj = {
-            id: entry.id,
-            title: entry.title,
-            client: entry.clients?.name,
-            start_date: entry.start_date,
-            finish_date: entry.finish_date,
-            base_price: entry.base_price,
-            revenue: entry.revenue,
-            total: hoursTotal,
-            price_total: totalPrice,
-            time_tracker: entry.time_tracker,
-          };
-          return obj;
-        });
-        setRows(result);
-        setFilteredData(result);
-      })
-      .catch((error) => console.log('GET: ' + error));
-  }, []);
+    setRows(projects);
+    setFilteredData(projects);
+  }, [projects]);
     
   const columns: GridColDef[] = [
     { field: 'id', 
@@ -96,14 +61,14 @@ export const useColumnsAndRows = () => {
       flex: 1,
     },
     {
-      field: 'total',
+      field: 'tracked_time_in_milliseconds',
       headerName: 'Time',
       minWidth: 120,
       flex: 1,
       valueFormatter: ({ value }) => Duration.fromMillis(value).toFormat('hh:mm')
     },
     {
-      field: 'price_total',
+      field: 'estimated_earnings',
       headerName: 'Total',
       minWidth: 120,
       flex: 1,

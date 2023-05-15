@@ -5,7 +5,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AccountTreeOutlined, AnalyticsOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, ListAltOutlined, TrackChangesOutlined } from '@mui/icons-material';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
+import { AccountTreeOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
 import { AppBar, Stack, SwipeableDrawer, Toolbar, useMediaQuery } from '@mui/material';
@@ -21,19 +24,19 @@ const Navigation = ({ open } : { open: boolean; }) => {
       {open ? <Subtitle text='Pages' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Calendar" icon={<CalendarMonthOutlined sx={{ color: white }} />} path="/calendar" />
-        <ListLink open={open} text="Tasks" icon={<ListAltOutlined sx={{ color: white }} />} path="/tasks" />
+        <ListLink open={open} text="Tasks" icon={<DomainVerificationIcon sx={{ color: white }} />} path="/tasks" />
       </List>
       {open ? <Subtitle text='Data' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Projects" icon={<AccountTreeOutlined sx={{ color: white }} />} path="/projects" />
-        <ListLink open={open} text="Clients" icon={<ListAltOutlined sx={{ color: white }} />} path="/clients" />
-        <ListLink open={open} text="TimeTracker" icon={<HourglassBottomOutlined sx={{ color: white }} />} path="/timetracker" />
+        <ListLink open={open} text="Clients" icon={<ContactsIcon sx={{ color: white }} />} path="/clients" />
+        <ListLink open={open} text="Time Tracker" icon={<HourglassBottomOutlined sx={{ color: white }} />} path="/timetracker" />
       </List>
       {open ? <Subtitle text='Performance' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
         <ListLink open={open} text="Revenue" icon={<TrackChangesOutlined sx={{ color: white }} />} path="/revenue" />
-        <ListLink open={open} text="Yearly" icon={<AnalyticsOutlined sx={{ color: white }} />} path="/yearly" />
         <ListLink open={open} text="Monthly" icon={<InsightsOutlined sx={{ color: white }} />} path="/monthly" />
+        <ListLink open={open} text="Yearly" icon={<DonutLargeIcon sx={{ color: white }} />} path="/yearly" />
       </List>
     </>
   );

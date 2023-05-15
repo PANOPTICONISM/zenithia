@@ -8,6 +8,8 @@ import Tasks from 'pages/Tasks';
 import TimeTracker from 'pages/TimeTracker/TimeTracker';
 import Revenue from 'pages/Revenue/Revenue';
 import Clients from 'pages/Clients/Clients';
+import YearlyStats from 'pages/Charts/YearlyStats';
+import MonthlyStats from 'pages/Charts/MonthlyStats';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -30,6 +32,8 @@ function App() {
           <Route path="clients" element={<Clients/> } />
           <Route path="timetracker" element={<TimeTracker/> } />
           <Route path="revenue" element={<Revenue/> } />
+          <Route path="monthly" element={<MonthlyStats/> } />
+          <Route path="yearly" element={<YearlyStats/> } />
         </Routes>
       </SearchBarProvider>
     </SidebarProvider>
