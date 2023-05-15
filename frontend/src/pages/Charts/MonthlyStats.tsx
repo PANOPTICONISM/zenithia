@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 import LineChart from 'components/Charts/LineChart';
+import lodash from 'lodash';
 
 const useRevenueData = () => {
   const { projects, setProjects } = useGetProjectsFormatted();
@@ -14,7 +15,8 @@ const useRevenueData = () => {
   }, [projects]);
 
   const result = React.useMemo(() => {
-    const groupedByLogs = profitableEntries.reduce(
+    const sortedEntries = lodash.sortBy(profitableEntries, 'finish_date');
+    const groupedByLogs = sortedEntries.reduce(
       (entryMap, e) => 
         entryMap.set(DateTime.fromISO(e.finish_date).monthLong, 
           [...entryMap.get(DateTime.fromISO(e.finish_date).monthLong)||[], e]),
