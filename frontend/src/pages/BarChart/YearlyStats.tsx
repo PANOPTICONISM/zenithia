@@ -51,10 +51,12 @@ const useRevenueData = () => {
 
   const currentYear = new Date().getFullYear();
   const yearlyLogs = React.useMemo(() => {
-    return data.map((entry) => {
+    const yearlyEntries = data.map((entry) => {
       const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').year === currentYear);
       return { ...entry, time_tracker: entries };
     });
+    const result = yearlyEntries.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+    return result;
   }, [data]);
 
   const currentMonth = new Date().getMonth();
@@ -84,7 +86,7 @@ const YearlyStats = () => {
     );
 
     const totalData: {x: string | null, y: number | null}[] = [];
-    groupedByLogs.forEach((value, key, map) => {
+    groupedByLogs.forEach((value, key) => {
       const initialValue = 0;
       const total = value.reduce(
         (accumulator: number, currentValue: { total: number; }) => accumulator + (currentValue?.total || 0),
