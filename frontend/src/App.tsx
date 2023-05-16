@@ -10,6 +10,7 @@ import Revenue from 'pages/Revenue/Revenue';
 import Clients from 'pages/Clients/Clients';
 import YearlyStats from 'pages/Charts/YearlyStats';
 import MonthlyStats from 'pages/Charts/MonthlyStats';
+import Schedule from 'pages/Schedule/Schedule';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -26,7 +27,7 @@ function App() {
       <SearchBarProvider>
         <Routes>
           <Route path="/" element={ <Dashboard/> } />
-          <Route path="calendar" element={<Projects/> } />
+          <Route path="calendar" element={<Schedule/> } />
           <Route path="tasks" element={<Tasks/> } />
           <Route path="projects" element={<Projects/> } />
           <Route path="clients" element={<Clients/> } />
