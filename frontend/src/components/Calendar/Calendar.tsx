@@ -4,10 +4,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
+import { DateSelectArg, EventApi, EventChangeArg, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
 import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import { updateCalendar } from 'lib/calendar';
 
 const EventItem = ({ info }: { info: EventContentArg }) => {
   const { event, timeText } = info;
@@ -22,6 +24,7 @@ const EventItem = ({ info }: { info: EventContentArg }) => {
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
+  const [isEditCard, setIsEditCard] = React.useState<boolean>(false);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
 
@@ -35,8 +38,8 @@ const Calendar = () => {
       calenderApi.addEvent({
         id: uuidv4(),
         title,
-        start: selected.start,
-        end: selected.end,
+        start: selected.startStr,
+        end: selected.endStr,
         allDay: selected.allDay
       });
     }
@@ -45,6 +48,21 @@ const Calendar = () => {
   const handleEventClick = (selected: EventClickArg) => {
     if (window.confirm(`Are you sure you want to delete the event ${selected.event.title}`)) {
       selected.event.remove();
+    }
+  };
+
+  const handleUpdateEventSelect = async (selected: EventChangeArg) => {
+    try {
+      const eventCalendarUpdated = {
+        id: selected.event.id,
+        title: selected.event.title,
+        start: selected.event.startStr,
+        end: selected.event.endStr,
+      };
+
+      await updateCalendar(selected.event.id, eventCalendarUpdated);
+    } catch (err) {
+      toast.error('Could not update the event');
     }
   };
 
@@ -86,6 +104,7 @@ const Calendar = () => {
           dayMaxEvents
           select={handleDateClick}
           eventClick={handleEventClick}
+          eventChange={handleUpdateEventSelect}
           eventsSet={(events) => setCurrentEvents(events)}
           eventContent={(info) => <EventItem info={info} />}
           initialEvents={[
