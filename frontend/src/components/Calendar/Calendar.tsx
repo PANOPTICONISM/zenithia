@@ -5,12 +5,13 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DateSelectArg, EventApi, EventClickArg, EventSourceInput, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, List, ListItem, ListItemText, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { CalendarProps, getCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 import { EventItem } from './EventItem';
 import { AddEventModal, EventModal } from './Modals';
+import { useDialogEnqueue } from 'contexts/DialogProvider';
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
@@ -20,6 +21,7 @@ const Calendar = () => {
   const [editableCard, setEditableCard] = React.useState<EventClickArg | undefined>(undefined);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
+  const queueDialog = useDialogEnqueue();
 
   React.useEffect(() => {
     getCalendar()
@@ -33,8 +35,35 @@ const Calendar = () => {
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    setIsEditCard(true);
-    setEditableCard(selected);
+    return queueDialog({
+      data: (close) => ({
+        title: 'hello',
+        children: <TextField
+          label="Appointment's title"
+          defaultValue={selected.event.title}
+          fullWidth
+          // onChange={(event) => setTitle(event.target.value)}
+        />,
+        actions: (
+          <Stack direction="column" spacing={1} mt="12px">
+            <Button 
+              variant="contained" 
+              sx={{ background: darkBlue }}           
+              // onClick={handleUpdateEvent}
+            >
+              Update
+            </Button>
+            <Button
+              variant="outlined" 
+              color="error" 
+              // onClick={handleDeleteEvent}
+            >
+              Delete
+            </Button>
+          </Stack>
+        )
+      })
+    });
   };
 
   return (
