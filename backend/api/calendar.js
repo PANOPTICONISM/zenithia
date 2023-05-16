@@ -1,4 +1,4 @@
-import supabase from "../supabaseCalendar.js";
+import supabase from "../supabaseClient.js";
 
 export const getCalendar = async (req, res) => {
     try {

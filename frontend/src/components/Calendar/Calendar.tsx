@@ -4,20 +4,35 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventChangeArg, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Modal, Stack, Typography, useMediaQuery } from '@mui/material';
+import { DateSelectArg, EventApi, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
+import { Box, Button, List, ListItem, ListItemText, Modal, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
 import { updateCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 
-const EventModal = ({ open, setOpen } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, card: EventClickArg}) => {
+  const [title, setTitle] = React.useState<string>(card.event.title);
+
+  const handleUpdateEvent = async () => {
+    try {
+      const eventCalendarUpdated = {
+        id: card.event.id,
+        title: card.event.title,
+        start: card.event.startStr,
+        end: card.event.endStr,
+      };
+    
+      await updateCalendar(card.event.id, eventCalendarUpdated);
+    } catch (err) {
+      toast.error('Could not update the event');
+    }
+  };
+
   return (
     <Modal
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
       <Box sx={{ position: 'absolute' as const,
         top: '50%',
@@ -27,12 +42,24 @@ const EventModal = ({ open, setOpen } : { open: boolean, setOpen: React.Dispatch
         bgcolor: 'background.paper',
         p: 4
       }}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-      Text in a modal
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
+        <TextField
+          label="Appointment's title"
+          defaultValue={title}
+          fullWidth
+          onChange={(event) => setTitle(event.target.value)}
+        />
+        <Stack direction="column" spacing={1} mt="12px">
+          <Button 
+            variant="contained" 
+            sx={{ background: darkBlue }}           
+            onClick={handleUpdateEvent}
+          >
+        Update
+          </Button>
+          <Button variant="outlined" color="error">
+        Delete
+          </Button>
+        </Stack>
       </Box>
     </Modal>
   );
@@ -52,6 +79,7 @@ const EventItem = ({ info }: { info: EventContentArg }) => {
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
   const [isEditCard, setIsEditCard] = React.useState<boolean>(false);
+  const [editableCard, setEditableCard] = React.useState<EventClickArg | undefined>(undefined);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
 
@@ -74,22 +102,7 @@ const Calendar = () => {
 
   const handleEventClick = (selected: EventClickArg) => {
     setIsEditCard(true);
-  };
-
-  const handleUpdateEventSelect = async (selected: EventChangeArg) => {
-    console.log(selected, 'mememe');
-    try {
-      const eventCalendarUpdated = {
-        id: selected.event.id,
-        title: selected.event.title,
-        start: selected.event.startStr,
-        end: selected.event.endStr,
-      };
-
-      await updateCalendar(selected.event.id, eventCalendarUpdated);
-    } catch (err) {
-      toast.error('Could not update the event');
-    }
+    setEditableCard(selected);
   };
 
   return (
@@ -131,17 +144,16 @@ const Calendar = () => {
             dayMaxEvents
             select={handleDateClick}
             eventClick={handleEventClick}
-            eventChange={handleUpdateEventSelect}
             eventsSet={(events) => setCurrentEvents(events)}
             eventContent={(info) => <EventItem info={info} />}
             initialEvents={[
-              { id: '43545', title: 'All-day event example', date: '2023-03-02', },
-              { id: '435435', title: 'All-day event', date: '2023-05-16', }
+              { id: uuidv4(), title: 'All-day event example', date: '2023-03-02', },
+              { id: uuidv4(), title: 'All-day event', date: '2023-05-16', }
             ]}
           />
         </Box>
       </Stack>
-      <EventModal open={isEditCard} setOpen={setIsEditCard} />
+      {editableCard && <EventModal open={isEditCard} setOpen={setIsEditCard} card={editableCard} />}
     </>
   );
 };
