@@ -8,7 +8,7 @@ import { DateSelectArg, EventApi, EventClickArg, EventContentArg, EventSourceInp
 import { Box, Button, List, ListItem, ListItemText, Modal, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
-import { CalendarProps, getCalendar, postCalendar, updateCalendar } from 'lib/calendar';
+import { CalendarProps, deleteCalendar, getCalendar, postCalendar, updateCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 
 const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, card: EventClickArg}) => {
@@ -24,7 +24,7 @@ const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Di
 
     const calendarApi = card.view.calendar;
     const currentEvent = calendarApi.getEventById(card.event.id);
-    
+
     updateCalendar(card.event.id, eventCalendarUpdated)
       .then(() => {
         if (currentEvent) {
@@ -34,6 +34,17 @@ const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Di
         toast.success('Event updated');
       })
       .catch(() => toast.error('Could not update the event'));
+  };
+
+  const handleDeleteEvent = () => {
+    deleteCalendar(card.event.id)
+      .then(() => {
+        card.event.remove();
+        setOpen(false);
+        toast.success('Event deleted successfully');
+      })
+      .catch(() => toast.error('Could not delete the event'));
+
   };
 
   return (
@@ -61,10 +72,13 @@ const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Di
             sx={{ background: darkBlue }}           
             onClick={handleUpdateEvent}
           >
-        Update
+            Update
           </Button>
-          <Button variant="outlined" color="error">
-        Delete
+          <Button
+            variant="outlined" 
+            color="error" 
+            onClick={handleDeleteEvent}>
+            Delete
           </Button>
         </Stack>
       </Box>
