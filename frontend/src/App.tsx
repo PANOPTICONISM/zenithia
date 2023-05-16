@@ -11,6 +11,8 @@ import Clients from 'pages/Clients/Clients';
 import YearlyStats from 'pages/Charts/YearlyStats';
 import MonthlyStats from 'pages/Charts/MonthlyStats';
 import Schedule from 'pages/Schedule/Schedule';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -36,6 +38,18 @@ function App() {
           <Route path="monthly" element={<MonthlyStats/> } />
           <Route path="yearly" element={<YearlyStats/> } />
         </Routes>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </SearchBarProvider>
     </SidebarProvider>
   );
