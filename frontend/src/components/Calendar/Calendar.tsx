@@ -86,6 +86,65 @@ const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Di
   );
 };
 
+const AddEventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, card: DateSelectArg}) => {
+  const [title, setTitle] = React.useState<string>('');
+  
+  const handleAddEvent = () => {
+    const calendarApi = card.view.calendar;
+    calendarApi.unselect();
+
+    if (title) {
+      const eventCalendar = {
+        id: uuidv4(),
+        title,
+        start: card.startStr,
+        end: card.endStr,
+      };
+          
+      calendarApi.addEvent(eventCalendar);
+
+      postCalendar(eventCalendar)
+        .then(() => {
+          setOpen(false);
+          toast.success('Event added');
+        })
+        .catch(() => toast.error('Could not add the event'));
+    }
+  };
+  
+  return (
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+    >
+      <Box sx={{ position: 'absolute' as const,
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        p: 4
+      }}>
+        <TextField
+          label="Appointment's title"
+          defaultValue={title}
+          fullWidth
+          onChange={(event) => setTitle(event.target.value)}
+        />
+        <Stack direction="column" spacing={1} mt="12px">
+          <Button 
+            variant="contained" 
+            sx={{ background: darkBlue }}           
+            onClick={handleAddEvent}
+          >
+              Confirm
+          </Button>
+        </Stack>
+      </Box>
+    </Modal>
+  );
+};
+
 const EventItem = ({ info }: { info: EventContentArg }) => {
   const { event, timeText } = info;
 
@@ -99,6 +158,8 @@ const EventItem = ({ info }: { info: EventContentArg }) => {
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
+  const [isAddCard, setIsAddCard] = React.useState<boolean>(false);
+  const [newCard, setNewCard] = React.useState<DateSelectArg | undefined>(undefined);
   const [isEditCard, setIsEditCard] = React.useState<boolean>(false);
   const [editableCard, setEditableCard] = React.useState<EventClickArg | undefined>(undefined);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
@@ -111,24 +172,8 @@ const Calendar = () => {
   }, []);
 
   const handleDateClick = (selected: DateSelectArg) => {
-    const title = prompt('Please enter a new title');
-
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
-
-    if (title) {
-      const eventCalendar = {
-        id: uuidv4(),
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-      };
-          
-      calendarApi.addEvent(eventCalendar);
-
-      postCalendar(eventCalendar)
-        .catch((error) => console.log('POST: ' + error));
-    }
+    setNewCard(selected);
+    setIsAddCard(true);
   };
 
   const handleEventClick = (selected: EventClickArg) => {
@@ -183,6 +228,7 @@ const Calendar = () => {
         </Box>
       </Stack>
       {editableCard && <EventModal open={isEditCard} setOpen={setIsEditCard} card={editableCard} />}
+      {newCard && <AddEventModal open={isAddCard} setOpen={setIsAddCard} card={newCard} />}
     </>
   );
 };
