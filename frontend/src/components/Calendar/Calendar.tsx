@@ -3,13 +3,14 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import { CalendarApi, DateSelectArg, EventApi, EventClickArg, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
+import interactionPlugin from '@fullcalendar/interaction';
+import { DateSelectArg, EventApi, EventClickArg, formatDate } from '@fullcalendar/core';
+import { Box, List, ListItem, ListItemText, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
+  const tabletBreakpoint = useMediaQuery('(max-width:800px)');
 
   const handleDateClick = (selected: DateSelectArg) => {
     console.log('oi', selected);
@@ -61,11 +62,11 @@ const Calendar = () => {
       <Box flex="1 1 100%" ml="15px">
         <FullCalendar
           plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-          initialView="dayGridMonth"
+          initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
           headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            left: tabletBreakpoint ? 'title' : 'prev,next today',
+            center: !tabletBreakpoint ? 'title' : '',
+            right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           }}
           editable
           selectable
@@ -75,8 +76,8 @@ const Calendar = () => {
           eventClick={handleEventClick}
           eventsSet={(events) => setCurrentEvents(events)}
           initialEvents={[
-            { id: '43545', title: 'All-day event example', date: '2022-03-02', },
-            { id: '435435', title: 'All-day event', date: '2022-05-16', }
+            { id: '43545', title: 'All-day event example', date: '2023-03-02', },
+            { id: '435435', title: 'All-day event', date: '2023-05-16', }
           ]}
         />
       </Box>
