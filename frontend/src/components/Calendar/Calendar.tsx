@@ -8,8 +8,8 @@ import { DateSelectArg, EventApi, EventChangeArg, EventClickArg, EventContentArg
 import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
-import { toast } from 'react-toastify';
 import { updateCalendar } from 'lib/calendar';
+import { toast } from 'react-toastify';
 
 const EventItem = ({ info }: { info: EventContentArg }) => {
   const { event, timeText } = info;
