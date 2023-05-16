@@ -21,9 +21,15 @@ const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Di
       start: card.event.startStr,
       end: card.event.endStr,
     };
+
+    const calendarApi = card.view.calendar;
+    const currentEvent = calendarApi.getEventById(card.event.id);
     
     updateCalendar(card.event.id, eventCalendarUpdated)
       .then(() => {
+        if (currentEvent) {
+          currentEvent.setProp('title', title);
+        }
         setOpen(false);
         toast.success('Event updated');
       })
@@ -93,10 +99,8 @@ const Calendar = () => {
   const handleDateClick = (selected: DateSelectArg) => {
     const title = prompt('Please enter a new title');
 
-    const calenderApi = selected.view.calendar;
-    calenderApi.unselect();
-
-    console.log(selected);
+    const calendarApi = selected.view.calendar;
+    calendarApi.unselect();
 
     if (title) {
       const eventCalendar = {
@@ -106,7 +110,7 @@ const Calendar = () => {
         end: selected.endStr,
       };
           
-      calenderApi.addEvent(eventCalendar);
+      calendarApi.addEvent(eventCalendar);
 
       postCalendar(eventCalendar)
         .catch((error) => console.log('POST: ' + error));
