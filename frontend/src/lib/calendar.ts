@@ -11,7 +11,7 @@ export type CalendarProps = {
   end: string,
 }
 
-export const getCalendars = async (): Promise<CalendarProps[]> => {
+export const getCalendar = async (): Promise<CalendarProps[]> => {
   const path = '/api/calendar';
 
   try {
