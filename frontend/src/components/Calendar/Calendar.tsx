@@ -4,29 +4,30 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
+import { DateSelectArg, EventApi, EventClickArg, EventContentArg, EventSourceInput, formatDate } from '@fullcalendar/core';
 import { Box, Button, List, ListItem, ListItemText, Modal, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
-import { updateCalendar } from 'lib/calendar';
+import { CalendarProps, getCalendar, postCalendar, updateCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 
 const EventModal = ({ open, setOpen, card } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, card: EventClickArg}) => {
   const [title, setTitle] = React.useState<string>(card.event.title);
 
-  const handleUpdateEvent = async () => {
-    try {
-      const eventCalendarUpdated = {
-        id: card.event.id,
-        title: card.event.title,
-        start: card.event.startStr,
-        end: card.event.endStr,
-      };
+  const handleUpdateEvent = () => {
+    const eventCalendarUpdated = {
+      id: card.event.id,
+      title: title,
+      start: card.event.startStr,
+      end: card.event.endStr,
+    };
     
-      await updateCalendar(card.event.id, eventCalendarUpdated);
-    } catch (err) {
-      toast.error('Could not update the event');
-    }
+    updateCalendar(card.event.id, eventCalendarUpdated)
+      .then(() => {
+        setOpen(false);
+        toast.success('Event updated');
+      })
+      .catch(() => toast.error('Could not update the event'));
   };
 
   return (
@@ -77,11 +78,17 @@ const EventItem = ({ info }: { info: EventContentArg }) => {
 };
 
 const Calendar = () => {
-  const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
+  const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
   const [isEditCard, setIsEditCard] = React.useState<boolean>(false);
   const [editableCard, setEditableCard] = React.useState<EventClickArg | undefined>(undefined);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
+
+  React.useEffect(() => {
+    getCalendar()
+      .then((res) => setCurrentEvents(res))
+      .catch(() => toast.error('Could not add the event'));
+  }, []);
 
   const handleDateClick = (selected: DateSelectArg) => {
     const title = prompt('Please enter a new title');
@@ -89,14 +96,20 @@ const Calendar = () => {
     const calenderApi = selected.view.calendar;
     calenderApi.unselect();
 
+    console.log(selected);
+
     if (title) {
-      calenderApi.addEvent({
+      const eventCalendar = {
         id: uuidv4(),
         title,
         start: selected.startStr,
         end: selected.endStr,
-        allDay: selected.allDay
-      });
+      };
+          
+      calenderApi.addEvent(eventCalendar);
+
+      postCalendar(eventCalendar)
+        .catch((error) => console.log('POST: ' + error));
     }
   };
 
@@ -120,9 +133,9 @@ const Calendar = () => {
                   color={white}
                   primary={<Typography variant='overline' fontWeight={700}>{event.title}</Typography>}
                   secondary={
-                    <Typography>{formatDate(event.startStr, {
+                    event.start ? <Typography>{formatDate(event.start, {
                       year: 'numeric', month: 'short', day: 'numeric'
-                    })}</Typography>
+                    })}</Typography> : ''
                   }
                 />
               </ListItem>
@@ -130,6 +143,7 @@ const Calendar = () => {
           </List>
         </Box>
         <Box flex="1 1 100%">
+          {currentEvents.length > 0 && 
           <FullCalendar
             plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
             initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
@@ -146,11 +160,8 @@ const Calendar = () => {
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
             eventContent={(info) => <EventItem info={info} />}
-            initialEvents={[
-              { id: uuidv4(), title: 'All-day event example', date: '2023-03-02', },
-              { id: uuidv4(), title: 'All-day event', date: '2023-05-16', }
-            ]}
-          />
+            initialEvents={currentEvents as EventSourceInput}
+          />}
         </Box>
       </Stack>
       {editableCard && <EventModal open={isEditCard} setOpen={setIsEditCard} card={editableCard} />}
