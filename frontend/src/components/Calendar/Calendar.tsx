@@ -4,9 +4,21 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventClickArg, formatDate } from '@fullcalendar/core';
+import { DateSelectArg, EventApi, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
 import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
+import { v4 as uuidv4 } from 'uuid';
+
+const EventItem = ({ info }: { info: EventContentArg }) => {
+  const { event, timeText } = info;
+
+  return (
+    <Box>
+      <Typography variant='overline' fontWeight={700}>{event.title}</Typography>
+      <Typography>{timeText}</Typography>
+    </Box>
+  );
+};
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
@@ -14,7 +26,6 @@ const Calendar = () => {
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
 
   const handleDateClick = (selected: DateSelectArg) => {
-    console.log('oi', selected);
     const title = prompt('Please enter a new title');
 
     const calenderApi = selected.view.calendar;
@@ -22,10 +33,10 @@ const Calendar = () => {
 
     if (title) {
       calenderApi.addEvent({
-        id: `${selected.start}-${title}`,
+        id: uuidv4(),
         title,
-        start: selected.startStr,
-        end: selected.endStr,
+        start: selected.start,
+        end: selected.end,
         allDay: selected.allDay
       });
     }
@@ -49,13 +60,13 @@ const Calendar = () => {
             >
               <ListItemText
                 color={white}
-                primary={event.title}
+                primary={<Typography variant='overline' fontWeight={700}>{event.title}</Typography>}
                 secondary={
                   <Typography>{formatDate(event.startStr, {
                     year: 'numeric', month: 'short', day: 'numeric'
                   })}</Typography>
                 }
-              ></ListItemText>
+              />
             </ListItem>
           ))}
         </List>
@@ -76,6 +87,7 @@ const Calendar = () => {
           select={handleDateClick}
           eventClick={handleEventClick}
           eventsSet={(events) => setCurrentEvents(events)}
+          eventContent={(info) => <EventItem info={info} />}
           initialEvents={[
             { id: '43545', title: 'All-day event example', date: '2023-03-02', },
             { id: '435435', title: 'All-day event', date: '2023-05-16', }
