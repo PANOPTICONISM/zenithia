@@ -5,12 +5,13 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DateSelectArg, EventApi, EventClickArg, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Typography, useMediaQuery } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>([]);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
+  const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
 
   const handleDateClick = (selected: DateSelectArg) => {
     console.log('oi', selected);
@@ -37,8 +38,8 @@ const Calendar = () => {
   };
 
   return (
-    <Box>
-      <Box flex="1 1 20%" p="15px">
+    <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
+      <Box flex="1 1 22%">
         <Typography variant='h5'>Events</Typography>
         <List>
           {currentEvents.map((event) => (
@@ -59,7 +60,7 @@ const Calendar = () => {
           ))}
         </List>
       </Box>
-      <Box flex="1 1 100%" ml="15px">
+      <Box flex="1 1 100%">
         <FullCalendar
           plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
           initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
@@ -81,7 +82,7 @@ const Calendar = () => {
           ]}
         />
       </Box>
-    </Box>
+    </Stack>
   );
 };
 
