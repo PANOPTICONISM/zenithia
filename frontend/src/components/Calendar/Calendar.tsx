@@ -5,11 +5,38 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DateSelectArg, EventApi, EventChangeArg, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Modal, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { v4 as uuidv4 } from 'uuid';
 import { updateCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
+
+const EventModal = ({ open, setOpen } : { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+  return (
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={{ position: 'absolute' as const,
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        p: 4
+      }}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+      Text in a modal
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        </Typography>
+      </Box>
+    </Modal>
+  );
+};
 
 const EventItem = ({ info }: { info: EventContentArg }) => {
   const { event, timeText } = info;
@@ -46,12 +73,11 @@ const Calendar = () => {
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    if (window.confirm(`Are you sure you want to delete the event ${selected.event.title}`)) {
-      selected.event.remove();
-    }
+    setIsEditCard(true);
   };
 
   const handleUpdateEventSelect = async (selected: EventChangeArg) => {
+    console.log(selected, 'mememe');
     try {
       const eventCalendarUpdated = {
         id: selected.event.id,
@@ -67,53 +93,56 @@ const Calendar = () => {
   };
 
   return (
-    <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
-      <Box flex="1 1 22%">
-        <Typography variant='h5'>Events</Typography>
-        <List>
-          {currentEvents.map((event) => (
-            <ListItem
-              key={event.id}
-              sx={{ background: darkBlue, margin: '10px 0', borderRadius: '4px', color: white }}
-            >
-              <ListItemText
-                color={white}
-                primary={<Typography variant='overline' fontWeight={700}>{event.title}</Typography>}
-                secondary={
-                  <Typography>{formatDate(event.startStr, {
-                    year: 'numeric', month: 'short', day: 'numeric'
-                  })}</Typography>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <Box flex="1 1 100%">
-        <FullCalendar
-          plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-          initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
-          headerToolbar={{
-            left: tabletBreakpoint ? 'title' : 'prev,next today',
-            center: !tabletBreakpoint ? 'title' : '',
-            right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-          }}
-          editable
-          selectable
-          selectMirror
-          dayMaxEvents
-          select={handleDateClick}
-          eventClick={handleEventClick}
-          eventChange={handleUpdateEventSelect}
-          eventsSet={(events) => setCurrentEvents(events)}
-          eventContent={(info) => <EventItem info={info} />}
-          initialEvents={[
-            { id: '43545', title: 'All-day event example', date: '2023-03-02', },
-            { id: '435435', title: 'All-day event', date: '2023-05-16', }
-          ]}
-        />
-      </Box>
-    </Stack>
+    <>
+      <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
+        <Box flex="1 1 22%">
+          <Typography variant='h5'>Events</Typography>
+          <List>
+            {currentEvents.map((event) => (
+              <ListItem
+                key={event.id}
+                sx={{ background: darkBlue, margin: '10px 0', borderRadius: '4px', color: white }}
+              >
+                <ListItemText
+                  color={white}
+                  primary={<Typography variant='overline' fontWeight={700}>{event.title}</Typography>}
+                  secondary={
+                    <Typography>{formatDate(event.startStr, {
+                      year: 'numeric', month: 'short', day: 'numeric'
+                    })}</Typography>
+                  }
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+        <Box flex="1 1 100%">
+          <FullCalendar
+            plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+            initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
+            headerToolbar={{
+              left: tabletBreakpoint ? 'title' : 'prev,next today',
+              center: !tabletBreakpoint ? 'title' : '',
+              right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            }}
+            editable
+            selectable
+            selectMirror
+            dayMaxEvents
+            select={handleDateClick}
+            eventClick={handleEventClick}
+            eventChange={handleUpdateEventSelect}
+            eventsSet={(events) => setCurrentEvents(events)}
+            eventContent={(info) => <EventItem info={info} />}
+            initialEvents={[
+              { id: '43545', title: 'All-day event example', date: '2023-03-02', },
+              { id: '435435', title: 'All-day event', date: '2023-05-16', }
+            ]}
+          />
+        </Box>
+      </Stack>
+      <EventModal open={isEditCard} setOpen={setIsEditCard} />
+    </>
   );
 };
 
