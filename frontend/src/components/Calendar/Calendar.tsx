@@ -46,9 +46,9 @@ const Calendar = () => {
   return (
     <>
       <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
-        <Box flex="1 1 22%" sx={{ maxHeight: tabletBreakpoint ? '300px' : '710px', overflow: 'auto' }}>
+        <Box flex="1 1 22%">
           <Typography variant='h5'>Events</Typography>
-          <List>
+          <List sx={{ maxHeight: tabletBreakpoint ? '300px' : '710px', overflow: 'auto' }}>
             {currentEvents.map((event) => (
               <ListItem
                 key={event.id}
