@@ -10,6 +10,10 @@ import Revenue from 'pages/Revenue/Revenue';
 import Clients from 'pages/Clients/Clients';
 import YearlyStats from 'pages/Charts/YearlyStats';
 import MonthlyStats from 'pages/Charts/MonthlyStats';
+import Schedule from 'pages/Schedule/Schedule';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { DialogProvider } from 'contexts/DialogProvider';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -24,17 +28,31 @@ function App() {
   return (
     <SidebarProvider>
       <SearchBarProvider>
-        <Routes>
-          <Route path="/" element={ <Dashboard/> } />
-          <Route path="calendar" element={<Projects/> } />
-          <Route path="tasks" element={<Tasks/> } />
-          <Route path="projects" element={<Projects/> } />
-          <Route path="clients" element={<Clients/> } />
-          <Route path="timetracker" element={<TimeTracker/> } />
-          <Route path="revenue" element={<Revenue/> } />
-          <Route path="monthly" element={<MonthlyStats/> } />
-          <Route path="yearly" element={<YearlyStats/> } />
-        </Routes>
+        <DialogProvider>
+          <Routes>
+            <Route path="/" element={ <Dashboard/> } />
+            <Route path="calendar" element={<Schedule/> } />
+            <Route path="tasks" element={<Tasks/> } />
+            <Route path="projects" element={<Projects/> } />
+            <Route path="clients" element={<Clients/> } />
+            <Route path="timetracker" element={<TimeTracker/> } />
+            <Route path="revenue" element={<Revenue/> } />
+            <Route path="monthly" element={<MonthlyStats/> } />
+            <Route path="yearly" element={<YearlyStats/> } />
+          </Routes>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+        </DialogProvider>
       </SearchBarProvider>
     </SidebarProvider>
   );

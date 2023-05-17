@@ -5,6 +5,7 @@ import cors from 'cors';
 import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './tasks.js';
 import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
 import { deleteClient, getClients, postClient, updateClient } from './clients.js';
+import { deleteCalendar, getCalendar, postCalendar, updateCalendar } from './calendar.js';
 
 const app = express();
 const port = 4000;
@@ -50,6 +51,11 @@ app.get('/api/clients', getClients);
 app.put('/api/clients/:id', updateClient);
 app.delete('/api/clients/:id', deleteClient);
 app.post('/api/clients', postClient);
+
+app.get('/api/calendar', getCalendar);
+app.put('/api/calendar/:id', updateCalendar);
+app.delete('/api/calendar/:id', deleteCalendar);
+app.post('/api/calendar', postCalendar);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
