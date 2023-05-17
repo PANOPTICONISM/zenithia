@@ -4,8 +4,9 @@ import CloseIcon from '@mui/icons-material/Close';
 
 type DialogContentProps = React.PropsWithChildren<{
     title: React.ReactNode,
-    actions: React.ReactNode,
+    actions?: React.ReactNode,
     close?: () => void,
+    overwriteContentAndActions?: React.ReactNode,
 } & Pick<DialogProps, 'open'>>;
 
 const CustomDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<DialogContentProps>>(({
@@ -14,6 +15,7 @@ const CustomDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<Di
   title,
   actions,
   close,
+  overwriteContentAndActions
 }, ref) => {
 
   return (
@@ -54,10 +56,12 @@ const CustomDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<Di
           </IconButton>
         ) : null}
       </DialogTitle>
-      <DialogContent sx={{ padding: '24px', width: '500px', paddingTop: '24px!important' }}>
-        {children}
-      </DialogContent>
-      <DialogActions sx={{ padding: '0 24px 24px 24px' }}>{actions}</DialogActions>
+      {overwriteContentAndActions !== undefined ? overwriteContentAndActions : (
+        <DialogContent sx={{ padding: '24px', maxWidth: '500px', width: '100%', paddingTop: '24px!important' }}>
+          {children}
+        </DialogContent>
+      )}
+      {overwriteContentAndActions === undefined && actions !== null && <DialogActions sx={{ padding: '0 24px 24px 24px' }}>{actions}</DialogActions>}
     </Dialog>
   );
 });
