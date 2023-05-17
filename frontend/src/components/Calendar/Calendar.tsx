@@ -5,20 +5,16 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DateSelectArg, EventApi, EventClickArg, EventSourceInput, formatDate } from '@fullcalendar/core';
-import { Box, Button, List, ListItem, ListItemText, Stack, TextField, Typography, useMediaQuery } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, white } from 'App';
 import { CalendarProps, getCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 import { EventItem } from './EventItem';
-import { AddEventModal, EventModal } from './Modals';
 import { useDialogEnqueue } from 'contexts/DialogProvider';
+import { EventAddModal, EventUpdateModal } from './Modals';
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
-  const [isAddCard, setIsAddCard] = React.useState<boolean>(false);
-  const [newCard, setNewCard] = React.useState<DateSelectArg | undefined>(undefined);
-  const [isEditCard, setIsEditCard] = React.useState<boolean>(false);
-  const [editableCard, setEditableCard] = React.useState<EventClickArg | undefined>(undefined);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
   const queueDialog = useDialogEnqueue();
@@ -29,42 +25,23 @@ const Calendar = () => {
       .catch(() => toast.error('Could not add the event'));
   }, []);
 
-  const handleDateClick = (selected: DateSelectArg) => {
-    setNewCard(selected);
-    setIsAddCard(true);
-  };
-
-  const handleEventClick = (selected: EventClickArg) => {
+  const handleDateClick = React.useCallback((selected: DateSelectArg) => {
     return queueDialog({
       data: (close) => ({
-        title: 'hello',
-        children: <TextField
-          label="Appointment's title"
-          defaultValue={selected.event.title}
-          fullWidth
-          // onChange={(event) => setTitle(event.target.value)}
-        />,
-        actions: (
-          <Stack direction="column" spacing={1} mt="12px">
-            <Button 
-              variant="contained" 
-              sx={{ background: darkBlue }}           
-              // onClick={handleUpdateEvent}
-            >
-              Update
-            </Button>
-            <Button
-              variant="outlined" 
-              color="error" 
-              // onClick={handleDeleteEvent}
-            >
-              Delete
-            </Button>
-          </Stack>
-        )
+        title: 'Add event',
+        overwriteContentAndActions: (<EventAddModal close={close} selected={selected} />),
       })
     });
-  };
+  }, []);
+
+  const handleEventClick = React.useCallback((selected: EventClickArg) => {
+    return queueDialog({
+      data: (close) => ({
+        title: 'Edit Event',
+        overwriteContentAndActions: (<EventUpdateModal close={close} selected={selected} />),
+      })
+    });
+  }, []);
 
   return (
     <>
@@ -112,8 +89,6 @@ const Calendar = () => {
           />}
         </Box>
       </Stack>
-      {editableCard && <EventModal open={isEditCard} setOpen={setIsEditCard} card={editableCard} />}
-      {newCard && <AddEventModal open={isAddCard} setOpen={setIsAddCard} card={newCard} />}
     </>
   );
 };
