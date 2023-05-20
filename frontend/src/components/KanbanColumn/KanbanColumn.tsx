@@ -1,7 +1,7 @@
 import { Autocomplete, Box, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { grey, lightBlue, red, green, yellow, white, highlight } from '../../App';
+import { grey, lightBlue } from '../../App';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,73 +13,8 @@ import { TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
 import { ProjectProps } from '../../pages/Projects/types';
 import { ColumnProps } from '../../pages/Tasks';
-
-type DataProps = {
-  columns: ColumnProps[],
-  setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
-  column?: ColumnProps,
-}
-
-const DateAndLevel = ({ level, deadline } : { level: string | null, deadline: string }) => {
-  if (level === 'low') {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-        <Typography 
-          fontSize="14px" 
-          marginRight="6px" 
-          sx={{ background: green, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
-        <Stack spacing={0.5} direction="row">
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: green }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-        </Stack>
-      </Box>
-    );
-  }
-  if (level === 'medium') {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-        <Typography 
-          fontSize="14px" 
-          marginRight="6px" 
-          sx={{ background: yellow, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
-        <Stack spacing={0.5} direction="row">
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: yellow }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-        </Stack>
-      </Box>
-    );
-  }
-  if (level === 'high') {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-        <Typography 
-          fontSize="14px" 
-          marginRight="6px" 
-          sx={{ background: red, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
-        <Stack spacing={0.5} direction="row">
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-          <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: red }} />
-        </Stack>
-      </Box>
-    );
-  }
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-      <Typography 
-        fontSize="14px" 
-        marginRight="6px" 
-        sx={{ background: highlight, color: white, padding: '8px', borderRadius: '4px' }}>{deadline}</Typography>
-      <Stack spacing={0.5} direction="row">
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-        <Box sx={{ width: '24px', height: '12px', borderRadius: '0 0 60px 0', background: grey }} />
-      </Stack>
-    </Box>
-  );
-};
+import { DataProps } from './KanbanColumn.types';
+import { DateAndLevel } from './KanbanColumn.utils';
 
 const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProjectProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
