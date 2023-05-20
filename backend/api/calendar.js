@@ -2,7 +2,7 @@ import supabase from "../supabaseClient.js";
 
 export const getCalendar = async (req, res) => {
     try {
-        const { data, error } = await supabase.from('calendar').select();
+        const { data, error } = await supabase.from('calendars').select();
     
         if (error) {
           throw error;
