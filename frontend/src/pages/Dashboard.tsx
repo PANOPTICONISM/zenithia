@@ -1,6 +1,6 @@
 import React from 'react';
 import Main from '../components/Main/Main';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { grey, lightBlue } from 'App';
 import { DateAndLevel } from 'components/KanbanColumn/KanbanColumn.utils';
@@ -8,6 +8,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { getTasks } from 'lib/tasks';
 import { toast } from 'react-toastify';
 import { TaskProps } from 'lib/tasks';
+import lodash from 'lodash';
 
 const Dashboard = () => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
@@ -19,7 +20,8 @@ const Dashboard = () => {
   React.useEffect(() => {
     getTasks()
       .then((data) => {
-        setTasks(data);
+        const sortedData = lodash.sortBy(data, 'deadline');
+        setTasks(sortedData);
       })
       .catch(() => toast.error('Could not get the tasks'));
   }, []);
