@@ -10,7 +10,8 @@ const Main = ({
   title, 
   handleClick, 
   buttonText,
-  isSearch
+  isSearch,
+  hideMargin
 } : { children: React.ReactNode } & HeaderProps) => {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const [open] = useIsSidebarOpen();
@@ -24,6 +25,7 @@ const Main = ({
           handleClick={handleClick} 
           buttonText={buttonText} 
           isSearch={isSearch}
+          hideMargin={hideMargin}
         />
         <main>{children}</main>
       </Box>
