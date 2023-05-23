@@ -10,15 +10,16 @@ export type HeaderProps = {
     handleClick?: () => void;
     buttonText?: string;
     isSearch?: boolean,
+    hideMargin?: boolean,
 }
 
-const Header = ({ title, handleClick, buttonText, isSearch = false }: HeaderProps) => {
+const Header = ({ title, handleClick, buttonText, isSearch = false, hideMargin = false }: HeaderProps) => {
   const mobileBreakpoint = useMediaQuery('(max-width:500px)');
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
 
   return (
     <header style={ !tabletBreakpoint ? { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' } : undefined}>
-      <h1 style={{ fontSize: '48px', marginTop: 0 }}>{title}</h1>
+      <h1 style={{ fontSize: '48px', marginTop: 0, marginBottom: hideMargin ? 0 : '32px' }}>{title}</h1>
       {buttonText ? 
         <Stack direction={mobileBreakpoint ? 'column' : 'row'} spacing={2} paddingBottom="16px" justifyContent="flex-end">
           {isSearch ? <SearchBar /> : null}
