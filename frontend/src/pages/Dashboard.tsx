@@ -1,6 +1,6 @@
 import React from 'react';
 import Main from '../components/Main/Main';
-import { Box, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material';
 import { DateTime } from 'luxon';
 import { grey, lightBlue } from 'App';
 import { DateAndLevel } from 'components/KanbanColumn/KanbanColumn.utils';
@@ -74,7 +74,7 @@ const Dashboard = () => {
             </Stack>
           </Stack>
         </Box>
-        <Box sx={{ gridColumn: desktopBreakpoint ? 'span 8' : 'span 12', gridRow: desktopBreakpoint ? '2/3' : 'auto', maxHeight: '300px' }}>
+        <Box sx={{ gridColumn: desktopBreakpoint ? 'span 8' : 'span 12', gridRow: desktopBreakpoint ? '2/3' : 'auto', maxHeight: '326px', border: `1px solid ${grey}` }}>
           <LineChart result={result} />
         </Box>
       </Box>
