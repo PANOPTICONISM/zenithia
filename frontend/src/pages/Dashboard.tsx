@@ -9,6 +9,7 @@ import { getTasks } from 'lib/tasks';
 import { toast } from 'react-toastify';
 import { TaskProps } from 'lib/tasks';
 import lodash from 'lodash';
+import Calendar from 'components/Calendar/Calendar';
 
 const Dashboard = () => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
@@ -30,7 +31,7 @@ const Dashboard = () => {
     <Main title={`Good ${greeting}`} hideMargin>
       <Typography fontSize={24} fontWeight={500}>{DateTime.now().toFormat('cccc, MMMM dd')}</Typography>
       <Grid padding="24px 0">
-        <Stack sx={{ border: `1px solid ${grey}`, maxWidth: '350px' }}>
+        <Stack sx={{ border: `1px solid ${grey}`, maxWidth: '350px', maxHeight: '500px', overflow: 'auto' }}>
           <Stack direction="row" spacing={1} sx={{ padding: '24px 24px 0 24px' }}>
             <ReceiptLongIcon />
             <Typography>Urgent</Typography>
@@ -47,6 +48,7 @@ const Dashboard = () => {
             ))}
           </Stack>
         </Stack>
+        <Calendar isDashboard />
       </Grid>
     </Main>
   );

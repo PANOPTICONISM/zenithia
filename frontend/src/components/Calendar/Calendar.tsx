@@ -13,7 +13,7 @@ import { EventItem } from './EventItem';
 import { useDialogEnqueue } from 'contexts/DialogProvider';
 import { EventAddModal, EventUpdateModal } from './Modals';
 
-const Calendar = () => {
+const Calendar = ({ isDashboard = false } : { isDashboard?: boolean }) => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
   const tabletBreakpoint = useMediaQuery('(max-width:800px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
@@ -44,8 +44,8 @@ const Calendar = () => {
   }, []);
 
   return (
-    <>
-      <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
+    <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
+      {!isDashboard && (
         <Box flex="1 1 22%">
           <Typography variant='h5'>Events</Typography>
           <List sx={{ maxHeight: tabletBreakpoint ? '300px' : '710px', overflow: 'auto' }}>
@@ -67,16 +67,17 @@ const Calendar = () => {
             ))}
           </List>
         </Box>
-        <Box flex="1 1 100%">
-          {currentEvents.length > 0 && 
+      )}
+      <Box flex="1 1 100%">
+        {currentEvents.length > 0 && 
           <FullCalendar
             plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-            initialView={tabletBreakpoint ? 'timeGridDay' : 'dayGridMonth'}
-            headerToolbar={{
+            initialView={tabletBreakpoint || isDashboard ? 'listMonth' : 'dayGridMonth'}
+            headerToolbar={!isDashboard ? {
               left: tabletBreakpoint ? 'title' : 'prev,next today',
               center: !tabletBreakpoint ? 'title' : '',
               right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-            }}
+            } : false}
             editable
             selectable
             selectMirror
@@ -86,10 +87,10 @@ const Calendar = () => {
             eventsSet={(events) => setCurrentEvents(events)}
             eventContent={(info) => <EventItem info={info} />}
             initialEvents={currentEvents as EventSourceInput}
+            height={isDashboard || tabletBreakpoint ? '400px' : '100%'}
           />}
-        </Box>
-      </Stack>
-    </>
+      </Box>
+    </Stack>
   );
 };
 
