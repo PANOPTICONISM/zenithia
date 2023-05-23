@@ -13,13 +13,20 @@ import Calendar from 'components/Calendar/Calendar';
 import { EarningsTimeline } from './Revenue/Revenue';
 import PublicIcon from '@mui/icons-material/Public';
 import TodayIcon from '@mui/icons-material/Today';
+import { logsByTimeline } from './Revenue/Revenue.utils';
+import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
+import { valueFormatter } from './Projects/Projects.utils';
 
 const Dashboard = () => {
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+
   const date = new Date();
   const time = date.getHours();
   const greeting = (time < 12)? 'morning' :
     ((time <= 18 && time >= 12 ) ? 'afternoon' : 'night');
+
+  const { projects } = useGetProjectsFormatted();
+  const { totalMonthlySum, totalYearlySum } = logsByTimeline(projects);
   
   React.useEffect(() => {
     getTasks()
@@ -36,8 +43,8 @@ const Dashboard = () => {
       <Grid container spacing={3} padding="24px 0">
         <Grid item xs={12} lg={4}>
           <Stack spacing={2}>
-            <EarningsTimeline text="Earnings this year" total={'1000 DKK'} icon={<PublicIcon sx={{ height: '100%', width: '30px' }} />} />
-            <EarningsTimeline text="Earnings this month" total={'100 DKK'} icon={<TodayIcon sx={{ height: '100%', width: '30px' }} />} />
+            <EarningsTimeline text="Earnings this year" total={valueFormatter.format(Number(totalYearlySum))} icon={<PublicIcon sx={{ height: '100%', width: '70px' }} />} />
+            <EarningsTimeline text="Earnings this month" total={valueFormatter.format(Number(totalMonthlySum))} icon={<TodayIcon sx={{ height: '100%', width: '70px' }} />} />
           </Stack>
         </Grid>
         <Grid item xs={12} lg={4} justifyItems="center">
