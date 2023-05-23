@@ -111,7 +111,8 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
                 <DateAndLevel deadline={DateTime.fromISO(editableTask.deadline).toFormat('MMMM, dd')} level={editableTask.importance} />
                 <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{editableTask?.projects?.title}</Typography>
-              </Stack></>
+              </Stack>
+            </>
           }
         </Box>
       )}
