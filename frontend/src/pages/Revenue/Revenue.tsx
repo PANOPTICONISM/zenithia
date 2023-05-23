@@ -11,9 +11,9 @@ import { valueFormatter } from 'pages/Projects/Projects.utils';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import SavingsIcon from '@mui/icons-material/Savings';
 
-const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, icon: React.ReactNode}) => {
+export const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, icon: React.ReactNode}) => {
   return (
-    <Stack direction="row" spacing={1} padding="24px" sx={{ border: `1px solid ${grey}`, width: '100%' }} alignItems="center">
+    <Stack direction="row" spacing={1} boxSizing="border-box" padding="24px" sx={{ border: `1px solid ${grey}`, width: '100%' }} alignItems="center">
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>
