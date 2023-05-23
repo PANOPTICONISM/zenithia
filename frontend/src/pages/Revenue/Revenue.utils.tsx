@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { lightBlue } from 'App';
 import { ProjectFormattedProps, useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import React from 'react';
 
@@ -98,3 +98,21 @@ export const finalizeTotals = (logs: ProjectFormattedProps[]) => logs.map((entry
 
   return totalPrice;
 });
+
+export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
+  const currentYear = new Date().getFullYear();
+  const thisYearLogs = rows.map((entry) => {
+    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').year === currentYear);
+    return { ...entry, time_tracker: entries };
+  });
+  const totalYearlySum = finalizeTotals(thisYearLogs).reduce((partialSum, a) => partialSum + a, 0);
+
+  const currentMonth = new Date().getMonth();
+  const thisMonthLogs = rows.map((entry) => {
+    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').month === currentMonth + 1);
+    return { ...entry, time_tracker: entries };
+  });
+  const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
+
+  return { totalMonthlySum, totalYearlySum };
+};
