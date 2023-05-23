@@ -2,18 +2,17 @@ import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, DataGridProps, GridFilterModel } from '@mui/x-data-grid';
 import Main from 'components/Main/Main';
 import React from 'react';
-import { finalizeTotals, useColumnsAndRows } from './Revenue.utils';
+import { finalizeTotals, logsByTimeline, useColumnsAndRows } from './Revenue.utils';
 import PublicIcon from '@mui/icons-material/Public';
 import TodayIcon from '@mui/icons-material/Today';
 import { grey } from 'App';
-import { DateTime } from 'luxon';
 import { valueFormatter } from 'pages/Projects/Projects.utils';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import SavingsIcon from '@mui/icons-material/Savings';
 
-const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, icon: React.ReactNode}) => {
+export const EarningsTimeline = ({ text, total, icon } : {text: string, total: string, icon: React.ReactNode}) => {
   return (
-    <Stack direction="row" spacing={1} padding="24px" sx={{ border: `1px solid ${grey}`, width: '100%' }} alignItems="center">
+    <Stack direction="row" spacing={1} boxSizing="border-box" padding="24px" sx={{ border: `1px solid ${grey}`, width: '100%' }} alignItems="center">
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>
@@ -50,6 +49,7 @@ const DataGridInfo = ({ text, total, icon } : {text: string, total: string, icon
 const Revenue = () => {
   const { columns, rows, filteredData, setFilteredData } = useColumnsAndRows();
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({ items: [] });
+  const { totalMonthlySum, totalYearlySum } = logsByTimeline(rows);
 
   const handleFilterChange: NonNullable<DataGridProps['onFilterModelChange']> = React.useCallback(
     (model) => {
@@ -81,20 +81,6 @@ const Revenue = () => {
       
       setFilterModel(model);
     }, [filteredData]);
-
-  const currentYear = new Date().getFullYear();
-  const thisYearLogs = rows.map((entry) => {
-    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').year === currentYear);
-    return { ...entry, time_tracker: entries };
-  });
-  const totalYearlySum = finalizeTotals(thisYearLogs).reduce((partialSum, a) => partialSum + a, 0);
-
-  const currentMonth = new Date().getMonth();
-  const thisMonthLogs = rows.map((entry) => {
-    const entries = entry?.time_tracker?.filter((time) => DateTime.fromFormat(time.date, 'yyyy-MM-dd').month === currentMonth + 1);
-    return { ...entry, time_tracker: entries };
-  });
-  const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce((partialSum, a) => partialSum + a, 0);
 
   const absoluteTotal = finalizeTotals(filteredData).reduce((partialSum, a) => partialSum + a, 0);
 
