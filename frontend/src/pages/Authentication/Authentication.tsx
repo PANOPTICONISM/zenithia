@@ -18,7 +18,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
     postLoginUser({
       username,
       password
-    }).then((token) => setToken(token));
+    }).then((data) => setToken(data.token));
   };
 
   return (
