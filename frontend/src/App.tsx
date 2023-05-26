@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DialogProvider } from 'contexts/DialogProvider';
 import Authentication from 'pages/Authentication/Authentication';
+import { useToken } from 'hooks/useToken';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -26,8 +27,8 @@ export const yellow = '#ECB800';
 export const red = '#E42C2C';
 
 function App() {
-  const [token, setToken] = React.useState<string | undefined>(undefined);
-
+  const { token, setToken } = useToken();
+  
   if(!token) {
     return <Authentication setToken={setToken} />;
   }
