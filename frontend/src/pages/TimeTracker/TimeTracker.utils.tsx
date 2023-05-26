@@ -131,7 +131,9 @@ export const useColumnsAndRows = () => {
           </IconButton>
           <IconButton 
             color="error" 
-            onClick={() => deleteEntry(row.id)}> <DeleteIcon /> </IconButton>
+            onClick={() => deleteEntry(row.id)}> 
+            <DeleteIcon /> 
+          </IconButton>
         </>
     },
   ];
