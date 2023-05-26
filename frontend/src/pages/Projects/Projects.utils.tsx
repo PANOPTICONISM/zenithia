@@ -43,14 +43,12 @@ export const useColumnsAndRows = () => {
   const columns: GridColDef[] = [
     { field: 'project_id', 
       headerName: 'ID', 
-      flex: 1,
       valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: 'title',
       headerName: 'Title',
-      minWidth: 120,
-      flex: 1,
+      minWidth: 100,
       editable: true,
     },
     {
@@ -85,7 +83,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 110,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
@@ -104,7 +102,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'base_price',
       headerName: 'Base Price',
-      flex: 1,
+      minWidth: 80,
       type: 'number',
       editable: true,
       valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
@@ -112,7 +110,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'revenue',
       headerName: 'Revenue',
-      flex: 1,
+      minWidth: 80,
       type: 'singleSelect',
       valueOptions: ['Hourly', 'Project'],
       editable: true,

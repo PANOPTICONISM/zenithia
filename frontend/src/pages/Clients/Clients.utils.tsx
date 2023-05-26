@@ -49,8 +49,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'occupation',
       headerName: 'Occupation',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 120,
       editable: true,
     },
     {
@@ -71,8 +70,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'location',
       headerName: 'Location',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 80,
       editable: true,    
     },
     {
@@ -92,8 +90,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'phone_number',
       headerName: 'Phone-number',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 120,
       editable: true,    
     },
     {
