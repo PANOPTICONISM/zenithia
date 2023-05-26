@@ -56,7 +56,7 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
           onDoubleClick={() => setIsEdit(true)}
         >
           {isEdit ? <>
-            <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: '4px', top: '4px' }}>
+            <IconButton onClick={() => setIsEdit(false)} sx={{ position: 'absolute', right: '4px', top: '4px' }}>
               <CloseIcon fontSize='small' />
             </IconButton>
             <Stack spacing={2}>
@@ -107,6 +107,9 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
             </Box>
           </> : 
             <>
+              <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: '4px', top: '4px' }}>
+                <CloseIcon sx={{ width: '12px', height: '12px' }} />
+              </IconButton>
               <Typography fontWeight={700} fontSize="16px">{editableTask.title}</Typography>
               <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
                 <DateAndLevel deadline={DateTime.fromISO(editableTask.deadline).toFormat('MMMM, dd')} level={editableTask.importance} />
