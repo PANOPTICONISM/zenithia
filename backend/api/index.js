@@ -57,6 +57,12 @@ app.put('/api/calendar/:id', updateCalendar);
 app.delete('/api/calendar/:id', deleteCalendar);
 app.post('/api/calendar', postCalendar);
 
+app.use('/api/login', (req, res) => {
+  res.send({
+    token: 'test123'
+  });
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
