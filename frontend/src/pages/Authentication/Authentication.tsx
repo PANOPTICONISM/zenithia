@@ -1,15 +1,24 @@
-import { Copyright } from '@mui/icons-material';
-import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Link, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material';
 import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import { darkBlue } from 'App';
+import { postLoginUser } from 'lib/authentication';
 
 const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
 
-  const handleSubmit = () => {
-    console.log('oi');
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      return;
+    }
+    
+    postLoginUser({
+      username,
+      password
+    }).then((token) => setToken(token));
   };
 
   return (
@@ -62,7 +71,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={e => setUsername(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
             />
             <Button 
               onClick={handleSubmit} 
