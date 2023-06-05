@@ -1,20 +1,10 @@
 import supabase from "../supabaseClient.js";
 
 export const processUserDetails = async (req, res) => {
-    const { params } = req;
+    const { body } = req;
 
-    try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: params.username,
-            password: params.password,
-          })
-
-        if (error) {
-          throw error;
-        }
-        res.status(200).json(data);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred while fetching your data' });
-    }
+    await supabase.auth.signInWithPassword({
+        email: body.username,
+        password: body.password,
+      }).then((data) => res.status(200).json(data)).catch((error) => res.status(error.status).json(error.message))
 }
