@@ -29,8 +29,22 @@ export const red = '#E42C2C';
 function App() {
   const { token, setToken } = useToken();
   
-  if(!token) {
-    return <Authentication setToken={setToken} />;
+  if (!token) {
+    return <>
+      <Authentication setToken={setToken} />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </>;
   }
 
   return (
