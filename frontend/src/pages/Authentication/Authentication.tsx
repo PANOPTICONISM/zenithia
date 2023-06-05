@@ -3,6 +3,7 @@ import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import { darkBlue } from 'App';
 import { postLoginUser, signUpUser } from 'lib/authentication';
+import { toast } from 'react-toastify';
 
 const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
@@ -20,13 +21,15 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
       return postLoginUser({
         username,
         password
-      }).then((data) => console.log(data, 'oi'));
+      }).then((data) => setToken(data.id))
+        .catch((error) => toast.error('' + error));
     }
 
     return signUpUser({
       username,
       password
-    }).then((data) => console.log(data, 'oi'));
+    }).then(() => toast.success('We\'ve sent you an email for confirmation.'))
+      .catch((error) => toast.error('' + error));
   };
 
   return (
