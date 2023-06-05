@@ -2,7 +2,7 @@ import { Box, Button, Grid, Link, Paper, TextField, Typography } from '@mui/mate
 import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import { darkBlue } from 'App';
-import { postLoginUser } from 'lib/authentication';
+import { postLoginUser, signUpUser } from 'lib/authentication';
 
 const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
@@ -16,7 +16,14 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
       return;
     }
     
-    postLoginUser({
+    if (!isSignup) {
+      return postLoginUser({
+        username,
+        password
+      }).then((data) => console.log(data, 'oi'));
+    }
+
+    return signUpUser({
       username,
       password
     }).then((data) => console.log(data, 'oi'));
@@ -56,10 +63,10 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
               autoFocus
               onChange={e => setUsername(e.target.value)}
             />
