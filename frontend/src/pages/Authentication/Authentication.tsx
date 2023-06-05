@@ -1,9 +1,10 @@
-import { Box, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Link, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
-import { darkBlue } from 'App';
+import { darkBlue, grey, highlight, white } from 'App';
 import { postLoginUser, signUpUser } from 'lib/authentication';
 import { toast } from 'react-toastify';
+import { Logo } from 'icons/logo';
 
 const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
@@ -33,84 +34,98 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
   };
 
   return (
-    <Grid container sx={{ height: '100vh' }}>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={6}
-        sx={{
+    <Stack sx={{ height: '100vh', background: darkBlue }} justifyContent="center" alignItems="center">
+      <Grid container sx={{ height: '80%', width: '80%' }}>
+        <Grid
+          item
+          sm={4}
+          md={6}
+          sx={{ background: highlight, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
+        >
+          <Logo color='white' background={highlight} width={180} height={180} />
+          <Typography variant='h2' fontFamily="'Bungee Outline', cursive" color={grey}>
+          Zenithia
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={8} md={6} sx={{
           backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-        }}
-      />
-      <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography component="h1" variant="h3">
-            {isSignup ? 'Sign up' : 'Login'}
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={e => setUsername(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={e => setPassword(e.target.value)}
-            />
-            <Button 
-              onClick={handleSubmit} 
-              fullWidth
-              variant='contained' 
-              startIcon={<LoginIcon />}
-              sx={{ background: darkBlue, }}>
-              {isSignup ? 'Create an account' : 'Login'}
-            </Button>
-            <Grid container justifyContent="end" marginTop="6px">
-              {isSignup ? (
-                <Grid item>
-                  {'Have an account already? '}
-                  <Link onClick={() => setIsSignup(false)} variant="body2" sx={{ cursor: 'pointer' }}>
-                    {'Login'}
-                  </Link>
-                </Grid>) :
-                <Grid item>
-                  {'Don\'t have an account? '}
-                  <Link onClick={() => setIsSignup(true)} variant="body2" sx={{ cursor: 'pointer' }}>
-                    {'Sign up'}
-                  </Link>
-                </Grid>}
-            </Grid>
+        }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(39,62,84,0.82)',
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            <Typography component="h1" variant="h2" color={white} fontWeight={700} fontFamily="'DM Sans', sans-serif">
+              {isSignup ? 'Sign up' : 'Login'}
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, color: white, padding: '0 60px' }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={e => setUsername(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => setPassword(e.target.value)}
+              />
+              <Button 
+                onClick={handleSubmit} 
+                fullWidth
+                variant='contained' 
+                startIcon={<LoginIcon />}
+                sx={{ background: darkBlue, }}>
+                {isSignup ? 'Create account' : 'Login'}
+              </Button>
+              <Grid container justifyContent="end" marginTop="6px">
+                {isSignup ? (
+                  <Grid item>
+                    {'Have an account already? '}
+                    <Link 
+                      onClick={() => setIsSignup(false)} 
+                      variant="body2" 
+                      sx={{ cursor: 'pointer', color: white, textDecoration: 'underline' }}>
+                      {'Login.'}
+                    </Link>
+                  </Grid>) :
+                  <Grid item>
+                    {'Don\'t have an account? '}
+                    <Link 
+                      onClick={() => setIsSignup(true)} 
+                      variant="body2" 
+                      sx={{ cursor: 'pointer', color: white, textDecoration: 'underline' }}>
+                      {'Sign up.'}
+                    </Link>
+                  </Grid>}
+              </Grid>
+            </Box>
           </Box>
-        </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </Stack>
   );
 };
 
