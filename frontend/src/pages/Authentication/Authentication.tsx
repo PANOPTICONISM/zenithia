@@ -7,6 +7,7 @@ import { postLoginUser } from 'lib/authentication';
 const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
+  const [isSignup, setIsSignup] = React.useState(false);
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
     postLoginUser({
       username,
       password
-    }).then((data) => setToken(data.token));
+    }).then((data) => console.log(data, 'oi'));
   };
 
   return (
@@ -48,7 +49,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
           }}
         >
           <Typography component="h1" variant="h3">
-              Login
+            {isSignup ? 'Sign up' : 'Login'}
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
@@ -79,14 +80,22 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
               variant='contained' 
               startIcon={<LoginIcon />}
               sx={{ background: darkBlue, }}>
-                Login
+              {isSignup ? 'Create an account' : 'Login'}
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {'Don\'t have an account? Sign up'}
-                </Link>
-              </Grid>
+            <Grid container justifyContent="end" marginTop="6px">
+              {isSignup ? (
+                <Grid item>
+                  {'Have an account already? '}
+                  <Link onClick={() => setIsSignup(false)} variant="body2" sx={{ cursor: 'pointer' }}>
+                    {'Login'}
+                  </Link>
+                </Grid>) :
+                <Grid item>
+                  {'Don\'t have an account? '}
+                  <Link onClick={() => setIsSignup(true)} variant="body2" sx={{ cursor: 'pointer' }}>
+                    {'Sign up'}
+                  </Link>
+                </Grid>}
             </Grid>
           </Box>
         </Box>
