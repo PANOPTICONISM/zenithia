@@ -15,7 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DialogProvider } from 'contexts/DialogProvider';
 import Authentication from 'pages/Authentication/Authentication';
-import { useUser } from 'hooks/useUser';
+import { useUserData } from 'contexts/UserProvider';
 
 export const white = '#fff';
 export const darkBlue = '#191E38';
@@ -27,31 +27,13 @@ export const yellow = '#ECB800';
 export const red = '#E42C2C';
 
 function App() {
-  const { user, setUser } = useUser();
-  
-  if (!user) {
-    return <>
-      <Authentication setUser={setUser} />
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    </>;
-  }
+  const [user] = useUserData();
 
   return (
     <SidebarProvider>
       <SearchBarProvider>
         <DialogProvider>
-          <Routes>
+          {user ? (<Routes>
             <Route path="/" element={ <Dashboard/> } />
             <Route path="calendar" element={<Schedule/> } />
             <Route path="tasks" element={<Tasks/> } />
@@ -61,7 +43,8 @@ function App() {
             <Route path="revenue" element={<Revenue/> } />
             <Route path="monthly" element={<MonthlyStats/> } />
             <Route path="yearly" element={<YearlyStats/> } />
-          </Routes>
+          </Routes>) : 
+            <Authentication />}
           <ToastContainer
             position="bottom-right"
             autoClose={5000}
