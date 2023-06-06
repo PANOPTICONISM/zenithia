@@ -6,6 +6,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { ClientProps, postClient, updateClient } from 'lib/clients';
 import { v4 as uuidv4 } from 'uuid';
 import { useFiltering } from 'components/SearchBar/SearchBar.utils';
+import { toast } from 'react-toastify';
 
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -25,7 +26,9 @@ const Clients = () => {
       phone_number: null
     };
   
-    postClient(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
+    postClient(obj)
+      .then(() => setRows((current) => [...current, obj]))
+      .catch((error) => toast.error(error));
   };
 
   const handleProcessRowUpdate = React.useCallback((newRow: ClientProps, oldRow: ClientProps) => {
@@ -33,7 +36,8 @@ const Clients = () => {
       return oldRow;
     }
 
-    updateClient(oldRow.id, newRow).catch((error) => console.log('UPDATE: ' + error));
+    updateClient(oldRow.id, newRow)
+      .catch((error) => toast.error(error));
     return newRow;
   }, []);
 
