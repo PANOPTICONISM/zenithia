@@ -5,8 +5,9 @@ import { darkBlue, grey, highlight, white } from 'App';
 import { postLoginUser, signUpUser } from 'lib/authentication';
 import { toast } from 'react-toastify';
 import { Logo } from 'icons/logo';
+import { UserProps } from 'hooks/useUser';
 
-const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
+const Authentication = ({ setUser } : { setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>> }) => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
   const [isSignup, setIsSignup] = React.useState(false);
@@ -22,7 +23,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
       return postLoginUser({
         username,
         password
-      }).then((data) => setToken(data.id))
+      }).then((data) => setUser({ id: data.id, username: data.email.split('@')[0] }))
         .catch((error) => toast.error('' + error));
     }
 
