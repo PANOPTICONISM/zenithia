@@ -5,12 +5,14 @@ import { darkBlue, grey, highlight, white } from 'App';
 import { postLoginUser, signUpUser } from 'lib/authentication';
 import { toast } from 'react-toastify';
 import { Logo } from 'icons/logo';
-import { UserProps } from 'hooks/useUser';
+import { useUserData } from 'contexts/UserProvider';
 
-const Authentication = ({ setUser } : { setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>> }) => {
+const Authentication = () => {
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
   const [isSignup, setIsSignup] = React.useState(false);
+
+  const [, setUser] = useUserData();
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();

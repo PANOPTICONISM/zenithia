@@ -15,7 +15,8 @@ import { AppBar, Avatar, Stack, SwipeableDrawer, Toolbar, Typography, useMediaQu
 import { darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
-import { useUser } from 'hooks/useUser';
+import { useNavigate } from 'react-router-dom';
+import { useUserData } from 'contexts/UserProvider';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -47,7 +48,9 @@ const Navigation = ({ open } : { open: boolean; }) => {
 export default function Sidebar() {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const [open, setOpen] = useIsSidebarOpen();
-  const { user } = useUser();
+
+  const [user, setUser] = useUserData();
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -107,12 +110,15 @@ export default function Sidebar() {
               <Avatar
                 sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
               >
-                {'fsdfsdf'?.slice(0, 1)}
+                {user?.username?.slice(0, 1).toUpperCase()}
               </Avatar>
               {open && (
                 <>
                   <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
-                  <IconButton sx={{ padding: 0 }}>
+                  <IconButton sx={{ padding: 0 }} onClick={() => {
+                    setUser(undefined);
+                    navigate('/', { replace: true });
+                  }}>
                     <LoginIcon sx={{ color: white }} />
                   </IconButton>
                 </>
