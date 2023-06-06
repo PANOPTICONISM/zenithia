@@ -27,6 +27,7 @@ const PieChart = ({ logs } : {logs: PieChartProps}) => {
           ]
         ]
       }}
+      arcLabel={e=>''+e.value+' DKK'}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor="#333333"
       arcLinkLabelsThickness={2}
@@ -130,7 +131,7 @@ const PieChart = ({ logs } : {logs: PieChartProps}) => {
             {
               on: 'hover',
               style: {
-                itemTextColor: '#000'
+                itemTextColor: '#000',
               }
             }
           ]
