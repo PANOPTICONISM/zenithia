@@ -5,10 +5,11 @@ import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
 import { darkBlue, highlight, white } from '../../App';
 
-export const drawerWidth = 200;
-export const drawerWidthMobile = 65;
+export const drawerWidth = 260;
+export const drawerWidthMobile = 125;
 
 const openedMixin = (theme: Theme): CSSObject => ({
+  boxSizing: 'border-box',
   background: darkBlue,
   width: drawerWidth,
   padding: '30px',
@@ -17,9 +18,12 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
+  display: 'flex',
+  justifyContent: 'space-between'
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+  boxSizing: 'border-box',
   background: darkBlue,
   padding: '30px',
   transition: theme.transitions.create('width', {
@@ -27,9 +31,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
+  display: 'flex',
+  justifyContent: 'space-between',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: drawerWidthMobile + 'px',
   },
 });
 
@@ -42,8 +48,6 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 
 export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
-    width: drawerWidth,
-    boxSizing: 'border-box',
     ...(open && {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),

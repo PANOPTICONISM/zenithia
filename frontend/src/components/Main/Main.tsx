@@ -19,7 +19,7 @@ const Main = ({
   return (
     <Box sx={ !tabletBreakpoint ? { display: 'flex', justifyContent: 'space-between' } : {}}>
       <Sidebar />
-      <Box sx={tabletBreakpoint ? { padding: '20px' } : { width: open ? `calc(100% - (160px + ${drawerWidth}px))` : 'calc(100% - 225px)', padding: '50px' }}>
+      <Box sx={tabletBreakpoint ? { padding: '20px' } : { width: open ? `calc(100% - (100px + ${drawerWidth}px))` : 'calc(100% - 225px)', padding: '50px' }}>
         <Header 
           title={title} 
           handleClick={handleClick} 
