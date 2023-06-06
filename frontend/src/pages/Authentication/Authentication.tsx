@@ -71,6 +71,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, color: white, padding: '0 60px' }}>
               <TextField
+                variant='filled'
                 margin="normal"
                 required
                 fullWidth
@@ -78,11 +79,16 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
                 label="Email"
                 name="email"
                 autoComplete="email"
-                autoFocus
                 onChange={e => setUsername(e.target.value)}
+                sx={{ input: { color: white } }}
+                InputLabelProps={{
+                  style: { color: white },
+                }}
+                InputProps={{ autoFocus: true }}
               />
               <TextField
                 margin="normal"
+                variant='filled'
                 required
                 fullWidth
                 name="password"
@@ -91,6 +97,10 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
                 id="password"
                 autoComplete="current-password"
                 onChange={e => setPassword(e.target.value)}
+                sx={{ input: { color: white } }}
+                InputLabelProps={{
+                  style: { color: white },
+                }}
               />
               <Button 
                 onClick={handleSubmit} 
