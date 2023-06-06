@@ -15,6 +15,7 @@ import { AppBar, Avatar, Stack, SwipeableDrawer, Toolbar, Typography, useMediaQu
 import { darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
+import { useUser } from 'hooks/useUser';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -46,6 +47,7 @@ const Navigation = ({ open } : { open: boolean; }) => {
 export default function Sidebar() {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const [open, setOpen] = useIsSidebarOpen();
+  const { user } = useUser();
 
   return (
     <Box>
@@ -109,7 +111,7 @@ export default function Sidebar() {
               </Avatar>
               {open && (
                 <>
-                  <Typography sx={{ color: white }}>Jogn Smith</Typography>
+                  <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
                   <IconButton sx={{ padding: 0 }}>
                     <LoginIcon sx={{ color: white }} />
                   </IconButton>
