@@ -48,11 +48,10 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
           </Typography>
         </Grid>
         <Grid item xs={12} sm={8} md={6} sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundImage: 'url(/background-image.png)',
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-          backgroundSize: 'cover',
+          backgroundColor: highlight,
+          backgroundSize: 'contain',
           backgroundPosition: 'center',
         }}>
           <Box
@@ -61,7 +60,7 @@ const Authentication = ({ setToken } : { setToken: React.Dispatch<React.SetState
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(39,62,84,0.82)',
+              background: 'rgba(0, 87, 145, 0.8)',
               width: '100%',
               height: '100%'
             }}
