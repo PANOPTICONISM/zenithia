@@ -7,6 +7,7 @@ import { deleteProject, getProjects } from '../../lib/projects';
 import { lightBlue } from '../../App';
 import { ClientProps, getClients } from 'lib/clients';
 import StatusTag from 'components/StatusTag/StatusTag';
+import { toast } from 'react-toastify';
 
 export const valueFormatter = Intl.NumberFormat('da-DK', {
   style: 'currency',
@@ -20,11 +21,11 @@ export const useColumnsAndRows = () => {
   React.useEffect(() => {
     getProjects('*, clients(*)')
       .then((res) => setRows(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
 
     getClients()
       .then((res) => setClients(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
   }, []);
   
   const deleteEntry = React.useCallback(
@@ -32,9 +33,7 @@ export const useColumnsAndRows = () => {
       setTimeout(() => {
         deleteProject(id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-          .catch((error) => {
-            console.log('DELETE: ' + error.message); 
-          });
+          .catch((error) => toast.error(error));
       });
     },
     [],

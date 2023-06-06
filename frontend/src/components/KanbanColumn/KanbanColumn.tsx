@@ -15,6 +15,7 @@ import { ProjectProps } from '../../pages/Projects/types';
 import { ColumnProps } from '../../pages/Tasks';
 import { DataProps } from './KanbanColumn.types';
 import { DateAndLevel } from './KanbanColumn.utils';
+import { toast } from 'react-toastify';
 
 const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProjectProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
@@ -34,7 +35,7 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
 
     deleteTask(task.id)
       .then(() => setColumns(sortedColumns))
-      .catch((error) => console.log(console.log('Delete task failed: ' + error)));
+      .catch((error) => toast.error(error));
   };
 
   const handleSave = () => {
@@ -42,7 +43,7 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
     delete copyTask.projects;
     updateTask(task.id, copyTask)
       .then(() => setIsEdit(false))
-      .catch((error) => console.log('Update: ' + error));
+      .catch((error) => toast.error(error));
   };
 
   return (
@@ -138,7 +139,7 @@ const Column = ({ column, columns, setColumns, projects } :
 
     postTask(task)
       .then(() => setColumns(sortedColumns))
-      .catch((error) => console.log('POST: ' + error));
+      .catch((error) => toast.error(error));
 
   };
 

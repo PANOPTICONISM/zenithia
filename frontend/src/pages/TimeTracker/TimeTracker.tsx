@@ -6,6 +6,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DateTime } from 'luxon';
 import { TimeTrackerProps, postTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -23,7 +24,9 @@ const TimeTracker = () => {
       total: null,
       project_id: null,
     };
-    postTimeTracker(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
+    postTimeTracker(obj)
+      .then(() => setRows((current) => [...current, obj]))
+      .catch((error) => toast.error(error));
 
   };
 
@@ -43,7 +46,8 @@ const TimeTracker = () => {
       date: fixDateFormat(newRow.date),
     };
 
-    updateTimeTracker(oldRow.id, row).catch((error) => console.log('UPDATE: ' + error));
+    updateTimeTracker(oldRow.id, row)
+      .catch((error) => toast.error(error));
     return newRow;
   }, []);
 
