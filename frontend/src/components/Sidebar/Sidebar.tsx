@@ -11,9 +11,12 @@ import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import { AccountTreeOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
-import { AppBar, Stack, SwipeableDrawer, Toolbar, useMediaQuery } from '@mui/material';
-import { darkBlue, white } from '../../App';
+import { AppBar, Avatar, Stack, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
+import LoginIcon from '@mui/icons-material/Login';
+import { useNavigate } from 'react-router-dom';
+import { useUserData } from 'contexts/UserProvider';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -46,6 +49,9 @@ export default function Sidebar() {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const [open, setOpen] = useIsSidebarOpen();
 
+  const [user, setUser] = useUserData();
+  const navigate = useNavigate();
+
   return (
     <Box>
       {tabletBreakpoint ? 
@@ -74,7 +80,7 @@ export default function Sidebar() {
           <AppBar
             position="fixed"
             sx={{
-              width: `calc(100% - (60px + ${open ? drawerWidth : drawerWidthMobile}px))` ,
+              width: `calc(100% - (${open ? drawerWidth : drawerWidthMobile}px))` ,
               background: 'transparent',
               boxShadow: 'none'
             }}
@@ -90,10 +96,34 @@ export default function Sidebar() {
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
-            <DrawerHeader>
-              <Logo color='white' background='#191E38' />
-            </DrawerHeader>
-            <Navigation open={open} />
+            <Box>
+              <DrawerHeader>
+                <Logo color='white' background='#191E38' />
+              </DrawerHeader>
+              <Navigation open={open} />
+            </Box>
+            <Stack 
+              direction="row" 
+              alignItems="center" 
+              spacing={1} 
+              sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
+              <Avatar
+                sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
+              >
+                {user?.username?.slice(0, 1).toUpperCase()}
+              </Avatar>
+              {open && (
+                <>
+                  <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
+                  <IconButton sx={{ padding: 0 }} onClick={() => {
+                    setUser(undefined);
+                    navigate('/', { replace: true });
+                  }}>
+                    <LoginIcon sx={{ color: white }} />
+                  </IconButton>
+                </>
+              )}
+            </Stack>
           </Drawer>
         </>}
     </Box>

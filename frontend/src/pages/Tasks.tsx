@@ -7,6 +7,7 @@ import { TaskProps, getTasks, getTasksColumns, updateTask } from '../lib/tasks';
 import lodash from 'lodash';
 import { getProjects } from '../lib/projects';
 import { ProjectProps } from './Projects/types';
+import { toast } from 'react-toastify';
 
 export type ColumnProps = {
   id: string,
@@ -34,7 +35,7 @@ const Tasks = () => {
       setProjects(projectsRes);
     };
 
-    fetchAll().catch((error) => console.log(error));
+    fetchAll().catch((error) => toast.error(error));
   }, []);
 
   const handleDragEnd = (result: DropResult) => {
@@ -55,7 +56,7 @@ const Tasks = () => {
       
       updateTask(draggableId, { column_id: destination.droppableId })
         .then(() => setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy)))
-        .catch((error) => console.log('Update single field: ' + error));
+        .catch((error) => toast.error('Update single field: ' + error));
     } else {
       const sourceColumn = columns.filter((column) => column.id == source.droppableId);
       const copiedItems = [...sourceColumn][0].items;

@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StatusTag from 'components/StatusTag/StatusTag';
 import { lightBlue } from 'App';
 import { deepOrange } from '@mui/material/colors';
+import { toast } from 'react-toastify';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ClientProps[]>([]);
@@ -13,7 +14,7 @@ export const useColumnsAndRows = () => {
   React.useEffect(() => {  
     getClients()
       .then((res) => setRows(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
   }, []);
     
   const deleteUser = React.useCallback(
@@ -21,9 +22,7 @@ export const useColumnsAndRows = () => {
       setTimeout(() => {
         deleteClient(id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-          .catch((error) => {
-            console.log('DELETE: ' + error.message); 
-          });
+          .catch((error) => toast.error(error));
       });
     },
     [],
@@ -49,8 +48,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'occupation',
       headerName: 'Occupation',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 120,
       editable: true,
     },
     {
@@ -71,8 +69,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'location',
       headerName: 'Location',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 80,
       editable: true,    
     },
     {
@@ -92,8 +89,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'phone_number',
       headerName: 'Phone-number',
-      minWidth: 100,
-      flex: 1,
+      minWidth: 120,
       editable: true,    
     },
     {

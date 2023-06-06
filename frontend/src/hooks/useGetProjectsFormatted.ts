@@ -2,6 +2,7 @@ import { getProjects } from 'lib/projects';
 import { TimeTrackerProps } from 'lib/timetracker';
 import { Duration } from 'luxon';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 export type ProjectFormattedProps = {
     id?: number,
@@ -55,7 +56,7 @@ export const useGetProjectsFormatted = () => {
         });
         setProjects(result);
       })
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
   }, []);
 
   return { projects, setProjects };

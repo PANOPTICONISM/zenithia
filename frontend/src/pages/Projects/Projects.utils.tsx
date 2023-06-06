@@ -7,6 +7,7 @@ import { deleteProject, getProjects } from '../../lib/projects';
 import { lightBlue } from '../../App';
 import { ClientProps, getClients } from 'lib/clients';
 import StatusTag from 'components/StatusTag/StatusTag';
+import { toast } from 'react-toastify';
 
 export const valueFormatter = Intl.NumberFormat('da-DK', {
   style: 'currency',
@@ -20,11 +21,11 @@ export const useColumnsAndRows = () => {
   React.useEffect(() => {
     getProjects('*, clients(*)')
       .then((res) => setRows(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
 
     getClients()
       .then((res) => setClients(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
   }, []);
   
   const deleteEntry = React.useCallback(
@@ -32,9 +33,7 @@ export const useColumnsAndRows = () => {
       setTimeout(() => {
         deleteProject(id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-          .catch((error) => {
-            console.log('DELETE: ' + error.message); 
-          });
+          .catch((error) => toast.error(error));
       });
     },
     [],
@@ -43,14 +42,12 @@ export const useColumnsAndRows = () => {
   const columns: GridColDef[] = [
     { field: 'project_id', 
       headerName: 'ID', 
-      flex: 1,
       valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: 'title',
       headerName: 'Title',
-      minWidth: 120,
-      flex: 1,
+      minWidth: 100,
       editable: true,
     },
     {
@@ -85,7 +82,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 110,
+      flex: 1,
       type: 'singleSelect',
       valueOptions: ['Active', 'Archived', 'Standby'],
       editable: true,
@@ -104,7 +101,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'base_price',
       headerName: 'Base Price',
-      flex: 1,
+      minWidth: 80,
       type: 'number',
       editable: true,
       valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
@@ -112,7 +109,7 @@ export const useColumnsAndRows = () => {
     {
       field: 'revenue',
       headerName: 'Revenue',
-      flex: 1,
+      minWidth: 80,
       type: 'singleSelect',
       valueOptions: ['Hourly', 'Project'],
       editable: true,

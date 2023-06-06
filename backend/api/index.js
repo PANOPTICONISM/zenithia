@@ -6,6 +6,8 @@ import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './t
 import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
 import { deleteClient, getClients, postClient, updateClient } from './clients.js';
 import { deleteCalendar, getCalendar, postCalendar, updateCalendar } from './calendar.js';
+import { processUserDetails } from './login.js';
+import { signUp } from './signup.js';
 
 const app = express();
 const port = 4000;
@@ -56,6 +58,9 @@ app.get('/api/calendar', getCalendar);
 app.put('/api/calendar/:id', updateCalendar);
 app.delete('/api/calendar/:id', deleteCalendar);
 app.post('/api/calendar', postCalendar);
+
+app.post('/api/login', processUserDetails);
+app.post('/api/signup', signUp);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

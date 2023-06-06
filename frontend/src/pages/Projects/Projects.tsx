@@ -6,6 +6,7 @@ import { ProjectProps } from './types';
 import Main from '../../components/Main/Main';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { postProject, updateProject } from '../../lib/projects';
+import { toast } from 'react-toastify';
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -28,7 +29,8 @@ const Projects = () => {
 
     const row = { ...newRow, start_date: fixDateFormat(newRow.start_date), finish_date: fixDateFormat(newRow.finish_date) };
 
-    updateProject(oldRow.id, row).catch((error) => console.log('UPDATE: ' + error));
+    updateProject(oldRow.id, row)
+      .catch((error) => toast.error(error));
     return newRow;
   }, []);
 
@@ -50,7 +52,9 @@ const Projects = () => {
       base_price: null,
     };
 
-    postProject(obj).then(() => setRows((current) => [...current, obj])).catch((error) => console.log('POST: ' + error));
+    postProject(obj)
+      .then(() => setRows((current) => [...current, obj]))
+      .catch((error) => toast.error(error));
   };
 
   return (

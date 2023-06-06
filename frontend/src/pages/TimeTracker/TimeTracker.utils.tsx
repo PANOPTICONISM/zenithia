@@ -9,6 +9,7 @@ import NotStartedIcon from '@mui/icons-material/NotStarted';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { getProjects } from '../../lib/projects';
 import { ProjectProps } from '../Projects/types';
+import { toast } from 'react-toastify';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
@@ -17,11 +18,11 @@ export const useColumnsAndRows = () => {
   React.useEffect(() => {
     getTimeTracker('*, projects(*)')
       .then((res) => setRows(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
     
     getProjects()
       .then((res) => setProjects(res))
-      .catch((error) => console.log('GET: ' + error));
+      .catch((error) => toast.error(error));
   }, []);
 
   const [selectedId, setSelectedId] = React.useState<string | undefined>(undefined);
@@ -56,7 +57,7 @@ export const useColumnsAndRows = () => {
 
       const duration = DateTime.fromISO(finalTimestamp).diff(DateTime.fromISO(time), ['hours', 'minutes', 'seconds']).as('milliseconds');
       updateTimeTracker(id, { finish_time: finalTimestamp, total: duration })
-        .catch((error) => console.log('Update: ' + error));
+        .catch((error) => toast.error(error));
     }
 
     setIsRunning(!isRunning);
@@ -66,9 +67,7 @@ export const useColumnsAndRows = () => {
   const deleteEntry = React.useCallback((id: GridRowId) => {
     deleteTimeTracker(id)
       .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-      .catch((error) => {
-        console.log('DELETE: ' + error.message); 
-      });
+      .catch((error) => toast.error(error));
   }, []);
 
   const formatHours = (finish: string, start: string) => {
@@ -131,7 +130,9 @@ export const useColumnsAndRows = () => {
           </IconButton>
           <IconButton 
             color="error" 
-            onClick={() => deleteEntry(row.id)}> <DeleteIcon /> </IconButton>
+            onClick={() => deleteEntry(row.id)}> 
+            <DeleteIcon /> 
+          </IconButton>
         </>
     },
   ];
