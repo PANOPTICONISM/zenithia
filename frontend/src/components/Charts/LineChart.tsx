@@ -40,7 +40,7 @@ const LineChart = ({ result }: LineChartProps) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'count',
+        legend: 'DKK',
         legendOffset: -40,
         legendPosition: 'middle'
       }}
