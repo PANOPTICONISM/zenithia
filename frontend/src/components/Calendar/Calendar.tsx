@@ -15,7 +15,7 @@ import { EventAddModal, EventUpdateModal } from './Modals';
 
 const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, maxHeight?: string }) => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
-  const tabletBreakpoint = useMediaQuery('(max-width:800px)');
+  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
   const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
   const queueDialog = useDialogEnqueue();
 
@@ -87,7 +87,7 @@ const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, 
             eventsSet={(events) => setCurrentEvents(events)}
             eventContent={(info) => <EventItem info={info} />}
             initialEvents={currentEvents as EventSourceInput}
-            height={isDashboard || tabletBreakpoint ? maxHeight || '400px' : '100%'}
+            height={isDashboard || desktopBreakpoint ? maxHeight || '400px' : '100%'}
           />}
       </Box>
     </Stack>
