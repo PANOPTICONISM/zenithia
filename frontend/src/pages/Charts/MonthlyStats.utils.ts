@@ -8,7 +8,9 @@ export const useRevenueData = () => {
   const { projects, setProjects } = useGetProjectsFormatted();
   
   const profitableEntries = React.useMemo(() => {
-    return projects.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+    const profitableProjects = projects.filter((entry) => entry.time_tracker ? entry?.time_tracker?.length > 0 : entry.time_tracker === undefined);
+    const currentYear = new Date().getFullYear();
+    return profitableProjects.filter((entry) => DateTime.fromISO(entry.finish_date).year === currentYear);
   }, [projects]);
   
   const result = React.useMemo(() => {
