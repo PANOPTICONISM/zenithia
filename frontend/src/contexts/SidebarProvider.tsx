@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
 export type SidebarContextValues = {
@@ -8,7 +9,8 @@ export type SidebarContextValues = {
 export const SidebarContext = React.createContext<SidebarContextValues | null>(null);
   
 export const SidebarProvider = (({ children }: { children: React.ReactNode; }) => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(true);
+  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
+  const [isOpen, setIsOpen] = React.useState<boolean>(tabletBreakpoint ? false : true);
   
   const value = React.useMemo(() => (
     {
