@@ -15,6 +15,4 @@ SUPABASE_KEY=
 3. Front-end variables example:
 ```
 REACT_APP_API_URL=http://localhost:4000
-REACT_APP_SUPABASE_URL=
-REACT_APP_SUPABASE_KEY=
 ```
