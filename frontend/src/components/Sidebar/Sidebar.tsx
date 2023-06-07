@@ -69,10 +69,27 @@ export default function Sidebar() {
           <SwipeableDrawer
             open={open} onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}>
-            <Box sx={{ background: darkBlue, height: '100%' }}>
-              <Toolbar />
+            <Stack sx={{ background: darkBlue, height: '100%', padding: '12px' }} justifyContent="space-between">
               <Navigation open={open} />
-            </Box>
+              <Stack 
+                direction="row" 
+                alignItems="center" 
+                spacing={1} 
+                sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
+                <Avatar
+                  sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
+                >
+                  {user?.username?.slice(0, 1).toUpperCase()}
+                </Avatar>
+                <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
+                <IconButton sx={{ padding: 0 }} onClick={() => {
+                  setUser(undefined);
+                  navigate('/', { replace: true });
+                }}>
+                  <LoginIcon sx={{ color: white }} />
+                </IconButton>
+              </Stack>
+            </Stack>
           </SwipeableDrawer>
         </>
         :
