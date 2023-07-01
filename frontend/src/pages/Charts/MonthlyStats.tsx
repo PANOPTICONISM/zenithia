@@ -1,5 +1,4 @@
 import Main from 'components/Main/Main';
-import React from 'react';
 import { Box } from '@mui/material';
 import LineChart from 'components/Charts/LineChart';
 import Loading from 'components/Loading/Loading';

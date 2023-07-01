@@ -12,10 +12,10 @@ import { DateTime } from 'luxon';
 import { TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
 import { ProjectProps } from '../../pages/Projects/types';
-import { ColumnProps } from '../../pages/Tasks';
 import { DataProps } from './KanbanColumn.types';
 import { DateAndLevel } from './KanbanColumn.utils';
 import { toast } from 'react-toastify';
+import { ColumnProps } from 'pages/Tasks/Tasks.types';
 
 const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProjectProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
@@ -26,7 +26,7 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
       return;
     }
     const specificColumn = columns.filter((col) => col.id === column.id);
-    const cleanTasks = specificColumn[0].items.filter((item) => item.id !== task.id);
+    const cleanTasks = specificColumn[0].items.filter((item: TaskProps) => item.id !== task.id);
     specificColumn[0].items = cleanTasks;
 
     const otherColumns = columns.filter((col) => col.id !== column.id);
