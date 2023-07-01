@@ -30,7 +30,7 @@ export const useColumnsAndRows = () => {
       .then((res) => setClients(res))
       .catch((error) => toast.error(error));
 
-    getProjects(user.token, '*, clients(*)')
+    getProjects(user.token, '*, clients!inner(user_id)')
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
   }, [user]);

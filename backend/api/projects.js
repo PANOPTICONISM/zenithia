@@ -14,8 +14,7 @@ export const getProjects = async (req, res) => {
       });
       const { data, error } = await requester
         .from("projects")
-        .select()
-        .filter(query.ring);
+        .select(query.filter);
 
       if (error) {
         throw error;

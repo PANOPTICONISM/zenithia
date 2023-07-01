@@ -34,10 +34,10 @@ app.get("/", auth, (req, res) => {
   res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
 });
 
-app.get("/api/projects", getProjects);
-app.put("/api/projects/:id", updateProjects);
-app.delete("/api/projects/:id", deleteProject);
-app.post("/api/projects", postProject);
+app.get("/api/projects", auth, getProjects);
+app.put("/api/projects/:id", auth, updateProjects);
+app.delete("/api/projects/:id", auth, deleteProject);
+app.post("/api/projects", auth, postProject);
 
 app.get("/api/tasks", getTasksColumns);
 app.get("/api/tasks/all", getTasks);
@@ -51,9 +51,9 @@ app.put("/api/timetracker/:id", updateTimeTracker);
 app.delete("/api/timetracker/:id", deleteTimeTracker);
 
 app.get("/api/clients", auth, getClients);
-app.put('/api/clients/:id', updateClient);
-app.delete('/api/clients/:id', deleteClient);
-app.post('/api/clients', postClient);
+app.put("/api/clients/:id", auth, updateClient);
+app.delete("/api/clients/:id", auth, deleteClient);
+app.post("/api/clients", auth, postClient);
 
 app.get('/api/calendar', getCalendar);
 app.put('/api/calendar/:id', updateCalendar);
