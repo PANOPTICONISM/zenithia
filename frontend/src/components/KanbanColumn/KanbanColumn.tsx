@@ -11,7 +11,7 @@ import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DateTime } from 'luxon';
 import { TaskProps, deleteTask, postTask, updateTask } from '../../lib/tasks';
 import { v4 as uuidv4 } from 'uuid';
-import { ProjectProps } from '../../pages/Projects/types';
+import { ProjectProps } from '../../pages/Projects/Projects.types';
 import { DataProps } from './KanbanColumn.types';
 import { DateAndLevel } from './KanbanColumn.utils';
 import { toast } from 'react-toastify';

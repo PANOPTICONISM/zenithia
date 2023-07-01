@@ -1,9 +1,8 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
-import { ProjectProps } from '../pages/Projects/types';
-
-type ServerError = { message: string; }
+import { ProjectProps } from '../pages/Projects/Projects.types';
+import { ServerError } from './lib.types';
 
 export type TimeTrackerProps = {
   id: string,

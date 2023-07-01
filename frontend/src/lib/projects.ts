@@ -1,9 +1,8 @@
 import { AxiosError } from 'axios';
-import { ProjectProps } from '../pages/Projects/types';
+import { ProjectProps } from '../pages/Projects/Projects.types';
 import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
-
-type ServerError = { message: string; }
+import { ServerError } from './lib.types';
 
 export const getProjects = async (param?: string): Promise<ProjectProps[]> => {
   const path = '/api/projects';

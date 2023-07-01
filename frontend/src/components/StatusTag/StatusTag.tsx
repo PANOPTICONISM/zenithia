@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
 import HdrStrongIcon from '@mui/icons-material/HdrStrong';
-import React from 'react';
 
 const StatusTag = ({ color, value } : { color: 'inherit' | 'success' | 'warning', value: string }) => {
   return (

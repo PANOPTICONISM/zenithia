@@ -1,9 +1,10 @@
 import React from 'react';
-import Header, { HeaderProps } from '../Header/Header';
+import Header from '../Header/Header';
 import { Box, useMediaQuery } from '@mui/material';
 import Sidebar from '../Sidebar/Sidebar';
 import { drawerWidth } from '../Sidebar/Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
+import { HeaderProps } from 'components/Header/Header.types';
 
 const Main = ({ 
   children, 

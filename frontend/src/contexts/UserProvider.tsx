@@ -1,16 +1,16 @@
 import React from 'react';
 
-export type UserProps = {
+type UserProps = {
     id: string,
     username: string,
   }
 
-export type UserContextValues = {
+type UserContextValues = {
     user: UserProps | undefined;
     setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>>;
   };
   
-export const UserContext = React.createContext<UserContextValues | null>(null);
+const UserContext = React.createContext<UserContextValues | null>(null);
   
 export const UserProvider = (({ children }: { children: React.ReactNode; }) => {
 

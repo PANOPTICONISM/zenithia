@@ -1,12 +1,5 @@
 import { ResponsivePie } from '@nivo/pie';
-import React from 'react';
-
-export type PieChartProps = {
-    id: string, 
-    label: string, 
-    value: number, 
-    color: string
-}[]
+import { PieChartProps } from './Charts.types';
 
 const PieChart = ({ logs } : {logs: PieChartProps}) => {
   return (

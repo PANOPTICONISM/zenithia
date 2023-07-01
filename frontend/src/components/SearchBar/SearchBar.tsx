@@ -1,6 +1,5 @@
 import { InputAdornment, TextField } from '@mui/material';
 import { useSearchBar } from '../../contexts/SearchBarProvider';
-import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { darkBlue } from '../../App';
 

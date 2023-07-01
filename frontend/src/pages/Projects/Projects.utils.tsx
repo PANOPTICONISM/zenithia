@@ -1,6 +1,6 @@
 import { GridColDef, GridRowId } from '@mui/x-data-grid';
 import React from 'react';
-import { ProjectProps } from './types';
+import { ProjectProps } from './Projects.types';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProject, getProjects } from '../../lib/projects';
@@ -58,7 +58,7 @@ export const useColumnsAndRows = () => {
       type: 'singleSelect',
       editable: true,
       valueOptions: clients,
-      getOptionValue: (value: any)=> value?.id,
+      getOptionValue: (value: any) => value?.id,
       getOptionLabel: (value: any) => value.name,
       valueGetter: params => params.value || '',
       renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>

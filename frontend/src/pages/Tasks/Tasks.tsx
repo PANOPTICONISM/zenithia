@@ -6,7 +6,7 @@ import Column from '../../components/KanbanColumn/KanbanColumn';
 import { getTasks, getTasksColumns, updateTask } from '../../lib/tasks';
 import lodash from 'lodash';
 import { getProjects } from '../../lib/projects';
-import { ProjectProps } from '../Projects/types';
+import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
 import { ColumnProps } from './Tasks.types';
 

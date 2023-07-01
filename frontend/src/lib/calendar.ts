@@ -1,8 +1,7 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
-
-type ServerError = { message: string; }
+import { ServerError } from './lib.types';
 
 export type CalendarProps = {
   id: string,

@@ -1,16 +1,5 @@
 import { ResponsiveLine } from '@nivo/line';
-import React from 'react';
-
-type LineChartProps = {
-    result: {
-        id: string,
-    color: string,
-    data: {
-        x: string,
-        y: number,
-    }[]
-    }
-}
+import { LineChartProps } from './Charts.types';
 
 const LineChart = ({ result }: LineChartProps) => {
   return (
