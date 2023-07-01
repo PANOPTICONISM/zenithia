@@ -11,6 +11,7 @@ type User = {
 type UserResponse = {
   id: string,
   email: string | undefined,
+  token: string,
 }
 
 export const postLoginUser = async (credentials: User): Promise<UserResponse> => {
@@ -22,7 +23,7 @@ export const postLoginUser = async (credentials: User): Promise<UserResponse> =>
   if (error) {
     throw new Error(error.message);
   }
-  return { id: data.user.id, email: data.user.email };
+  return { id: data.user.id, email: data.user.email, token: data.session.access_token };
 };
 
 export const signUpUser = async (credentials: User): Promise<{id: string}> => {

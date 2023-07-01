@@ -7,12 +7,18 @@ import StatusTag from 'components/StatusTag/StatusTag';
 import { lightBlue } from 'App';
 import { deepOrange } from '@mui/material/colors';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ClientProps[]>([]);
-  
+
+  const [user] = useUserData();
+
   React.useEffect(() => {  
-    getClients()
+    if (!user) {
+      return;
+    }
+    getClients(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
   }, []);

@@ -1,6 +1,8 @@
 import supabase from "../supabaseClient.js";
 
 export const getClients = async (req, res) => {
+    const token = req.header("Authorization")?.split(" ")[1];
+    console.log(token, "client");
     try {
         const { data, error } = await supabase.from('clients').select();
     

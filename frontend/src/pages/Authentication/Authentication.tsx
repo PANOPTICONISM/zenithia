@@ -27,7 +27,7 @@ const Authentication = () => {
       return postLoginUser({
         username,
         password
-      }).then((data) => setUser({ id: data.id, username: data?.email?.split('@')[0] || '' }))
+      }).then((data) => setUser({ id: data.id, username: data?.email?.split('@')[0] || '', token: data.token }))
         .catch((error) => toast.error('' + error));
     }
 

@@ -14,11 +14,11 @@ export type ClientProps = {
   
 }
 
-export const getClients = async (): Promise<ClientProps[]> => {
+export const getClients = async (token: string): Promise<ClientProps[]> => {
   const path = '/api/clients';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path, { headers: { Authorization: `token ${token}` } });
     return response.data as ClientProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;

@@ -8,6 +8,7 @@ import { lightBlue } from '../../App';
 import { ClientProps, getClients } from 'lib/clients';
 import StatusTag from 'components/StatusTag/StatusTag';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const valueFormatter = Intl.NumberFormat('da-DK', {
   style: 'currency',
@@ -18,12 +19,17 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
   const [clients, setClients] = React.useState<ClientProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
     getProjects('*, clients(*)')
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
 
-    getClients()
+    if (!user) {
+      return;
+    }
+    getClients(user.token)
       .then((res) => setClients(res))
       .catch((error) => toast.error(error));
   }, []);
