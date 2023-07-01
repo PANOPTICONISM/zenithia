@@ -18,7 +18,12 @@ export const getClients = async (token: string): Promise<ClientProps[]> => {
   const path = '/api/clients';
 
   try {
-    const response = await requester.get(path, { headers: { Authorization: `token ${token}` } });
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as ClientProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;

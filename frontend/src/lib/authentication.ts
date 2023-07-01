@@ -31,7 +31,6 @@ export const signUpUser = async (credentials: User): Promise<{id: string}> => {
   
   try {
     const response = await requester.post(path, credentials);
-    console.log(response, 'here');
     return response.data.user as {id: string};
   } catch (err) {
     const error = err as AxiosError<ServerError>;
