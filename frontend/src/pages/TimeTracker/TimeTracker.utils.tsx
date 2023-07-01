@@ -10,20 +10,26 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { getProjects } from '../../lib/projects';
 import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
+    if (!user) {
+      return;
+    }
     getTimeTracker('*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
     
-    getProjects()
+    getProjects(user.token)
       .then((res) => setProjects(res))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const [selectedId, setSelectedId] = React.useState<string | undefined>(undefined);
   const [count, setCount] = React.useState(0);

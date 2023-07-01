@@ -22,9 +22,6 @@ export const useColumnsAndRows = () => {
   const [user] = useUserData();
 
   React.useEffect(() => {
-    getProjects('*, clients(*)')
-      .then((res) => setRows(res))
-      .catch((error) => toast.error(error));
 
     if (!user) {
       return;
@@ -32,7 +29,11 @@ export const useColumnsAndRows = () => {
     getClients(user.token)
       .then((res) => setClients(res))
       .catch((error) => toast.error(error));
-  }, []);
+
+    getProjects(user.token, '*, clients(*)')
+      .then((res) => setRows(res))
+      .catch((error) => toast.error(error));
+  }, [user]);
   
   const deleteEntry = React.useCallback(
     (id: GridRowId) => () => {

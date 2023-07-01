@@ -1,3 +1,4 @@
+import { useUserData } from 'contexts/UserProvider';
 import { getProjects } from 'lib/projects';
 import { TimeTrackerProps } from 'lib/timetracker';
 import { Duration } from 'luxon';
@@ -20,8 +21,13 @@ export type ProjectFormattedProps = {
 export const useGetProjectsFormatted = () => {
   const [projects, setProjects] = React.useState<ProjectFormattedProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
-    getProjects('*, time_tracker(*), clients(*)')
+    if (!user) {
+      return;
+    }
+    getProjects(user.token, '*, time_tracker(*), clients(*)')
       .then((res) => {
         const result = res.map((entry) => {
           const initialValue = 0;
@@ -57,7 +63,7 @@ export const useGetProjectsFormatted = () => {
         setProjects(result);
       })
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   return { projects, setProjects };
 };

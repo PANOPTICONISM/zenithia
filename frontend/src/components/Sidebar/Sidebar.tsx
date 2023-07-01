@@ -16,6 +16,8 @@ import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
 import { useUserData } from 'contexts/UserProvider';
+import { supabase } from 'lib/supabase';
+import { toast } from 'react-toastify';
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -51,6 +53,13 @@ export default function Sidebar() {
 
   const [user, setUser] = useUserData();
   const navigate = useNavigate();
+
+  const logout = async () => {
+
+    const { error } = await supabase.auth.signOut();
+
+    toast.error(error?.message);
+  };
 
   return (
     <Box>
@@ -135,6 +144,7 @@ export default function Sidebar() {
                   <IconButton sx={{ padding: 0 }} onClick={() => {
                     setUser(undefined);
                     navigate('/', { replace: true });
+                    logout();
                   }}>
                     <LoginIcon sx={{ color: white }} />
                   </IconButton>

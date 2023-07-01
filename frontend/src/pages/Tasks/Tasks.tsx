@@ -9,17 +9,23 @@ import { getProjects } from '../../lib/projects';
 import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
 import { ColumnProps } from './Tasks.types';
+import { useUserData } from 'contexts/UserProvider';
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
     const fetchAll = async () => {
+      if (!user) {
+        return;
+      }
       const [columnsRes, tasksRes, projectsRes] = await Promise.all([
         getTasksColumns(),
         getTasks(),
-        getProjects(),
+        getProjects(user.token),
       ]);
 
       const grouppedTasks = lodash.groupBy(tasksRes, 'column_id');
@@ -34,7 +40,7 @@ const Tasks = () => {
     };
 
     fetchAll().catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;

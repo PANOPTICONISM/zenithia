@@ -4,11 +4,17 @@ import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
 import { ServerError } from './lib.types';
 
-export const getProjects = async (param?: string): Promise<ProjectProps[]> => {
+export const getProjects = async (token: string, param?: string): Promise<ProjectProps[]> => {
   const path = '/api/projects';
 
   try {
-    const response = await requester.get(path, { params: { filter: param } });
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      params: { filter: param }
+    });
     return response.data as ProjectProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;

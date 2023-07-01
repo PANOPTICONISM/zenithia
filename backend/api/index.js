@@ -50,7 +50,7 @@ app.post("/api/timetracker", postTimeTracker);
 app.put("/api/timetracker/:id", updateTimeTracker);
 app.delete("/api/timetracker/:id", deleteTimeTracker);
 
-app.get("/api/clients", getClients);
+app.get("/api/clients", auth, getClients);
 app.put('/api/clients/:id', updateClient);
 app.delete('/api/clients/:id', deleteClient);
 app.post('/api/clients', postClient);
