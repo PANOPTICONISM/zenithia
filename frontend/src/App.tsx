@@ -1,10 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from 'pages/Dashboard';
 import Projects from 'pages/Projects/Projects';
-import React from 'react';
 import { SearchBarProvider } from 'contexts/SearchBarProvider';
 import { SidebarProvider } from 'contexts/SidebarProvider';
-import Tasks from 'pages/Tasks';
+import Tasks from 'pages/Tasks/Tasks';
 import TimeTracker from 'pages/TimeTracker/TimeTracker';
 import Revenue from 'pages/Revenue/Revenue';
 import Clients from 'pages/Clients/Clients';
@@ -24,7 +23,7 @@ export const highlight = '#1F2C4F';
 export const grey = '#DBDBDB';
 export const green = '#007D58';
 export const yellow = '#ECB800';
-export const red = '#E42C2C';
+export const red = '#E42C2C'; 
 
 function App() {
   const [user] = useUserData();

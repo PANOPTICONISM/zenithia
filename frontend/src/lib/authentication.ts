@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
-
-type ServerError = { message: string; }
+import { ServerError } from './lib.types';
 
 type User = {
     username: string,

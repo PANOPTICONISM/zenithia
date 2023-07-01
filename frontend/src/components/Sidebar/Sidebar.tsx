@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -47,6 +46,7 @@ const Navigation = ({ open } : { open: boolean; }) => {
 
 export default function Sidebar() {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
+
   const [open, setOpen] = useIsSidebarOpen();
 
   const [user, setUser] = useUserData();

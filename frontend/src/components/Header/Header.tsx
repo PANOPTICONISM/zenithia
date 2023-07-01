@@ -1,17 +1,9 @@
 import { AddBoxOutlined } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
-import React from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { highlight } from '../../App';
-
-export type HeaderProps = {
-    title: string;
-    handleClick?: () => void;
-    buttonText?: string;
-    isSearch?: boolean,
-    hideMargin?: boolean,
-}
+import { HeaderProps } from './Header.types';
 
 const Header = ({ title, handleClick, buttonText, isSearch = false, hideMargin = false }: HeaderProps) => {
   const mobileBreakpoint = useMediaQuery('(max-width:500px)');

@@ -1,6 +1,5 @@
 import { EventContentArg } from '@fullcalendar/core';
 import { Box, Typography } from '@mui/material';
-import React from 'react';
 
 export const EventItem = ({ info }: { info: EventContentArg }) => {
   const { event, timeText } = info;

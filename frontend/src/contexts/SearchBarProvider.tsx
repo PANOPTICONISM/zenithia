@@ -1,11 +1,11 @@
 import React from 'react';
 
-export type SearchBarContextValues = {
+type SearchBarContextValues = {
     searchValue: string;
     setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   };
   
-export const SearchBarContext = React.createContext<SearchBarContextValues | null>(null);
+const SearchBarContext = React.createContext<SearchBarContextValues | null>(null);
   
 export const SearchBarProvider = (({ children }: { children: React.ReactNode; }) => {
   const [searchValue, setSearchValue] = React.useState<string>('');

@@ -21,6 +21,7 @@ import { useRevenueData } from './Charts/MonthlyStats.utils';
 
 const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery('(min-width:1200px)');
+
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
 
   const date = new Date();

@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { useColumnsAndRows } from './Projects.utils';
-import { ProjectProps } from './types';
+import { ProjectProps } from './Projects.types';
 import Main from '../../components/Main/Main';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { postProject, updateProject } from '../../lib/projects';

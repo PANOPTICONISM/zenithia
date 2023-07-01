@@ -1,12 +1,12 @@
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
-export type SidebarContextValues = {
+type SidebarContextValues = {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   };
   
-export const SidebarContext = React.createContext<SidebarContextValues | null>(null);
+const SidebarContext = React.createContext<SidebarContextValues | null>(null);
   
 export const SidebarProvider = (({ children }: { children: React.ReactNode; }) => {
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');

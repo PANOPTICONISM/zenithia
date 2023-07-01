@@ -3,7 +3,8 @@ import React from 'react';
 import { DateTime } from 'luxon';
 import { Box } from '@mui/material';
 import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
-import PieChart, { PieChartProps } from 'components/Charts/PieChart';
+import PieChart from 'components/Charts/PieChart';
+import { PieChartProps } from 'components/Charts/Charts.types';
 
 const useRevenueData = () => {
   const { projects, setProjects } = useGetProjectsFormatted();

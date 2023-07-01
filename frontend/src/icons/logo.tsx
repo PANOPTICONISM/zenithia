@@ -1,6 +1,5 @@
 import { SxProps } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
 
 export const Logo = ({ color, background, sx, width, height } : {color: string, background?: string, sx?: SxProps, width?: number, height?: number}) => {
   return (

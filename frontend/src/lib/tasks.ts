@@ -1,8 +1,7 @@
 import { AxiosError } from 'axios';
 import { requester } from './axios';
-import { ProjectProps } from '../pages/Projects/types';
-
-type ServerError = { message: string; }
+import { ProjectProps } from '../pages/Projects/Projects.types';
+import { ServerError } from './lib.types';
 
 export type TaskProps = {
   id: string;

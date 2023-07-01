@@ -8,7 +8,7 @@ import { lightBlue } from '../../App';
 import NotStartedIcon from '@mui/icons-material/NotStarted';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { getProjects } from '../../lib/projects';
-import { ProjectProps } from '../Projects/types';
+import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
 
 export const useColumnsAndRows = () => {
