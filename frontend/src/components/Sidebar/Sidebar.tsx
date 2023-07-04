@@ -32,8 +32,8 @@ const Navigation = ({ open } : { open: boolean; }) => {
       </List>
       {open ? <Subtitle text='Data' /> : <Divider sx={{ background: white }} />}
       <List disablePadding={open}>
-        <ListLink open={open} text="Projects" icon={<AccountTreeOutlined sx={{ color: white }} />} path="/projects" />
         <ListLink open={open} text="Clients" icon={<ContactsIcon sx={{ color: white }} />} path="/clients" />
+        <ListLink open={open} text="Projects" icon={<AccountTreeOutlined sx={{ color: white }} />} path="/projects" />
         <ListLink open={open} text="Time Tracker" icon={<HourglassBottomOutlined sx={{ color: white }} />} path="/timetracker" />
       </List>
       {open ? <Subtitle text='Performance' /> : <Divider sx={{ background: white }} />}
