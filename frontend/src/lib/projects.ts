@@ -43,7 +43,12 @@ export const updateProject = async (token: string, id: string, body: ProjectProp
   const path = `/api/projects/${id}`;
     
   try {
-    const response = await requester.put(path, body);
+    const response = await requester.put(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -55,7 +60,12 @@ export const deleteProject = async (token: string, id: GridRowId): Promise<strin
   const path = `/api/projects/${id}`;
     
   try {
-    const response = await requester.delete(path);
+    const response = await requester.delete(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;

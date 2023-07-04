@@ -12,7 +12,9 @@ export const getProjects = async (req, res) => {
         },
       },
     });
-    const { data, error } = await requester.from("projects").select();
+    const { data, error } = await requester
+      .from("projects")
+      .select(query.filter);
 
     if (error) {
       throw error;
@@ -28,6 +30,7 @@ export const getProjects = async (req, res) => {
 
 export const updateProjects = async (req, res) => {
   const { body, params } = req;
+  const token = req.header("Authorization");
 
   try {
     const requester = supabase({
@@ -56,9 +59,17 @@ export const updateProjects = async (req, res) => {
 
 export const deleteProject = async (req, res) => {
   const { params } = req;
+  const token = req.header("Authorization");
 
   try {
-    const { error } = await supabase
+    const requester = supabase({
+      global: {
+        headers: {
+          Authorization: token,
+        },
+      },
+    });
+    const { error } = await requester
       .from("projects")
       .delete()
       .eq("id", params.id);
