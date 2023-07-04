@@ -7,36 +7,42 @@ import { ClientProps, postClient, updateClient } from 'lib/clients';
 import { v4 as uuidv4 } from 'uuid';
 import { useFiltering } from 'components/SearchBar/SearchBar.utils';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({ columnField: 'name' });
 
+  const [user] = useUserData();
+
   const addUser = () => {
-    const randomId = uuidv4();
+    if (!user) {
+      return;
+    }
     
     const obj = {
-      id: randomId,
+      id: uuidv4(),
       name: null, 
       occupation: null,
       status: 'Standby', 
       location: '',
       company: null,
       email: null,
-      phone_number: null
+      phone_number: null,
+      user_id: user.id
     };
-  
-    postClient(obj)
+
+    postClient(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
       .catch((error) => toast.error(error));
   };
 
   const handleProcessRowUpdate = React.useCallback((newRow: ClientProps, oldRow: ClientProps) => {
-    if (!oldRow.id) {
+    if (!oldRow.id || !user) {
       return oldRow;
     }
 
-    updateClient(oldRow.id, newRow)
+    updateClient(user.token, oldRow.id, newRow)
       .catch((error) => toast.error(error));
     return newRow;
   }, []);

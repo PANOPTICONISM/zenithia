@@ -94,18 +94,18 @@ export const useColumnsAndRows = () => {
       headerName: 'Status',
       flex: 1,
       type: 'singleSelect',
-      valueOptions: ['Active', 'Archived', 'Standby'],
+      valueOptions: ['Active', 'Standby', 'Archived'],
       editable: true,
       renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<StatusTag color='inherit' value={value} />);
         }
 
-        if (value === 'Active') {
-          return (<StatusTag color='success' value={value} />);
+        if (value === 'Standby') {
+          return (<StatusTag color='warning' value={value} />);
         }
 
-        return (<StatusTag color='warning' value={value} />);
+        return (<StatusTag color='success' value={value} />);
       }
     },
     {

@@ -26,7 +26,10 @@ export const useColumnsAndRows = () => {
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        deleteClient(id)
+        if (!user) {
+          return;
+        }
+        deleteClient(user.token, id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => toast.error(error));
       });
@@ -62,11 +65,15 @@ export const useColumnsAndRows = () => {
       headerName: 'Status',
       width: 130,
       type: 'singleSelect',
-      valueOptions: ['Active', 'Archived'],
+      valueOptions: ['Active', 'Standby', 'Archived'],
       editable: true,
       renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<StatusTag color='inherit' value={value} />);
+        }
+
+        if (value === 'Standby') {
+          return (<StatusTag color='warning' value={value} />);
         }
   
         return (<StatusTag color='success' value={value} />);

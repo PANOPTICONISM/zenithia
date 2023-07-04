@@ -31,11 +31,16 @@ export const getClients = async (token: string): Promise<ClientProps[]> => {
   }
 };
 
-export const postClient = async (body: ClientProps): Promise<string> => {
+export const postClient = async (token: string, body: ClientProps): Promise<string> => {
   const path = '/api/clients';
   
   try {
-    const response = await requester.post(path, body);
+    const response = await requester.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -43,11 +48,16 @@ export const postClient = async (body: ClientProps): Promise<string> => {
   }
 };
 
-export const updateClient = async (id: string, body: ClientProps): Promise<string> => {
+export const updateClient = async (token: string, id: string, body: ClientProps): Promise<string> => {
   const path = `/api/clients/${id}`;
     
   try {
-    const response = await requester.put(path, body);
+    const response = await requester.put(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -55,11 +65,16 @@ export const updateClient = async (id: string, body: ClientProps): Promise<strin
   }
 };
 
-export const deleteClient = async (id: GridRowId): Promise<string> => {
+export const deleteClient = async (token: string, id: GridRowId): Promise<string> => {
   const path = `/api/clients/${id}`;
     
   try {
-    const response = await requester.delete(path);
+    const response = await requester.delete(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
