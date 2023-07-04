@@ -22,7 +22,6 @@ export const useColumnsAndRows = () => {
   const [user] = useUserData();
 
   React.useEffect(() => {
-
     if (!user) {
       return;
     }
@@ -38,7 +37,10 @@ export const useColumnsAndRows = () => {
   const deleteEntry = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        deleteProject(id)
+        if (!user) {
+          return;
+        }
+        deleteProject(user.token, id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => toast.error(error));
       });
@@ -47,7 +49,8 @@ export const useColumnsAndRows = () => {
   );
   
   const columns: GridColDef[] = [
-    { field: 'project_id', 
+    {
+      field: 'id', 
       headerName: 'ID', 
       valueFormatter: ({ value }) => value?.slice(0, 8),
     },

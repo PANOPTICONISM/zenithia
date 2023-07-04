@@ -7,13 +7,17 @@ import Main from '../../components/Main/Main';
 import { useFiltering } from '../../components/SearchBar/SearchBar.utils';
 import { postProject, updateProject } from '../../lib/projects';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
+import { v4 as uuidv4 } from 'uuid';
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({ columnField: 'title' });
 
+  const [user] = useUserData();
+
   const handleProcessRowUpdate = React.useCallback((newRow: ProjectProps, oldRow: ProjectProps) => {
-    if (!oldRow.id) {
+    if (!oldRow.id || !user) {
       return oldRow;
     }
 
@@ -28,8 +32,7 @@ const Projects = () => {
     }
 
     const row = { ...newRow, start_date: fixDateFormat(newRow.start_date), finish_date: fixDateFormat(newRow.finish_date) };
-
-    updateProject(oldRow.id, row)
+    updateProject(user.token, oldRow.id, row)
       .catch((error) => toast.error(error));
     return newRow;
   }, []);
@@ -41,8 +44,11 @@ const Projects = () => {
   const addProject = () => {
     const date = new Date().toLocaleDateString('en-US');
 
+    if (!user) {
+      return;
+    }
     const obj = {
-      id: Math.floor(Math.random() * 10000),
+      id: uuidv4(),
       title: '', 
       start_date: date, 
       finish_date: date, 
@@ -50,9 +56,10 @@ const Projects = () => {
       revenue: 'Hourly',
       client_id: null,
       base_price: null,
+      user_id: user.id
     };
 
-    postProject(obj)
+    postProject(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
       .catch((error) => toast.error(error));
   };

@@ -7,7 +7,7 @@ export type TaskProps = {
   id: string;
   title: string;
   importance: string | null,
-  project_id?: number,
+  project_id?: string,
   column_id: string,
   deadline: string,
   projects?: ProjectProps | null;

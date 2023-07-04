@@ -10,7 +10,7 @@ export type TimeTrackerProps = {
   start_time: string | null,
   finish_time: string | null,
   total: number | null,
-  project_id: number | null,
+  project_id: string | null,
   projects?: ProjectProps
 }
 
