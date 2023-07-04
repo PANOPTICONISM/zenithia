@@ -9,6 +9,7 @@ import { deleteCalendar, getCalendar, postCalendar, updateCalendar } from './cal
 import { processUserDetails } from './login.js';
 import { signUp } from './signup.js';
 import { auth } from "./middleware/auth.js";
+import { rateLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
 const port = 4000;
@@ -27,11 +28,13 @@ app.use(
   })
 );
 
+app.use(rateLimiter);
+
 app.get("/", auth, (req, res) => {
   const path = `/api/projects`;
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
-  res.end(`Hello! Go to: <a href="${path}">${path}</a>`);
+  res.end("You have the correct credentials.");
 });
 
 app.get("/api/projects", auth, getProjects);
