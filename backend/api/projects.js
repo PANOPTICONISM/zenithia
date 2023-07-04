@@ -17,7 +17,7 @@ export const getProjects = async (req, res) => {
       .select(query.filter);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).json(data);
   } catch (error) {
@@ -46,7 +46,7 @@ export const updateProjects = async (req, res) => {
       .eq("id", params.id);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Project with id: ${params.id} has been modified`);
   } catch (error) {
@@ -75,7 +75,7 @@ export const deleteProject = async (req, res) => {
       .eq("id", params.id);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Project with id: ${params.id} has been deleted`);
   } catch (error) {
@@ -101,7 +101,7 @@ export const postProject = async (req, res) => {
     const { error } = await requester.from("projects").insert(body);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Project added successfully`);
   } catch (error) {

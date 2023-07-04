@@ -14,7 +14,7 @@ export const getClients = async (req, res) => {
     const { data, error } = await requester.from("clients").select();
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).json(data);
   } catch (error) {
@@ -27,15 +27,23 @@ export const getClients = async (req, res) => {
 
 export const updateClient = async (req, res) => {
   const { body, params } = req;
+  const token = req.header("Authorization");
 
   try {
-    const { error } = await supabase
+    const requester = supabase({
+      global: {
+        headers: {
+          Authorization: token,
+        },
+      },
+    });
+    const { error } = await requester
       .from("clients")
       .update(body)
       .eq("id", params.id);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Client with id: ${params.id} has been modified`);
   } catch (error) {
@@ -48,15 +56,23 @@ export const updateClient = async (req, res) => {
 
 export const deleteClient = async (req, res) => {
   const { params } = req;
+  const token = req.header("Authorization");
 
   try {
-    const { error } = await supabase
+    const requester = supabase({
+      global: {
+        headers: {
+          Authorization: token,
+        },
+      },
+    });
+    const { error } = await requester
       .from("clients")
       .delete()
       .eq("id", params.id);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Client with id: ${params.id} has been deleted`);
   } catch (error) {
@@ -69,11 +85,20 @@ export const deleteClient = async (req, res) => {
 
 export const postClient = async (req, res) => {
   const { body } = req;
+  const token = req.header("Authorization");
+
   try {
-    const { error } = await supabase.from("clients").insert(body);
+    const requester = supabase({
+      global: {
+        headers: {
+          Authorization: token,
+        },
+      },
+    });
+    const { error } = await requester.from("clients").insert(body);
 
     if (error) {
-      throw error;
+      res.status(500).json({ error });
     }
     res.status(200).send(`Client added successfully`);
   } catch (error) {
