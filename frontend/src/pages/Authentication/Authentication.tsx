@@ -108,7 +108,7 @@ const Authentication = () => {
                 }}
               />
               <Button 
-                onClick={handleSubmit} 
+                type='submit'
                 fullWidth
                 variant='contained' 
                 startIcon={<LoginIcon />}
