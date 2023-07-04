@@ -7,31 +7,38 @@ import { DateTime } from 'luxon';
 import { TimeTrackerProps, postTimeTracker, updateTimeTracker } from '../../lib/timetracker';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
 
+  const [user] = useUserData();
+
   const addTracking = () => {
-    const randomId = uuidv4();
     const date = DateTime.now().toFormat('yyyy-MM-dd');
     const startTime = DateTime.now().toFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSS');
-   
+
+    if (!user) {
+      return;
+    }
+
     const obj = {
-      id: randomId,
+      id: uuidv4(),
       date,
       start_time: startTime,
       finish_time: null,
       total: null,
       project_id: null,
+      user_id: user.id
     };
-    postTimeTracker(obj)
+    postTimeTracker(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
       .catch((error) => toast.error(error));
 
   };
 
   const handleProcessRowUpdate = React.useCallback((newRow: TimeTrackerProps, oldRow: TimeTrackerProps) => {
-    if (!oldRow.id) {
+    if (!oldRow.id || !user) {
       return oldRow;
     }
 
@@ -46,7 +53,7 @@ const TimeTracker = () => {
       date: fixDateFormat(newRow.date),
     };
 
-    updateTimeTracker(oldRow.id, row)
+    updateTimeTracker(user.token, oldRow.id, row)
       .catch((error) => toast.error(error));
     return newRow;
   }, []);

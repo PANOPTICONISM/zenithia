@@ -22,7 +22,7 @@ export const useColumnsAndRows = () => {
     if (!user) {
       return;
     }
-    getTimeTracker('*, projects(*)')
+    getTimeTracker(user.token, '*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
     
@@ -62,7 +62,10 @@ export const useColumnsAndRows = () => {
       setSelectedId(undefined);
 
       const duration = DateTime.fromISO(finalTimestamp).diff(DateTime.fromISO(time), ['hours', 'minutes', 'seconds']).as('milliseconds');
-      updateTimeTracker(id, { finish_time: finalTimestamp, total: duration })
+      if (!user) {
+        return;
+      }
+      updateTimeTracker(user.token, id, { finish_time: finalTimestamp, total: duration })
         .catch((error) => toast.error(error));
     }
 
@@ -71,10 +74,13 @@ export const useColumnsAndRows = () => {
 
 
   const deleteEntry = React.useCallback((id: GridRowId) => {
-    deleteTimeTracker(id)
+    if (!user) {
+      return;
+    }
+    deleteTimeTracker(user.token, id)
       .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const formatHours = (finish: string, start: string) => {
     const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), ['hours', 'minutes', 'seconds']);

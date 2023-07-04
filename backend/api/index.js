@@ -48,10 +48,10 @@ app.post("/api/tasks/all", postTask);
 app.put("/api/tasks/all/:id", updateTask);
 app.delete("/api/tasks/all/:id", deleteTask);
 
-app.get("/api/timetracker", getTimeTracker);
-app.post("/api/timetracker", postTimeTracker);
-app.put("/api/timetracker/:id", updateTimeTracker);
-app.delete("/api/timetracker/:id", deleteTimeTracker);
+app.get("/api/timetracker", auth, getTimeTracker);
+app.post("/api/timetracker", auth, postTimeTracker);
+app.put("/api/timetracker/:id", auth, updateTimeTracker);
+app.delete("/api/timetracker/:id", auth, deleteTimeTracker);
 
 app.get("/api/clients", auth, getClients);
 app.put("/api/clients/:id", auth, updateClient);
