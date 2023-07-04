@@ -34,7 +34,7 @@ export const useColumnsAndRows = () => {
           .catch((error) => toast.error(error));
       });
     },
-    [],
+    [user],
   );
     
   const columns: GridColDef[] = [

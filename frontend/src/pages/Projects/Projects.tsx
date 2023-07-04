@@ -35,7 +35,7 @@ const Projects = () => {
     updateProject(user.token, oldRow.id, row)
       .catch((error) => toast.error(error));
     return newRow;
-  }, []);
+  }, [user]);
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     console.log(error);

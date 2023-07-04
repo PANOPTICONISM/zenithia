@@ -19,7 +19,7 @@ const Clients = () => {
     if (!user) {
       return;
     }
-    
+
     const obj = {
       id: uuidv4(),
       name: null, 
@@ -45,7 +45,7 @@ const Clients = () => {
     updateClient(user.token, oldRow.id, newRow)
       .catch((error) => toast.error(error));
     return newRow;
-  }, []);
+  }, [user]);
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     console.log(error);
