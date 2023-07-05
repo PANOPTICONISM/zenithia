@@ -59,7 +59,7 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/2' : 'auto' }}>
-          <Calendar isDashboard maxHeight="257px" />
+          <Calendar isDashboard />
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/3' : 'auto' }}>
           <Stack sx={{ border: `1px solid ${grey}`, maxHeight: '600px', overflow: 'auto' }}>

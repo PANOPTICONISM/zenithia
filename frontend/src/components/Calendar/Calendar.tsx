@@ -4,9 +4,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventClickArg, EventSourceInput, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
-import { darkBlue, white } from 'App';
+import { DateSelectArg, EventApi, EventClickArg, EventSourceInput } from '@fullcalendar/core';
+import { Box, Stack, useMediaQuery } from '@mui/material';
 import { CalendarProps, getCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 import { EventItem } from './EventItem';
@@ -14,31 +13,9 @@ import { useDialogEnqueue } from 'contexts/DialogProvider';
 import { EventAddModal, EventUpdateModal } from './Modals';
 import { useUserData } from 'contexts/UserProvider';
 
-const ListEvent = ({ primary, secondary }: { primary: string, secondary?: React.ReactNode }) => {
-  return (
-    <ListItem
-      sx={{
-        background: darkBlue,
-        margin: '10px 0',
-        borderRadius: '4px',
-        color: white
-      }}>
-      <ListItemText
-        color={white}
-        primary={<Typography
-          variant='overline'
-          fontWeight={700}>{primary}
-        </Typography>}
-        secondary={secondary}
-      />
-    </ListItem>
-  );
-};
-
-const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, maxHeight?: string }) => {
+const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
-  const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
   const queueDialog = useDialogEnqueue();
   const [user] = useUserData();
 
