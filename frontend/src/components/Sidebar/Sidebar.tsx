@@ -10,7 +10,7 @@ import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import { AccountTreeOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
-import { AppBar, Avatar, Stack, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Avatar, Stack, SwipeableDrawer, SxProps, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import { darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
@@ -20,8 +20,8 @@ import { supabase } from 'lib/supabase';
 import { toast } from 'react-toastify';
 import React from 'react';
 
-const BurgerMenu = ({ icon, color }:
-  { icon: React.ReactNode, edge?: 'start', color?: 'inherit' }) => {
+const BurgerMenu = ({ icon, color, sx }:
+  { icon: React.ReactNode, edge?: 'start', color?: 'inherit', sx?: SxProps }) => {
   const [open, setOpen] = useIsSidebarOpen();
 
   return (
@@ -29,6 +29,7 @@ const BurgerMenu = ({ icon, color }:
       aria-label="open drawer"
       color={color}
       onClick={() => setOpen(!open)}
+      sx={sx}
     >
       {icon}
     </IconButton>
@@ -123,7 +124,7 @@ export default function Sidebar() {
           </SwipeableDrawer>
         </>
         :
-        <>
+        <Stack>
           <AppBar
             position="fixed"
             sx={{
@@ -134,10 +135,11 @@ export default function Sidebar() {
           >
             <Toolbar>
               <BurgerMenu
+                sx={{ position: 'absolute', left: '-16px', zIndex: '101', background: 'white' }}
                 icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />} />
             </Toolbar>
           </AppBar>
-          <Drawer variant="permanent" open={open}>
+          <Drawer variant="permanent" open={open} sx={{ zIndex: '100' }}>
             <Box>
               <DrawerHeader>
                 <Logo color='white' background='#191E38' />
@@ -146,7 +148,7 @@ export default function Sidebar() {
             </Box>
             <Username open={open} />
           </Drawer>
-        </>}
+        </Stack>}
     </Box>
   );
 }
