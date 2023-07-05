@@ -16,13 +16,16 @@ import { DataProps } from './KanbanColumn.types';
 import { DateAndLevel } from './KanbanColumn.utils';
 import { toast } from 'react-toastify';
 import { ColumnProps } from 'pages/Tasks/Tasks.types';
+import { useUserData } from 'contexts/UserProvider';
 
 const Task = ({ task, index, columns, setColumns, column, projects } : { task: TaskProps, index: number, projects: ProjectProps[] } & DataProps) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState(task);
 
+  const [user] = useUserData();
+
   const handleDelete = () => {
-    if (!column) {
+    if (!column || !user) {
       return;
     }
     const specificColumn = columns.filter((col) => col.id === column.id);
@@ -33,15 +36,18 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
     const joinColumns = [specificColumn, otherColumns].flat();
     const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
 
-    deleteTask(task.id)
+    deleteTask(user.token, task.id)
       .then(() => setColumns(sortedColumns))
       .catch((error) => toast.error(error));
   };
 
   const handleSave = () => {
+    if (!user) {
+      return;
+    }
     const copyTask = { ...editableTask };
     delete copyTask.projects;
-    updateTask(task.id, copyTask)
+    updateTask(user.token, task.id, copyTask)
       .then(() => setIsEdit(false))
       .catch((error) => toast.error(error));
   };
@@ -126,18 +132,22 @@ const Task = ({ task, index, columns, setColumns, column, projects } : { task: T
 
 const Column = ({ column, columns, setColumns, projects } : 
   { column: ColumnProps, columns: ColumnProps[], setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>, projects: ProjectProps[] }) => {
-  const randomId = uuidv4();
+  const [user] = useUserData();
 
   const addItem = () => {
+    if (!user) {
+      return;
+    }
+
     const specificColumn = columns.filter((col) => col.id === column.id);
     const otherColumns = columns.filter((col) => col.id !== column.id);
-    const task = { id: randomId, title: 'Title', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    const task = { id: uuidv4(), title: 'Title', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
     specificColumn[0].items.push(task);
 
     const joinColumns = [specificColumn, otherColumns].flat();
     const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
 
-    postTask(task)
+    postTask(user.token, task)
       .then(() => setColumns(sortedColumns))
       .catch((error) => toast.error(error));
 

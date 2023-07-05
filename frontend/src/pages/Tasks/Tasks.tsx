@@ -23,8 +23,8 @@ const Tasks = () => {
         return;
       }
       const [columnsRes, tasksRes, projectsRes] = await Promise.all([
-        getTasksColumns(),
-        getTasks(),
+        getTasksColumns(user.token),
+        getTasks(user.token),
         getProjects(user.token),
       ]);
 
@@ -43,7 +43,9 @@ const Tasks = () => {
   }, [user]);
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+    if (!result.destination || !user) {
+      return;
+    }
     const { source, destination, draggableId } = result;
 
     if (source.droppableId !== destination.droppableId) {
@@ -70,7 +72,7 @@ const Tasks = () => {
         removedDestColumn,
       ].flat();
 
-      updateTask(draggableId, { column_id: destination.droppableId })
+      updateTask(user.token, draggableId, { column_id: destination.droppableId })
         .then(() =>
           setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy))
         )
