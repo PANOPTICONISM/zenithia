@@ -58,7 +58,7 @@ const Username = ({ open }: { open: boolean }) => {
       </Avatar>
       {open && (
         <>
-          <Typography sx={{ color: white }}>{user?.username}</Typography>
+          <Typography sx={{ color: white }} noWrap>{user?.username}</Typography>
           <IconButton sx={{ padding: 0 }} onClick={() => {
             setUser(undefined);
             navigate('/', { replace: true });
