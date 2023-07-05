@@ -70,26 +70,7 @@ const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, 
   }, []);
 
   return (
-    <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
-      {!isDashboard && (
-        <Box flex="1 1 22%">
-          <Typography variant='h5'>Events</Typography>
-          <List sx={{ maxHeight: tabletBreakpoint ? '300px' : '710px', overflow: 'auto' }}>
-            {currentEvents.length > 0 ? currentEvents.map((event) => (
-              <ListEvent
-                key={event.id} 
-                primary={event.title}
-                secondary={
-                  event.start ? <Typography>{formatDate(event.start, {
-                    year: 'numeric', month: 'short', day: 'numeric'
-                  })}</Typography> : ''
-                } />
-            )) :
-              <ListEvent primary="No events scheduled" />
-            }
-          </List>
-        </Box>
-      )}
+    <Stack>
       <Box flex="1 1 100%">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
@@ -105,10 +86,8 @@ const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, 
           dayMaxEvents
           select={handleDateClick}
           eventClick={handleEventClick}
-          eventsSet={(events) => setCurrentEvents(events)}
           eventContent={(info) => <EventItem info={info} />}
-          initialEvents={currentEvents as EventSourceInput}
-          height={isDashboard || desktopBreakpoint ? maxHeight || '400px' : '80vh'}
+          events={currentEvents as EventSourceInput}
         />
       </Box>
     </Stack>
