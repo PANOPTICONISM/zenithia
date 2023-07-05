@@ -10,11 +10,16 @@ export type CalendarProps = {
   end: string,
 }
 
-export const getCalendar = async (): Promise<CalendarProps[]> => {
+export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
   const path = '/api/calendar';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as CalendarProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -22,11 +27,16 @@ export const getCalendar = async (): Promise<CalendarProps[]> => {
   }
 };
 
-export const postCalendar = async (body: CalendarProps): Promise<string> => {
+export const postCalendar = async (token: string, body: CalendarProps): Promise<string> => {
   const path = '/api/calendar';
   
   try {
-    const response = await requester.post(path, body);
+    const response = await requester.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -34,11 +44,16 @@ export const postCalendar = async (body: CalendarProps): Promise<string> => {
   }
 };
 
-export const updateCalendar = async (id: string, body: CalendarProps): Promise<string> => {
+export const updateCalendar = async (token: string, id: string, body: CalendarProps): Promise<string> => {
   const path = `/api/calendar/${id}`;
     
   try {
-    const response = await requester.put(path, body);
+    const response = await requester.put(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -46,11 +61,16 @@ export const updateCalendar = async (id: string, body: CalendarProps): Promise<s
   }
 };
 
-export const deleteCalendar = async (id: GridRowId): Promise<string> => {
+export const deleteCalendar = async (token: string, id: GridRowId): Promise<string> => {
   const path = `/api/calendar/${id}`;
     
   try {
-    const response = await requester.delete(path);
+    const response = await requester.delete(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;

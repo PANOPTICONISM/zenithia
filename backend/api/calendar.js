@@ -11,7 +11,7 @@ export const getCalendar = async (req, res) => {
         },
       },
     });
-    const { data, error } = await requester.from("calendar").select();
+    const { data, error } = await requester.from("calendars").select();
 
     if (error) {
       res.status(500).json({ error });
@@ -38,7 +38,7 @@ export const updateCalendar = async (req, res) => {
       },
     });
     const { error } = await requester
-      .from("calendar")
+      .from("calendars")
       .update(body)
       .eq("id", params.id);
 
@@ -67,7 +67,7 @@ export const deleteCalendar = async (req, res) => {
       },
     });
     const { error } = await requester
-      .from("calendar")
+      .from("calendars")
       .delete()
       .eq("id", params.id);
 
@@ -95,7 +95,7 @@ export const postCalendar = async (req, res) => {
         },
       },
     });
-    const { error } = await requester.from("calendar").insert(body);
+    const { error } = await requester.from("calendars").insert(body);
 
     if (error) {
       res.status(500).json({ error });
