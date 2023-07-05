@@ -4,11 +4,17 @@ import { requester } from './axios';
 import { GridRowId } from '@mui/x-data-grid';
 import { ServerError } from './lib.types';
 
-export const getProjects = async (param?: string): Promise<ProjectProps[]> => {
+export const getProjects = async (token: string, param?: string): Promise<ProjectProps[]> => {
   const path = '/api/projects';
 
   try {
-    const response = await requester.get(path, { params: { filter: param } });
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      params: { filter: param }
+    });
     return response.data as ProjectProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -16,11 +22,16 @@ export const getProjects = async (param?: string): Promise<ProjectProps[]> => {
   }
 };
 
-export const postProject = async (body: ProjectProps): Promise<string> => {
+export const postProject = async (token: string, body: ProjectProps): Promise<string> => {
   const path = '/api/projects';
   
   try {
-    const response = await requester.post(path, body);
+    const response = await requester.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -28,11 +39,16 @@ export const postProject = async (body: ProjectProps): Promise<string> => {
   }
 };
 
-export const updateProject = async (id: number, body: ProjectProps): Promise<string> => {
+export const updateProject = async (token: string, id: string, body: ProjectProps): Promise<string> => {
   const path = `/api/projects/${id}`;
     
   try {
-    const response = await requester.put(path, body);
+    const response = await requester.put(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -40,11 +56,16 @@ export const updateProject = async (id: number, body: ProjectProps): Promise<str
   }
 };
 
-export const deleteProject = async (id: GridRowId): Promise<string> => {
+export const deleteProject = async (token: string, id: GridRowId): Promise<string> => {
   const path = `/api/projects/${id}`;
     
   try {
-    const response = await requester.delete(path);
+    const response = await requester.delete(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;

@@ -2,7 +2,7 @@ import { ClientProps } from 'lib/clients';
 import { TimeTrackerProps } from 'lib/timetracker';
 
 export type ProjectProps = {
-    id?: number,
+    id?: string,
     project_id?: string,
     title: string,
     start_date: string,
