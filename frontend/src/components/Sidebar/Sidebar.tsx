@@ -18,6 +18,58 @@ import { useNavigate } from 'react-router-dom';
 import { useUserData } from 'contexts/UserProvider';
 import { supabase } from 'lib/supabase';
 import { toast } from 'react-toastify';
+import React from 'react';
+
+const BurgerMenu = ({ icon, color }:
+  { icon: React.ReactNode, edge?: 'start', color?: 'inherit' }) => {
+  const [open, setOpen] = useIsSidebarOpen();
+
+  return (
+    <IconButton
+      aria-label="open drawer"
+      color={color}
+      onClick={() => setOpen(!open)}
+    >
+      {icon}
+    </IconButton>
+  );
+};
+
+const Username = ({ open }: { open: boolean }) => {
+  const [user, setUser] = useUserData();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    toast.error(error?.message);
+  };
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
+      <Avatar
+        sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
+      >
+        {user?.username?.slice(0, 1).toUpperCase()}
+      </Avatar>
+      {open && (
+        <>
+          <Typography sx={{ color: white }}>{user?.username}</Typography>
+          <IconButton sx={{ padding: 0 }} onClick={() => {
+            setUser(undefined);
+            navigate('/', { replace: true });
+            logout();
+          }}>
+            <LoginIcon sx={{ color: white }} />
+          </IconButton>
+        </>
+      )}
+    </Stack>
+  );
+};
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -51,53 +103,22 @@ export default function Sidebar() {
 
   const [open, setOpen] = useIsSidebarOpen();
 
-  const [user, setUser] = useUserData();
-  const navigate = useNavigate();
-
-  const logout = async () => {
-
-    const { error } = await supabase.auth.signOut();
-
-    toast.error(error?.message);
-  };
-
   return (
     <Box>
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
             <Logo color='black' background="white" />
-            <IconButton
+            <BurgerMenu
               color="inherit"
-              aria-label="open drawer"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <ArrowBackIosIcon /> : <MenuIcon />}
-            </IconButton>
+              icon={open ? <ArrowBackIosIcon /> : <MenuIcon />} />
           </Stack>
           <SwipeableDrawer
             open={open} onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}>
             <Stack sx={{ background: darkBlue, height: '100%', padding: '12px' }} justifyContent="space-between">
               <Navigation open={open} />
-              <Stack 
-                direction="row" 
-                alignItems="center" 
-                spacing={1} 
-                sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
-                <Avatar
-                  sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
-                >
-                  {user?.username?.slice(0, 1).toUpperCase()}
-                </Avatar>
-                <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
-                <IconButton sx={{ padding: 0 }} onClick={() => {
-                  setUser(undefined);
-                  navigate('/', { replace: true });
-                }}>
-                  <LoginIcon sx={{ color: white }} />
-                </IconButton>
-              </Stack>
+              <Username open={open} />
             </Stack>
           </SwipeableDrawer>
         </>
@@ -112,13 +133,8 @@ export default function Sidebar() {
             }}
           >
             <Toolbar>
-              <IconButton
-                aria-label="open drawer"
-                edge="start"
-                onClick={() => setOpen(!open)}
-              >
-                {open ? <ArrowBackIosIcon /> : <ArrowForwardIos />}
-              </IconButton>
+              <BurgerMenu
+                icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />} />
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
@@ -128,29 +144,7 @@ export default function Sidebar() {
               </DrawerHeader>
               <Navigation open={open} />
             </Box>
-            <Stack 
-              direction="row" 
-              alignItems="center" 
-              spacing={1} 
-              sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
-              <Avatar
-                sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
-              >
-                {user?.username?.slice(0, 1).toUpperCase()}
-              </Avatar>
-              {open && (
-                <>
-                  <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
-                  <IconButton sx={{ padding: 0 }} onClick={() => {
-                    setUser(undefined);
-                    navigate('/', { replace: true });
-                    logout();
-                  }}>
-                    <LoginIcon sx={{ color: white }} />
-                  </IconButton>
-                </>
-              )}
-            </Stack>
+            <Username open={open} />
           </Drawer>
         </>}
     </Box>
