@@ -141,7 +141,14 @@ const Column = ({ column, columns, setColumns, projects } :
 
     const specificColumn = columns.filter((col) => col.id === column.id);
     const otherColumns = columns.filter((col) => col.id !== column.id);
-    const task = { id: uuidv4(), title: 'Title', deadline: DateTime.now().toFormat('yyyy-MM-dd'), column_id: column.id, importance: null };
+    const task = {
+      id: uuidv4(),
+      title: 'Title',
+      deadline: DateTime.now().toFormat('yyyy-MM-dd'),
+      column_id: column.id,
+      importance: null,
+      user_id: user.id
+    };
     specificColumn[0].items.push(task);
 
     const joinColumns = [specificColumn, otherColumns].flat();
