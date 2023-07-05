@@ -11,7 +11,7 @@ import { AccountTreeOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOu
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
 import { AppBar, Avatar, Stack, SwipeableDrawer, SxProps, Toolbar, Typography, useMediaQuery } from '@mui/material';
-import { darkBlue, highlight, white, yellow } from '../../App';
+import { black, darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
@@ -109,7 +109,7 @@ export default function Sidebar() {
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
-            <Logo color='black' background="white" />
+            <Logo color={black} background={white} />
             <BurgerMenu
               color="inherit"
               icon={open ? <ArrowBackIosIcon /> : <MenuIcon />} />
@@ -135,14 +135,14 @@ export default function Sidebar() {
           >
             <Toolbar>
               <BurgerMenu
-                sx={{ position: 'absolute', left: '-16px', zIndex: '101', background: 'white' }}
+                sx={{ position: 'absolute', left: '-16px', zIndex: '101', background: white }}
                 icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />} />
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open} sx={{ zIndex: '100' }}>
             <Box>
               <DrawerHeader>
-                <Logo color='white' background='#191E38' />
+                <Logo color={white} background={darkBlue} />
               </DrawerHeader>
               <Navigation open={open} />
             </Box>

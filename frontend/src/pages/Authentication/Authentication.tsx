@@ -47,7 +47,7 @@ const Authentication = () => {
           md={6}
           sx={{ background: highlight, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', padding: '50px 0' }}
         >
-          <Logo color='white' background={highlight} width={180} height={180} />
+          <Logo color={white} background={highlight} width={180} height={180} />
           <Typography variant='h2' fontFamily="'Bungee Outline', cursive" color={grey}>
           Zenithia
           </Typography>
