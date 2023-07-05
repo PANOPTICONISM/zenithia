@@ -1,14 +1,15 @@
 import React from 'react';
 
 type UserProps = {
-    id: string,
-    username: string,
-  }
+  id: string,
+  username: string,
+  token: string,
+}
 
 type UserContextValues = {
     user: UserProps | undefined;
     setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>>;
-  };
+};
   
 const UserContext = React.createContext<UserContextValues | null>(null);
   

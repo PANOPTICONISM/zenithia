@@ -18,6 +18,7 @@ import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 import { valueFormatter } from './Projects/Projects.utils';
 import LineChart from 'components/Charts/LineChart';
 import { useRevenueData } from './Charts/MonthlyStats.utils';
+import { useUserData } from 'contexts/UserProvider';
 
 const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery('(min-width:1200px)');
@@ -33,15 +34,19 @@ const Dashboard = () => {
   const { totalMonthlySum, totalYearlySum } = logsByTimeline(projects);
   
   const { result } = useRevenueData();
+  const [user] = useUserData();
   
   React.useEffect(() => {
-    getTasks()
+    if (!user) {
+      return;
+    }
+    getTasks(user.token)
       .then((data) => {
         const sortedData = lodash.sortBy(data, 'deadline');
         setTasks(sortedData);
       })
       .catch(() => toast.error('Could not get the tasks'));
-  }, []);
+  }, [user]);
 
   return (
     <Main title={`Good ${greeting}`} hideMargin>
@@ -54,7 +59,7 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/2' : 'auto' }}>
-          <Calendar isDashboard maxHeight="257px" />
+          <Calendar isDashboard />
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/3' : 'auto' }}>
           <Stack sx={{ border: `1px solid ${grey}`, maxHeight: '600px', overflow: 'auto' }}>

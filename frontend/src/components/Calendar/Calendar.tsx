@@ -4,26 +4,29 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventApi, EventClickArg, EventSourceInput, formatDate } from '@fullcalendar/core';
-import { Box, List, ListItem, ListItemText, Stack, Typography, useMediaQuery } from '@mui/material';
-import { darkBlue, white } from 'App';
+import { DateSelectArg, EventApi, EventClickArg, EventSourceInput } from '@fullcalendar/core';
+import { Box, Stack, useMediaQuery } from '@mui/material';
 import { CalendarProps, getCalendar } from 'lib/calendar';
 import { toast } from 'react-toastify';
 import { EventItem } from './EventItem';
 import { useDialogEnqueue } from 'contexts/DialogProvider';
 import { EventAddModal, EventUpdateModal } from './Modals';
+import { useUserData } from 'contexts/UserProvider';
 
-const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, maxHeight?: string }) => {
+const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const [currentEvents, setCurrentEvents] = React.useState<(EventApi | CalendarProps)[]>([]);
   const tabletBreakpoint = useMediaQuery('(max-width:900px)');
-  const desktopBreakpoint = useMediaQuery('(max-width:1300px)');
   const queueDialog = useDialogEnqueue();
+  const [user] = useUserData();
 
   React.useEffect(() => {
-    getCalendar()
+    if (!user) {
+      return;
+    }
+    getCalendar(user.token)
       .then((res) => setCurrentEvents(res))
       .catch(() => toast.error('Could not add the event'));
-  }, []);
+  }, [user]);
 
   const handleDateClick = React.useCallback((selected: DateSelectArg) => {
     return queueDialog({
@@ -44,51 +47,25 @@ const Calendar = ({ isDashboard = false, maxHeight } : { isDashboard?: boolean, 
   }, []);
 
   return (
-    <Stack direction={desktopBreakpoint ? 'column' : 'row'} spacing={2}>
-      {!isDashboard && (
-        <Box flex="1 1 22%">
-          <Typography variant='h5'>Events</Typography>
-          <List sx={{ maxHeight: tabletBreakpoint ? '300px' : '710px', overflow: 'auto' }}>
-            {currentEvents.map((event) => (
-              <ListItem
-                key={event.id}
-                sx={{ background: darkBlue, margin: '10px 0', borderRadius: '4px', color: white }}
-              >
-                <ListItemText
-                  color={white}
-                  primary={<Typography variant='overline' fontWeight={700}>{event.title}</Typography>}
-                  secondary={
-                    event.start ? <Typography>{formatDate(event.start, {
-                      year: 'numeric', month: 'short', day: 'numeric'
-                    })}</Typography> : ''
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      )}
+    <Stack>
       <Box flex="1 1 100%">
-        {currentEvents.length > 0 && 
-          <FullCalendar
-            plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-            initialView={tabletBreakpoint || isDashboard ? 'listMonth' : 'dayGridMonth'}
-            headerToolbar={!isDashboard ? {
-              left: tabletBreakpoint ? 'title' : 'prev,next today',
-              center: !tabletBreakpoint ? 'title' : '',
-              right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-            } : false}
-            editable
-            selectable
-            selectMirror
-            dayMaxEvents
-            select={handleDateClick}
-            eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            eventContent={(info) => <EventItem info={info} />}
-            initialEvents={currentEvents as EventSourceInput}
-            height={isDashboard || desktopBreakpoint ? maxHeight || '400px' : '100%'}
-          />}
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          initialView={tabletBreakpoint || isDashboard ? 'listMonth' : 'dayGridMonth'}
+          headerToolbar={!isDashboard ? {
+            left: tabletBreakpoint ? 'title' : 'prev,next today',
+            center: !tabletBreakpoint ? 'title' : '',
+            right: tabletBreakpoint ? 'prev,next' : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+          } : false}
+          editable
+          selectable
+          selectMirror
+          dayMaxEvents
+          select={handleDateClick}
+          eventClick={handleEventClick}
+          eventContent={(info) => <EventItem info={info} />}
+          events={currentEvents as EventSourceInput}
+        />
       </Box>
     </Stack>
   );

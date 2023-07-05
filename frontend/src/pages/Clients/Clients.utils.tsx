@@ -7,12 +7,18 @@ import StatusTag from 'components/StatusTag/StatusTag';
 import { lightBlue } from 'App';
 import { deepOrange } from '@mui/material/colors';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ClientProps[]>([]);
-  
+
+  const [user] = useUserData();
+
   React.useEffect(() => {  
-    getClients()
+    if (!user) {
+      return;
+    }
+    getClients(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
   }, []);
@@ -20,12 +26,15 @@ export const useColumnsAndRows = () => {
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        deleteClient(id)
+        if (!user) {
+          return;
+        }
+        deleteClient(user.token, id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => toast.error(error));
       });
     },
-    [],
+    [user],
   );
     
   const columns: GridColDef[] = [
@@ -56,11 +65,15 @@ export const useColumnsAndRows = () => {
       headerName: 'Status',
       width: 130,
       type: 'singleSelect',
-      valueOptions: ['Active', 'Archived'],
+      valueOptions: ['Active', 'Standby', 'Archived'],
       editable: true,
       renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<StatusTag color='inherit' value={value} />);
+        }
+
+        if (value === 'Standby') {
+          return (<StatusTag color='warning' value={value} />);
         }
   
         return (<StatusTag color='success' value={value} />);

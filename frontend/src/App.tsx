@@ -16,6 +16,7 @@ import { DialogProvider } from 'contexts/DialogProvider';
 import Authentication from 'pages/Authentication/Authentication';
 import { useUserData } from 'contexts/UserProvider';
 
+export const black = '#000';
 export const white = '#fff';
 export const darkBlue = '#191E38';
 export const lightBlue = '#F7F8FF';
