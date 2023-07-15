@@ -10,14 +10,67 @@ import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import { AccountTreeOutlined, ArrowForwardIos, CalendarMonthOutlined, GridViewOutlined, HourglassBottomOutlined, InsightsOutlined, TrackChangesOutlined } from '@mui/icons-material';
 import { Drawer, DrawerHeader, ListLink, Subtitle, drawerWidth, drawerWidthMobile } from './Sidebar.utils';
 import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
-import { AppBar, Avatar, Stack, SwipeableDrawer, Toolbar, Typography, useMediaQuery } from '@mui/material';
-import { darkBlue, highlight, white, yellow } from '../../App';
+import { AppBar, Avatar, Stack, SwipeableDrawer, SxProps, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { black, darkBlue, highlight, white, yellow } from '../../App';
 import { Logo } from '../../icons/logo';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
 import { useUserData } from 'contexts/UserProvider';
 import { supabase } from 'lib/supabase';
 import { toast } from 'react-toastify';
+import React from 'react';
+
+const BurgerMenu = ({ icon, color, sx }:
+  { icon: React.ReactNode, edge?: 'start', color?: 'inherit', sx?: SxProps }) => {
+  const [open, setOpen] = useIsSidebarOpen();
+
+  return (
+    <IconButton
+      aria-label="open drawer"
+      color={color}
+      onClick={() => setOpen(!open)}
+      sx={sx}
+    >
+      {icon}
+    </IconButton>
+  );
+};
+
+const Username = ({ open }: { open: boolean }) => {
+  const [user, setUser] = useUserData();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    toast.error(error?.message);
+  };
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
+      <Avatar
+        sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
+      >
+        {user?.username?.slice(0, 1).toUpperCase()}
+      </Avatar>
+      {open && (
+        <>
+          <Typography sx={{ color: white }} noWrap>{user?.username}</Typography>
+          <IconButton sx={{ padding: 0 }} onClick={() => {
+            setUser(undefined);
+            navigate('/', { replace: true });
+            logout();
+          }}>
+            <LoginIcon sx={{ color: white }} />
+          </IconButton>
+        </>
+      )}
+    </Stack>
+  );
+};
 
 const Navigation = ({ open } : { open: boolean; }) => {
   return (
@@ -51,58 +104,27 @@ export default function Sidebar() {
 
   const [open, setOpen] = useIsSidebarOpen();
 
-  const [user, setUser] = useUserData();
-  const navigate = useNavigate();
-
-  const logout = async () => {
-
-    const { error } = await supabase.auth.signOut();
-
-    toast.error(error?.message);
-  };
-
   return (
     <Box>
       {tabletBreakpoint ? 
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
-            <Logo color='black' background="white" />
-            <IconButton
+            <Logo color={black} background={white} />
+            <BurgerMenu
               color="inherit"
-              aria-label="open drawer"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <ArrowBackIosIcon /> : <MenuIcon />}
-            </IconButton>
+              icon={open ? <ArrowBackIosIcon /> : <MenuIcon />} />
           </Stack>
           <SwipeableDrawer
             open={open} onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}>
             <Stack sx={{ background: darkBlue, height: '100%', padding: '12px' }} justifyContent="space-between">
               <Navigation open={open} />
-              <Stack 
-                direction="row" 
-                alignItems="center" 
-                spacing={1} 
-                sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
-                <Avatar
-                  sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
-                >
-                  {user?.username?.slice(0, 1).toUpperCase()}
-                </Avatar>
-                <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
-                <IconButton sx={{ padding: 0 }} onClick={() => {
-                  setUser(undefined);
-                  navigate('/', { replace: true });
-                }}>
-                  <LoginIcon sx={{ color: white }} />
-                </IconButton>
-              </Stack>
+              <Username open={open} />
             </Stack>
           </SwipeableDrawer>
         </>
         :
-        <>
+        <Stack>
           <AppBar
             position="fixed"
             sx={{
@@ -112,47 +134,21 @@ export default function Sidebar() {
             }}
           >
             <Toolbar>
-              <IconButton
-                aria-label="open drawer"
-                edge="start"
-                onClick={() => setOpen(!open)}
-              >
-                {open ? <ArrowBackIosIcon /> : <ArrowForwardIos />}
-              </IconButton>
+              <BurgerMenu
+                sx={{ position: 'absolute', left: '-16px', zIndex: '101', background: white }}
+                icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />} />
             </Toolbar>
           </AppBar>
-          <Drawer variant="permanent" open={open}>
+          <Drawer variant="permanent" open={open} sx={{ zIndex: '100' }}>
             <Box>
               <DrawerHeader>
-                <Logo color='white' background='#191E38' />
+                <Logo color={white} background={darkBlue} />
               </DrawerHeader>
               <Navigation open={open} />
             </Box>
-            <Stack 
-              direction="row" 
-              alignItems="center" 
-              spacing={1} 
-              sx={{ border: `1px solid ${highlight}`, padding: '20px', marginTop: '16px' }}>
-              <Avatar
-                sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: '12px' }}
-              >
-                {user?.username?.slice(0, 1).toUpperCase()}
-              </Avatar>
-              {open && (
-                <>
-                  <Typography sx={{ color: white }}>{user && `${user.username.slice(0, 10)}${user.username.length > 10 ? '...' : ''}`}</Typography>
-                  <IconButton sx={{ padding: 0 }} onClick={() => {
-                    setUser(undefined);
-                    navigate('/', { replace: true });
-                    logout();
-                  }}>
-                    <LoginIcon sx={{ color: white }} />
-                  </IconButton>
-                </>
-              )}
-            </Stack>
+            <Username open={open} />
           </Drawer>
-        </>}
+        </Stack>}
     </Box>
   );
 }
