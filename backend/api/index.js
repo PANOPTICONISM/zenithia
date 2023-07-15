@@ -33,37 +33,37 @@ app.use(
 
 app.use(rateLimiter);
 
-app.get("/", auth, (req, res) => {
+app.get("/", (req, res) => {
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end("You have the correct credentials.");
 });
 
-app.get("/api/projects", auth, getProjects);
-app.put("/api/projects/:id", auth, updateProjects);
-app.delete("/api/projects/:id", auth, deleteProject);
-app.post("/api/projects", auth, postProject);
+app.get("/api/projects", getProjects);
+app.put("/api/projects/:id", updateProjects);
+app.delete("/api/projects/:id", deleteProject);
+app.post("/api/projects", postProject);
 
-app.get("/api/tasks", auth, getTasksColumns);
-app.get("/api/tasks/all", auth, getTasks);
-app.post("/api/tasks/all", auth, postTask);
-app.put("/api/tasks/all/:id", auth, updateTask);
-app.delete("/api/tasks/all/:id", auth, deleteTask);
+app.get("/api/tasks", getTasksColumns);
+app.get("/api/tasks/all", getTasks);
+app.post("/api/tasks/all", postTask);
+app.put("/api/tasks/all/:id", updateTask);
+app.delete("/api/tasks/all/:id", deleteTask);
 
-app.get("/api/timetracker", auth, getTimeTracker);
-app.post("/api/timetracker", auth, postTimeTracker);
-app.put("/api/timetracker/:id", auth, updateTimeTracker);
-app.delete("/api/timetracker/:id", auth, deleteTimeTracker);
+app.get("/api/timetracker", getTimeTracker);
+app.post("/api/timetracker", postTimeTracker);
+app.put("/api/timetracker/:id", updateTimeTracker);
+app.delete("/api/timetracker/:id", deleteTimeTracker);
 
-app.get("/api/clients", auth, getClients);
-app.put("/api/clients/:id", auth, updateClient);
-app.delete("/api/clients/:id", auth, deleteClient);
-app.post("/api/clients", auth, postClient);
+app.get("/api/clients", getClients);
+app.put("/api/clients/:id", updateClient);
+app.delete("/api/clients/:id", deleteClient);
+app.post("/api/clients", postClient);
 
-app.get("/api/calendar", auth, getCalendar);
-app.put("/api/calendar/:id", auth, updateCalendar);
-app.delete("/api/calendar/:id", auth, deleteCalendar);
-app.post("/api/calendar", auth, postCalendar);
+app.get("/api/calendar", getCalendar);
+app.put("/api/calendar/:id", updateCalendar);
+app.delete("/api/calendar/:id", deleteCalendar);
+app.post("/api/calendar", postCalendar);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
