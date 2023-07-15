@@ -11,8 +11,6 @@ import {
   postCalendar,
   updateCalendar,
 } from "./calendar.js";
-import { auth } from "./middleware/auth.js";
-import { rateLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
 const port = 4000;
@@ -30,8 +28,6 @@ app.use(
     extended: true,
   })
 );
-
-app.use(rateLimiter);
 
 app.get("/", (req, res) => {
   res.setHeader("Content-Type", "text/html");
