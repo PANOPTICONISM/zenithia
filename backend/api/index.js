@@ -18,7 +18,7 @@ const port = 4000;
 const { json, urlencoded } = pkg;
 
 const corsOptions = {
-  origin: "http:/fuck.mit.liv",
+  origin: process.env.FRONTEND_URL || "https://issue.dev",
 };
 
 app.use(cors(corsOptions));
