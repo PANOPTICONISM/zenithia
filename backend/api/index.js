@@ -5,9 +5,12 @@ import cors from 'cors';
 import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './tasks.js';
 import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
 import { deleteClient, getClients, postClient, updateClient } from './clients.js';
-import { deleteCalendar, getCalendar, postCalendar, updateCalendar } from './calendar.js';
-import { processUserDetails } from './login.js';
-import { signUp } from './signup.js';
+import {
+  deleteCalendar,
+  getCalendar,
+  postCalendar,
+  updateCalendar,
+} from "./calendar.js";
 import { auth } from "./middleware/auth.js";
 import { rateLimiter } from "./middleware/rateLimiter.js";
 
@@ -61,9 +64,6 @@ app.get("/api/calendar", auth, getCalendar);
 app.put("/api/calendar/:id", auth, updateCalendar);
 app.delete("/api/calendar/:id", auth, deleteCalendar);
 app.post("/api/calendar", auth, postCalendar);
-
-app.post('/api/login', processUserDetails);
-app.post('/api/signup', signUp);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
