@@ -10,20 +10,26 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { getProjects } from '../../lib/projects';
 import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
-    getTimeTracker('*, projects(*)')
+    if (!user) {
+      return;
+    }
+    getTimeTracker(user.token, '*, projects(*)')
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
     
-    getProjects()
+    getProjects(user.token)
       .then((res) => setProjects(res))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const [selectedId, setSelectedId] = React.useState<string | undefined>(undefined);
   const [count, setCount] = React.useState(0);
@@ -56,7 +62,10 @@ export const useColumnsAndRows = () => {
       setSelectedId(undefined);
 
       const duration = DateTime.fromISO(finalTimestamp).diff(DateTime.fromISO(time), ['hours', 'minutes', 'seconds']).as('milliseconds');
-      updateTimeTracker(id, { finish_time: finalTimestamp, total: duration })
+      if (!user) {
+        return;
+      }
+      updateTimeTracker(user.token, id, { finish_time: finalTimestamp, total: duration })
         .catch((error) => toast.error(error));
     }
 
@@ -65,10 +74,13 @@ export const useColumnsAndRows = () => {
 
 
   const deleteEntry = React.useCallback((id: GridRowId) => {
-    deleteTimeTracker(id)
+    if (!user) {
+      return;
+    }
+    deleteTimeTracker(user.token, id)
       .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const formatHours = (finish: string, start: string) => {
     const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), ['hours', 'minutes', 'seconds']);

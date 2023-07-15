@@ -9,17 +9,23 @@ import { getProjects } from '../../lib/projects';
 import { ProjectProps } from '../Projects/Projects.types';
 import { toast } from 'react-toastify';
 import { ColumnProps } from './Tasks.types';
+import { useUserData } from 'contexts/UserProvider';
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
   const [projects, setProjects] = React.useState<ProjectProps[]>([]);
 
+  const [user] = useUserData();
+
   React.useEffect(() => {
     const fetchAll = async () => {
+      if (!user) {
+        return;
+      }
       const [columnsRes, tasksRes, projectsRes] = await Promise.all([
-        getTasksColumns(),
-        getTasks(),
-        getProjects(),
+        getTasksColumns(user.token),
+        getTasks(user.token),
+        getProjects(user.token),
       ]);
 
       const grouppedTasks = lodash.groupBy(tasksRes, 'column_id');
@@ -34,10 +40,12 @@ const Tasks = () => {
     };
 
     fetchAll().catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+    if (!result.destination || !user) {
+      return;
+    }
     const { source, destination, draggableId } = result;
 
     if (source.droppableId !== destination.droppableId) {
@@ -64,7 +72,7 @@ const Tasks = () => {
         removedDestColumn,
       ].flat();
 
-      updateTask(draggableId, { column_id: destination.droppableId })
+      updateTask(user.token, draggableId, { column_id: destination.droppableId })
         .then(() =>
           setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy))
         )

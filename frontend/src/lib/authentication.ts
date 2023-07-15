@@ -1,6 +1,4 @@
-import { AxiosError } from 'axios';
-import { requester } from './axios';
-import { ServerError } from './lib.types';
+import { supabase } from './supabase';
 
 type User = {
     username: string,
@@ -9,31 +7,33 @@ type User = {
 
 type UserResponse = {
   id: string,
-  email: string,
-  role: string,
+  email: string | undefined,
+  token: string,
 }
 
 export const postLoginUser = async (credentials: User): Promise<UserResponse> => {
-  const path = '/api/login';
-  
-  try {
-    const response = await requester.post(path, credentials);
-    return response.data as UserResponse;
-  } catch (err) {
-    const error = err as AxiosError<ServerError>;
-    throw new Error(error.response?.data?.message || error.message);
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: credentials.username,
+    password: credentials.password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
   }
+  return { id: data.user.id, email: data.user.email, token: data.session.access_token };
 };
 
-export const signUpUser = async (credentials: User): Promise<{id: string}> => {
-  const path = '/api/signup';
-  
-  try {
-    const response = await requester.post(path, credentials);
-    console.log(response, 'here');
-    return response.data.user as {id: string};
-  } catch (err) {
-    const error = err as AxiosError<ServerError>;
-    throw new Error(error.response?.data?.message || error.message);
+export const signUpUser = async (credentials: User) => {
+  const { data, error } = await supabase.auth.signUp({
+    email: credentials.username,
+    password: credentials.password,
+    options: {
+      emailRedirectTo: process.env.REACT_APP_FRONTEND_URL,
+    }
+  });
+  console.log(data, error);
+  if (error) {
+    throw new Error(error.message);
   }
+  return { data };
 };

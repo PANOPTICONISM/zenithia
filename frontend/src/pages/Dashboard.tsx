@@ -18,11 +18,20 @@ import { useGetProjectsFormatted } from 'hooks/useGetProjectsFormatted';
 import { valueFormatter } from './Projects/Projects.utils';
 import LineChart from 'components/Charts/LineChart';
 import { useRevenueData } from './Charts/MonthlyStats.utils';
+import { useUserData } from 'contexts/UserProvider';
 
 const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery('(min-width:1200px)');
 
   const [tasks, setTasks] = React.useState<TaskProps[]>([]);
+  const exampleData = [{
+    id: 'sdf98fd',
+    title: 'Example task',
+    importance: 'medium',
+    deadline: '2023-10-05',
+    column_id: '1',
+    projects: { title: 'Ragnarock' }
+  }];
 
   const date = new Date();
   const time = date.getHours();
@@ -33,15 +42,19 @@ const Dashboard = () => {
   const { totalMonthlySum, totalYearlySum } = logsByTimeline(projects);
   
   const { result } = useRevenueData();
+  const [user] = useUserData();
   
   React.useEffect(() => {
-    getTasks()
+    if (!user) {
+      return;
+    }
+    getTasks(user.token)
       .then((data) => {
         const sortedData = lodash.sortBy(data, 'deadline');
         setTasks(sortedData);
       })
       .catch(() => toast.error('Could not get the tasks'));
-  }, []);
+  }, [user]);
 
   return (
     <Main title={`Good ${greeting}`} hideMargin>
@@ -54,20 +67,20 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/2' : 'auto' }}>
-          <Calendar isDashboard maxHeight="257px" />
+          <Calendar isDashboard />
         </Box>
         <Box sx={{ gridColumn: desktopBreakpoint ? 'span 4' : 'span 12', gridRow: desktopBreakpoint ? '1/3' : 'auto' }}>
-          <Stack sx={{ border: `1px solid ${grey}`, maxHeight: '600px', overflow: 'auto' }}>
+          <Stack sx={{ border: `1px solid ${grey}`, height: '100%', overflow: 'auto' }}>
             <Stack direction="row" spacing={1} sx={{ padding: '24px 24px 0 24px' }}>
               <ReceiptLongIcon />
               <Typography>Urgent</Typography>
             </Stack>
             <Stack padding="24px" spacing={2}>
-              {tasks.map((task) => (
+              {(tasks.length > 0 ? tasks : exampleData).map((task) => (
                 <Stack key={task.id} sx={{ background: lightBlue, padding: '24px', }}>
                   <Typography fontWeight={700} fontSize="16px">{task.title}</Typography>
                   <Stack direction="row" justifyContent="space-between" alignItems="center" paddingTop="16px" flexWrap="wrap">
-                    <DateAndLevel deadline={DateTime.fromISO(task.deadline).toFormat('MMMM, dd')} level={task.importance} />
+                    <DateAndLevel deadline={DateTime.fromISO(task.deadline).toFormat('MMM, dd')} level={task.importance} />
                     <Typography fontWeight={100} fontSize="14px" sx={{ marginLeft: 'auto' }}>{task.projects?.title}</Typography>
                   </Stack>
                 </Stack>
@@ -75,7 +88,7 @@ const Dashboard = () => {
             </Stack>
           </Stack>
         </Box>
-        <Box sx={{ gridColumn: desktopBreakpoint ? 'span 8' : 'span 12', gridRow: desktopBreakpoint ? '2/3' : 'auto', maxHeight: '326px', border: `1px solid ${grey}` }}>
+        <Box sx={{ gridColumn: desktopBreakpoint ? 'span 8' : 'span 12', gridRow: desktopBreakpoint ? '2/3' : 'auto', maxHeight: '326px', border: `1px solid ${grey}`, height: '100%' }}>
           <LineChart result={result} />
         </Box>
       </Box>

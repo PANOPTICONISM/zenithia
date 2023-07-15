@@ -8,6 +8,7 @@ import { lightBlue } from '../../App';
 import { ClientProps, getClients } from 'lib/clients';
 import StatusTag from 'components/StatusTag/StatusTag';
 import { toast } from 'react-toastify';
+import { useUserData } from 'contexts/UserProvider';
 
 export const valueFormatter = Intl.NumberFormat('da-DK', {
   style: 'currency',
@@ -18,29 +19,38 @@ export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
   const [clients, setClients] = React.useState<ClientProps[]>([]);
 
-  React.useEffect(() => {
-    getProjects('*, clients(*)')
-      .then((res) => setRows(res))
-      .catch((error) => toast.error(error));
+  const [user] = useUserData();
 
-    getClients()
+  React.useEffect(() => {
+    if (!user) {
+      return;
+    }
+    getClients(user.token)
       .then((res) => setClients(res))
       .catch((error) => toast.error(error));
-  }, []);
+
+    getProjects(user.token, '*, clients(*)')
+      .then((res) => setRows(res))
+      .catch((error) => toast.error(error));
+  }, [user]);
   
   const deleteEntry = React.useCallback(
     (id: GridRowId) => () => {
       setTimeout(() => {
-        deleteProject(id)
+        if (!user) {
+          return;
+        }
+        deleteProject(user.token, id)
           .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
           .catch((error) => toast.error(error));
       });
     },
-    [],
+    [user],
   );
   
   const columns: GridColDef[] = [
-    { field: 'project_id', 
+    {
+      field: 'id', 
       headerName: 'ID', 
       valueFormatter: ({ value }) => value?.slice(0, 8),
     },
@@ -84,18 +94,18 @@ export const useColumnsAndRows = () => {
       headerName: 'Status',
       flex: 1,
       type: 'singleSelect',
-      valueOptions: ['Active', 'Archived', 'Standby'],
+      valueOptions: ['Active', 'Standby', 'Archived'],
       editable: true,
       renderCell: ({ value }) => {
         if (value === 'Archived') {
           return (<StatusTag color='inherit' value={value} />);
         }
 
-        if (value === 'Active') {
-          return (<StatusTag color='success' value={value} />);
+        if (value === 'Standby') {
+          return (<StatusTag color='warning' value={value} />);
         }
 
-        return (<StatusTag color='warning' value={value} />);
+        return (<StatusTag color='success' value={value} />);
       }
     },
     {
