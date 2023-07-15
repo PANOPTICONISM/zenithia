@@ -12,14 +12,13 @@ import {
   updateCalendar,
 } from "./calendar.js";
 import { auth } from "./middleware/auth.js";
-import { rateLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
 const port = 4000;
 const { json, urlencoded } = pkg;
 
 const corsOptions = {
-  origin: "*",
+  origin: process.env.FRONTEND_URL,
 };
 
 app.use(cors(corsOptions));
@@ -43,7 +42,7 @@ app.delete("/api/projects/:id", auth, deleteProject);
 app.post("/api/projects", auth, postProject);
 
 app.get("/api/tasks", auth, getTasksColumns);
-app.get("/api/tasks/all", getTasks);
+app.get("/api/tasks/all", auth, getTasks);
 app.post("/api/tasks/all", auth, postTask);
 app.put("/api/tasks/all/:id", auth, updateTask);
 app.delete("/api/tasks/all/:id", auth, deleteTask);
