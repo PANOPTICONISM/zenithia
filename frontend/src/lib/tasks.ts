@@ -7,7 +7,7 @@ export type TaskProps = {
   id: string;
   title: string;
   importance: string | null,
-  project_id?: number,
+  project_id?: string,
   column_id: string,
   deadline: string,
   projects?: ProjectProps | null;
@@ -20,11 +20,16 @@ type ColumnProps = {
   items: TaskProps[]
 };
 
-export const getTasksColumns = async (): Promise<ColumnProps[]> => {
+export const getTasksColumns = async (token: string): Promise<ColumnProps[]> => {
   const path = '/api/tasks';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as ColumnProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -32,11 +37,16 @@ export const getTasksColumns = async (): Promise<ColumnProps[]> => {
   }
 };
 
-export const getTasks = async (): Promise<TaskProps[]> => {
+export const getTasks = async (token: string): Promise<TaskProps[]> => {
   const path = '/api/tasks/all';
 
   try {
-    const response = await requester.get(path);
+    const response = await requester.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as TaskProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -44,11 +54,16 @@ export const getTasks = async (): Promise<TaskProps[]> => {
   }
 };
 
-export const postTask = async (body: TaskProps): Promise<string> => {
+export const postTask = async (token: string, body: TaskProps): Promise<string> => {
   const path = '/api/tasks/all';
   
   try {
-    const response = await requester.post(path, body);
+    const response = await requester.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -56,11 +71,16 @@ export const postTask = async (body: TaskProps): Promise<string> => {
   }
 };
 
-export const updateTask = async (id: string, body: TaskProps | {column_id: string}): Promise<string> => {
+export const updateTask = async (token: string, id: string, body: TaskProps | { column_id: string }): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
     
   try {
-    const response = await requester.put(path, body);
+    const response = await requester.put(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -68,11 +88,16 @@ export const updateTask = async (id: string, body: TaskProps | {column_id: strin
   }
 };
 
-export const deleteTask = async (id: string): Promise<string> => {
+export const deleteTask = async (token: string, id: string): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
     
   try {
-    const response = await requester.delete(path);
+    const response = await requester.delete(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
     return response.data as string;
   } catch (err) {
     const error = err as AxiosError<ServerError>;

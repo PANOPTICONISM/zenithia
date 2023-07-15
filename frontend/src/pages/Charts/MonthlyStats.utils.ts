@@ -39,9 +39,20 @@ export const useRevenueData = () => {
     const result = { 
       id: 'monthlyRevenue', 
       color: darkBlue, 
-      data: totalData
+      data: totalData.length > 0 ? totalData : [{
+        'x': 'plane',
+        'y': 175
+      },
+      {
+        'x': 'helicopter',
+        'y': 141
+      },
+      {
+        'x': 'boat',
+        'y': 298
+      }]
     };
-  
+
     return { ...result };
   }, [projects]);
   

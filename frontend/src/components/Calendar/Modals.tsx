@@ -1,6 +1,7 @@
 import { EventClickArg, DateSelectArg } from '@fullcalendar/core';
 import { TextField, Stack, Button, DialogContent, DialogActions } from '@mui/material';
 import { darkBlue } from 'App';
+import { useUserData } from 'contexts/UserProvider';
 import { updateCalendar, deleteCalendar, postCalendar } from 'lib/calendar';
 import React from 'react';
 import { toast } from 'react-toastify';
@@ -8,29 +9,34 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const EventAddModal = ({ close, selected } : { close: () => unknown, selected: DateSelectArg }) => {
   const [title, setTitle] = React.useState<string>('');
+  const [user] = useUserData();
 
   const handleAddEvent = React.useCallback((close: () => unknown) => {
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
   
+    if (!user) {
+      return;
+    }
     if (title) {
       const eventCalendar = {
         id: uuidv4(),
         title,
         start: selected.startStr,
         end: selected.endStr,
+        user_id: user.id,
       };
             
       calendarApi.addEvent(eventCalendar);
-  
-      postCalendar(eventCalendar)
+
+      postCalendar(user.token, eventCalendar)
         .then(() => {
           close();
           toast.success('Event added');
         })
         .catch(() => toast.error('Could not add the event'));
     }
-  }, [title]);
+  }, [title, user]);
 
   return (
     <Stack width="400px">
@@ -56,6 +62,7 @@ export const EventAddModal = ({ close, selected } : { close: () => unknown, sele
 
 export const EventUpdateModal = ({ close, selected } : { close: () => unknown, selected: EventClickArg }) => {
   const [title, setTitle] = React.useState<string>('');
+  const [user] = useUserData();
 
   const handleUpdateEvent = React.useCallback((close: () => unknown) => {
     const eventCalendarUpdated = {
@@ -67,8 +74,12 @@ export const EventUpdateModal = ({ close, selected } : { close: () => unknown, s
     
     const calendarApi = selected.view.calendar;
     const currentEvent = calendarApi.getEventById(selected.event.id);
-    
-    updateCalendar(selected.event.id, eventCalendarUpdated)
+
+    if (!user) {
+      return;
+    }
+
+    updateCalendar(user.token, selected.event.id, eventCalendarUpdated)
       .then(() => {
         if (currentEvent) {
           currentEvent.setProp('title', title);
@@ -80,7 +91,10 @@ export const EventUpdateModal = ({ close, selected } : { close: () => unknown, s
   }, [title]);
 
   const handleDeleteEvent = React.useCallback((close: () => unknown) => {
-    deleteCalendar(selected.event.id)
+    if (!user) {
+      return;
+    }
+    deleteCalendar(user.token, selected.event.id)
       .then(() => {
         selected.event.remove();
         close();

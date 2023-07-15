@@ -41,11 +41,29 @@ const useRevenueData = () => {
 
 const YearlyStats = () => {
   const { yearlyLogsTotals } = useRevenueData();
+  const exampleData = yearlyLogsTotals.length > 0 ? yearlyLogsTotals : [{
+    'id': 'php',
+    'label': 'php',
+    'value': 202,
+    'color': 'hsl(306, 70%, 50%)'
+  },
+  {
+    'id': 'java',
+    'label': 'java',
+    'value': 244,
+    'color': 'hsl(343, 70%, 50%)'
+  },
+  {
+    'id': 'hack',
+    'label': 'hack',
+    'value': 369,
+    'color': 'hsl(87, 70%, 50%)'
+  }];
 
   return (
     <Main title='Yearly Revenue'>
       <Box height="500px">
-        <PieChart logs={yearlyLogsTotals} />
+        <PieChart logs={exampleData} />
       </Box>
     </Main>
   );
