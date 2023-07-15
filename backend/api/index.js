@@ -24,14 +24,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-console.log(corsOptions, "options");
-
 app.use(json());
 app.use(
   urlencoded({
     extended: true,
   })
 );
+
+app.use(rateLimiter);
 
 app.get("/", auth, (req, res) => {
   res.setHeader("Content-Type", "text/html");
