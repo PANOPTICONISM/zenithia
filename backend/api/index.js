@@ -19,7 +19,7 @@ const port = 4000;
 const { json, urlencoded } = pkg;
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: JSON.parse(process.env.FRONTEND_URL),
 };
 
 app.use(cors(corsOptions));
