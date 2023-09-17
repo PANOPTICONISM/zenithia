@@ -1,17 +1,19 @@
-import Main from 'components/Main/Main';
-import React from 'react';
-import { useColumnsAndRows } from './Clients.utils';
-import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import { ClientProps, postClient, updateClient } from 'lib/clients';
-import { v4 as uuidv4 } from 'uuid';
-import { useFiltering } from 'components/SearchBar/SearchBar.utils';
-import { toast } from 'react-toastify';
-import { useUserData } from 'contexts/UserProvider';
+import Main from "components/Main/Main";
+import React from "react";
+import { useColumnsAndRows } from "./Clients.utils";
+import { Box } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { ClientProps, postClient, updateClient } from "lib/clients";
+import { v4 as uuidv4 } from "uuid";
+import { useFiltering } from "components/SearchBar/SearchBar.utils";
+import { toast } from "react-toastify";
+import { useUserData } from "contexts/UserProvider";
 
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
-  const { filterModel, handleFilterChange } = useFiltering({ columnField: 'name' });
+  const { filterModel, handleFilterChange } = useFiltering({
+    columnField: "name",
+  });
 
   const [user] = useUserData();
 
@@ -22,14 +24,14 @@ const Clients = () => {
 
     const obj = {
       id: uuidv4(),
-      name: null, 
+      name: null,
       occupation: null,
-      status: 'Standby', 
-      location: '',
+      status: "Standby",
+      location: "",
       company: null,
       email: null,
       phone_number: null,
-      user_id: user.id
+      user_id: user.id,
     };
 
     postClient(user.token, obj)
@@ -37,24 +39,33 @@ const Clients = () => {
       .catch((error) => toast.error(error));
   };
 
-  const handleProcessRowUpdate = React.useCallback((newRow: ClientProps, oldRow: ClientProps) => {
-    if (!oldRow.id || !user) {
-      return oldRow;
-    }
+  const handleProcessRowUpdate = React.useCallback(
+    (newRow: ClientProps, oldRow: ClientProps) => {
+      if (!oldRow.id || !user) {
+        return oldRow;
+      }
 
-    updateClient(user.token, oldRow.id, newRow)
-      .catch((error) => toast.error(error));
-    return newRow;
-  }, [user]);
+      updateClient(user.token, oldRow.id, newRow).catch((error) =>
+        toast.error(error),
+      );
+      return newRow;
+    },
+    [user],
+  );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     console.log(error);
   }, []);
 
   return (
-    <Main title="Clients" handleClick={addUser} buttonText='Add client' isSearch>
-      <Box sx={{ height: 620, width: '100%' }}>
-        <DataGrid 
+    <Main
+      title="Clients"
+      handleClick={addUser}
+      buttonText="Add client"
+      isSearch
+    >
+      <Box sx={{ height: 620, width: "100%" }}>
+        <DataGrid
           columns={columns}
           rows={rows}
           editMode="row"

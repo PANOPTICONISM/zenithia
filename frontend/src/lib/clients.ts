@@ -1,28 +1,27 @@
-import { AxiosError } from 'axios';
-import { requester } from './axios';
-import { GridRowId } from '@mui/x-data-grid';
-import { ServerError } from './lib.types';
+import { AxiosError } from "axios";
+import { requester } from "./axios";
+import { GridRowId } from "@mui/x-data-grid";
+import { ServerError } from "./lib.types";
 
 export type ClientProps = {
-  id: string,
-  name: string | null,
-  occupation: string | null,
-  status: string,
-  location: string | null,
-  email: string | null,
-  phone_number: string | null,
-  
-}
+  id: string;
+  name: string | null;
+  occupation: string | null;
+  status: string;
+  location: string | null;
+  email: string | null;
+  phone_number: string | null;
+};
 
 export const getClients = async (token: string): Promise<ClientProps[]> => {
-  const path = '/api/clients';
+  const path = "/api/clients";
 
   try {
     const response = await requester.get(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as ClientProps[];
   } catch (err) {
@@ -31,15 +30,18 @@ export const getClients = async (token: string): Promise<ClientProps[]> => {
   }
 };
 
-export const postClient = async (token: string, body: ClientProps): Promise<string> => {
-  const path = '/api/clients';
-  
+export const postClient = async (
+  token: string,
+  body: ClientProps,
+): Promise<string> => {
+  const path = "/api/clients";
+
   try {
     const response = await requester.post(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -48,15 +50,19 @@ export const postClient = async (token: string, body: ClientProps): Promise<stri
   }
 };
 
-export const updateClient = async (token: string, id: string, body: ClientProps): Promise<string> => {
+export const updateClient = async (
+  token: string,
+  id: string,
+  body: ClientProps,
+): Promise<string> => {
   const path = `/api/clients/${id}`;
-    
+
   try {
     const response = await requester.put(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -65,15 +71,18 @@ export const updateClient = async (token: string, id: string, body: ClientProps)
   }
 };
 
-export const deleteClient = async (token: string, id: GridRowId): Promise<string> => {
+export const deleteClient = async (
+  token: string,
+  id: GridRowId,
+): Promise<string> => {
   const path = `/api/clients/${id}`;
-    
+
   try {
     const response = await requester.delete(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {

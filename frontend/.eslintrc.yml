@@ -6,6 +6,7 @@ extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:@typescript-eslint/recommended
+  - plugin:prettier/recommended
 overrides: []
 parser: "@typescript-eslint/parser"
 parserOptions:
@@ -18,25 +19,4 @@ settings:
   react: 
     version: detect
 rules:
-  indent:
-    - error
-    - 2
-  linebreak-style:
-    - error
-    - unix
-  quotes:
-    - error
-    - single
-  semi:
-    - error
-    - always
-  object-curly-spacing:
-    - error
-    - always
-  brace-style:
-    - error
-    - 1tbs
-  no-empty-function: off
-  no-empty: 0
-  react/jsx-uses-react: off
   react/react-in-jsx-scope: off

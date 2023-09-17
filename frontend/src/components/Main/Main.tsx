@@ -1,30 +1,47 @@
-import React from 'react';
-import Header from '../Header/Header';
-import { Box, useMediaQuery } from '@mui/material';
-import Sidebar from '../Sidebar/Sidebar';
-import { drawerWidth } from '../Sidebar/Sidebar.utils';
-import { useIsSidebarOpen } from '../../contexts/SidebarProvider';
-import { HeaderProps } from 'components/Header/Header.types';
+import React from "react";
+import Header from "../Header/Header";
+import { Box, useMediaQuery } from "@mui/material";
+import Sidebar from "../Sidebar/Sidebar";
+import { drawerWidth } from "../Sidebar/Sidebar.utils";
+import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import { HeaderProps } from "components/Header/Header.types";
 
-const Main = ({ 
-  children, 
-  title, 
-  handleClick, 
+const Main = ({
+  children,
+  title,
+  handleClick,
   buttonText,
   isSearch,
-  hideMargin
-} : { children: React.ReactNode } & HeaderProps) => {
-  const tabletBreakpoint = useMediaQuery('(max-width:900px)');
+  hideMargin,
+}: { children: React.ReactNode } & HeaderProps) => {
+  const tabletBreakpoint = useMediaQuery("(max-width:900px)");
   const [open] = useIsSidebarOpen();
-    
+
   return (
-    <Box sx={ !tabletBreakpoint ? { display: 'flex', justifyContent: 'space-between' } : {}}>
+    <Box
+      sx={
+        !tabletBreakpoint
+          ? { display: "flex", justifyContent: "space-between" }
+          : {}
+      }
+    >
       <Sidebar />
-      <Box sx={tabletBreakpoint ? { padding: '20px' } : { width: open ? `calc(100% - (100px + ${drawerWidth}px))` : 'calc(100% - 225px)', padding: '50px' }}>
-        <Header 
-          title={title} 
-          handleClick={handleClick} 
-          buttonText={buttonText} 
+      <Box
+        sx={
+          tabletBreakpoint
+            ? { padding: "20px" }
+            : {
+                width: open
+                  ? `calc(100% - (100px + ${drawerWidth}px))`
+                  : "calc(100% - 225px)",
+                padding: "50px",
+              }
+        }
+      >
+        <Header
+          title={title}
+          handleClick={handleClick}
+          buttonText={buttonText}
           isSearch={isSearch}
           hideMargin={hideMargin}
         />

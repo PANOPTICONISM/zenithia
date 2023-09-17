@@ -1,83 +1,101 @@
-import { styled, Theme, CSSObject } from '@mui/material/styles';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
-import MuiDrawer from '@mui/material/Drawer';
-import React from 'react';
-import { darkBlue, highlight, white } from '../../App';
+import { styled, Theme, CSSObject } from "@mui/material/styles";
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
+import MuiDrawer from "@mui/material/Drawer";
+import React from "react";
+import { darkBlue, highlight, white } from "../../App";
 
 export const drawerWidth = 260;
 export const drawerWidthMobile = 125;
 
 const openedMixin = (theme: Theme): CSSObject => ({
-  boxSizing: 'border-box',
+  boxSizing: "border-box",
   background: darkBlue,
   width: drawerWidth,
-  padding: '30px',
-  transition: theme.transitions.create('width', {
+  padding: "30px",
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
-  display: 'flex',
-  justifyContent: 'space-between'
+  overflowX: "hidden",
+  display: "flex",
+  justifyContent: "space-between",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
-  boxSizing: 'border-box',
+  boxSizing: "border-box",
   background: darkBlue,
-  padding: '30px',
-  transition: theme.transitions.create('width', {
+  padding: "30px",
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
-  display: 'flex',
-  justifyContent: 'space-between',
+  overflowX: "hidden",
+  display: "flex",
+  justifyContent: "space-between",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: drawerWidthMobile + 'px',
+  [theme.breakpoints.up("sm")]: {
+    width: drawerWidthMobile + "px",
   },
 });
 
-export const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
+export const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
   padding: theme.spacing(0, 1),
-  minHeight: '100px',
+  minHeight: "100px",
 }));
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+export const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
 
-export const ListLink = ({ open, text, icon, path } : { open: boolean, text: string, icon: React.ReactNode, path: string }) => {
+export const ListLink = ({
+  open,
+  text,
+  icon,
+  path,
+}: {
+  open: boolean;
+  text: string;
+  icon: React.ReactNode;
+  path: string;
+}) => {
   const { pathname } = useLocation();
 
   return (
-    <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link to={path} style={{ textDecoration: "none", color: "inherit" }}>
       <ListItem disablePadding>
-        <ListItemButton sx={{
-          minHeight: 48,
-          justifyContent: open ? 'initial' : 'center',
-          px: 2.5,
-          color: white,
-          background: path === pathname ? highlight : 'inherit',
-          borderRadius: '4px',
-        }}>
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+            color: white,
+            background: path === pathname ? highlight : "inherit",
+            borderRadius: "4px",
+          }}
+        >
           <ListItemIcon
             sx={{
               minWidth: 0,
-              mr: open ? 3 : 'auto',
-              justifyContent: 'center',
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
             }}
           >
             {icon}
@@ -89,8 +107,10 @@ export const ListLink = ({ open, text, icon, path } : { open: boolean, text: str
   );
 };
 
-export const Subtitle = ({ text } : { text: string }) => {
+export const Subtitle = ({ text }: { text: string }) => {
   return (
-    <Typography padding="6px 12px 4px 12px" color={white}>{text}</Typography>
+    <Typography padding="6px 12px 4px 12px" color={white}>
+      {text}
+    </Typography>
   );
 };
