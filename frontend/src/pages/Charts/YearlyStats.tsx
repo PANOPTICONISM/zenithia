@@ -1,10 +1,6 @@
 import Main from "components/Main/Main";
-import React from "react";
-import { DateTime } from "luxon";
 import { Box } from "@mui/material";
-import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
 import PieChart from "components/Charts/PieChart";
-import { PieChartProps } from "components/Charts/Charts.types";
 import PlaceholderDataAlert from "components/PlaceholderDataAlert/PlaceholderDataAlert";
 import { useRevenueData } from "./YearlyStats.utils";
 import Loading from "components/Loading/Loading";
