@@ -68,7 +68,7 @@ export const useRevenueData = () => {
           },
         ];
 
-    return { ...result };
+    return result;
   }, [projects]);
 
   return {
