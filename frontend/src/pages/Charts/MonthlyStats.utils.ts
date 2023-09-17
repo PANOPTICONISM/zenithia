@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import React from "react";
 
 export const useRevenueData = () => {
+  const [isPlaceholderData, setIsPlaceholderData] = React.useState(false);
   const { projects, setProjects } = useGetProjectsFormatted();
 
   const profitableEntries = React.useMemo(() => {
@@ -45,30 +46,32 @@ export const useRevenueData = () => {
       totalData.push(obj);
     });
 
+    const containsData = totalData.length > 0;
+    setIsPlaceholderData(!containsData);
+
     const result = {
       id: "monthlyRevenue",
       color: darkBlue,
-      data:
-        totalData.length > 0
-          ? totalData
-          : [
-              {
-                x: "plane",
-                y: 175,
-              },
-              {
-                x: "helicopter",
-                y: 141,
-              },
-              {
-                x: "boat",
-                y: 298,
-              },
-            ],
+      data: containsData
+        ? totalData
+        : [
+            {
+              x: "plane",
+              y: 175,
+            },
+            {
+              x: "helicopter",
+              y: 141,
+            },
+            {
+              x: "boat",
+              y: 298,
+            },
+          ],
     };
 
     return { ...result };
   }, [projects]);
 
-  return { data: projects, setData: setProjects, result };
+  return { data: projects, setData: setProjects, result, isPlaceholderData };
 };
