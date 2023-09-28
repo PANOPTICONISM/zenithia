@@ -1,1 +1,1 @@
-export type ServerError = { message: string; }
+export type ServerError = { message: string };

@@ -1,28 +1,32 @@
-import { AxiosError } from 'axios';
-import { requester } from './axios';
-import { GridRowId } from '@mui/x-data-grid';
-import { ProjectProps } from '../pages/Projects/Projects.types';
-import { ServerError } from './lib.types';
+import { AxiosError } from "axios";
+import { requester } from "./axios";
+import { GridRowId } from "@mui/x-data-grid";
+import { ProjectProps } from "../pages/Projects/Projects.types";
+import { ServerError } from "./lib.types";
 
 export type TimeTrackerProps = {
-  id: string,
-  date: string,
-  start_time: string | null,
-  finish_time: string | null,
-  total: number | null,
-  project_id: string | null,
-  projects?: ProjectProps
-}
+  id: string;
+  date: string;
+  start_time: string | null;
+  finish_time: string | null;
+  total: number | null;
+  project_id: string | null;
+  projects?: ProjectProps;
+};
 
-export const getTimeTracker = async (token: string, param?: string): Promise<TimeTrackerProps[]> => {
-  const path = '/api/timetracker';
+export const getTimeTracker = async (
+  token: string,
+  param?: string,
+): Promise<TimeTrackerProps[]> => {
+  const path = "/api/timetracker";
 
   try {
     const response = await requester.get(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }, params: { filter: param }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      params: { filter: param },
     });
     return response.data as TimeTrackerProps[];
   } catch (err) {
@@ -31,15 +35,18 @@ export const getTimeTracker = async (token: string, param?: string): Promise<Tim
   }
 };
 
-export const postTimeTracker = async (token: string, body: TimeTrackerProps): Promise<string> => {
-  const path = '/api/timetracker';
-  
+export const postTimeTracker = async (
+  token: string,
+  body: TimeTrackerProps,
+): Promise<string> => {
+  const path = "/api/timetracker";
+
   try {
     const response = await requester.post(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -48,20 +55,26 @@ export const postTimeTracker = async (token: string, body: TimeTrackerProps): Pr
   }
 };
 
-type TimeTrackerUpdateProps = {
-  finish_time?: string,
-  project_id?: string,
-} | TimeTrackerProps
+type TimeTrackerUpdateProps =
+  | {
+      finish_time?: string;
+      project_id?: string;
+    }
+  | TimeTrackerProps;
 
-export const updateTimeTracker = async (token: string, id: string, body: TimeTrackerUpdateProps): Promise<string> => {
+export const updateTimeTracker = async (
+  token: string,
+  id: string,
+  body: TimeTrackerUpdateProps,
+): Promise<string> => {
   const path = `/api/timetracker/${id}`;
-    
+
   try {
     const response = await requester.put(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -70,15 +83,18 @@ export const updateTimeTracker = async (token: string, id: string, body: TimeTra
   }
 };
 
-export const deleteTimeTracker = async (token: string, id: GridRowId): Promise<string> => {
+export const deleteTimeTracker = async (
+  token: string,
+  id: GridRowId,
+): Promise<string> => {
   const path = `/api/timetracker/${id}`;
-    
+
   try {
     const response = await requester.delete(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {

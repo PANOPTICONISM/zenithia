@@ -1,13 +1,20 @@
-import { Button } from '@mui/material';
-import HdrStrongIcon from '@mui/icons-material/HdrStrong';
+import { Button } from "@mui/material";
+import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 
-const StatusTag = ({ color, value } : { color: 'inherit' | 'success' | 'warning', value: string }) => {
+const StatusTag = ({
+  color,
+  value,
+}: {
+  color: "inherit" | "success" | "warning";
+  value: string;
+}) => {
   return (
-    <Button 
+    <Button
       sx={{ padding: 0 }}
-      variant="text" 
+      variant="text"
       color="inherit"
-      endIcon={<HdrStrongIcon color={color} />}>
+      endIcon={<HdrStrongIcon color={color} />}
+    >
       {value}
     </Button>
   );

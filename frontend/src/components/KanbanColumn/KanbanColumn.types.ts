@@ -1,4 +1,4 @@
-import { ColumnProps } from 'pages/Tasks/Tasks.types';
+import { ColumnProps } from "pages/Tasks/Tasks.types";
 
 export type DataProps = {
   columns: ColumnProps[];
