@@ -20,6 +20,7 @@ const { json, urlencoded } = pkg;
 
 const corsOptions = {
   origin: JSON.parse(process.env.FRONTEND_URL),
+  credentials: true
 };
 
 app.use(cors(corsOptions));
