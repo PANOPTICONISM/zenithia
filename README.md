@@ -1,11 +1,11 @@
-Dissertation project, 2023.
+Zenithia — a developer-focused solution to streamline the workday of freelancers.
 
 # Guidelines
 
 For the application to be able to communicate with the individual parts (front-end, back-end, database), follow these steps.
 
 ## Environment variables
-1. Both the front-end and back-end folders must have a .env file at the root
+1. Both the front-end and back-end folders must have an .env file at the root
 2. Back-end variables example: 
 ```
 FRONTEND_URL=http://localhost:3000
