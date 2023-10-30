@@ -39,7 +39,7 @@ app.get("/", auth, (req, res) => {
 });
 
 app.post("/api/signup", signUp);
-app.get("/api/login", login);
+app.post("/api/login", login);
 
 app.get("/api/projects", auth, getProjects);
 app.put("/api/projects/:id", auth, updateProjects);

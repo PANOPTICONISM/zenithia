@@ -15,6 +15,7 @@ import { postLoginUser, signupUser } from "lib/authentication";
 import { toast } from "react-toastify";
 import { Logo } from "icons/logo";
 import { useUserData } from "contexts/UserProvider";
+import { v4 as uuidv4 } from "uuid";
 
 const Authentication = () => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
@@ -41,7 +42,7 @@ const Authentication = () => {
           setUser({
             id: data.id,
             username: data?.email?.split("@")[0] || "",
-            token: data.token,
+            token: uuidv4(),
           }),
         )
         .catch((error) => toast.error("" + error));
