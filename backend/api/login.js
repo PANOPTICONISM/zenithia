@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { connection } from "./middleware/mysql.js";
 
 export const login = async (req, res) => {
@@ -13,7 +14,14 @@ export const login = async (req, res) => {
     } else {
       const isPasswordCorrect = await bcrypt.compare(req.body.password, rows[0].password);
       if (isPasswordCorrect) {
-        return res.status(200).json({ id: rows.id, email: username });
+        const token = jwt.sign(
+          { user: username },
+          process.env.JWT_TOKEN_KEY,
+          {
+            expiresIn: "12h",
+          }
+        );
+        return res.status(200).json({ id: rows.id, email: username, token });
       } else {
         return res.status(401).json({ message: "Your password is incorrect." });
       }

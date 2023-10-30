@@ -10,6 +10,7 @@ type User = {
 type UserResponse = {
   id: string;
   email: string;
+  token: string;
 };
 
 export const postLoginUser = async (
@@ -22,6 +23,7 @@ export const postLoginUser = async (
     return {
       id: response.data.id,
       email: response.data.email,
+      token: response.data.token,
     };
   } catch (err) {
     const error = err as AxiosError<ServerError>;
@@ -29,12 +31,17 @@ export const postLoginUser = async (
   }
 };
 
-export const signupUser = async (credentials: User): Promise<string> => {
+export const signupUser = async (
+  credentials: User,
+): Promise<{ username: string; token: string }> => {
   const path = "/api/signup";
 
   try {
     const response = await requester.post(path, credentials);
-    return response.data as string;
+    return {
+      username: response.data.username,
+      token: response.data.token,
+    };
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
