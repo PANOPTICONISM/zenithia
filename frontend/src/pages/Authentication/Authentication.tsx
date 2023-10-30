@@ -11,7 +11,7 @@ import {
 import React from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import { darkBlue, grey, highlight, white } from "App";
-import { postLoginUser, signUpUser } from "lib/authentication";
+import { postLoginUser, signupUser } from "lib/authentication";
 import { toast } from "react-toastify";
 import { Logo } from "icons/logo";
 import { useUserData } from "contexts/UserProvider";
@@ -47,11 +47,11 @@ const Authentication = () => {
         .catch((error) => toast.error("" + error));
     }
 
-    return signUpUser({
+    return signupUser({
       username,
       password,
     })
-      .then(() => toast.success("We've sent you an email for confirmation."))
+      .then(() => toast.success("Your account has been created."))
       .catch((error) => toast.error("" + error));
   };
 

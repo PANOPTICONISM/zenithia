@@ -1,4 +1,7 @@
+import { AxiosError } from "axios";
+import { requester } from "./axios";
 import { supabase } from "./supabase";
+import { ServerError } from "./lib.types";
 
 type User = {
   username: string;
@@ -29,17 +32,14 @@ export const postLoginUser = async (
   };
 };
 
-export const signUpUser = async (credentials: User) => {
-  const { data, error } = await supabase.auth.signUp({
-    email: credentials.username,
-    password: credentials.password,
-    options: {
-      emailRedirectTo: process.env.REACT_APP_FRONTEND_URL,
-    },
-  });
-  console.log(data, error);
-  if (error) {
-    throw new Error(error.message);
+export const signupUser = async (credentials: User): Promise<string> => {
+  const path = "/api/signup";
+
+  try {
+    const response = await requester.post(path, credentials);
+    return response.data as string;
+  } catch (err) {
+    const error = err as AxiosError<ServerError>;
+    throw new Error(error.response?.data?.message || error.message);
   }
-  return { data };
 };
