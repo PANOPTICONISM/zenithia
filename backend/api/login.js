@@ -21,7 +21,7 @@ export const login = async (req, res) => {
             expiresIn: "43200",
           }
         );
-        return res.status(200).json({ id: rows.id, email: username, token });
+        return res.status(200).json({ id: rows[0].id, email: username, token });
       } else {
         return res.status(401).json({ message: "Your password is incorrect." });
       }

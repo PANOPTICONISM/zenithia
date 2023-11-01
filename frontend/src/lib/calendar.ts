@@ -3,12 +3,20 @@ import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
 import { ServerError } from "./lib.types";
 
-export type CalendarProps = {
-  id: string;
+type PostCalendarEntry = {
   title: string;
   start: string;
   end: string;
 };
+
+type UserId = {
+  user_id: string;
+};
+
+export type CalendarProps = PostCalendarEntry &
+  UserId & {
+    id: string;
+  };
 
 export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
   const path = "/api/calendar";
@@ -29,7 +37,7 @@ export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
 
 export const postCalendar = async (
   token: string,
-  body: CalendarProps,
+  body: PostCalendarEntry & UserId,
 ): Promise<string> => {
   const path = "/api/calendar";
 
@@ -50,7 +58,7 @@ export const postCalendar = async (
 export const updateCalendar = async (
   token: string,
   id: string,
-  body: CalendarProps,
+  body: PostCalendarEntry,
 ): Promise<string> => {
   const path = `/api/calendar/${id}`;
 

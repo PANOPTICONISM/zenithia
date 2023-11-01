@@ -11,7 +11,6 @@ import { useUserData } from "contexts/UserProvider";
 import { updateCalendar, deleteCalendar, postCalendar } from "lib/calendar";
 import React from "react";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
 
 export const EventAddModal = ({
   close,
@@ -33,7 +32,6 @@ export const EventAddModal = ({
       }
       if (title) {
         const eventCalendar = {
-          id: uuidv4(),
           title,
           start: selected.startStr,
           end: selected.endStr,
@@ -88,7 +86,6 @@ export const EventUpdateModal = ({
   const handleUpdateEvent = React.useCallback(
     (close: () => unknown) => {
       const eventCalendarUpdated = {
-        id: selected.event.id,
         title: title,
         start: selected.event.startStr,
         end: selected.event.endStr,
