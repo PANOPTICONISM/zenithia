@@ -1,27 +1,16 @@
-import supabase from "../supabaseClient.js";
+import { userToken } from "./middleware/auth.js";
+import { connection } from "./middleware/mysql.js";
 
 export const getCalendar = async (req, res) => {
-  const token = req.header("Authorization");
+  const sqlSearch = "SELECT * FROM calendars WHERE user_id = ?";
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { data, error } = await requester.from("calendars").select();
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).json(data);
+    const [rows] = await connection.execute(sqlSearch, [userToken.id]);
+    return res.status(200).json({ calendar: rows });
   } catch (error) {
-    console.error(error);
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while fetching your data" });
+      .json({ error: "An error occurred while retrieving your data." });
   }
 };
 

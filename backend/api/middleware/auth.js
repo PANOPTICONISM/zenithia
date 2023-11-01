@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 
+export const userToken = {};
+
 export const auth = async (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
   if (!token) {
@@ -7,7 +9,8 @@ export const auth = async (req, res, next) => {
   }
 
   try {
-    jwt.verify(token, process.env.JWT_TOKEN_KEY);
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN_KEY);
+    Object.assign(userToken, decoded);
   } catch (err) {
     return res.status(400).json({ error: "Invalid token, auth denied." });
   }

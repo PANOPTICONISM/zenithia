@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { connection } from "./middleware/mysql.js";
 
 export const signUp = async (req, res) => {
@@ -22,13 +21,6 @@ export const signUp = async (req, res) => {
           username,
           password,
         ]);
-        const token = jwt.sign(
-          { user: username },
-          process.env.JWT_TOKEN_KEY,
-          {
-            expiresIn: "12h",
-          }
-        );
         return res.status(200).json({ username, token });
       } catch (err) {
         return res.status(400).json({ message: 'Network error. Try again' });
