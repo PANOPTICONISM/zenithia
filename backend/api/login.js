@@ -5,7 +5,7 @@ import { connection } from "./middleware/mysql.js";
 export const login = async (req, res) => {
   const username = req.body.username;
 
-  const sqlSearch = "SELECT * FROM users WHERE email = ?";
+  const sqlSearch = "SELECT BIN_TO_UUID(id), email, password FROM users WHERE email = ?";
 
   try {
     const [rows] = await connection.execute(sqlSearch, [username]);

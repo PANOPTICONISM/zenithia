@@ -7,7 +7,7 @@ export const signUp = async (req, res) => {
 
   const sqlSearch = "SELECT * FROM users WHERE email = ?";
 
-  const sqlInsert = "INSERT INTO users VALUES (0,?,?)";
+  const sqlInsert = "INSERT INTO users (email, password) VALUES (?,?)";
 
   try {
     const [rows] = await connection.execute(sqlSearch, [username]);
@@ -21,7 +21,7 @@ export const signUp = async (req, res) => {
           username,
           password,
         ]);
-        return res.status(200).json({ username, token });
+        return res.status(200).json({ username });
       } catch (err) {
         return res.status(400).json({ message: 'Network error. Try again' });
       }
