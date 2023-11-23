@@ -6,7 +6,7 @@ export const getCalendar = async (req, res) => {
 
   try {
     const [rows] = await connection.execute(sqlSearch, [userToken.id]);
-    return res.status(200).json(rows)
+    return res.status(200).json(rows);
   } catch (error) {
     return res
       .status(500)
@@ -44,12 +44,13 @@ export const deleteCalendar = async (req, res) => {
 
 export const postCalendar = async (req, res) => {
   const { body } = req;
-  const sqlInsert = "INSERT INTO calendars (title, start, end, user_id) VALUES (?,?,?,?)";
+  const sqlInsert = `INSERT INTO calendars (title, start, end, user_id) VALUES (?,?,?,UUID_TO_BIN('${userToken.id}'))`;
 
   try {
     await connection.execute(sqlInsert, Object.values(body));
     return res.status(200).send(`Calendar event added successfully.`);
   } catch (error) {
+    console.log(error, '404')
     return res.status(500).json({ error: "An error occurred while adding your event." });
   }
 };

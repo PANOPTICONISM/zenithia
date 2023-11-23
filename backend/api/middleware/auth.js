@@ -11,8 +11,8 @@ export const auth = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_TOKEN_KEY);
     Object.assign(userToken, decoded);
+    return next();
   } catch (err) {
     return res.status(400).json({ error: "Invalid token, auth denied." });
   }
-  return next();
 };

@@ -15,10 +15,10 @@ export const login = async (req, res) => {
       const isPasswordCorrect = await bcrypt.compare(req.body.password, rows[0].password);
       if (isPasswordCorrect) {
         const token = jwt.sign(
-          { id: rows[0].id, user: username },
+          { id: rows[0]['BIN_TO_UUID(id)'], user: username },
           process.env.JWT_TOKEN_KEY,
           {
-            expiresIn: "43200",
+            expiresIn: "24h",
           }
         );
         return res.status(200).json({ id: rows[0].id, email: username, token });
