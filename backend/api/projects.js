@@ -1,111 +1,57 @@
-import supabase from "../supabaseClient.js";
+import { userToken } from "./middleware/auth.js";
+import { connection } from "./middleware/mysql.js";
 
 export const getProjects = async (req, res) => {
-  const token = req.header("Authorization");
-  const { query } = req;
+  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start_date, finish_date, status, revenue, base_price, BIN_TO_UUID(client_id) as client_id, BIN_TO_UUID(user_id) as user_id, created_at 
+  FROM projects WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { data, error } = await requester
-      .from("projects")
-      .select(query.filter);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).json(data);
+    const [rows] = await connection.execute(sqlSearch);
+    return res.status(200).json(rows);
   } catch (error) {
-    console.error(error, "error here fam");
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while fetching your data" });
+      .json({ error: "An error occurred while retrieving your projects." });
   }
 };
 
 export const updateProjects = async (req, res) => {
   const { body, params } = req;
-  const token = req.header("Authorization");
+  const sqlUpdate = `UPDATE projects SET title=?, start_date=?, finish_date=?, status=?, revenue=?, base_price=?, client_id=UUID_TO_BIN(?) 
+  WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester
-      .from("projects")
-      .update(body)
-      .eq("id", params.id);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Project with id: ${params.id} has been modified`);
+    await connection.execute(sqlUpdate, Object.values(body));
+    return res.status(200).send(`Project with id: ${params.id} has been updated.`);
   } catch (error) {
-    console.error(error);
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while updating your entry" });
+      .json({ error: "An error occurred while updating your project." });
   }
 };
 
 export const deleteProject = async (req, res) => {
   const { params } = req;
-  const token = req.header("Authorization");
+  const sqlDelete = `DELETE FROM projects WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester
-      .from("projects")
-      .delete()
-      .eq("id", params.id);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Project with id: ${params.id} has been deleted`);
+    await connection.execute(sqlDelete);
+    return res.status(200).send(`Project with id: ${params.id} has been deleted.`);
   } catch (error) {
-    console.error(error);
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while deleting your entry" });
+      .json({ error: "An error occurred while deleting your project." });
   }
 };
 
 export const postProject = async (req, res) => {
   const { body } = req;
-  const token = req.header("Authorization");
+  const sqlInsert = `INSERT INTO projects (id, title, start_date, finish_date, status, revenue, base_price, client_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,UUID_TO_BIN(?),UUID_TO_BIN('${userToken.id}'))`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester.from("projects").insert(body);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Project added successfully`);
+    await connection.execute(sqlInsert, Object.values(body));
+    return res.status(200).send(`Calendar event added successfully.`);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while adding your data" });
+    return res.status(500).json({ error: "An error occurred while adding your client." });
   }
 };

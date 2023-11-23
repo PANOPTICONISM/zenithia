@@ -23,7 +23,6 @@ export const updateClient = async (req, res) => {
     await connection.execute(sqlUpdate, Object.values(body));
     return res.status(200).send(`Client with id: ${params.id} has been updated.`);
   } catch (error) {
-    console.log(error, 'error', body)
     return res
       .status(500)
       .json({ error: "An error occurred while updating your entry." });
@@ -47,14 +46,12 @@ export const deleteClient = async (req, res) => {
 export const postClient = async (req, res) => {
   const { body } = req;
   const sqlInsert = `INSERT INTO clients (id, name, occupation, status, location, company, email, phone_number, user_id) 
-  VALUES (UUID_TO_BIN('${body.id}'),?,?,?,?,?,?,?,UUID_TO_BIN('${userToken.id}'))`;
+  VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,?,UUID_TO_BIN('${userToken.id}'))`;
 
-  delete body.id;
   try {
     await connection.execute(sqlInsert, Object.values(body));
     return res.status(200).send(`Calendar event added successfully.`);
   } catch (error) {
-    console.log(error)
     return res.status(500).json({ error: "An error occurred while adding your client." });
   }
 };

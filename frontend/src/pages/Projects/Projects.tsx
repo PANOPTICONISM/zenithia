@@ -25,7 +25,7 @@ const Projects = () => {
       }
 
       const fixDateFormat = (date: string) => {
-        return new Date(date).toLocaleDateString("en-US");
+        return new Date(date).toISOString().split("T")[0];
       };
 
       delete newRow.clients;
@@ -35,9 +35,13 @@ const Projects = () => {
       }
 
       const row = {
-        ...newRow,
+        title: newRow.title,
         start_date: fixDateFormat(newRow.start_date),
         finish_date: fixDateFormat(newRow.finish_date),
+        status: newRow.status,
+        revenue: newRow.revenue,
+        base_price: newRow.base_price,
+        client_id: newRow.client_id,
       };
       updateProject(user.token, oldRow.id, row).catch((error) =>
         toast.error(error),
@@ -52,7 +56,7 @@ const Projects = () => {
   }, []);
 
   const addProject = () => {
-    const date = new Date().toLocaleDateString("en-US");
+    const date = new Date().toISOString().split("T")[0];
 
     if (!user) {
       return;
@@ -64,9 +68,8 @@ const Projects = () => {
       finish_date: date,
       status: "Standby",
       revenue: "Hourly",
-      client_id: null,
       base_price: null,
-      user_id: user.id,
+      client_id: null,
     };
 
     postProject(user.token, obj)

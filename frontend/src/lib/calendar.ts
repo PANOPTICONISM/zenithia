@@ -9,14 +9,9 @@ type PostCalendarEntry = {
   end: string;
 };
 
-type UserId = {
-  user_id: string;
+export type CalendarProps = PostCalendarEntry & {
+  id: string;
 };
-
-export type CalendarProps = PostCalendarEntry &
-  UserId & {
-    id: string;
-  };
 
 export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
   const path = "/api/calendar";
@@ -37,7 +32,7 @@ export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
 
 export const postCalendar = async (
   token: string,
-  body: PostCalendarEntry & UserId,
+  body: PostCalendarEntry,
 ): Promise<string> => {
   const path = "/api/calendar";
 
