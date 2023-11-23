@@ -1,108 +1,60 @@
-import supabase from "../supabaseClient.js";
+import { userToken } from "./middleware/auth.js";
+import { connection } from "./middleware/mysql.js";
 
 export const getClients = async (req, res) => {
-  const token = req.header("Authorization");
+  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, name, occupation, status, location, company, email, phone_number, created_at 
+  FROM clients WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { data, error } = await requester.from("clients").select();
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).json(data);
+    const [rows] = await connection.execute(sqlSearch);
+    return res.status(200).json(rows);
   } catch (error) {
-    console.error(error);
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while fetching your data" });
+      .json({ error: "An error occurred while retrieving your data." });
   }
 };
 
 export const updateClient = async (req, res) => {
   const { body, params } = req;
-  const token = req.header("Authorization");
+  const sqlUpdate = `UPDATE clients SET name=?, occupation=?, status=?, location=?, email=?, phone_number=?, company=? WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester
-      .from("clients")
-      .update(body)
-      .eq("id", params.id);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Client with id: ${params.id} has been modified`);
+    await connection.execute(sqlUpdate, Object.values(body));
+    return res.status(200).send(`Client with id: ${params.id} has been updated.`);
   } catch (error) {
-    console.error(error);
-    res
+    console.log(error, 'error', body)
+    return res
       .status(500)
-      .json({ error: "An error occurred while updating your entry" });
+      .json({ error: "An error occurred while updating your entry." });
   }
 };
 
 export const deleteClient = async (req, res) => {
   const { params } = req;
-  const token = req.header("Authorization");
+  const sqlDelete = `DELETE FROM clients WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester
-      .from("clients")
-      .delete()
-      .eq("id", params.id);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Client with id: ${params.id} has been deleted`);
+    await connection.execute(sqlDelete);
+    return res.status(200).send(`Client with id: ${params.id} has been deleted.`);
   } catch (error) {
-    console.error(error);
-    res
+    return res
       .status(500)
-      .json({ error: "An error occurred while deleting your entry" });
+      .json({ error: "An error occurred while deleting your client." });
   }
 };
 
 export const postClient = async (req, res) => {
   const { body } = req;
-  const token = req.header("Authorization");
+  const sqlInsert = `INSERT INTO clients (id, name, occupation, status, location, company, email, phone_number, user_id) 
+  VALUES (UUID_TO_BIN('${body.id}'),?,?,?,?,?,?,?,UUID_TO_BIN('${userToken.id}'))`;
 
+  delete body.id;
   try {
-    const requester = supabase({
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-    });
-    const { error } = await requester.from("clients").insert(body);
-
-    if (error) {
-      res.status(500).json({ error });
-    }
-    res.status(200).send(`Client added successfully`);
+    await connection.execute(sqlInsert, Object.values(body));
+    return res.status(200).send(`Calendar event added successfully.`);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while adding your data" });
+    console.log(error)
+    return res.status(500).json({ error: "An error occurred while adding your client." });
   }
 };
