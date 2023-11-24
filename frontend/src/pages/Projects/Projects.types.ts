@@ -3,7 +3,6 @@ import { TimeTrackerProps } from "lib/timetracker";
 
 export type ProjectProps = {
   id?: string;
-  project_id?: string;
   title: string;
   start_date: string;
   finish_date: string;

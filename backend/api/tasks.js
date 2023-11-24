@@ -15,8 +15,9 @@ export const getTasksColumns = async (req, res) => {
 };
 
 export const getTasks = async (req, res) => {
-  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, importance, deadline, BIN_TO_UUID(table_id) as table_id, BIN_TO_UUID(project_id) as project_id, created_at
-  FROM tasks WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
+  const sqlSearch = `SELECT BIN_TO_UUID(a.id) as id, a.title, a.importance, a.deadline, BIN_TO_UUID(a.table_id) as table_id, BIN_TO_UUID(a.project_id) as project_id, a.created_at, 
+  JSON_OBJECT('id', BIN_TO_UUID(b.id), 'title', b.title) as projects
+  FROM tasks a LEFT JOIN projects b ON a.project_id=b.id WHERE a.user_id = UUID_TO_BIN('${userToken.id}')`;
 
   try {
     const [rows] = await connection.execute(sqlSearch);
@@ -47,12 +48,12 @@ export const updateTask = async (req, res) => {
 
   try {
     await connection.execute(sqlUpdate, Object.values(body));
-    return res.status(200).send(`Project with id: ${params.id} has been updated.`);
+    return res.status(200).send(`Task with id: ${params.id} has been updated.`);
   } catch (error) {
     console.log(error, body)
     return res
       .status(500)
-      .json({ error: "An error occurred while updating your project." });
+      .json({ error: "An error occurred while updating your task." });
   }
 };
 
@@ -62,10 +63,10 @@ export const deleteTask = async (req, res) => {
 
   try {
     await connection.execute(sqlDelete);
-    return res.status(200).send(`Project with id: ${params.id} has been deleted.`);
+    return res.status(200).send(`Task with id: ${params.id} has been deleted.`);
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "An error occurred while deleting your project." });
+      .json({ error: "An error occurred while deleting your task." });
   }
 };
