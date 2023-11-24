@@ -4,19 +4,21 @@ import { GridRowId } from "@mui/x-data-grid";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./lib.types";
 
-export type TimeTrackerProps = {
-  id: string;
+type TimeTrackerBaseProps = {
   date: string;
   start_time: string | null;
   finish_time: string | null;
   total: number | null;
   project_id: string | null;
+};
+
+export type TimeTrackerProps = TimeTrackerBaseProps & {
+  id: string;
   projects?: ProjectProps;
 };
 
 export const getTimeTracker = async (
   token: string,
-  param?: string,
 ): Promise<TimeTrackerProps[]> => {
   const path = "/api/timetracker";
 
@@ -26,7 +28,6 @@ export const getTimeTracker = async (
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      params: { filter: param },
     });
     return response.data as TimeTrackerProps[];
   } catch (err) {
@@ -60,7 +61,7 @@ type TimeTrackerUpdateProps =
       finish_time?: string;
       project_id?: string;
     }
-  | TimeTrackerProps;
+  | TimeTrackerBaseProps;
 
 export const updateTimeTracker = async (
   token: string,

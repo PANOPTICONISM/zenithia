@@ -29,11 +29,10 @@ const TimeTracker = () => {
     const obj = {
       id: uuidv4(),
       date,
+      total: null,
       start_time: startTime,
       finish_time: null,
-      total: null,
       project_id: null,
-      user_id: user.id,
     };
     postTimeTracker(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
@@ -47,14 +46,22 @@ const TimeTracker = () => {
       }
 
       const fixDateFormat = (date: string) => {
-        return new Date(date).toLocaleDateString("en-US");
+        return new Date(date).toISOString().split("T")[0];
       };
 
-      delete newRow.projects;
+      const fixDateAndHour = (date: string | null) => {
+        if (date) {
+          return DateTime.fromISO(date).toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        }
+        return date;
+      };
 
       const row = {
-        ...newRow,
         date: fixDateFormat(newRow.date),
+        total: newRow.total,
+        start_time: fixDateAndHour(newRow.start_time),
+        finish_time: fixDateAndHour(newRow.finish_time),
+        project_id: newRow.project_id || null,
       };
 
       updateTimeTracker(user.token, oldRow.id, row).catch((error) =>

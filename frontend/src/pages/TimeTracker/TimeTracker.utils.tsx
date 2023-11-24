@@ -27,7 +27,7 @@ export const useColumnsAndRows = () => {
     if (!user) {
       return;
     }
-    getTimeTracker(user.token, "*, projects(*)")
+    getTimeTracker(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
 
