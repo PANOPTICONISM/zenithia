@@ -28,7 +28,7 @@ const Tasks = () => {
         getProjects(user.token),
       ]);
 
-      const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
+      const grouppedTasks = lodash.groupBy(tasksRes, "table_id");
 
       const jointArrays = columnsRes.map((col) => {
         col.items = grouppedTasks[col.id] || [];

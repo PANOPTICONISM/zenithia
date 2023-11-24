@@ -69,9 +69,14 @@ const Task = ({
     if (!user) {
       return;
     }
-    const copyTask = { ...editableTask };
-    delete copyTask.projects;
-    updateTask(user.token, task.id, copyTask)
+    const updatedTask = {
+      title: editableTask.title,
+      importance: editableTask.importance,
+      deadline: editableTask.deadline.split("T")[0],
+      table_id: editableTask.table_id,
+      project_id: editableTask.project_id,
+    };
+    updateTask(user.token, editableTask.id, updatedTask)
       .then(() => setIsEdit(false))
       .catch((error) => toast.error(error));
   };
@@ -159,7 +164,7 @@ const Task = ({
                     setEditableTask((current) => ({
                       ...current,
                       projects: newValue,
-                      project_id: newValue?.id,
+                      project_id: newValue?.id || null,
                     }))
                   }
                 />
@@ -233,10 +238,10 @@ const Column = ({
     const task = {
       id: uuidv4(),
       title: "Title",
-      deadline: DateTime.now().toFormat("yyyy-MM-dd"),
-      column_id: column.id,
       importance: null,
-      user_id: user.id,
+      deadline: DateTime.now().toFormat("yyyy-MM-dd"),
+      table_id: column.id,
+      project_id: null,
     };
     specificColumn[0].items.push(task);
 

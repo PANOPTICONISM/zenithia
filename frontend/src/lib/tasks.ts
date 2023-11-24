@@ -3,13 +3,16 @@ import { requester } from "./axios";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./lib.types";
 
-export type TaskProps = {
-  id: string;
+export type TaskBaseProps = {
   title: string;
   importance: string | null;
-  project_id?: string;
-  column_id: string;
+  project_id: string | null;
+  table_id: string;
   deadline: string;
+};
+
+export type TaskProps = TaskBaseProps & {
+  id: string;
   projects?: ProjectProps | null;
 };
 
@@ -79,7 +82,7 @@ export const postTask = async (
 export const updateTask = async (
   token: string,
   id: string,
-  body: TaskProps | { column_id: string },
+  body: TaskBaseProps | { column_id: string },
 ): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
 

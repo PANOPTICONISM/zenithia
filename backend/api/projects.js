@@ -50,8 +50,8 @@ export const postProject = async (req, res) => {
 
   try {
     await connection.execute(sqlInsert, Object.values(body));
-    return res.status(200).send(`Calendar event added successfully.`);
+    return res.status(200).send(`Project added successfully.`);
   } catch (error) {
-    return res.status(500).json({ error: "An error occurred while adding your client." });
+    return res.status(500).json({ error: "An error occurred while adding your project." });
   }
 };
