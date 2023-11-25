@@ -2,7 +2,10 @@ import { userToken } from "./middleware/auth.js";
 import { connection } from "./middleware/mysql.js";
 
 export const getTimeTracker = async (req, res) => {
-  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, date, total, start_time, finish_time, project_id orderBy FROM timetracker where user_id = UUID_TO_BIN('${userToken.id}')`;
+  const sqlSearch = `SELECT BIN_TO_UUID(a.id) as id, a.date, a.total, a.start_time, a.finish_time, BIN_TO_UUID(a.project_id) as project_id, 
+  JSON_OBJECT('id', BIN_TO_UUID(b.id), 'title', b.title) as projects FROM timetracker a 
+  LEFT JOIN projects b ON a.project_id=b.id 
+  where a.user_id = UUID_TO_BIN('${userToken.id}')`;
 
   try {
     const [rows] = await connection.execute(sqlSearch);
@@ -10,7 +13,7 @@ export const getTimeTracker = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "An error occurred while retrieving your columns." });
+      .json({ error: "An error occurred while retrieving your time tracker data." });
   }
 };
 
@@ -34,25 +37,24 @@ export const updateTimeTracker = async (req, res) => {
 
   try {
     await connection.execute(sqlUpdate, values);
-    return res.status(200).send(`Task with id: ${params.id} has been updated.`);
+    return res.status(200).send(`Entry with id: ${params.id} has been updated.`);
   } catch (error) {
-    console.log(error, body)
     return res
       .status(500)
-      .json({ error: "An error occurred while updating your task." });
+      .json({ error: "An error occurred while updating your entry." });
   }
 };
 
 export const deleteTimeTracker = async (req, res) => {
   const { params } = req;
-  const sqlDelete = `DELETE FROM tasks WHERE id = UUID_TO_BIN('${params.id}')`;
+  const sqlDelete = `DELETE FROM timetracker WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
     await connection.execute(sqlDelete);
-    return res.status(200).send(`Task with id: ${params.id} has been deleted.`);
+    return res.status(200).send(`Entry with id: ${params.id} has been deleted.`);
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "An error occurred while deleting your task." });
+      .json({ error: "An error occurred while deleting your entry." });
   }
 };
