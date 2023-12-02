@@ -35,7 +35,6 @@ export const EventAddModal = ({
           title,
           start: selected.startStr,
           end: selected.endStr,
-          user_id: user.id,
         };
 
         calendarApi.addEvent(eventCalendar);
