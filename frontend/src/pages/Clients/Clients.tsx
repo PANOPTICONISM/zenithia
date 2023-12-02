@@ -3,7 +3,7 @@ import React from "react";
 import { useColumnsAndRows } from "./Clients.utils";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { ClientId, ClientProps, postClient, updateClient } from "lib/clients";
+import { ClientId, ClientProps, postClient, updateClient } from "api/clients";
 import { v4 as uuidv4 } from "uuid";
 import { useFiltering } from "components/SearchBar/SearchBar.utils";
 import { toast } from "react-toastify";

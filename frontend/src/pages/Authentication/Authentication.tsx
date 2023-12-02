@@ -11,7 +11,7 @@ import {
 import React from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import { darkBlue, grey, highlight, white } from "App";
-import { postLoginUser, signupUser } from "lib/authentication";
+import { postLoginUser, signupUser } from "api/authentication";
 import { toast } from "react-toastify";
 import { Logo } from "icons/logo";
 import { useUserData } from "contexts/UserProvider";

@@ -1,26 +1,14 @@
 import { AxiosError } from "axios";
+import { ProjectProps } from "../pages/Projects/Projects.types";
 import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
-import { ServerError } from "./lib.types";
+import { ServerError } from "./api.types";
 
-export type ClientId = {
-  id: string;
-};
-
-export type ClientProps = {
-  name: string | null;
-  occupation: string | null;
-  status: string;
-  location: string | null;
-  email: string | null;
-  phone_number: string | null;
-  company: string | null;
-};
-
-export const getClients = async (
+export const getProjects = async (
   token: string,
-): Promise<(ClientProps & ClientId)[]> => {
-  const path = "/api/clients";
+  param?: string,
+): Promise<ProjectProps[]> => {
+  const path = "/api/projects";
 
   try {
     const response = await requester.get(path, {
@@ -28,19 +16,20 @@ export const getClients = async (
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
+      params: { filter: param },
     });
-    return response.data as (ClientProps & ClientId)[];
+    return response.data as ProjectProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postClient = async (
+export const postProject = async (
   token: string,
-  body: ClientProps & ClientId,
+  body: ProjectProps,
 ): Promise<string> => {
-  const path = "/api/clients";
+  const path = "/api/projects";
 
   try {
     const response = await requester.post(path, body, {
@@ -56,12 +45,12 @@ export const postClient = async (
   }
 };
 
-export const updateClient = async (
+export const updateProject = async (
   token: string,
   id: string,
-  body: ClientProps,
+  body: ProjectProps,
 ): Promise<string> => {
-  const path = `/api/clients/${id}`;
+  const path = `/api/projects/${id}`;
 
   try {
     const response = await requester.put(path, body, {
@@ -77,11 +66,11 @@ export const updateClient = async (
   }
 };
 
-export const deleteClient = async (
+export const deleteProject = async (
   token: string,
   id: GridRowId,
 ): Promise<string> => {
-  const path = `/api/clients/${id}`;
+  const path = `/api/projects/${id}`;
 
   try {
     const response = await requester.delete(path, {

@@ -5,9 +5,9 @@ import { DateTime } from "luxon";
 import { grey, lightBlue } from "App";
 import { DateAndLevel } from "components/KanbanColumn/KanbanColumn.utils";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import { getTasks } from "lib/tasks";
+import { getTasks } from "api/tasks";
 import { toast } from "react-toastify";
-import { TaskProps } from "lib/tasks";
+import { TaskProps } from "api/tasks";
 import lodash from "lodash";
 import Calendar from "components/Calendar/Calendar";
 import { EarningsTimeline } from "./Revenue/Revenue";
@@ -135,9 +135,9 @@ const Dashboard = () => {
                     flexWrap="wrap"
                   >
                     <DateAndLevel
-                      deadline={DateTime.fromISO(task.deadline).toFormat(
-                        "MMM, dd",
-                      )}
+                      deadline={DateTime.fromISO(
+                        task.deadline as string,
+                      ).toFormat("MMM, dd")}
                       level={task.importance}
                     />
                     <Typography

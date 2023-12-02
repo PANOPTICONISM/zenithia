@@ -20,7 +20,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { DateTime } from "luxon";
-import { TaskProps, deleteTask, postTask, updateTask } from "../../lib/tasks";
+import { TaskProps, deleteTask, postTask, updateTask } from "../../api/tasks";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectProps } from "../../pages/Projects/Projects.types";
 import { DataProps } from "./KanbanColumn.types";
@@ -28,6 +28,7 @@ import { DateAndLevel } from "./KanbanColumn.utils";
 import { toast } from "react-toastify";
 import { ColumnProps } from "pages/Tasks/Tasks.types";
 import { useUserData } from "contexts/UserProvider";
+import { dateLuxonToISO } from "lib/dates";
 
 const Task = ({
   task,
@@ -72,7 +73,7 @@ const Task = ({
     const updatedTask = {
       title: editableTask.title,
       importance: editableTask.importance,
-      deadline: editableTask.deadline.split("T")[0],
+      deadline: dateLuxonToISO(editableTask.deadline as DateTime),
       table_id: editableTask.table_id,
       project_id: editableTask.project_id,
     };
@@ -156,9 +157,9 @@ const Task = ({
                   disablePortal
                   id="combo-box"
                   options={projects}
-                  getOptionLabel={(option) => option.title}
+                  getOptionLabel={(option) => option.title || ""}
                   renderInput={(params) => (
-                    <TextField {...params} label="project" />
+                    <TextField {...params} label="Project" />
                   )}
                   onChange={(event, newValue) =>
                     setEditableTask((current) => ({
@@ -194,9 +195,9 @@ const Task = ({
                 flexWrap="wrap"
               >
                 <DateAndLevel
-                  deadline={DateTime.fromISO(editableTask.deadline).toFormat(
-                    "MMMM, dd",
-                  )}
+                  deadline={DateTime.fromISO(
+                    editableTask.deadline as string,
+                  ).toFormat("MMMM, dd")}
                   level={editableTask.importance}
                 />
                 <Typography

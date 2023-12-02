@@ -1,20 +1,26 @@
 import { AxiosError } from "axios";
 import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
-import { ServerError } from "./lib.types";
+import { ServerError } from "./api.types";
 
-type PostCalendarEntry = {
-  title: string;
-  start: string;
-  end: string;
-};
-
-export type CalendarProps = PostCalendarEntry & {
+export type ClientId = {
   id: string;
 };
 
-export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
-  const path = "/api/calendar";
+export type ClientProps = {
+  name: string | null;
+  occupation: string | null;
+  status: string;
+  location: string | null;
+  email: string | null;
+  phone_number: string | null;
+  company: string | null;
+};
+
+export const getClients = async (
+  token: string,
+): Promise<(ClientProps & ClientId)[]> => {
+  const path = "/api/clients";
 
   try {
     const response = await requester.get(path, {
@@ -23,18 +29,18 @@ export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
         Authorization: "Bearer " + token,
       },
     });
-    return response.data as CalendarProps[];
+    return response.data as (ClientProps & ClientId)[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postCalendar = async (
+export const postClient = async (
   token: string,
-  body: PostCalendarEntry,
+  body: ClientProps & ClientId,
 ): Promise<string> => {
-  const path = "/api/calendar";
+  const path = "/api/clients";
 
   try {
     const response = await requester.post(path, body, {
@@ -50,12 +56,12 @@ export const postCalendar = async (
   }
 };
 
-export const updateCalendar = async (
+export const updateClient = async (
   token: string,
   id: string,
-  body: PostCalendarEntry,
+  body: ClientProps,
 ): Promise<string> => {
-  const path = `/api/calendar/${id}`;
+  const path = `/api/clients/${id}`;
 
   try {
     const response = await requester.put(path, body, {
@@ -71,11 +77,11 @@ export const updateCalendar = async (
   }
 };
 
-export const deleteCalendar = async (
+export const deleteClient = async (
   token: string,
   id: GridRowId,
 ): Promise<string> => {
-  const path = `/api/calendar/${id}`;
+  const path = `/api/clients/${id}`;
 
   try {
     const response = await requester.delete(path, {

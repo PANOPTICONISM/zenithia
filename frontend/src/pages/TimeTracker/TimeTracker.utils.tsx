@@ -5,14 +5,14 @@ import {
   deleteTimeTracker,
   getTimeTracker,
   updateTimeTracker,
-} from "../../lib/timetracker";
+} from "../../api/timetracker";
 import { DateTime, Duration } from "luxon";
 import { Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { lightBlue } from "../../App";
 import NotStartedIcon from "@mui/icons-material/NotStarted";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { getProjects } from "../../lib/projects";
+import { getProjects } from "../../api/projects";
 import { ProjectProps } from "../Projects/Projects.types";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";

@@ -8,7 +8,7 @@ import {
   TimeTrackerProps,
   postTimeTracker,
   updateTimeTracker,
-} from "../../lib/timetracker";
+} from "../../api/timetracker";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";

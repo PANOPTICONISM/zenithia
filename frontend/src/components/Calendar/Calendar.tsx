@@ -11,7 +11,7 @@ import {
   EventSourceInput,
 } from "@fullcalendar/core";
 import { Box, Stack, useMediaQuery } from "@mui/material";
-import { CalendarProps, getCalendar } from "lib/calendar";
+import { CalendarProps, getCalendar } from "api/calendar";
 import { toast } from "react-toastify";
 import { EventItem } from "./EventItem";
 import { useDialogEnqueue } from "contexts/DialogProvider";

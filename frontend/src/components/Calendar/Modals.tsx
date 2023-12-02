@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { darkBlue } from "App";
 import { useUserData } from "contexts/UserProvider";
-import { updateCalendar, deleteCalendar, postCalendar } from "lib/calendar";
+import { updateCalendar, deleteCalendar, postCalendar } from "api/calendar";
 import React from "react";
 import { toast } from "react-toastify";
 

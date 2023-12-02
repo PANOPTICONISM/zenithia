@@ -1,6 +1,6 @@
 import { useUserData } from "contexts/UserProvider";
-import { getProjects } from "lib/projects";
-import { TimeTrackerProps } from "lib/timetracker";
+import { getProjects } from "api/projects";
+import { TimeTrackerProps } from "api/timetracker";
 import { Duration } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";

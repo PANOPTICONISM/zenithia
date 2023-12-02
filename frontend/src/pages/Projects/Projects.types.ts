@@ -1,5 +1,5 @@
-import { ClientProps } from "lib/clients";
-import { TimeTrackerProps } from "lib/timetracker";
+import { ClientProps } from "api/clients";
+import { TimeTrackerProps } from "api/timetracker";
 
 export type ProjectProps = {
   id?: string;

@@ -5,7 +5,7 @@ import { useColumnsAndRows } from "./Projects.utils";
 import { ProjectProps } from "./Projects.types";
 import Main from "../../components/Main/Main";
 import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
-import { postProject, updateProject } from "../../lib/projects";
+import { postProject, updateProject } from "../../api/projects";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { v4 as uuidv4 } from "uuid";

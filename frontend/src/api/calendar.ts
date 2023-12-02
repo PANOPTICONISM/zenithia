@@ -1,32 +1,20 @@
 import { AxiosError } from "axios";
 import { requester } from "./axios";
-import { ProjectProps } from "../pages/Projects/Projects.types";
-import { ServerError } from "./lib.types";
+import { GridRowId } from "@mui/x-data-grid";
+import { ServerError } from "./api.types";
 
-export type TaskBaseProps = {
+type PostCalendarEntry = {
   title: string;
-  importance: string | null;
-  project_id: string | null;
-  table_id: string;
-  deadline: string;
+  start: string;
+  end: string;
 };
 
-export type TaskProps = TaskBaseProps & {
+export type CalendarProps = PostCalendarEntry & {
   id: string;
-  projects?: ProjectProps | null;
 };
 
-type ColumnProps = {
-  id: string;
-  title: string;
-  orderBy: number;
-  items: TaskProps[];
-};
-
-export const getTasksColumns = async (
-  token: string,
-): Promise<ColumnProps[]> => {
-  const path = "/api/tasks";
+export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
+  const path = "/api/calendar";
 
   try {
     const response = await requester.get(path, {
@@ -35,35 +23,18 @@ export const getTasksColumns = async (
         Authorization: "Bearer " + token,
       },
     });
-    return response.data as ColumnProps[];
+    return response.data as CalendarProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const getTasks = async (token: string): Promise<TaskProps[]> => {
-  const path = "/api/tasks/all";
-
-  try {
-    const response = await requester.get(path, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    return response.data as TaskProps[];
-  } catch (err) {
-    const error = err as AxiosError<ServerError>;
-    throw new Error(error.response?.data?.message || error.message);
-  }
-};
-
-export const postTask = async (
+export const postCalendar = async (
   token: string,
-  body: TaskProps,
+  body: PostCalendarEntry,
 ): Promise<string> => {
-  const path = "/api/tasks/all";
+  const path = "/api/calendar";
 
   try {
     const response = await requester.post(path, body, {
@@ -79,12 +50,12 @@ export const postTask = async (
   }
 };
 
-export const updateTask = async (
+export const updateCalendar = async (
   token: string,
   id: string,
-  body: TaskBaseProps | { column_id: string },
+  body: PostCalendarEntry,
 ): Promise<string> => {
-  const path = `/api/tasks/all/${id}`;
+  const path = `/api/calendar/${id}`;
 
   try {
     const response = await requester.put(path, body, {
@@ -100,11 +71,11 @@ export const updateTask = async (
   }
 };
 
-export const deleteTask = async (
+export const deleteCalendar = async (
   token: string,
-  id: string,
+  id: GridRowId,
 ): Promise<string> => {
-  const path = `/api/tasks/all/${id}`;
+  const path = `/api/calendar/${id}`;
 
   try {
     const response = await requester.delete(path, {
