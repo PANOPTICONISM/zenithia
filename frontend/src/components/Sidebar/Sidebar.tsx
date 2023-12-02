@@ -40,8 +40,6 @@ import { Logo } from "../../icons/logo";
 import LoginIcon from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "contexts/UserProvider";
-import { supabase } from "lib/supabase";
-import { toast } from "react-toastify";
 import React from "react";
 
 const BurgerMenu = ({
@@ -73,8 +71,8 @@ const Username = ({ open }: { open: boolean }) => {
   const navigate = useNavigate();
 
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    toast.error(error?.message);
+    setUser(undefined);
+    navigate("/", { replace: true });
   };
 
   return (
@@ -96,14 +94,7 @@ const Username = ({ open }: { open: boolean }) => {
           <Typography sx={{ color: white }} noWrap>
             {user?.username}
           </Typography>
-          <IconButton
-            sx={{ padding: 0 }}
-            onClick={() => {
-              setUser(undefined);
-              navigate("/", { replace: true });
-              logout();
-            }}
-          >
+          <IconButton sx={{ padding: 0 }} onClick={() => logout()}>
             <LoginIcon sx={{ color: white }} />
           </IconButton>
         </>
