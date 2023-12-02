@@ -121,6 +121,7 @@ const Task = ({
                 <Box>
                   <LocalizationProvider dateAdapter={AdapterLuxon}>
                     <DatePicker
+                      format="dd/MM/yyyy"
                       slotProps={{
                         textField: { size: "small", fullWidth: true },
                       }}
