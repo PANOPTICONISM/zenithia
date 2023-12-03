@@ -23,16 +23,18 @@ export const useColumnsAndRows = () => {
   const [user] = useUserData();
 
   React.useEffect(() => {
-    if (!user) {
-      return;
-    }
-    getClients(user.token)
-      .then((res) => setClients(res))
-      .catch((error) => toast.error(error));
-
-    getProjects(user.token)
-      .then((res) => setRows(res))
-      .catch((error) => toast.error(error));
+    const fetchAll = async () => {
+      if (!user) {
+        return;
+      }
+      await Promise.all([getClients(user.token), getProjects(user.token)]).then(
+        ([clientsRes, projectsRes]) => {
+          setClients(clientsRes);
+          setRows(projectsRes);
+        },
+      );
+    };
+    fetchAll().catch((error) => toast.error(error));
   }, [user]);
 
   const deleteEntry = React.useCallback(
