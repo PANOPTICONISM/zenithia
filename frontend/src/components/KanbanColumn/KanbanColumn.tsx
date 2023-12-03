@@ -20,7 +20,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { DateTime } from "luxon";
-import { TaskProps, deleteTask, postTask, updateTask } from "../../lib/tasks";
+import { TaskProps, deleteTask, postTask, updateTask } from "../../api/tasks";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectProps } from "../../pages/Projects/Projects.types";
 import { DataProps } from "./KanbanColumn.types";
@@ -28,6 +28,7 @@ import { DateAndLevel } from "./KanbanColumn.utils";
 import { toast } from "react-toastify";
 import { ColumnProps } from "pages/Tasks/Tasks.types";
 import { useUserData } from "contexts/UserProvider";
+import { currentDate, dateLuxonToISOForApi } from "lib/dates";
 
 const Task = ({
   task,
@@ -69,9 +70,16 @@ const Task = ({
     if (!user) {
       return;
     }
-    const copyTask = { ...editableTask };
-    delete copyTask.projects;
-    updateTask(user.token, task.id, copyTask)
+    const updatedTask = {
+      title: editableTask.title,
+      importance: editableTask.importance,
+      deadline: dateLuxonToISOForApi(
+        editableTask.deadline as unknown as DateTime,
+      ),
+      table_id: editableTask.table_id,
+      project_id: editableTask.project_id,
+    };
+    updateTask(user.token, editableTask.id, updatedTask)
       .then(() => setIsEdit(false))
       .catch((error) => toast.error(error));
   };
@@ -115,6 +123,7 @@ const Task = ({
                 <Box>
                   <LocalizationProvider dateAdapter={AdapterLuxon}>
                     <DatePicker
+                      format="dd/MM/yyyy"
                       slotProps={{
                         textField: { size: "small", fullWidth: true },
                       }}
@@ -151,15 +160,15 @@ const Task = ({
                   disablePortal
                   id="combo-box"
                   options={projects}
-                  getOptionLabel={(option) => option.title}
+                  getOptionLabel={(option) => option.title || ""}
                   renderInput={(params) => (
-                    <TextField {...params} label="project" />
+                    <TextField {...params} label="Project" />
                   )}
                   onChange={(event, newValue) =>
                     setEditableTask((current) => ({
                       ...current,
                       projects: newValue,
-                      project_id: newValue?.id,
+                      project_id: newValue?.id || null,
                     }))
                   }
                 />
@@ -189,9 +198,9 @@ const Task = ({
                 flexWrap="wrap"
               >
                 <DateAndLevel
-                  deadline={DateTime.fromISO(editableTask.deadline).toFormat(
-                    "MMMM, dd",
-                  )}
+                  deadline={DateTime.fromISO(
+                    editableTask.deadline as string,
+                  ).toFormat("MMMM, dd")}
                   level={editableTask.importance}
                 />
                 <Typography
@@ -233,10 +242,10 @@ const Column = ({
     const task = {
       id: uuidv4(),
       title: "Title",
-      deadline: DateTime.now().toFormat("yyyy-MM-dd"),
-      column_id: column.id,
       importance: null,
-      user_id: user.id,
+      deadline: currentDate(),
+      table_id: column.id,
+      project_id: null,
     };
     specificColumn[0].items.push(task);
 

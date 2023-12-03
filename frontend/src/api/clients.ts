@@ -1,24 +1,26 @@
 import { AxiosError } from "axios";
 import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
-import { ProjectProps } from "../pages/Projects/Projects.types";
-import { ServerError } from "./lib.types";
+import { ServerError } from "./api.types";
 
-export type TimeTrackerProps = {
+export type ClientId = {
   id: string;
-  date: string;
-  start_time: string | null;
-  finish_time: string | null;
-  total: number | null;
-  project_id: string | null;
-  projects?: ProjectProps;
 };
 
-export const getTimeTracker = async (
+export type ClientProps = {
+  name: string | null;
+  occupation: string | null;
+  status: string;
+  location: string | null;
+  email: string | null;
+  phone_number: string | null;
+  company: string | null;
+};
+
+export const getClients = async (
   token: string,
-  param?: string,
-): Promise<TimeTrackerProps[]> => {
-  const path = "/api/timetracker";
+): Promise<(ClientProps & ClientId)[]> => {
+  const path = "/api/clients";
 
   try {
     const response = await requester.get(path, {
@@ -26,20 +28,19 @@ export const getTimeTracker = async (
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      params: { filter: param },
     });
-    return response.data as TimeTrackerProps[];
+    return response.data as (ClientProps & ClientId)[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postTimeTracker = async (
+export const postClient = async (
   token: string,
-  body: TimeTrackerProps,
+  body: ClientProps & ClientId,
 ): Promise<string> => {
-  const path = "/api/timetracker";
+  const path = "/api/clients";
 
   try {
     const response = await requester.post(path, body, {
@@ -55,19 +56,12 @@ export const postTimeTracker = async (
   }
 };
 
-type TimeTrackerUpdateProps =
-  | {
-      finish_time?: string;
-      project_id?: string;
-    }
-  | TimeTrackerProps;
-
-export const updateTimeTracker = async (
+export const updateClient = async (
   token: string,
   id: string,
-  body: TimeTrackerUpdateProps,
+  body: ClientProps,
 ): Promise<string> => {
-  const path = `/api/timetracker/${id}`;
+  const path = `/api/clients/${id}`;
 
   try {
     const response = await requester.put(path, body, {
@@ -83,11 +77,11 @@ export const updateTimeTracker = async (
   }
 };
 
-export const deleteTimeTracker = async (
+export const deleteClient = async (
   token: string,
   id: GridRowId,
 ): Promise<string> => {
-  const path = `/api/timetracker/${id}`;
+  const path = `/api/clients/${id}`;
 
   try {
     const response = await requester.delete(path, {

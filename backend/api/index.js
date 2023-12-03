@@ -12,6 +12,8 @@ import {
   updateCalendar,
 } from "./calendar.js";
 import { auth } from "./middleware/auth.js";
+import { signUp } from "./createUser.js";
+import { login } from "./login.js";
 
 const app = express();
 const port = 4000;
@@ -35,6 +37,9 @@ app.get("/", auth, (req, res) => {
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end("You have the correct credentials.");
 });
+
+app.post("/api/signup", signUp);
+app.post("/api/login", login);
 
 app.get("/api/projects", auth, getProjects);
 app.put("/api/projects/:id", auth, updateProjects);

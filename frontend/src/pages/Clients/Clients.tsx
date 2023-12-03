@@ -3,7 +3,7 @@ import React from "react";
 import { useColumnsAndRows } from "./Clients.utils";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { ClientProps, postClient, updateClient } from "lib/clients";
+import { ClientId, ClientProps, postClient, updateClient } from "api/clients";
 import { v4 as uuidv4 } from "uuid";
 import { useFiltering } from "components/SearchBar/SearchBar.utils";
 import { toast } from "react-toastify";
@@ -31,7 +31,6 @@ const Clients = () => {
       company: null,
       email: null,
       phone_number: null,
-      user_id: user.id,
     };
 
     postClient(user.token, obj)
@@ -40,12 +39,21 @@ const Clients = () => {
   };
 
   const handleProcessRowUpdate = React.useCallback(
-    (newRow: ClientProps, oldRow: ClientProps) => {
+    (newRow: ClientProps & ClientId, oldRow: ClientProps & ClientId) => {
       if (!oldRow.id || !user) {
         return oldRow;
       }
 
-      updateClient(user.token, oldRow.id, newRow).catch((error) =>
+      const client = {
+        name: newRow.name,
+        occupation: newRow.occupation,
+        status: newRow.status,
+        location: newRow.location,
+        email: newRow.email,
+        phone_number: newRow.phone_number,
+        company: newRow.company,
+      };
+      updateClient(user.token, oldRow.id, client).catch((error) =>
         toast.error(error),
       );
       return newRow;

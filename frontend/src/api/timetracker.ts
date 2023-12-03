@@ -1,14 +1,26 @@
 import { AxiosError } from "axios";
-import { ProjectProps } from "../pages/Projects/Projects.types";
 import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
-import { ServerError } from "./lib.types";
+import { ProjectProps } from "../pages/Projects/Projects.types";
+import { ServerError } from "./api.types";
 
-export const getProjects = async (
+type TimeTrackerBaseProps = {
+  date: string;
+  start_time: string;
+  finish_time: string | null;
+  total: number | null;
+  project_id: string | null;
+};
+
+export type TimeTrackerProps = TimeTrackerBaseProps & {
+  id: string;
+  projects?: ProjectProps;
+};
+
+export const getTimeTracker = async (
   token: string,
-  param?: string,
-): Promise<ProjectProps[]> => {
-  const path = "/api/projects";
+): Promise<TimeTrackerProps[]> => {
+  const path = "/api/timetracker";
 
   try {
     const response = await requester.get(path, {
@@ -16,20 +28,19 @@ export const getProjects = async (
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      params: { filter: param },
     });
-    return response.data as ProjectProps[];
+    return response.data as TimeTrackerProps[];
   } catch (err) {
     const error = err as AxiosError<ServerError>;
     throw new Error(error.response?.data?.message || error.message);
   }
 };
 
-export const postProject = async (
+export const postTimeTracker = async (
   token: string,
-  body: ProjectProps,
+  body: TimeTrackerProps,
 ): Promise<string> => {
-  const path = "/api/projects";
+  const path = "/api/timetracker";
 
   try {
     const response = await requester.post(path, body, {
@@ -45,12 +56,19 @@ export const postProject = async (
   }
 };
 
-export const updateProject = async (
+type TimeTrackerUpdateProps =
+  | {
+      finish_time?: string;
+      project_id?: string;
+    }
+  | TimeTrackerBaseProps;
+
+export const updateTimeTracker = async (
   token: string,
   id: string,
-  body: ProjectProps,
+  body: TimeTrackerUpdateProps,
 ): Promise<string> => {
-  const path = `/api/projects/${id}`;
+  const path = `/api/timetracker/${id}`;
 
   try {
     const response = await requester.put(path, body, {
@@ -66,11 +84,11 @@ export const updateProject = async (
   }
 };
 
-export const deleteProject = async (
+export const deleteTimeTracker = async (
   token: string,
   id: GridRowId,
 ): Promise<string> => {
-  const path = `/api/projects/${id}`;
+  const path = `/api/timetracker/${id}`;
 
   try {
     const response = await requester.delete(path, {

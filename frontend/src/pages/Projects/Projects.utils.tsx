@@ -3,12 +3,13 @@ import React from "react";
 import { ProjectProps } from "./Projects.types";
 import { Box, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteProject, getProjects } from "../../lib/projects";
+import { deleteProject, getProjects } from "../../api/projects";
 import { lightBlue } from "../../App";
-import { ClientProps, getClients } from "lib/clients";
+import { ClientId, ClientProps, getClients } from "api/clients";
 import StatusTag from "components/StatusTag/StatusTag";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
+import { dateFromISOToLocaleString } from "lib/dates";
 
 export const valueFormatter = Intl.NumberFormat("da-DK", {
   style: "currency",
@@ -17,21 +18,23 @@ export const valueFormatter = Intl.NumberFormat("da-DK", {
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
-  const [clients, setClients] = React.useState<ClientProps[]>([]);
+  const [clients, setClients] = React.useState<(ClientProps & ClientId)[]>([]);
 
   const [user] = useUserData();
 
   React.useEffect(() => {
-    if (!user) {
-      return;
-    }
-    getClients(user.token)
-      .then((res) => setClients(res))
-      .catch((error) => toast.error(error));
-
-    getProjects(user.token, "*, clients(*)")
-      .then((res) => setRows(res))
-      .catch((error) => toast.error(error));
+    const fetchAll = async () => {
+      if (!user) {
+        return;
+      }
+      await Promise.all([getClients(user.token), getProjects(user.token)]).then(
+        ([clientsRes, projectsRes]) => {
+          setClients(clientsRes);
+          setRows(projectsRes);
+        },
+      );
+    };
+    fetchAll().catch((error) => toast.error(error));
   }, [user]);
 
   const deleteEntry = React.useCallback(
@@ -69,9 +72,10 @@ export const useColumnsAndRows = () => {
       flex: 1,
       type: "singleSelect",
       editable: true,
-      valueOptions: clients,
-      getOptionValue: (value: any) => value?.id,
-      getOptionLabel: (value: any) => value.name,
+      valueOptions: clients.map((client) => ({
+        value: client.id,
+        label: client.name,
+      })),
       valueGetter: (params) => params.value || "",
       renderCell: (params) =>
         params.formattedValue && (
@@ -90,7 +94,7 @@ export const useColumnsAndRows = () => {
       field: "start_date",
       headerName: "Start",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true,
     },
@@ -98,7 +102,7 @@ export const useColumnsAndRows = () => {
       field: "finish_date",
       headerName: "Finish",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true,
     },

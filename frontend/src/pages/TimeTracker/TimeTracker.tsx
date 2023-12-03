@@ -3,15 +3,20 @@ import Main from "../../components/Main/Main";
 import { useColumnsAndRows } from "./TimeTracker.utils";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { DateTime } from "luxon";
 import {
   TimeTrackerProps,
   postTimeTracker,
   updateTimeTracker,
-} from "../../lib/timetracker";
+} from "../../api/timetracker";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
+import {
+  currentDate,
+  currentTime,
+  dateFromJSDateToISOForApi,
+  timeFromISOToFormatForApi,
+} from "lib/dates";
 
 const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -19,21 +24,17 @@ const TimeTracker = () => {
   const [user] = useUserData();
 
   const addTracking = () => {
-    const date = DateTime.now().toFormat("yyyy-MM-dd");
-    const startTime = DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-
     if (!user) {
       return;
     }
 
     const obj = {
       id: uuidv4(),
-      date,
-      start_time: startTime,
-      finish_time: null,
+      date: currentDate(),
       total: null,
+      start_time: currentTime(),
+      finish_time: null,
       project_id: null,
-      user_id: user.id,
     };
     postTimeTracker(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
@@ -46,20 +47,33 @@ const TimeTracker = () => {
         return oldRow;
       }
 
-      const fixDateFormat = (date: string) => {
-        return new Date(date).toLocaleDateString("en-US");
-      };
-
-      delete newRow.projects;
-
       const row = {
-        ...newRow,
-        date: fixDateFormat(newRow.date),
+        date: dateFromJSDateToISOForApi(newRow.date),
+        total: newRow.total,
+        start_time: timeFromISOToFormatForApi(oldRow.start_time),
+        finish_time:
+          oldRow.finish_time !== null
+            ? timeFromISOToFormatForApi(oldRow.finish_time)
+            : null,
+        project_id: newRow.project_id || null,
       };
 
-      updateTimeTracker(user.token, oldRow.id, row).catch((error) =>
-        toast.error(error),
-      );
+      updateTimeTracker(user.token, oldRow.id, row)
+        .then(() =>
+          setRows((currentRows) => {
+            return currentRows.map((row) => {
+              if (row.id === oldRow.id) {
+                return {
+                  ...row,
+                  date: dateFromJSDateToISOForApi(newRow.date),
+                  project_id: newRow.project_id || null,
+                };
+              }
+              return row;
+            });
+          }),
+        )
+        .catch((error) => toast.error(error));
       return newRow;
     },
     [user],

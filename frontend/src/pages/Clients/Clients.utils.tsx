@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
-import { ClientProps, deleteClient, getClients } from "lib/clients";
+import { ClientId, ClientProps, deleteClient, getClients } from "api/clients";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StatusTag from "components/StatusTag/StatusTag";
@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 
 export const useColumnsAndRows = () => {
-  const [rows, setRows] = React.useState<ClientProps[]>([]);
+  const [rows, setRows] = React.useState<(ClientProps & ClientId)[]>([]);
 
   const [user] = useUserData();
 
