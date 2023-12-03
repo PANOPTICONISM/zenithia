@@ -16,6 +16,7 @@ import { getProjects } from "../../api/projects";
 import { ProjectProps } from "../Projects/Projects.types";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
+import { dateFromISOToLocaleString } from "lib/dates";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
@@ -47,11 +48,16 @@ export const useColumnsAndRows = () => {
       const interval = setInterval(() => {
         setCount((count) => count + 1000);
       }, 1000);
-      rows.map((entry) => {
-        if (entry.id === selectedId) {
-          entry.finish_time =
-            entry.date + "T" + Duration.fromMillis(count).toISOTime();
-        }
+      setRows((currentRows) => {
+        return currentRows.map((entry) => {
+          if (entry.id === selectedId) {
+            const datestamp = DateTime.fromISO(entry.date).toISODate();
+            const finishTime =
+              datestamp + "T" + Duration.fromMillis(count).toISOTime();
+            return { ...entry, finish_time: finishTime };
+          }
+          return entry;
+        });
       });
       return () => {
         clearInterval(interval);
@@ -65,12 +71,13 @@ export const useColumnsAndRows = () => {
     );
     const timeInMilliseconds =
       Duration.fromISOTime(timestamp).as("milliseconds");
+    const datestamp = DateTime.fromISO(date).toISODate();
     if (!isRunning) {
       setCount(timeInMilliseconds);
       setSelectedId(id);
     } else {
       const finalTimestamp =
-        date + "T" + Duration.fromMillis(count).toISOTime();
+        datestamp + "T" + Duration.fromMillis(count).toISOTime();
       setSelectedId(undefined);
 
       const duration = DateTime.fromISO(finalTimestamp)
@@ -117,7 +124,7 @@ export const useColumnsAndRows = () => {
       field: "date",
       headerName: "Date",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true,
     },
@@ -157,9 +164,10 @@ export const useColumnsAndRows = () => {
       flex: 1,
       editable: true,
       type: "singleSelect",
-      valueOptions: projects,
-      getOptionValue: (value: any) => value?.id,
-      getOptionLabel: (value: any) => value.title,
+      valueOptions: projects.map((project) => ({
+        value: project.id,
+        label: project.title,
+      })),
       valueGetter: (params) => params.value || "",
       renderCell: (params) =>
         params.formattedValue && (

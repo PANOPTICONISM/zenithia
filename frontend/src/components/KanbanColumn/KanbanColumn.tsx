@@ -243,7 +243,7 @@ const Column = ({
       id: uuidv4(),
       title: "Title",
       importance: null,
-      deadline: currentDate,
+      deadline: currentDate(),
       table_id: column.id,
       project_id: null,
     };

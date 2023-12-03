@@ -53,8 +53,8 @@ const Projects = () => {
     const obj = {
       id: uuidv4(),
       title: "",
-      start_date: currentDate,
-      finish_date: currentDate,
+      start_date: currentDate(),
+      finish_date: currentDate(),
       status: "Standby",
       revenue: "Hourly",
       base_price: null,

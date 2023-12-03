@@ -32,13 +32,14 @@ export const postTimeTracker = async (req, res) => {
 export const updateTimeTracker = async (req, res) => {
   const { body, params } = req;
   const values = Object.values(body);
-  const sqlUpdate = `UPDATE timetracker SET date=?, total=?, start_time=?, finish_time=?, project_id=UUID_TO_BIN(?)
+  const sqlUpdate = `UPDATE timetracker SET ${values.length > 2 ? 'date=?, total=?, start_time=?, finish_time=?, project_id=UUID_TO_BIN(?)' : 'finish_time=?, total=?' }
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
     await connection.execute(sqlUpdate, values);
     return res.status(200).send(`Entry with id: ${params.id} has been updated.`);
   } catch (error) {
+    console.log(error)
     return res
       .status(500)
       .json({ error: "An error occurred while updating your entry." });
