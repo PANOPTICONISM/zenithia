@@ -21,7 +21,6 @@ export const getTasks = async (req, res) => {
 
   try {
     const [rows] = await connection.execute(sqlSearch);
-    console.log(rows)
     return res.status(200).json(rows);
   } catch (error) {
     return res
@@ -48,7 +47,6 @@ export const updateTask = async (req, res) => {
   const sqlUpdate = `UPDATE tasks SET ${values.length > 1 ? "title=?, importance=?, deadline=?, table_id=UUID_TO_BIN(?), project_id=UUID_TO_BIN(?)" : "table_id=UUID_TO_BIN(?)"}
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
-  console.log(values)
   try {
     await connection.execute(sqlUpdate, values);
     return res.status(200).send(`Task with id: ${params.id} has been updated.`);

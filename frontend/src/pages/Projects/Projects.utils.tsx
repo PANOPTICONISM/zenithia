@@ -9,6 +9,7 @@ import { ClientProps, getClients } from "api/clients";
 import StatusTag from "components/StatusTag/StatusTag";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
+import { dateFromISOToLocaleString } from "lib/dates";
 
 export const valueFormatter = Intl.NumberFormat("da-DK", {
   style: "currency",
@@ -90,7 +91,7 @@ export const useColumnsAndRows = () => {
       field: "start_date",
       headerName: "Start",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true,
     },
@@ -98,7 +99,7 @@ export const useColumnsAndRows = () => {
       field: "finish_date",
       headerName: "Finish",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true,
     },

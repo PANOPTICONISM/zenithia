@@ -2,14 +2,13 @@ import { AxiosError } from "axios";
 import { requester } from "./axios";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
-import { DateTime } from "luxon";
 
 export type TaskBaseProps = {
   title: string;
   importance: string | null;
   project_id: string | null;
   table_id: string;
-  deadline: string | DateTime;
+  deadline: string;
 };
 
 export type TaskProps = TaskBaseProps & {

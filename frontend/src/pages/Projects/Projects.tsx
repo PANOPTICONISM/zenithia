@@ -9,6 +9,7 @@ import { postProject, updateProject } from "../../api/projects";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { v4 as uuidv4 } from "uuid";
+import { currentDate, dateFromJSDateToISOForApi } from "lib/dates";
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -24,24 +25,14 @@ const Projects = () => {
         return oldRow;
       }
 
-      const fixDateFormat = (date: string) => {
-        return new Date(date).toISOString().split("T")[0];
-      };
-
-      delete newRow.clients;
-
-      if (newRow.client_id === "") {
-        newRow.client_id = null;
-      }
-
       const row = {
         title: newRow.title,
-        start_date: fixDateFormat(newRow.start_date),
-        finish_date: fixDateFormat(newRow.finish_date),
+        start_date: dateFromJSDateToISOForApi(newRow.start_date),
+        finish_date: dateFromJSDateToISOForApi(newRow.finish_date),
         status: newRow.status,
         revenue: newRow.revenue,
         base_price: newRow.base_price,
-        client_id: newRow.client_id,
+        client_id: newRow.client_id === "" ? null : newRow.client_id,
       };
       updateProject(user.token, oldRow.id, row).catch((error) =>
         toast.error(error),
@@ -56,16 +47,14 @@ const Projects = () => {
   }, []);
 
   const addProject = () => {
-    const date = new Date().toISOString().split("T")[0];
-
     if (!user) {
       return;
     }
     const obj = {
       id: uuidv4(),
       title: "",
-      start_date: date,
-      finish_date: date,
+      start_date: currentDate,
+      finish_date: currentDate,
       status: "Standby",
       revenue: "Hourly",
       base_price: null,

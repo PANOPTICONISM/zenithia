@@ -28,7 +28,7 @@ import { DateAndLevel } from "./KanbanColumn.utils";
 import { toast } from "react-toastify";
 import { ColumnProps } from "pages/Tasks/Tasks.types";
 import { useUserData } from "contexts/UserProvider";
-import { dateLuxonToISO } from "lib/dates";
+import { currentDate, dateLuxonToISOForApi } from "lib/dates";
 
 const Task = ({
   task,
@@ -73,7 +73,9 @@ const Task = ({
     const updatedTask = {
       title: editableTask.title,
       importance: editableTask.importance,
-      deadline: dateLuxonToISO(editableTask.deadline as DateTime),
+      deadline: dateLuxonToISOForApi(
+        editableTask.deadline as unknown as DateTime,
+      ),
       table_id: editableTask.table_id,
       project_id: editableTask.project_id,
     };
@@ -241,7 +243,7 @@ const Column = ({
       id: uuidv4(),
       title: "Title",
       importance: null,
-      deadline: DateTime.now().toFormat("yyyy-MM-dd"),
+      deadline: currentDate,
       table_id: column.id,
       project_id: null,
     };
