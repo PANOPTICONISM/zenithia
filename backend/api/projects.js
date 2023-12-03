@@ -2,11 +2,21 @@ import { userToken } from "./middleware/auth.js";
 import { connection } from "./middleware/mysql.js";
 
 export const getProjects = async (req, res) => {
+  const { query } = req;
   const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start_date, finish_date, status, revenue, base_price, BIN_TO_UUID(client_id) as client_id, BIN_TO_UUID(user_id) as user_id, created_at 
   FROM projects WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
+  const sqlSearchAndJoin = `SELECT BIN_TO_UUID(a.id) as id, 
+  a.title, a.start_date, a.finish_date, a.revenue, a.base_price,
+  JSON_OBJECT('id', BIN_TO_UUID(c.id), 'name', c.name) as client,
+  JSON_ARRAYAGG(JSON_OBJECT('id', BIN_TO_UUID(b.id), 'start_time', b.start_time, 'total', b.total)) as time_tracker
+  FROM projects a
+  LEFT JOIN timetracker b ON a.id=b.project_id
+  LEFT JOIN clients c ON c.id=a.client_id
+  WHERE a.user_id = UUID_TO_BIN('${userToken.id}')
+  GROUP BY a.id`
 
   try {
-    const [rows] = await connection.execute(sqlSearch);
+    const [rows] = await connection.execute(query.filter ? sqlSearchAndJoin : sqlSearch);
     return res.status(200).json(rows);
   } catch (error) {
     return res
