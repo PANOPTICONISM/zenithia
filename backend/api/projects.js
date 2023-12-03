@@ -8,7 +8,7 @@ export const getProjects = async (req, res) => {
   const sqlSearchAndJoin = `SELECT BIN_TO_UUID(a.id) as id, 
   a.title, a.start_date, a.finish_date, a.revenue, a.base_price,
   JSON_OBJECT('id', BIN_TO_UUID(c.id), 'name', c.name) as client,
-  JSON_ARRAYAGG(JSON_OBJECT('id', BIN_TO_UUID(b.id), 'start_time', b.start_time, 'total', b.total)) as time_tracker
+  JSON_ARRAYAGG(JSON_OBJECT('id', BIN_TO_UUID(b.id), 'date', b.date, 'start_time', b.start_time, 'total', b.total)) as time_tracker
   FROM projects a
   LEFT JOIN timetracker b ON a.id=b.project_id
   LEFT JOIN clients c ON c.id=a.client_id

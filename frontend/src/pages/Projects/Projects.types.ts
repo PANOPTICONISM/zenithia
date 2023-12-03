@@ -10,6 +10,6 @@ export type ProjectProps = {
   revenue: string;
   base_price: number | null;
   client_id: string | null;
-  clients?: ClientProps;
+  client?: ClientProps;
   time_tracker?: TimeTrackerProps[];
 };

@@ -5,6 +5,7 @@ import {
   ProjectFormattedProps,
   useGetProjectsFormatted,
 } from "hooks/useGetProjectsFormatted";
+import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
 import { valueFormatter } from "pages/Projects/Projects.utils";
 import React from "react";
@@ -50,14 +51,14 @@ export const useColumnsAndRows = () => {
       field: "start_date",
       headerName: "Start",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
     },
     {
       field: "finish_date",
       headerName: "Finish",
       flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
     },
     {
