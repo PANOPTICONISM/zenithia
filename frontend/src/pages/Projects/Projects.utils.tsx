@@ -5,7 +5,7 @@ import { Box, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteProject, getProjects } from "../../api/projects";
 import { lightBlue } from "../../App";
-import { ClientProps, getClients } from "api/clients";
+import { ClientId, ClientProps, getClients } from "api/clients";
 import StatusTag from "components/StatusTag/StatusTag";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
@@ -18,7 +18,7 @@ export const valueFormatter = Intl.NumberFormat("da-DK", {
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
-  const [clients, setClients] = React.useState<ClientProps[]>([]);
+  const [clients, setClients] = React.useState<(ClientProps & ClientId)[]>([]);
 
   const [user] = useUserData();
 
@@ -70,9 +70,10 @@ export const useColumnsAndRows = () => {
       flex: 1,
       type: "singleSelect",
       editable: true,
-      valueOptions: clients,
-      getOptionValue: (value: any) => value?.id,
-      getOptionLabel: (value: any) => value.name,
+      valueOptions: clients.map((client) => ({
+        value: client.id,
+        label: client.name,
+      })),
       valueGetter: (params) => params.value || "",
       renderCell: (params) =>
         params.formattedValue && (
