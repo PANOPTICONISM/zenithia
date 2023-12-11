@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { v4 as uuidv4 } from "uuid";
 import { currentDate, dateFromJSDateToISOForApi } from "lib/dates";
+import { currencyToCents } from "lib/currency";
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -31,7 +32,11 @@ const Projects = () => {
         finish_date: dateFromJSDateToISOForApi(newRow.finish_date),
         status: newRow.status,
         revenue: newRow.revenue,
-        base_price: newRow.base_price,
+        base_price: currencyToCents(
+          newRow.base_price,
+          newRow.currency || navigator.language,
+        ),
+        currency: newRow.currency || navigator.language,
         client_id: newRow.client_id === "" ? null : newRow.client_id,
       };
       updateProject(user.token, oldRow.id, row).catch((error) =>
@@ -58,6 +63,7 @@ const Projects = () => {
       status: "Standby",
       revenue: "Hourly",
       base_price: null,
+      currency: null,
       client_id: null,
     };
 

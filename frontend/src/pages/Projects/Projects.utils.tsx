@@ -10,7 +10,7 @@ import StatusTag from "components/StatusTag/StatusTag";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { dateFromISOToLocaleString } from "lib/dates";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale } from "lib/currency";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);
@@ -127,7 +127,7 @@ export const useColumnsAndRows = () => {
       minWidth: 80,
       type: "number",
       editable: true,
-      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
+      renderCell: ({ value }) => currencyToLocale(value),
     },
     {
       field: "revenue",
