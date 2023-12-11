@@ -10,11 +10,7 @@ import StatusTag from "components/StatusTag/StatusTag";
 import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { dateFromISOToLocaleString } from "lib/dates";
-
-export const valueFormatter = Intl.NumberFormat("da-DK", {
-  style: "currency",
-  currency: "DKK",
-});
+import { valueFormatter } from "lib/currency";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);

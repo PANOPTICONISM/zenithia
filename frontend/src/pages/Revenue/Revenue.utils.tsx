@@ -5,9 +5,9 @@ import {
   ProjectFormattedProps,
   useGetProjectsFormatted,
 } from "hooks/useGetProjectsFormatted";
+import { valueFormatter } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
-import { valueFormatter } from "pages/Projects/Projects.utils";
 import React from "react";
 
 export const useColumnsAndRows = () => {
