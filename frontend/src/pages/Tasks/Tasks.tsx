@@ -1,15 +1,15 @@
-import React from 'react';
-import Main from '../../components/Main/Main';
-import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { Grid } from '@mui/material';
-import Column from '../../components/KanbanColumn/KanbanColumn';
-import { getTasks, getTasksColumns, updateTask } from '../../lib/tasks';
-import lodash from 'lodash';
-import { getProjects } from '../../lib/projects';
-import { ProjectProps } from '../Projects/Projects.types';
-import { toast } from 'react-toastify';
-import { ColumnProps } from './Tasks.types';
-import { useUserData } from 'contexts/UserProvider';
+import React from "react";
+import Main from "../../components/Main/Main";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { Grid } from "@mui/material";
+import Column from "../../components/KanbanColumn/KanbanColumn";
+import { getTasks, getTasksColumns, updateTask } from "../../api/tasks";
+import lodash from "lodash";
+import { getProjects } from "../../api/projects";
+import { ProjectProps } from "../Projects/Projects.types";
+import { toast } from "react-toastify";
+import { ColumnProps } from "./Tasks.types";
+import { useUserData } from "contexts/UserProvider";
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
@@ -28,7 +28,7 @@ const Tasks = () => {
         getProjects(user.token),
       ]);
 
-      const grouppedTasks = lodash.groupBy(tasksRes, 'column_id');
+      const grouppedTasks = lodash.groupBy(tasksRes, "table_id");
 
       const jointArrays = columnsRes.map((col) => {
         col.items = grouppedTasks[col.id] || [];
@@ -50,10 +50,10 @@ const Tasks = () => {
 
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns.filter(
-        (column) => column.id === source.droppableId
+        (column) => column.id === source.droppableId,
       );
       const destColumn = columns.filter(
-        (column) => column.id === destination.droppableId
+        (column) => column.id === destination.droppableId,
       );
       const sourceItems = [...sourceColumn][0].items;
       const destItems = [...destColumn][0].items;
@@ -61,10 +61,10 @@ const Tasks = () => {
       destItems.splice(destination.index, 0, removed);
 
       const removedSourceColumn = columns.filter(
-        (column) => column.id !== sourceColumn[0].id
+        (column) => column.id !== sourceColumn[0].id,
       );
       const removedDestColumn = removedSourceColumn.filter(
-        (column) => column.id !== destColumn[0].id
+        (column) => column.id !== destColumn[0].id,
       );
       const joinColumnChanges = [
         sourceColumn,
@@ -72,21 +72,23 @@ const Tasks = () => {
         removedDestColumn,
       ].flat();
 
-      updateTask(user.token, draggableId, { column_id: destination.droppableId })
+      updateTask(user.token, draggableId, {
+        column_id: destination.droppableId,
+      })
         .then(() =>
-          setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy))
+          setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy)),
         )
-        .catch((error) => toast.error('Update single field: ' + error));
+        .catch((error) => toast.error("Update single field: " + error));
     } else {
       const sourceColumn = columns.filter(
-        (column) => column.id == source.droppableId
+        (column) => column.id == source.droppableId,
       );
       const copiedItems = [...sourceColumn][0].items;
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
 
       const removedSourceColumn = columns.filter(
-        (column) => column.id !== sourceColumn[0].id
+        (column) => column.id !== sourceColumn[0].id,
       );
       const joinColumnChanges = [sourceColumn, removedSourceColumn].flat();
       setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));

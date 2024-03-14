@@ -1,23 +1,26 @@
-import { AxiosError } from 'axios';
-import { requester } from './axios';
-import { GridRowId } from '@mui/x-data-grid';
-import { ServerError } from './lib.types';
+import { AxiosError } from "axios";
+import { requester } from "./axios";
+import { GridRowId } from "@mui/x-data-grid";
+import { ServerError } from "./api.types";
 
-export type CalendarProps = {
-  id: string,
-  title: string,
-  start: string,
-  end: string,
-}
+type PostCalendarEntry = {
+  title: string;
+  start: string;
+  end: string;
+};
+
+export type CalendarProps = PostCalendarEntry & {
+  id: string;
+};
 
 export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
-  const path = '/api/calendar';
+  const path = "/api/calendar";
 
   try {
     const response = await requester.get(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
     return response.data as CalendarProps[];
@@ -27,14 +30,17 @@ export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
   }
 };
 
-export const postCalendar = async (token: string, body: CalendarProps): Promise<string> => {
-  const path = '/api/calendar';
-  
+export const postCalendar = async (
+  token: string,
+  body: PostCalendarEntry,
+): Promise<string> => {
+  const path = "/api/calendar";
+
   try {
     const response = await requester.post(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
     return response.data as string;
@@ -44,14 +50,18 @@ export const postCalendar = async (token: string, body: CalendarProps): Promise<
   }
 };
 
-export const updateCalendar = async (token: string, id: string, body: CalendarProps): Promise<string> => {
+export const updateCalendar = async (
+  token: string,
+  id: string,
+  body: PostCalendarEntry,
+): Promise<string> => {
   const path = `/api/calendar/${id}`;
-    
+
   try {
     const response = await requester.put(path, body, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
     return response.data as string;
@@ -61,14 +71,17 @@ export const updateCalendar = async (token: string, id: string, body: CalendarPr
   }
 };
 
-export const deleteCalendar = async (token: string, id: GridRowId): Promise<string> => {
+export const deleteCalendar = async (
+  token: string,
+  id: GridRowId,
+): Promise<string> => {
   const path = `/api/calendar/${id}`;
-    
+
   try {
     const response = await requester.delete(path, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
     return response.data as string;

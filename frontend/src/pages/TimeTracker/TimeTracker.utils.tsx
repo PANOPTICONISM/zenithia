@@ -1,16 +1,22 @@
-import { GridColDef, GridRowId } from '@mui/x-data-grid';
-import React from 'react';
-import { TimeTrackerProps, deleteTimeTracker, getTimeTracker, updateTimeTracker } from '../../lib/timetracker';
-import { DateTime, Duration } from 'luxon';
-import { Box, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { lightBlue } from '../../App';
-import NotStartedIcon from '@mui/icons-material/NotStarted';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
-import { getProjects } from '../../lib/projects';
-import { ProjectProps } from '../Projects/Projects.types';
-import { toast } from 'react-toastify';
-import { useUserData } from 'contexts/UserProvider';
+import { GridColDef, GridRowId } from "@mui/x-data-grid";
+import React from "react";
+import {
+  TimeTrackerProps,
+  deleteTimeTracker,
+  getTimeTracker,
+  updateTimeTracker,
+} from "../../api/timetracker";
+import { DateTime, Duration } from "luxon";
+import { Box, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { lightBlue } from "../../App";
+import NotStartedIcon from "@mui/icons-material/NotStarted";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import { getProjects } from "../../api/projects";
+import { ProjectProps } from "../Projects/Projects.types";
+import { toast } from "react-toastify";
+import { useUserData } from "contexts/UserProvider";
+import { dateFromISOToLocaleString } from "lib/dates";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
@@ -22,16 +28,18 @@ export const useColumnsAndRows = () => {
     if (!user) {
       return;
     }
-    getTimeTracker(user.token, '*, projects(*)')
+    getTimeTracker(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
-    
+
     getProjects(user.token)
       .then((res) => setProjects(res))
       .catch((error) => toast.error(error));
   }, [user]);
 
-  const [selectedId, setSelectedId] = React.useState<string | undefined>(undefined);
+  const [selectedId, setSelectedId] = React.useState<string | undefined>(
+    undefined,
+  );
   const [count, setCount] = React.useState(0);
   const [isRunning, setIsRunning] = React.useState(false);
 
@@ -40,112 +48,162 @@ export const useColumnsAndRows = () => {
       const interval = setInterval(() => {
         setCount((count) => count + 1000);
       }, 1000);
-      rows.map((entry) => {
-        if (entry.id === selectedId) {
-          entry.finish_time = entry.date + 'T' + Duration.fromMillis(count).toISOTime();
-        }
+      setRows((currentRows) => {
+        return currentRows.map((entry) => {
+          if (entry.id === selectedId) {
+            const datestamp = DateTime.fromISO(entry.date).toISODate();
+            const finishTime =
+              datestamp + "T" + Duration.fromMillis(count).toISOTime();
+            return { ...entry, finish_time: finishTime };
+          }
+          return entry;
+        });
       });
       return () => {
         clearInterval(interval);
       };
-    } 
+    }
   }, [isRunning, count]);
 
   const stopWatch = (time: string, id: string, date: string) => {
-    const timestamp = DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
-    const timeInMilliseconds = Duration.fromISOTime(timestamp).as('milliseconds');
+    const timestamp = DateTime.fromISO(time).toLocaleString(
+      DateTime.TIME_WITH_SECONDS,
+    );
+    const timeInMilliseconds =
+      Duration.fromISOTime(timestamp).as("milliseconds");
+    const datestamp = DateTime.fromISO(date).toISODate();
     if (!isRunning) {
       setCount(timeInMilliseconds);
       setSelectedId(id);
     } else {
-      const finalTimestamp = date + 'T' + Duration.fromMillis(count).toISOTime();
+      const finalTimestamp =
+        datestamp + "T" + Duration.fromMillis(count).toISOTime();
       setSelectedId(undefined);
 
-      const duration = DateTime.fromISO(finalTimestamp).diff(DateTime.fromISO(time), ['hours', 'minutes', 'seconds']).as('milliseconds');
+      const duration = DateTime.fromISO(finalTimestamp)
+        .diff(DateTime.fromISO(time), ["hours", "minutes", "seconds"])
+        .as("milliseconds");
       if (!user) {
         return;
       }
-      updateTimeTracker(user.token, id, { finish_time: finalTimestamp, total: duration })
-        .catch((error) => toast.error(error));
+      updateTimeTracker(user.token, id, {
+        finish_time: finalTimestamp,
+        total: duration,
+      }).catch((error) => toast.error(error));
     }
 
     setIsRunning(!isRunning);
   };
 
-
-  const deleteEntry = React.useCallback((id: GridRowId) => {
-    if (!user) {
-      return;
-    }
-    deleteTimeTracker(user.token, id)
-      .then(() => setRows((prevRows) => prevRows.filter((row) => row.id !== id)))
-      .catch((error) => toast.error(error));
-  }, [user]);
+  const deleteEntry = React.useCallback(
+    (id: GridRowId) => {
+      if (!user) {
+        return;
+      }
+      deleteTimeTracker(user.token, id)
+        .then(() =>
+          setRows((prevRows) => prevRows.filter((row) => row.id !== id)),
+        )
+        .catch((error) => toast.error(error));
+    },
+    [user],
+  );
 
   const formatHours = (finish: string, start: string) => {
-    const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), ['hours', 'minutes', 'seconds']);
+    const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), [
+      "hours",
+      "minutes",
+      "seconds",
+    ]);
 
-    return duration.hours + 'h ' +  duration.minutes + 'm';
+    return duration.hours + "h " + duration.minutes + "m";
   };
 
   const columns: GridColDef[] = [
     {
-      field: 'date',
-      headerName: 'Date',
+      field: "date",
+      headerName: "Date",
       flex: 1,
-      valueFormatter: params => new Date(params.value).toLocaleDateString(),
-      type: 'date',
+      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      type: "date",
       editable: true,
     },
     {
-      field: 'start_time',
-      headerName: 'Start',
+      field: "start_time",
+      headerName: "Start",
       flex: 1,
-      valueFormatter: params => DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS),
+      valueFormatter: (params) =>
+        DateTime.fromISO(params.value).toLocaleString(
+          DateTime.TIME_WITH_SECONDS,
+        ),
     },
     {
-      field: 'finish_time',
-      headerName: 'Finish',
+      field: "finish_time",
+      headerName: "Finish",
       flex: 1,
-      valueFormatter: params => params.value ? DateTime.fromISO(params.value).toLocaleString(DateTime.TIME_WITH_SECONDS) : '',
+      valueFormatter: (params) =>
+        params.value
+          ? DateTime.fromISO(params.value).toLocaleString(
+              DateTime.TIME_WITH_SECONDS,
+            )
+          : "",
     },
     {
-      field: 'hours',
-      headerName: 'Hours',
+      field: "hours",
+      headerName: "Hours",
       flex: 1,
-      valueGetter: params => params.row.finish_time ? formatHours(params.row.finish_time, params.row.start_time) : ''	
+      valueGetter: (params) =>
+        params.row.finish_time
+          ? formatHours(params.row.finish_time, params.row.start_time)
+          : "",
     },
     {
-      field: 'project_id',
-      headerName: 'Project',
+      field: "project_id",
+      headerName: "Project",
       minWidth: 100,
       flex: 1,
       editable: true,
-      type: 'singleSelect',
-      valueOptions: projects,
-      getOptionValue: (value: any)=> value?.id,
-      getOptionLabel: (value: any) => value.title,
-      valueGetter: params => params.value || '',
-      renderCell: (params) => params.formattedValue && <Box sx={{ background: lightBlue, padding: '6px 10px', borderRadius: '4px' }}>{params.formattedValue}</Box>
+      type: "singleSelect",
+      valueOptions: projects.map((project) => ({
+        value: project.id,
+        label: project.title,
+      })),
+      valueGetter: (params) => params.value || "",
+      renderCell: (params) =>
+        params.formattedValue && (
+          <Box
+            sx={{
+              background: lightBlue,
+              padding: "6px 10px",
+              borderRadius: "4px",
+            }}
+          >
+            {params.formattedValue}
+          </Box>
+        ),
     },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       flex: 1,
-      renderCell: ({ row }) => 
+      renderCell: ({ row }) => (
         <>
-          <IconButton 
-            color="success" 
-            onClick={() => stopWatch(row.start_time, row.id, row.date)} 
-            disabled={row.finish_time !== null && selectedId !== row.id}> 
-            {isRunning && row.id === selectedId ? <StopCircleIcon /> : <NotStartedIcon />} 
+          <IconButton
+            color="success"
+            onClick={() => stopWatch(row.start_time, row.id, row.date)}
+            disabled={row.finish_time !== null && selectedId !== row.id}
+          >
+            {isRunning && row.id === selectedId ? (
+              <StopCircleIcon />
+            ) : (
+              <NotStartedIcon />
+            )}
           </IconButton>
-          <IconButton 
-            color="error" 
-            onClick={() => deleteEntry(row.id)}> 
-            <DeleteIcon /> 
+          <IconButton color="error" onClick={() => deleteEntry(row.id)}>
+            <DeleteIcon />
           </IconButton>
         </>
+      ),
     },
   ];
 
