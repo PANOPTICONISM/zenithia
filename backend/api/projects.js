@@ -3,7 +3,7 @@ import { connection } from "./middleware/mysql.js";
 
 export const getProjects = async (req, res) => {
   const { query } = req;
-  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start_date, finish_date, status, revenue, base_price, BIN_TO_UUID(client_id) as client_id, BIN_TO_UUID(user_id) as user_id, created_at 
+  const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start_date, finish_date, status, revenue, base_price, currency, BIN_TO_UUID(client_id) as client_id, BIN_TO_UUID(user_id) as user_id, created_at 
   FROM projects WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
   const sqlSearchAndJoin = `SELECT BIN_TO_UUID(a.id) as id, 
   a.title, a.start_date, a.finish_date, a.revenue, a.base_price,
@@ -27,7 +27,7 @@ export const getProjects = async (req, res) => {
 
 export const updateProjects = async (req, res) => {
   const { body, params } = req;
-  const sqlUpdate = `UPDATE projects SET title=?, start_date=?, finish_date=?, status=?, revenue=?, base_price=?, client_id=UUID_TO_BIN(?) 
+  const sqlUpdate = `UPDATE projects SET title=?, start_date=?, finish_date=?, status=?, revenue=?, base_price=?, currency=?, client_id=UUID_TO_BIN(?) 
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
@@ -56,7 +56,7 @@ export const deleteProject = async (req, res) => {
 
 export const postProject = async (req, res) => {
   const { body } = req;
-  const sqlInsert = `INSERT INTO projects (id, title, start_date, finish_date, status, revenue, base_price, client_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,UUID_TO_BIN(?),UUID_TO_BIN('${userToken.id}'))`;
+  const sqlInsert = `INSERT INTO projects (id, title, start_date, finish_date, status, revenue, base_price, currency, client_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,?,UUID_TO_BIN(?),UUID_TO_BIN('${userToken.id}'))`;
 
   try {
     await connection.execute(sqlInsert, Object.values(body));

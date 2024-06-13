@@ -10,9 +10,9 @@ import {
 import PublicIcon from "@mui/icons-material/Public";
 import TodayIcon from "@mui/icons-material/Today";
 import { grey } from "App";
-import { valueFormatter } from "pages/Projects/Projects.utils";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import SavingsIcon from "@mui/icons-material/Savings";
+import { valueFormatter } from "lib/currency";
 
 export const EarningsTimeline = ({
   text,

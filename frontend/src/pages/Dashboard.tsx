@@ -15,10 +15,10 @@ import PublicIcon from "@mui/icons-material/Public";
 import TodayIcon from "@mui/icons-material/Today";
 import { logsByTimeline } from "./Revenue/Revenue.utils";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { valueFormatter } from "./Projects/Projects.utils";
 import LineChart from "components/Charts/LineChart";
 import { useRevenueData } from "./Charts/MonthlyStats.utils";
 import { useUserData } from "contexts/UserProvider";
+import { valueFormatter } from "lib/currency";
 
 const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery("(min-width:1200px)");
