@@ -65,34 +65,35 @@ export const useColumnsAndRows = () => {
     }
   }, [isRunning, count]);
 
+  const startWatch = (time: string, id: string) => {
+    const dateTime = DateTime.fromISO(time);
+    const startOfDay = dateTime.startOf("day");
+
+    const diff = dateTime.diff(startOfDay, "milliseconds");
+    setCount(diff.milliseconds);
+    setSelectedId(id);
+
+    setIsRunning(true);
+  };
+
   const stopWatch = (time: string, id: string, date: string) => {
-    const timestamp = DateTime.fromISO(time).toLocaleString(
-      DateTime.TIME_WITH_SECONDS,
-    );
-    const timeInMilliseconds =
-      Duration.fromISOTime(timestamp).as("milliseconds");
     const datestamp = DateTime.fromISO(date).toISODate();
-    if (!isRunning) {
-      setCount(timeInMilliseconds);
-      setSelectedId(id);
-    } else {
-      const finalTimestamp =
-        datestamp + "T" + Duration.fromMillis(count).toISOTime();
-      setSelectedId(undefined);
+    const finalTimestamp =
+      datestamp + "T" + Duration.fromMillis(count).toISOTime();
+    setSelectedId(undefined);
 
-      const duration = DateTime.fromISO(finalTimestamp)
-        .diff(DateTime.fromISO(time), ["hours", "minutes", "seconds"])
-        .as("milliseconds");
-      if (!user) {
-        return;
-      }
-      updateTimeTracker(user.token, id, {
-        finish_time: finalTimestamp,
-        total: duration,
-      }).catch((error) => toast.error(error));
+    const duration = DateTime.fromISO(finalTimestamp)
+      .diff(DateTime.fromISO(time), ["hours", "minutes", "seconds"])
+      .as("milliseconds");
+    if (!user) {
+      return;
     }
+    updateTimeTracker(user.token, id, {
+      finish_time: finalTimestamp,
+      total: duration,
+    }).catch((error) => toast.error(error));
 
-    setIsRunning(!isRunning);
+    setIsRunning(false);
   };
 
   const deleteEntry = React.useCallback(
@@ -190,7 +191,11 @@ export const useColumnsAndRows = () => {
         <>
           <IconButton
             color="success"
-            onClick={() => stopWatch(row.start_time, row.id, row.date)}
+            onClick={() =>
+              isRunning
+                ? stopWatch(row.start_time, row.id, row.date)
+                : startWatch(row.start_time, row.id)
+            }
             disabled={row.finish_time !== null && selectedId !== row.id}
           >
             {isRunning && row.id === selectedId ? (
