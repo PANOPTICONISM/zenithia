@@ -21,7 +21,6 @@
     "@nivo/core": "^0.83.1",
     "@nivo/line": "^0.83.1",
     "@nivo/pie": "^0.83.1",
-    "@supabase/supabase-js": "^2.26.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
