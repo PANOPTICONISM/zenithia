@@ -21,6 +21,8 @@ const decimalPlaces = {
 export const valueFormatter = Intl.NumberFormat(navigator.language, {
   style: "currency",
   currency: currency(),
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 });
 
 export const currencyToCents = (
@@ -41,11 +43,14 @@ export const currencyToCents = (
     const cents = Math.round(amount * multiplier);
     return cents;
   } else {
-    throw new Error("Invalid currency code.");
+    const multiplier = Math.pow(10, decimalPlaces.EUR);
+
+    const cents = Math.round(amount * multiplier);
+    return cents;
   }
 };
 
-export const currencyToLocale = (cents: number) => {
+export const currencyFromCents = (cents: number) => {
   const targetCurrency = navigator.language.toUpperCase();
 
   if (Object.prototype.hasOwnProperty.call(decimalPlaces, targetCurrency)) {
@@ -55,8 +60,16 @@ export const currencyToLocale = (cents: number) => {
     );
 
     const realValue = cents / multiplier;
-    return valueFormatter.format(realValue);
+    return realValue;
   } else {
-    throw new Error("Invalid currency code.");
+    const multiplier = Math.pow(10, decimalPlaces.EUR);
+
+    const realValue = cents / multiplier;
+    return realValue;
   }
+};
+
+export const currencyToLocale = (cents: number) => {
+  const centsWithCurrency = currencyFromCents(cents);
+  return valueFormatter.format(centsWithCurrency);
 };
