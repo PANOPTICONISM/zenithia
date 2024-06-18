@@ -32,7 +32,7 @@ export const postTimeTracker = async (req, res) => {
 export const updateTimeTracker = async (req, res) => {
   const { body, params } = req;
   const values = Object.values(body);
-  const sqlUpdate = `UPDATE timetracker SET ${values.length > 2 ? 'date=?, total=?, start_time=?, finish_time=?, project_id=UUID_TO_BIN(?)' : 'finish_time=?, total=?' }
+  const sqlUpdate = `UPDATE timetracker SET ${values.length > 2 ? 'date=?, start_time=?, finish_time=?, project_id=UUID_TO_BIN(?)' : 'finish_time=?, total=?' }
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {

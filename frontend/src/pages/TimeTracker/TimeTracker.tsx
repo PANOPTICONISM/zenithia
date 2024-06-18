@@ -49,7 +49,6 @@ const TimeTracker = () => {
 
       const row = {
         date: dateFromJSDateToISOForApi(newRow.date),
-        total: newRow.total,
         start_time: timeFromISOToFormatForApi(oldRow.start_time),
         finish_time:
           oldRow.finish_time !== null
@@ -61,15 +60,15 @@ const TimeTracker = () => {
       updateTimeTracker(user.token, oldRow.id, row)
         .then(() =>
           setRows((currentRows) => {
-            return currentRows.map((row) => {
-              if (row.id === oldRow.id) {
+            return currentRows.map((currentRow) => {
+              if (currentRow.id === oldRow.id) {
                 return {
-                  ...row,
+                  ...currentRow,
                   date: dateFromJSDateToISOForApi(newRow.date),
                   project_id: newRow.project_id || null,
                 };
               }
-              return row;
+              return currentRow;
             });
           }),
         )
