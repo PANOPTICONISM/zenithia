@@ -8,6 +8,7 @@ import {
 import { currencyToLocale, valueFormatter } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
+import { ProjectProps } from "pages/Projects/Projects.types";
 import React from "react";
 
 export const useColumnsAndRows = () => {
@@ -93,7 +94,9 @@ export const useColumnsAndRows = () => {
   return { columns, rows, setRows, filteredData, setFilteredData };
 };
 
-export const finalizeTotals = (logs: ProjectFormattedProps[]) =>
+export const finalizeTotals = (
+  logs: ProjectFormattedProps[] | ProjectProps[],
+) =>
   logs.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
@@ -113,7 +116,7 @@ export const finalizeTotals = (logs: ProjectFormattedProps[]) =>
       }
     }
 
-    return totalPrice;
+    return { totalPrice, hoursTotal };
   });
 
 export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
@@ -125,8 +128,9 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
     );
     return { ...entry, time_tracker: entries };
   });
+
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce(
-    (partialSum, a) => partialSum + a,
+    (partialSum, { totalPrice }) => partialSum + totalPrice,
     0,
   );
 
@@ -139,7 +143,7 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
     return { ...entry, time_tracker: entries };
   });
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce(
-    (partialSum, a) => partialSum + a,
+    (partialSum, { totalPrice }) => partialSum + totalPrice,
     0,
   );
 

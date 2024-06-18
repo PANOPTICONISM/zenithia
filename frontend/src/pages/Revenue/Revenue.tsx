@@ -159,7 +159,7 @@ const Revenue = () => {
     );
 
   const absoluteTotal = finalizeTotals(filteredData).reduce(
-    (partialSum, a) => partialSum + a,
+    (partialSum, { totalPrice }) => partialSum + totalPrice,
     0,
   );
 
