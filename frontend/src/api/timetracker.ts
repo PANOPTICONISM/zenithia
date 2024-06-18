@@ -8,7 +8,7 @@ type TimeTrackerBaseProps = {
   date: string;
   start_time: string;
   finish_time: string | null;
-  total: number | null;
+  total?: number | null;
   project_id: string | null;
 };
 
