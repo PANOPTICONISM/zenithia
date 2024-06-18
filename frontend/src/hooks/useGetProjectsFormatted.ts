@@ -1,9 +1,9 @@
 import { useUserData } from "contexts/UserProvider";
 import { getProjects } from "api/projects";
 import { TimeTrackerProps } from "api/timetracker";
-import { Duration } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import { finalizeTotals } from "pages/Revenue/Revenue.utils";
 
 export type ProjectFormattedProps = {
   id?: string;
@@ -30,24 +30,6 @@ export const useGetProjectsFormatted = () => {
       }
       getProjects(user.token, "*").then((allProjects) => {
         const result = allProjects.map((project) => {
-          const initialValue = 0;
-          const hoursTotal = project.time_tracker?.reduce(
-            (accumulator, currentValue) =>
-              accumulator + (currentValue?.total || 0),
-            initialValue,
-          );
-
-          const totalMinutes =
-            hoursTotal && Duration.fromMillis(hoursTotal).toFormat("mm");
-          let totalPrice = 0;
-          if (project.base_price && hoursTotal) {
-            if (project.revenue === "Project") {
-              totalPrice = project.base_price;
-            } else {
-              totalPrice = (project.base_price / 100) * Number(totalMinutes);
-            }
-          }
-
           const obj = {
             id: project.id,
             title: project.title,
@@ -56,8 +38,9 @@ export const useGetProjectsFormatted = () => {
             finish_date: project.finish_date,
             base_price: project.base_price,
             revenue: project.revenue,
-            tracked_time_in_milliseconds: hoursTotal,
-            estimated_earnings: totalPrice,
+            tracked_time_in_milliseconds: finalizeTotals([project])?.[0]
+              .hoursTotal,
+            estimated_earnings: finalizeTotals([project])?.[0].totalPrice,
             time_tracker:
               project.time_tracker?.[0]?.id === null
                 ? []

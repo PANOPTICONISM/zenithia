@@ -5,9 +5,10 @@ import {
   ProjectFormattedProps,
   useGetProjectsFormatted,
 } from "hooks/useGetProjectsFormatted";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale, valueFormatter } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
+import { ProjectProps } from "pages/Projects/Projects.types";
 import React from "react";
 
 export const useColumnsAndRows = () => {
@@ -66,7 +67,7 @@ export const useColumnsAndRows = () => {
       headerName: "Base Price",
       flex: 1,
       type: "number",
-      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
+      valueFormatter: ({ value }) => currencyToLocale(value),
     },
     {
       field: "revenue",
@@ -93,7 +94,9 @@ export const useColumnsAndRows = () => {
   return { columns, rows, setRows, filteredData, setFilteredData };
 };
 
-export const finalizeTotals = (logs: ProjectFormattedProps[]) =>
+export const finalizeTotals = (
+  logs: ProjectFormattedProps[] | ProjectProps[],
+) =>
   logs.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
@@ -108,11 +111,12 @@ export const finalizeTotals = (logs: ProjectFormattedProps[]) =>
       if (entry.revenue === "Project") {
         totalPrice = entry.base_price;
       } else {
-        totalPrice = (entry.base_price / 100) * Number(totalMinutes);
+        const totalFullHours = Math.ceil(Number(totalMinutes) / 60);
+        totalPrice = (entry.base_price / 100) * totalFullHours;
       }
     }
 
-    return totalPrice;
+    return { totalPrice, hoursTotal };
   });
 
 export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
@@ -124,8 +128,9 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
     );
     return { ...entry, time_tracker: entries };
   });
+
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce(
-    (partialSum, a) => partialSum + a,
+    (partialSum, { totalPrice }) => partialSum + totalPrice,
     0,
   );
 
@@ -138,7 +143,7 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
     return { ...entry, time_tracker: entries };
   });
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce(
-    (partialSum, a) => partialSum + a,
+    (partialSum, { totalPrice }) => partialSum + totalPrice,
     0,
   );
 

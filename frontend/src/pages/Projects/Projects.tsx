@@ -42,7 +42,13 @@ const Projects = () => {
       updateProject(user.token, oldRow.id, row).catch((error) =>
         toast.error(error),
       );
-      return newRow;
+      return {
+        ...newRow,
+        base_price: currencyToCents(
+          newRow.base_price,
+          newRow.currency || navigator.language,
+        ),
+      };
     },
     [user],
   );
