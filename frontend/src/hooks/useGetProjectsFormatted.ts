@@ -44,7 +44,8 @@ export const useGetProjectsFormatted = () => {
             if (project.revenue === "Project") {
               totalPrice = project.base_price;
             } else {
-              totalPrice = (project.base_price / 100) * Number(totalMinutes);
+              const totalFullHours = Math.ceil(Number(totalMinutes) / 60);
+              totalPrice = (project.base_price / 100) * totalFullHours;
             }
           }
 

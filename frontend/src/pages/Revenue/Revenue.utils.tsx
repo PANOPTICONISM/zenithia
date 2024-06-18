@@ -108,7 +108,8 @@ export const finalizeTotals = (logs: ProjectFormattedProps[]) =>
       if (entry.revenue === "Project") {
         totalPrice = entry.base_price;
       } else {
-        totalPrice = (entry.base_price / 100) * Number(totalMinutes);
+        const totalFullHours = Math.ceil(Number(totalMinutes) / 60);
+        totalPrice = (entry.base_price / 100) * totalFullHours;
       }
     }
 
