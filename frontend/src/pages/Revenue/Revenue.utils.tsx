@@ -5,7 +5,7 @@ import {
   ProjectFormattedProps,
   useGetProjectsFormatted,
 } from "hooks/useGetProjectsFormatted";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale, valueFormatter } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
 import React from "react";
@@ -66,7 +66,7 @@ export const useColumnsAndRows = () => {
       headerName: "Base Price",
       flex: 1,
       type: "number",
-      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
+      valueFormatter: ({ value }) => currencyToLocale(value),
     },
     {
       field: "revenue",
