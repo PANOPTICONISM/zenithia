@@ -1,15 +1,15 @@
-import React from "react";
-import Main from "../../components/Main/Main";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Grid } from "@mui/material";
-import Column from "../../components/KanbanColumn/KanbanColumn";
-import { getTasks, getTasksColumns, updateTask } from "../../api/tasks";
-import lodash from "lodash";
-import { getProjects } from "../../api/projects";
-import { ProjectProps } from "../Projects/Projects.types";
-import { toast } from "react-toastify";
-import { ColumnProps } from "./Tasks.types";
 import { useUserData } from "contexts/UserProvider";
+import lodash from "lodash";
+import React from "react";
+import { toast } from "react-toastify";
+import { getProjects } from "../../api/projects";
+import { getTasks, getTasksColumns, updateTask } from "../../api/tasks";
+import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
+import Main from "../../components/Main/Main";
+import { ProjectProps } from "../Projects/Projects.types";
+import { ColumnProps } from "./Tasks.types";
 
 const Tasks = () => {
   const [columns, setColumns] = React.useState<ColumnProps[]>([]);
@@ -102,7 +102,7 @@ const Tasks = () => {
           {columns.map((column) => {
             return (
               <Grid item key={column.id} xs={12} lg={4}>
-                <Column
+                <KanbanColumn
                   column={column}
                   columns={columns}
                   setColumns={setColumns}

@@ -17,7 +17,7 @@ import { grey } from "../../App";
 import { ProjectProps } from "../../pages/Projects/Projects.types";
 import Task from "./components/Task";
 
-const Column = ({
+const KanbanColumn = ({
   column,
   columns,
   setColumns,
@@ -99,4 +99,4 @@ const Column = ({
   );
 };
 
-export default Column;
+export default KanbanColumn;

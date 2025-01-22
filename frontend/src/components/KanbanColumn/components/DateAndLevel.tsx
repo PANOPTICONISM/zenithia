@@ -1,6 +1,5 @@
-import { Box, Typography, Stack } from "@mui/material";
-import { white, highlight, green, yellow, red, grey } from "App";
-import React from "react";
+import { Box, Stack, Typography } from "@mui/material";
+import { green, grey, highlight, red, white, yellow } from "App";
 
 export const DateAndLevel = ({
   level,

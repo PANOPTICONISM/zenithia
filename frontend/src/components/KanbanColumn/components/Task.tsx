@@ -1,3 +1,6 @@
+import { Draggable } from "@hello-pangea/dnd";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
 import {
   Autocomplete,
   Box,
@@ -10,21 +13,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Draggable } from "@hello-pangea/dnd";
-import { lightBlue } from "../../../App";
-import CloseIcon from "@mui/icons-material/Close";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import SaveAsIcon from "@mui/icons-material/SaveAs";
-import { DateTime } from "luxon";
-import { TaskProps, deleteTask, updateTask } from "../../../api/tasks";
-import { ProjectProps } from "../../../pages/Projects/Projects.types";
-import { DataProps } from "../KanbanColumn.types";
-import { DateAndLevel } from "../KanbanColumn.utils";
-import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import { dateLuxonToISOForApi } from "lib/dates";
+import { DateTime } from "luxon";
+import React from "react";
+import { toast } from "react-toastify";
+import { TaskProps, deleteTask, updateTask } from "../../../api/tasks";
+import { lightBlue } from "../../../App";
+import { ProjectProps } from "../../../pages/Projects/Projects.types";
+import { DataProps } from "../KanbanColumn.types";
+import { DateAndLevel } from "./DateAndLevel";
 
 const Task = ({
   task,
