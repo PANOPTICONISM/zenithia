@@ -23,8 +23,8 @@ import { toast } from "react-toastify";
 import { TaskProps, deleteTask, updateTask } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
 import { ProjectProps } from "../../../pages/Projects/Projects.types";
+import { DateAndLevel } from "../../common/DateAndLevel";
 import { DataProps } from "../KanbanColumn.types";
-import { DateAndLevel } from "./DateAndLevel";
 
 const Task = ({
   task,

@@ -6,7 +6,7 @@ import { getTasks, TaskProps } from "api/tasks";
 import { grey, lightBlue } from "App";
 import Calendar from "components/Calendar/Calendar";
 import LineChart from "components/Charts/LineChart";
-import { DateAndLevel } from "components/KanbanColumn/components/DateAndLevel";
+import { DateAndLevel } from "components/common/DateAndLevel";
 import { useUserData } from "contexts/UserProvider";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
 import { valueFormatter } from "lib/currency";
