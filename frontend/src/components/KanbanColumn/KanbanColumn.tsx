@@ -8,24 +8,24 @@ import {
 } from "@mui/material";
 import { useUserData } from "contexts/UserProvider";
 import { currentDate } from "lib/dates";
-import { ColumnProps } from "pages/Tasks/Tasks.types";
+import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { postTask } from "../../api/tasks";
+import { postTask, TaskProps } from "../../api/tasks";
 import { grey } from "../../App";
 import { ProjectProps } from "../../pages/Projects/Projects.types";
 import Task from "./components/Task";
 
 const KanbanColumn = ({
-  column,
-  columns,
+  columnName,
+  entries,
   setColumns,
   projects,
 }: {
-  column: ColumnProps;
-  columns: ColumnProps[];
-  setColumns: React.Dispatch<React.SetStateAction<ColumnProps[]>>;
+  columnName: ColumnType;
+  entries: TaskProps[];
+  setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
   projects: ProjectProps[];
 }) => {
   const [user] = useUserData();
@@ -35,23 +35,24 @@ const KanbanColumn = ({
       return;
     }
 
-    const specificColumn = columns.filter((col) => col.id === column.id);
-    const otherColumns = columns.filter((col) => col.id !== column.id);
     const task = {
       id: uuidv4(),
       title: "Title",
       importance: null,
       deadline: currentDate(),
-      table_id: column.id,
+      table_id: columnName,
       project_id: null,
     };
-    specificColumn[0].items.push(task);
-
-    const joinColumns = [specificColumn, otherColumns].flat();
-    const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
 
     postTask(user.token, task)
-      .then(() => setColumns(sortedColumns))
+      .then(() => {
+        setColumns((prev) => {
+          const newColumns = new Map(prev);
+          const updatedColumn = newColumns.get(columnName) || [];
+          newColumns.set(columnName, [...updatedColumn, task]);
+          return newColumns;
+        });
+      })
       .catch((error) => toast.error(error));
   };
 
@@ -66,13 +67,13 @@ const KanbanColumn = ({
       >
         <Stack direction="row" spacing={1}>
           <ReceiptLongIcon />
-          <Typography>{column.title}</Typography>
+          <Typography>{columnName}</Typography>
         </Stack>
         <IconButton onClick={addItem}>
           <AddIcon />
         </IconButton>
       </Stack>
-      <Droppable droppableId={column.id} key={column.id}>
+      <Droppable droppableId={columnName}>
         {(provided) => (
           <Stack
             sx={{ padding: "24px" }}
@@ -80,14 +81,13 @@ const KanbanColumn = ({
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {column.items.map((task, index) => (
+            {entries.map((task, index) => (
               <Task
                 task={task}
                 key={task.id}
                 index={index}
-                columns={columns}
+                columns={entries}
                 setColumns={setColumns}
-                column={column}
                 projects={projects}
               />
             ))}
