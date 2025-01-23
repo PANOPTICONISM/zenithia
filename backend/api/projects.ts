@@ -1,7 +1,8 @@
-import { userToken } from "./middleware/auth.js";
-import { connection } from "./middleware/mysql.js";
+import type { Request, Response } from 'express';
+import { userToken } from "./middleware/auth.ts";
+import { connection } from "./middleware/mysql.ts";
 
-export const getProjects = async (req, res) => {
+export const getProjects = async (req: Request, res: Response): Promise<void> => {
   const { query } = req;
   const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start_date, finish_date, status, revenue, base_price, currency, BIN_TO_UUID(client_id) as client_id, BIN_TO_UUID(user_id) as user_id, created_at 
   FROM projects WHERE user_id = UUID_TO_BIN('${userToken.id}')`;
@@ -13,55 +14,55 @@ export const getProjects = async (req, res) => {
   LEFT JOIN timetracker b ON a.id=b.project_id
   LEFT JOIN clients c ON c.id=a.client_id
   WHERE a.user_id = UUID_TO_BIN('${userToken.id}')
-  GROUP BY a.id`
+  GROUP BY a.id`;
 
   try {
     const [rows] = await connection.execute(query.filter ? sqlSearchAndJoin : sqlSearch);
-    return res.status(200).json(rows);
+    res.status(200).json(rows);
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ error: "An error occurred while retrieving your projects." });
   }
 };
 
-export const updateProjects = async (req, res) => {
+export const updateProjects = async (req: Request, res: Response): Promise<void> => {
   const { body, params } = req;
   const sqlUpdate = `UPDATE projects SET title=?, start_date=?, finish_date=?, status=?, revenue=?, base_price=?, currency=?, client_id=UUID_TO_BIN(?) 
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
     await connection.execute(sqlUpdate, Object.values(body));
-    return res.status(200).send(`Project with id: ${params.id} has been updated.`);
+    res.status(200).send(`Project with id: ${params.id} has been updated.`);
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ error: "An error occurred while updating your project." });
   }
 };
 
-export const deleteProject = async (req, res) => {
+export const deleteProject = async (req: Request, res: Response): Promise<void> => {
   const { params } = req;
   const sqlDelete = `DELETE FROM projects WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
     await connection.execute(sqlDelete);
-    return res.status(200).send(`Project with id: ${params.id} has been deleted.`);
+    res.status(200).send(`Project with id: ${params.id} has been deleted.`);
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({ error: "An error occurred while deleting your project." });
   }
 };
 
-export const postProject = async (req, res) => {
+export const postProject = async (req: Request, res: Response): Promise<void> => {
   const { body } = req;
   const sqlInsert = `INSERT INTO projects (id, title, start_date, finish_date, status, revenue, base_price, currency, client_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,?,UUID_TO_BIN(?),UUID_TO_BIN('${userToken.id}'))`;
 
   try {
     await connection.execute(sqlInsert, Object.values(body));
-    return res.status(200).send(`Project added successfully.`);
+    res.status(200).send(`Project added successfully.`);
   } catch (error) {
-    return res.status(500).json({ error: "An error occurred while adding your project." });
+    res.status(500).json({ error: "An error occurred while adding your project." });
   }
 };
