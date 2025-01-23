@@ -1,19 +1,6 @@
 import { userToken } from "./middleware/auth.js";
 import { connection } from "./middleware/mysql.js";
 
-export const getTasksColumns = async (req, res) => {
-  const sqlSearch = "SELECT BIN_TO_UUID(id) as id, title, orderBy FROM columns";
-
-  try {
-    const [rows] = await connection.execute(sqlSearch);
-    return res.status(200).json(rows);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "An error occurred while retrieving your columns." });
-  }
-};
-
 export const getTasks = async (req, res) => {
   const sqlSearch = `SELECT BIN_TO_UUID(a.id) as id, a.title, a.importance, a.deadline, BIN_TO_UUID(a.table_id) as table_id, BIN_TO_UUID(a.project_id) as project_id, a.created_at, 
   JSON_OBJECT('id', BIN_TO_UUID(b.id), 'title', b.title) as projects

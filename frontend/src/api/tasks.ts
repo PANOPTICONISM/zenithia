@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
-import { requester } from "./axios";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
+import { requester } from "./axios";
 
 export type TaskBaseProps = {
   title: string;
@@ -14,32 +14,6 @@ export type TaskBaseProps = {
 export type TaskProps = TaskBaseProps & {
   id: string;
   projects?: ProjectProps | null;
-};
-
-type ColumnProps = {
-  id: string;
-  title: string;
-  orderBy: number;
-  items: TaskProps[];
-};
-
-export const getTasksColumns = async (
-  token: string,
-): Promise<ColumnProps[]> => {
-  const path = "/api/tasks";
-
-  try {
-    const response = await requester.get(path, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    return response.data as ColumnProps[];
-  } catch (err) {
-    const error = err as AxiosError<ServerError>;
-    throw new Error(error.response?.data?.message || error.message);
-  }
 };
 
 export const getTasks = async (token: string): Promise<TaskProps[]> => {
