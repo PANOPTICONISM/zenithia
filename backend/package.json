@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r tsconfig-paths/register -r ts-node/register/transpile-only api/index.ts",
-    "dev": "nodemon --exec node -r tsconfig-paths/register -r ts-node/register/transpile-only api/index.ts"
+    "dev": "nodemon --exec node -r tsconfig-paths/register -r ts-node/register/transpile-only api/index.ts",
+    "build": "tsc --noEmit false"
   },
   "author": "",
   "license": "ISC",
