@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { userToken } from "./middleware/auth.ts";
-import { connection } from "./middleware/mysql.ts";
+import { userToken } from "./middleware/auth";
+import { connection } from "./middleware/mysql";
 
 export const getClients = async (req: Request, res: Response): Promise<void> => {
   const sqlSearch = `SELECT BIN_TO_UUID(id) as id, name, occupation, status, location, company, email, phone_number, created_at 

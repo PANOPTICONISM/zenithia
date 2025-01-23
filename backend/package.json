@@ -1,6 +1,5 @@
 {
   "name": "backend",
-  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "api/index.ts",
@@ -9,9 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r tsconfig-paths/register -r ts-node/register/transpile-only api/index.ts",
-    "dev": "nodemon --exec node -r tsconfig-paths/register -r ts-node/register/transpile-only api/index.ts",
-    "build": "tsc --noEmit false"
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register --transpile-only src/index.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",

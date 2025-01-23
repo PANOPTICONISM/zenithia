@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { userToken } from "./middleware/auth.ts";
-import { connection } from "./middleware/mysql.ts";
+import { userToken } from "./middleware/auth";
+import { connection } from "./middleware/mysql";
 
 export const getProjects = async (req: Request, res: Response): Promise<void> => {
   const { query } = req;

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from 'express';
 import jwt from "jsonwebtoken";
-import { connection } from "./middleware/mysql.ts";
+import { connection } from "./middleware/mysql";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const username: string = req.body.username;

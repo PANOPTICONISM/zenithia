@@ -7,14 +7,14 @@ import {
   getCalendar,
   postCalendar,
   updateCalendar,
-} from "./calendar.ts";
-import { deleteClient, getClients, postClient, updateClient } from './clients.ts';
-import { signUp } from "./createUser.ts";
-import { login } from "./login.ts";
-import { auth } from "./middleware/auth.ts";
-import { deleteProject, getProjects, postProject, updateProjects } from './projects.ts';
-import { deleteTask, getTasks, postTask, updateTask } from './tasks.ts';
-import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.ts';
+} from "./calendar";
+import { deleteClient, getClients, postClient, updateClient } from './clients';
+import { signUp } from "./createUser";
+import { login } from "./login";
+import { auth } from "./middleware/auth";
+import { deleteProject, getProjects, postProject, updateProjects } from './projects';
+import { deleteTask, getTasks, postTask, updateTask } from './tasks';
+import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker';
 
 const app = express();
 const port = 4000;

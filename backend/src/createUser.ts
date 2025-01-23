@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from 'express';
-import { connection } from "./middleware/mysql.ts";
+import { connection } from "./middleware/mysql";
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   const username: string = req.body.username;

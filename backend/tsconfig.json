@@ -1,19 +1,17 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
+        "target": "ES2022",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "outDir": "./dist",
-        "rootDir": "./api",
         "strict": true,
+        "outDir": "dist",
+        "rootDir": "src",
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "allowImportingTsExtensions": true,
-        "noEmit": true
     },
     "include": [
-        "api/**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules"
