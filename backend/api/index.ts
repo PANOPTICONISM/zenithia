@@ -1,5 +1,6 @@
 import pkg from 'body-parser';
 import cors from 'cors';
+import type { Request, Response } from 'express';
 import express from 'express';
 import {
   deleteCalendar,
@@ -32,7 +33,7 @@ app.use(
   })
 );
 
-app.get("/", auth, (req, res) => {
+app.get("/", auth, (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end("You have the correct credentials.");
