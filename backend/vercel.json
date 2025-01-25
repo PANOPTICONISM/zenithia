@@ -3,7 +3,7 @@
    "name": "backend",
    "builds": [
       {
-         "src": "dist/index.js",
+         "src": "./dist/index.js",
          "use": "@vercel/node",
          "config": {
             "includeFiles": [
@@ -15,7 +15,7 @@
    "routes": [
       {
          "src": "/(.*)",
-         "dest": "dist/index.js"
+         "dest": "/dist"
       }
    ]
 }
