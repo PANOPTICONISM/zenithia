@@ -1,19 +1,20 @@
-import express from 'express';
 import pkg from 'body-parser';
-import { deleteProject, getProjects, postProject, updateProjects } from './projects.js';
 import cors from 'cors';
-import { deleteTask, getTasks, getTasksColumns, postTask, updateTask } from './tasks.js';
-import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker.js';
-import { deleteClient, getClients, postClient, updateClient } from './clients.js';
+import type { Request, Response } from 'express';
+import express from 'express';
 import {
   deleteCalendar,
   getCalendar,
   postCalendar,
   updateCalendar,
-} from "./calendar.js";
-import { auth } from "./middleware/auth.js";
-import { signUp } from "./createUser.js";
-import { login } from "./login.js";
+} from "./calendar";
+import { deleteClient, getClients, postClient, updateClient } from './clients';
+import { signUp } from "./createUser";
+import { login } from "./login";
+import { auth } from "./middleware/auth";
+import { deleteProject, getProjects, postProject, updateProjects } from './projects';
+import { deleteTask, getTasks, postTask, updateTask } from './tasks';
+import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker';
 
 const app = express();
 const port = 4000;
@@ -32,7 +33,7 @@ app.use(
   })
 );
 
-app.get("/", auth, (req, res) => {
+app.get("/", auth, (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end("You have the correct credentials.");
@@ -46,7 +47,6 @@ app.put("/api/projects/:id", auth, updateProjects);
 app.delete("/api/projects/:id", auth, deleteProject);
 app.post("/api/projects", auth, postProject);
 
-app.get("/api/tasks", auth, getTasksColumns);
 app.get("/api/tasks/all", auth, getTasks);
 app.post("/api/tasks/all", auth, postTask);
 app.put("/api/tasks/all/:id", auth, updateTask);
