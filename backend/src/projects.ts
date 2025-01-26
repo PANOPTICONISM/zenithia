@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { userToken } from "./middleware/auth";
-import { connection } from "./middleware/mysql";
+import { database } from './middleware/mysql';
 
 export const getProjects = async (req: Request, res: Response): Promise<void> => {
   const { query } = req;
@@ -17,7 +17,7 @@ export const getProjects = async (req: Request, res: Response): Promise<void> =>
   GROUP BY a.id`;
 
   try {
-    const [rows] = await connection.execute(query.filter ? sqlSearchAndJoin : sqlSearch);
+    const [rows] = await database.execute(query.filter ? sqlSearchAndJoin : sqlSearch);
     res.status(200).json(rows);
   } catch (error) {
     res
@@ -32,7 +32,7 @@ export const updateProjects = async (req: Request, res: Response): Promise<void>
   WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    await connection.execute(sqlUpdate, Object.values(body));
+    await database.execute(sqlUpdate, Object.values(body));
     res.status(200).send(`Project with id: ${params.id} has been updated.`);
   } catch (error) {
     res
@@ -46,7 +46,7 @@ export const deleteProject = async (req: Request, res: Response): Promise<void> 
   const sqlDelete = `DELETE FROM projects WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    await connection.execute(sqlDelete);
+    await database.execute(sqlDelete);
     res.status(200).send(`Project with id: ${params.id} has been deleted.`);
   } catch (error) {
     res
@@ -60,7 +60,7 @@ export const postProject = async (req: Request, res: Response): Promise<void> =>
   const sqlInsert = `INSERT INTO projects (id, title, start_date, finish_date, status, revenue, base_price, currency, client_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,?,UUID_TO_BIN(?),UUID_TO_BIN('${userToken.id}'))`;
 
   try {
-    await connection.execute(sqlInsert, Object.values(body));
+    await database.execute(sqlInsert, Object.values(body));
     res.status(200).send(`Project added successfully.`);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while adding your project." });

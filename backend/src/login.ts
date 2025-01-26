@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import type { Request, Response } from 'express';
 import jwt from "jsonwebtoken";
-import { connection } from "./middleware/mysql";
+import { database } from "./middleware/mysql";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const username: string = req.body.username;
@@ -9,7 +9,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const sqlSearch: string = "SELECT BIN_TO_UUID(id) as id, email, password FROM users WHERE email = ?";
 
   try {
-    const [rows]: any = await connection.execute(sqlSearch, [username]);
+    const [rows]: any = await database.execute(sqlSearch, [username]);
     if (rows.length === 0) {
       res.status(401).json({ message: "No user exists, access denied!" });
     } else {
