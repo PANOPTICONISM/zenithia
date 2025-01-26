@@ -33,7 +33,7 @@ app.use(
   })
 );
 
-app.get("/", auth, (req: Request, res: Response) => {
+app.get("/", auth, async (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end("You have the correct credentials.");
