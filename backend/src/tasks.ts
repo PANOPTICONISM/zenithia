@@ -1,15 +1,11 @@
 import type { Request, Response } from 'express';
 import { userToken } from "./middleware/auth";
-import { database } from './middleware/mysql';
+import Task from './models/Task';
 
 export const getTasks = async (req: Request, res: Response): Promise<void> => {
-  const sqlSearch = `SELECT BIN_TO_UUID(a.id) as id, a.title, a.importance, a.deadline, BIN_TO_UUID(a.table_id) as table_id, BIN_TO_UUID(a.project_id) as project_id, a.created_at, 
-  JSON_OBJECT('id', BIN_TO_UUID(b.id), 'title', b.title) as projects
-  FROM tasks a LEFT JOIN projects b ON a.project_id=b.id WHERE a.user_id = UUID_TO_BIN('${userToken.id}')`;
-
   try {
-    const [rows] = await database.execute(sqlSearch);
-    res.status(200).json(rows);
+    const tasks = await Task.findAll({ where: { user_id: userToken.id } });
+    res.status(200).json(tasks);
   } catch (error) {
     res
       .status(500)
@@ -19,10 +15,9 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
 
 export const postTask = async (req: Request, res: Response): Promise<void> => {
   const { body } = req;
-  const sqlInsert = `INSERT INTO tasks(id, title, importance, deadline, table_id, project_id, user_id) VALUES (UUID_TO_BIN(?),?,?,?, UUID_TO_BIN(?), UUID_TO_BIN(?), UUID_TO_BIN('${userToken.id}'))`;
 
   try {
-    await database.execute(sqlInsert, Object.values(body));
+    await Task.create({ ...body, user_id: userToken.id });
     res.status(200).send(`Task added successfully.`);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while adding your task." });
@@ -31,12 +26,9 @@ export const postTask = async (req: Request, res: Response): Promise<void> => {
 
 export const updateTask = async (req: Request, res: Response): Promise<void> => {
   const { body, params } = req;
-  const values = Object.values(body);
-  const sqlUpdate = `UPDATE tasks SET ${values.length > 1 ? "title=?, importance=?, deadline=?, table_id=UUID_TO_BIN(?), project_id=UUID_TO_BIN(?)" : "table_id=UUID_TO_BIN(?)"}
-  WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    await database.execute(sqlUpdate, values);
+    await Task.update({ ...body }, { where: { id: params.id } });
     res.status(200).send(`Task with id: ${params.id} has been updated.`);
   } catch (error) {
     res
@@ -47,10 +39,9 @@ export const updateTask = async (req: Request, res: Response): Promise<void> => 
 
 export const deleteTask = async (req: Request, res: Response): Promise<void> => {
   const { params } = req;
-  const sqlDelete = `DELETE FROM tasks WHERE id = UUID_TO_BIN('${params.id}')`;
 
   try {
-    await database.execute(sqlDelete);
+    await Task.destroy({ where: { id: params.id } });
     res.status(200).send(`Task with id: ${params.id} has been deleted.`);
   } catch (error) {
     res

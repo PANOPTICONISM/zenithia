@@ -16,31 +16,38 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { useUserData } from "contexts/UserProvider";
-import { dateLuxonToISOForApi } from "lib/dates";
 import { DateTime } from "luxon";
 import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
-import { TaskProps, updateTask } from "../../../api/tasks";
+import { deleteTask, TaskProps, updateTask } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
 import { ProjectProps } from "../../../pages/Projects/Projects.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
+type EditableTask = {
+  id: string;
+  title: string;
+  importance: string | null;
+  project_id: string | null;
+  column_id: ColumnType;
+  deadline: string | null;
+  projects?: ProjectProps | null;
+}
+
 const Task = ({
   task,
   index,
-  columns,
   setColumns,
   projects,
 }: {
   task: TaskProps;
   index: number;
   projects: ProjectProps[];
-  columns: TaskProps[];
   setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
-  const [editableTask, setEditableTask] = React.useState(task);
+  const [editableTask, setEditableTask] = React.useState<EditableTask>(task);
 
   const [user] = useUserData();
 
@@ -49,20 +56,19 @@ const Task = ({
       return;
     }
 
-    // TODO: Update deletion
-    // const specificColumn = columns.filter((col) => col.id === column.id);
-    // const cleanTasks = specificColumn[0].items.filter(
-    //   (item: TaskProps) => item.id !== task.id,
-    // );
-    // specificColumn[0].items = cleanTasks;
-
-    // const otherColumns = columns.filter((col) => col.id !== column.id);
-    // const joinColumns = [specificColumn, otherColumns].flat();
-    // const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
-
-    // deleteTask(user.token, task.id)
-    //   .then(() => setColumns(sortedColumns))
-    //   .catch((error) => toast.error(error));
+    deleteTask(user.token, task.id)
+      .then(() => {
+        setColumns((prev) => {
+          const newColumns = new Map(prev);
+          const updatedColumn = newColumns.get(task.column_id) || [];
+          newColumns.set(
+            task.column_id,
+            updatedColumn.filter((item) => item.id !== task.id),
+          );
+          return newColumns;
+        });
+      })
+      .catch((error) => toast.error(error));
   };
 
   const handleSave = () => {
@@ -72,10 +78,8 @@ const Task = ({
     const updatedTask = {
       title: editableTask.title,
       importance: editableTask.importance,
-      deadline: dateLuxonToISOForApi(
-        editableTask.deadline as unknown as DateTime,
-      ),
-      table_id: editableTask.table_id,
+      deadline: editableTask.deadline || "",
+      column_id: editableTask.column_id,
       project_id: editableTask.project_id,
     };
     updateTask(user.token, editableTask.id, updatedTask)
@@ -127,11 +131,13 @@ const Task = ({
                         textField: { size: "small", fullWidth: true },
                       }}
                       label="Deadline"
-                      onChange={(value) =>
+                      value={editableTask.deadline ? DateTime.fromISO(editableTask.deadline) : null}
+                      onChange={(value) => {
                         setEditableTask((current) => ({
                           ...current,
-                          deadline: value as string,
+                          deadline: value ? value.toISO() : null,
                         }))
+                      }
                       }
                     />
                   </LocalizationProvider>

@@ -12,6 +12,7 @@ import { deleteClient, getClients, postClient, updateClient } from './clients';
 import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
+import sequelize from './middleware/sequelize';
 import { deleteProject, getProjects, postProject, updateProjects } from './projects';
 import { deleteTask, getTasks, postTask, updateTask } from './tasks';
 import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker';
@@ -32,6 +33,15 @@ app.use(
     extended: true,
   })
 );
+
+(async () => {
+  await sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.');
+    sequelize.sync({ force: true });
+  }).catch((error) => {
+    console.error('Unable to connect to the database: ', error);
+  });
+})();
 
 app.get("/", auth, async (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");

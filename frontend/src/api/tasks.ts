@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { ColumnType } from "pages/Tasks/Tasks";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
 import { requester } from "./axios";
@@ -7,7 +8,7 @@ export type TaskBaseProps = {
   title: string;
   importance: string | null;
   project_id: string | null;
-  table_id: string;
+  column_id: ColumnType;
   deadline: string;
 };
 
@@ -56,7 +57,7 @@ export const postTask = async (
 export const updateTask = async (
   token: string,
   id: string,
-  body: TaskBaseProps | { column_id: string },
+  body: TaskBaseProps | { column_id: ColumnType },
 ): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
 
