@@ -6,8 +6,6 @@ import User from "./models/User";
 export const login = async (req: Request, res: Response): Promise<void> => {
   const username: string = req.body.username;
 
-  const sqlSearch: string = "SELECT BIN_TO_UUID(id) as id, email, password FROM users WHERE email = ?";
-
   try {
     const user = await User.findOne({ where: { email: username } });
     if (!user) {
