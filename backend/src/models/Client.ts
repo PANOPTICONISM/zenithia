@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
-import { Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import User from './User';
 
 @Table({
     tableName: 'clients',
@@ -49,6 +50,7 @@ export default class Client extends Model {
     })
     declare company: String;
 
+    @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
     @Column({
         type: DataTypes.UUID,
         allowNull: false

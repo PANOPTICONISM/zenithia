@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 import { userToken } from "./middleware/auth";
 import Client from './models/Client';
 import Project from './models/Project';
-import TimeTracker from './models/TimeTracker';
 
 export const getProjects = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -13,14 +12,8 @@ export const getProjects = async (req: Request, res: Response): Promise<void> =>
           model: Client,
           as: 'client',
           attributes: ['id', 'name']
-        },
-        {
-          model: TimeTracker,
-          as: 'timeTracker',
-          attributes: ['id', 'date', 'start_time', 'total']
         }
-      ],
-      group: ['Project.id']
+      ]
     });
 
     res.status(200).json(projects);

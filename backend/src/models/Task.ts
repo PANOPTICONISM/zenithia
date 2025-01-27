@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, ForeignKey, Model, Table } from 'sequelize-typescript';
+import Project from './Project';
+import User from './User';
 
 @Table({
     tableName: 'tasks',
@@ -31,19 +33,24 @@ export default class Task extends Model {
     declare deadline: Date;
 
     @Column({
+        type: DataTypes.STRING,
+    })
+    declare table_id: String;
+
+    @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
+    @ForeignKey(() => User)
+    @Column({
         type: DataTypes.UUID,
         allowNull: false
     })
     declare user_id: String;
 
+    @BelongsTo(() => Project, { foreignKey: 'project_id', as: 'project' })
+    @ForeignKey(() => Project)
     @Column({
         type: DataTypes.UUID,
     })
     declare project_id: String;
-    @Column({
-        type: DataTypes.STRING,
-    })
-    declare table_id: String;
 
     @CreatedAt
     declare created_at?: Date;

@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import Client from './Client';
+import User from './User';
 
 @Table({
     tableName: 'projects',
@@ -49,15 +51,17 @@ export default class Project extends Model {
     })
     declare currency: String;
 
+    @BelongsTo(() => Client, { foreignKey: 'client_id', as: 'client' })
     @Column({
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
     })
-    declare client_id: String;
+    declare client_id: string;
 
+    @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
     @Column({
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
     })
-    declare user_id: String;
+    declare user_id: string;
 
     @CreatedAt
     declare created_at?: Date;

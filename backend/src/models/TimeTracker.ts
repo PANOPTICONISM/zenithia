@@ -1,9 +1,11 @@
 import { DataTypes } from 'sequelize';
-import { Column, CreatedAt, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, ForeignKey, Model, Table } from 'sequelize-typescript';
+import Project from './Project';
+import User from './User';
 
 @Table({
-    tableName: 'Timetracker',
-    modelName: 'timetracker',
+    tableName: 'TimeTracker',
+    modelName: 'timeTracker',
     timestamps: true
 })
 export default class TimeTracker extends Model {
@@ -34,12 +36,16 @@ export default class TimeTracker extends Model {
     })
     declare finish_time: Date;
 
+    @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
+    @ForeignKey(() => User)
     @Column({
         type: DataTypes.UUID,
         allowNull: false
     })
     declare user_id: String;
 
+    @BelongsTo(() => Project, { foreignKey: 'project_id', as: 'project' })
+    @ForeignKey(() => Project)
     @Column({
         type: DataTypes.UUID,
     })
