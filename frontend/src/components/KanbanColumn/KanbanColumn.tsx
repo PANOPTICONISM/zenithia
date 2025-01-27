@@ -40,7 +40,7 @@ const KanbanColumn = ({
       title: "Title",
       importance: null,
       deadline: currentDate(),
-      table_id: columnName,
+      column_id: columnName,
       project_id: null,
     };
 

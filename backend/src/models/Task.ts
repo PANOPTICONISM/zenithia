@@ -35,7 +35,7 @@ export default class Task extends Model {
         type: DataTypes.STRING,
         allowNull: false
     })
-    declare table_id: String;
+    declare column_id: String;
 
     @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
     @ForeignKey(() => User)

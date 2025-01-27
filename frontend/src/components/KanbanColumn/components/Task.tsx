@@ -30,7 +30,7 @@ type EditableTask = {
   title: string;
   importance: string | null;
   project_id: string | null;
-  table_id: ColumnType;
+  column_id: ColumnType;
   deadline: string | null;
   projects?: ProjectProps | null;
 }
@@ -60,9 +60,9 @@ const Task = ({
       .then(() => {
         setColumns((prev) => {
           const newColumns = new Map(prev);
-          const updatedColumn = newColumns.get(task.table_id) || [];
+          const updatedColumn = newColumns.get(task.column_id) || [];
           newColumns.set(
-            task.table_id,
+            task.column_id,
             updatedColumn.filter((item) => item.id !== task.id),
           );
           return newColumns;
@@ -79,7 +79,7 @@ const Task = ({
       title: editableTask.title,
       importance: editableTask.importance,
       deadline: editableTask.deadline || "",
-      table_id: editableTask.table_id,
+      column_id: editableTask.column_id,
       project_id: editableTask.project_id,
     };
     updateTask(user.token, editableTask.id, updatedTask)

@@ -5,7 +5,7 @@ import lodash from "lodash";
 import React from "react";
 import { toast } from "react-toastify";
 import { getProjects } from "../../api/projects";
-import { getTasks, TaskProps } from "../../api/tasks";
+import { getTasks, TaskProps, updateTask } from "../../api/tasks";
 import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
 import Main from "../../components/Main/Main";
 import { ProjectProps } from "../Projects/Projects.types";
@@ -34,7 +34,7 @@ const Tasks = () => {
         getProjects(user.token),
       ]);
 
-      const grouppedTasks = lodash.groupBy(tasksRes, "table_id");
+      const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
 
       const jointArrays = new Map(
         Object.values(COLUMNS).map((column) => [
@@ -50,58 +50,45 @@ const Tasks = () => {
   }, [user]);
 
   const handleDragEnd = (result: DropResult) => {
+    if (!result.destination || !user) {
+      return;
+    }
+    const { source, destination, draggableId } = result;
 
-    // TODO: Update drag and drop
-    // if (!result.destination || !user) {
-    //   return;
-    // }
-    // const { source, destination, draggableId } = result;
+    const sourceColumn = columns.get(source.droppableId as ColumnType);
+    const destColumn = columns.get(destination.droppableId as ColumnType);
 
-    // if (source.droppableId !== destination.droppableId) {
-    //   const sourceColumn = columns.filter(
-    //     (column) => column.id === source.droppableId,
-    //   );
-    //   const destColumn = columns.filter(
-    //     (column) => column.id === destination.droppableId,
-    //   );
-    //   const sourceItems = [...sourceColumn][0].items;
-    //   const destItems = [...destColumn][0].items;
-    //   const [removed] = sourceItems.splice(source.index, 1);
-    //   destItems.splice(destination.index, 0, removed);
+    if (!sourceColumn || !destColumn) {
+      return;
+    }
 
-    //   const removedSourceColumn = columns.filter(
-    //     (column) => column.id !== sourceColumn[0].id,
-    //   );
-    //   const removedDestColumn = removedSourceColumn.filter(
-    //     (column) => column.id !== destColumn[0].id,
-    //   );
-    //   const joinColumnChanges = [
-    //     sourceColumn,
-    //     destColumn,
-    //     removedDestColumn,
-    //   ].flat();
+    if (source.droppableId !== destination.droppableId) {
+      const sourceItems = Array.from(sourceColumn);
+      const destItems = Array.from(destColumn);
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
 
-    //   updateTask(user.token, draggableId, {
-    //     column_id: destination.droppableId,
-    //   })
-    //     .then(() =>
-    //       setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy)),
-    //     )
-    //     .catch((error) => toast.error("Update single field: " + error));
-    // } else {
-    //   const sourceColumn = columns.filter(
-    //     (column) => column.id == source.droppableId,
-    //   );
-    //   const copiedItems = [...sourceColumn][0].items;
-    //   const [removed] = copiedItems.splice(source.index, 1);
-    //   copiedItems.splice(destination.index, 0, removed);
+      setColumns((prev) => {
+        const newColumns = new Map(prev);
+        newColumns.set(source.droppableId as ColumnType, sourceItems);
+        newColumns.set(destination.droppableId as ColumnType, destItems);
+        return newColumns;
+      });
 
-    //   const removedSourceColumn = columns.filter(
-    //     (column) => column.id !== sourceColumn[0].id,
-    //   );
-    //   const joinColumnChanges = [sourceColumn, removedSourceColumn].flat();
-    //   setColumns(joinColumnChanges.sort((a, b) => a.orderBy - b.orderBy));
-    // }
+      updateTask(user.token, draggableId, {
+        column_id: destination.droppableId as ColumnType,
+      }).catch((error) => toast.error("Update single field: " + error));
+    } else {
+      const copiedItems = Array.from(sourceColumn);
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+
+      setColumns((prev) => {
+        const newColumns = new Map(prev);
+        newColumns.set(source.droppableId as ColumnType, copiedItems);
+        return newColumns;
+      });
+    }
   };
 
   return (
