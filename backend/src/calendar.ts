@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { userToken } from "./middleware/auth";
-import { database } from './middleware/mysql';
+import { database } from './middleware/sequelize';
 
 export const getCalendar = async (req: Request, res: Response): Promise<void> => {
   const sqlSearch = `SELECT BIN_TO_UUID(id) as id, title, start, end, created_at 
