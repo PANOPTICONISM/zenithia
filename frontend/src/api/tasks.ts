@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { ColumnType } from "pages/Tasks/Tasks";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
 import { requester } from "./axios";
@@ -7,7 +8,7 @@ export type TaskBaseProps = {
   title: string;
   importance: string | null;
   project_id: string | null;
-  table_id: string;
+  table_id: ColumnType;
   deadline: string;
 };
 

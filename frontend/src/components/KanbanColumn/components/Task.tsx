@@ -20,7 +20,7 @@ import { DateTime } from "luxon";
 import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
-import { TaskProps, updateTask } from "../../../api/tasks";
+import { deleteTask, TaskProps, updateTask } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
 import { ProjectProps } from "../../../pages/Projects/Projects.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
@@ -30,7 +30,7 @@ type EditableTask = {
   title: string;
   importance: string | null;
   project_id: string | null;
-  table_id: string;
+  table_id: ColumnType;
   deadline: string | null;
   projects?: ProjectProps | null;
 }
@@ -38,14 +38,12 @@ type EditableTask = {
 const Task = ({
   task,
   index,
-  columns,
   setColumns,
   projects,
 }: {
   task: TaskProps;
   index: number;
   projects: ProjectProps[];
-  columns: TaskProps[];
   setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
@@ -58,20 +56,19 @@ const Task = ({
       return;
     }
 
-    // TODO: Update deletion
-    // const specificColumn = columns.filter((col) => col.id === column.id);
-    // const cleanTasks = specificColumn[0].items.filter(
-    //   (item: TaskProps) => item.id !== task.id,
-    // );
-    // specificColumn[0].items = cleanTasks;
-
-    // const otherColumns = columns.filter((col) => col.id !== column.id);
-    // const joinColumns = [specificColumn, otherColumns].flat();
-    // const sortedColumns = joinColumns.sort((a, b) => a.orderBy - b.orderBy);
-
-    // deleteTask(user.token, task.id)
-    //   .then(() => setColumns(sortedColumns))
-    //   .catch((error) => toast.error(error));
+    deleteTask(user.token, task.id)
+      .then(() => {
+        setColumns((prev) => {
+          const newColumns = new Map(prev);
+          const updatedColumn = newColumns.get(task.table_id) || [];
+          newColumns.set(
+            task.table_id,
+            updatedColumn.filter((item) => item.id !== task.id),
+          );
+          return newColumns;
+        });
+      })
+      .catch((error) => toast.error(error));
   };
 
   const handleSave = () => {

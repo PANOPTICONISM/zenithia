@@ -86,7 +86,6 @@ const KanbanColumn = ({
                 task={task}
                 key={task.id}
                 index={index}
-                columns={entries}
                 setColumns={setColumns}
                 projects={projects}
               />
