@@ -109,7 +109,6 @@ const Tasks = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Grid container spacing={2}>
           {[...columns.entries()].map(([key, entries]) => {
-            console.log(key, entries);
             return (
               <Grid item key={key} xs={12} lg={4}>
                 <KanbanColumn

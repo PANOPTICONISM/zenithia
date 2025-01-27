@@ -23,7 +23,6 @@ export default class Task extends Model {
 
     @Column({
         type: DataTypes.STRING,
-        allowNull: false
     })
     declare importance: String;
 
@@ -34,6 +33,7 @@ export default class Task extends Model {
 
     @Column({
         type: DataTypes.STRING,
+        allowNull: false
     })
     declare table_id: String;
 
