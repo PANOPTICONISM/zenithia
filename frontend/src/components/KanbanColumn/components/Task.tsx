@@ -16,7 +16,6 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { useUserData } from "contexts/UserProvider";
-import { dateLuxonToISOForApi } from "lib/dates";
 import { DateTime } from "luxon";
 import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
@@ -25,6 +24,16 @@ import { TaskProps, updateTask } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
 import { ProjectProps } from "../../../pages/Projects/Projects.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
+
+type EditableTask = {
+  id: string;
+  title: string;
+  importance: string | null;
+  project_id: string | null;
+  table_id: string;
+  deadline: string | null;
+  projects?: ProjectProps | null;
+}
 
 const Task = ({
   task,
@@ -40,7 +49,7 @@ const Task = ({
   setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
-  const [editableTask, setEditableTask] = React.useState(task);
+  const [editableTask, setEditableTask] = React.useState<EditableTask>(task);
 
   const [user] = useUserData();
 
@@ -72,9 +81,7 @@ const Task = ({
     const updatedTask = {
       title: editableTask.title,
       importance: editableTask.importance,
-      deadline: dateLuxonToISOForApi(
-        editableTask.deadline as unknown as DateTime,
-      ),
+      deadline: editableTask.deadline || "",
       table_id: editableTask.table_id,
       project_id: editableTask.project_id,
     };
@@ -127,11 +134,13 @@ const Task = ({
                         textField: { size: "small", fullWidth: true },
                       }}
                       label="Deadline"
-                      onChange={(value) =>
+                      value={editableTask.deadline ? DateTime.fromISO(editableTask.deadline) : null}
+                      onChange={(value) => {
                         setEditableTask((current) => ({
                           ...current,
-                          deadline: value as string,
+                          deadline: value ? value.toISO() : null,
                         }))
+                      }
                       }
                     />
                   </LocalizationProvider>
