@@ -24,23 +24,34 @@ export const useColumnsAndRows = () => {
   }, [projects]);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 80 },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 80,
+      valueFormatter: ({ value }) => value?.slice(0, 8),
+    },
     {
       field: "title",
       headerName: "Project",
       minWidth: 120,
       flex: 1,
-      renderCell: ({ value }) => (
-        <Box
-          sx={{
-            background: lightBlue,
-            padding: "6px 10px",
-            borderRadius: "4px",
-          }}
-        >
-          {value}
-        </Box>
-      ),
+      renderCell: ({ value }) => {
+        if (!value) {
+          return null;
+        }
+
+        return (
+          <Box
+            sx={{
+              background: lightBlue,
+              padding: "6px 10px",
+              borderRadius: "4px",
+            }}
+          >
+            {value}
+          </Box>
+        );
+      },
     },
     {
       field: "client",
@@ -95,13 +106,13 @@ export const useColumnsAndRows = () => {
 };
 
 export const finalizeTotals = (
-  logs: ProjectFormattedProps[] | ProjectProps[],
+  logs: ProjectFormattedProps[] | ProjectProps[]
 ) =>
   logs.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
       (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
-      initialValue,
+      initialValue
     );
 
     const totalMinutes =
@@ -124,27 +135,27 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
   const thisYearLogs = rows.map((entry) => {
     const entries = entry?.time_tracker?.filter(
       (time) =>
-        DateTime.fromFormat(time.date, "yyyy-MM-dd").year === currentYear,
+        DateTime.fromFormat(time.date, "yyyy-MM-dd").year === currentYear
     );
     return { ...entry, time_tracker: entries };
   });
 
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,
-    0,
+    0
   );
 
   const currentMonth = new Date().getMonth();
   const thisMonthLogs = rows.map((entry) => {
     const entries = entry?.time_tracker?.filter(
       (time) =>
-        DateTime.fromFormat(time.date, "yyyy-MM-dd").month === currentMonth + 1,
+        DateTime.fromFormat(time.date, "yyyy-MM-dd").month === currentMonth + 1
     );
     return { ...entry, time_tracker: entries };
   });
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,
-    0,
+    0
   );
 
   return { totalMonthlySum, totalYearlySum };
