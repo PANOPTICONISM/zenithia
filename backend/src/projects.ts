@@ -19,7 +19,7 @@ export const getProjects = async (
         },
         {
           model: TimeTracker,
-          as: "timetracker",
+          as: "time_tracker",
           attributes: ["id", "date", "total", "start_time", "finish_time"],
         },
       ],

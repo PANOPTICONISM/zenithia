@@ -74,8 +74,8 @@ export default class Project extends Model {
   })
   declare user_id: string;
 
-  @HasMany(() => TimeTracker, { foreignKey: "project_id", as: "timetracker" })
-  declare timeTracker: TimeTracker[];
+  @HasMany(() => TimeTracker, { foreignKey: "project_id", as: "time_tracker" })
+  declare time_tracker: TimeTracker[];
 
   @CreatedAt
   declare created_at?: Date;

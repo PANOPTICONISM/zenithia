@@ -11,8 +11,8 @@ import Project from "./Project";
 import User from "./User";
 
 @Table({
-  tableName: "timetracker",
-  modelName: "timetracker",
+  tableName: "time_tracker",
+  modelName: "time_tracker",
   timestamps: true,
 })
 export default class TimeTracker extends Model {
