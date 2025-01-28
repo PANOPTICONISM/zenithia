@@ -1,10 +1,10 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button } from "@mui/material";
-import { GridColDef, GridRowId } from "@mui/x-data-grid";
+import { GridColDef, GridEditInputCell, GridRowId } from "@mui/x-data-grid";
 import { ClientId, ClientProps, getClients } from "api/clients";
 import StatusTag from "components/StatusTag/StatusTag";
 import { useUserData } from "contexts/UserProvider";
-import { currencyToLocale } from "lib/currency";
+import { currencyFromCents, currencyToLocale } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import React from "react";
 import { toast } from "react-toastify";
@@ -128,6 +128,10 @@ export const useColumnsAndRows = () => {
       type: "number",
       editable: true,
       renderCell: ({ value }) => currencyToLocale(value),
+      renderEditCell: (params) => {
+        const value = currencyFromCents(params.value);
+        return <GridEditInputCell {...params} value={value} />;
+      },
     },
     {
       field: "revenue",
