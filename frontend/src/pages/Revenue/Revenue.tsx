@@ -6,7 +6,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, DataGridProps, GridFilterModel } from "@mui/x-data-grid";
 import { grey } from "App";
 import Main from "components/Main/Main";
-import { currencyToLocale, valueFormatter } from "lib/currency";
+import { currencyToLocale } from "lib/currency";
 import React from "react";
 import {
   finalizeTotals,
@@ -168,12 +168,12 @@ const Revenue = () => {
       <Stack direction="row" spacing={2} paddingBottom="24px">
         <EarningsTimeline
           text="Earnings this year"
-          total={valueFormatter.format(Number(totalYearlySum))}
+          total={currencyToLocale(totalYearlySum)}
           icon={<PublicIcon sx={{ height: "100%", width: "70px" }} />}
         />
         <EarningsTimeline
           text="Earnings this month"
-          total={valueFormatter.format(Number(totalMonthlySum))}
+          total={currencyToLocale(totalMonthlySum)}
           icon={<TodayIcon sx={{ height: "100%", width: "70px" }} />}
         />
       </Stack>

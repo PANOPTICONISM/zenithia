@@ -111,7 +111,8 @@ export const finalizeTotals = (
   logs.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
-      (accumulator, currentValue) => accumulator + Number(currentValue?.total || 0),
+      (accumulator, currentValue) =>
+        accumulator + Number(currentValue?.total || 0),
       initialValue
     );
 
@@ -131,13 +132,9 @@ export const finalizeTotals = (
 
 export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
   const currentYear = new Date().getFullYear();
-  const thisYearLogs = rows.map((entry) => {
-    const entries = entry?.time_tracker?.filter(
-      (time) =>
-        DateTime.fromFormat(time.date, "yyyy-MM-dd").year === currentYear
-    );
-    return { ...entry, time_tracker: entries };
-  });
+  const thisYearLogs = rows.filter(
+    (entry) => DateTime.fromISO(entry.finish_date).year === currentYear
+  );
 
   const totalYearlySum = finalizeTotals(thisYearLogs).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,
@@ -145,13 +142,9 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
   );
 
   const currentMonth = new Date().getMonth();
-  const thisMonthLogs = rows.map((entry) => {
-    const entries = entry?.time_tracker?.filter(
-      (time) =>
-        DateTime.fromFormat(time.date, "yyyy-MM-dd").month === currentMonth + 1
-    );
-    return { ...entry, time_tracker: entries };
-  });
+  const thisMonthLogs = rows.filter(
+    (entry) => DateTime.fromISO(entry.finish_date).month === currentMonth + 1 && DateTime.fromISO(entry.finish_date).year === currentYear
+  );
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,
     0
