@@ -18,21 +18,36 @@ import Main from "../components/Main/Main";
 import { useRevenueData } from "./Charts/MonthlyStats.utils";
 import { EarningsTimeline } from "./Revenue/Revenue";
 import { logsByTimeline } from "./Revenue/Revenue.utils";
+import { COLUMNS } from "./Tasks/Tasks";
+
+const exampleData = [
+  {
+    id: "sdf98fd",
+    title: "Example task",
+    importance: "medium",
+    deadline: "2023-10-05",
+    column_id: COLUMNS.TO_DO,
+    projects: {
+      title: "Ragnarock",
+      start_date: "2023-01-01",
+      finish_date: "2023-12-31",
+      status: "ongoing",
+      revenue: "10000",
+      base_price: 5000,
+      currency: "USD",
+      client_id: "client123",
+    },
+    project_id: "0000",
+  },
+];
 
 const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery("(min-width:1200px)");
 
-  const [tasks, setTasks] = React.useState<TaskProps[]>([]);
-  const exampleData = [
-    {
-      id: "sdf98fd",
-      title: "Example task",
-      importance: "medium",
-      deadline: "2023-10-05",
-      column_id: "1",
-      projects: { title: "Ragnarock" },
-    },
-  ];
+  const [tasks, setTasks] = React.useState<{
+    data: TaskProps[],
+    isLoading: boolean,
+  }>({ data: exampleData, isLoading: true });
 
   const date = new Date();
   const time = date.getHours();
@@ -52,7 +67,7 @@ const Dashboard = () => {
     getTasks(user.token)
       .then((data) => {
         const sortedData = lodash.sortBy(data, "deadline");
-        setTasks(sortedData);
+        setTasks({ data: sortedData, isLoading: false });
       })
       .catch(() => toast.error("Could not get the tasks"));
   }, [user]);
@@ -118,7 +133,7 @@ const Dashboard = () => {
               <Typography>Urgent</Typography>
             </Stack>
             <Stack padding="24px" spacing={2}>
-              {(tasks.length > 0 ? tasks : exampleData).map((task) => (
+              {tasks.isLoading ? null : tasks.data.map((task) => (
                 <Stack
                   key={task.id}
                   sx={{ background: lightBlue, padding: "24px" }}
@@ -135,8 +150,8 @@ const Dashboard = () => {
                   >
                     <DateAndLevel
                       deadline={DateTime.fromISO(
-                        task.deadline as string,
-                      ).toFormat("MMM, dd")}
+                        task.deadline,
+                      ).toFormat("MMM, dd").toLocaleString()}
                       level={task.importance}
                     />
                     <Typography
