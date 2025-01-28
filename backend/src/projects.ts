@@ -1,19 +1,28 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 import { userToken } from "./middleware/auth";
-import Client from './models/Client';
-import Project from './models/Project';
+import Client from "./models/Client";
+import Project from "./models/Project";
+import TimeTracker from "./models/TimeTracker";
 
-export const getProjects = async (req: Request, res: Response): Promise<void> => {
+export const getProjects = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const projects = await Project.findAll({
       where: { user_id: userToken.id },
       include: [
         {
           model: Client,
-          as: 'client',
-          attributes: ['id', 'name']
-        }
-      ]
+          as: "client",
+          attributes: ["id", "name"],
+        },
+        {
+          model: TimeTracker,
+          as: "time_tracker",
+          attributes: ["id", "date", "total", "start_time", "finish_time"],
+        },
+      ],
     });
 
     res.status(200).json(projects);
@@ -25,27 +34,35 @@ export const getProjects = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const postProject = async (req: Request, res: Response): Promise<void> => {
+export const postProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { body } = req;
 
   try {
     const project = await Project.create({
       ...body,
-      user_id: userToken.id
+      user_id: userToken.id,
     });
 
     res.status(201).json({ project });
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while adding your project." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding your project." });
   }
 };
 
-export const updateProjects = async (req: Request, res: Response): Promise<void> => {
+export const updateProjects = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { body, params } = req;
 
   try {
     await Project.update(body, {
-      where: { id: params.id }
+      where: { id: params.id },
     });
     res.status(200).send(`Project with id: ${params.id} has been updated.`);
   } catch (error) {
@@ -55,12 +72,15 @@ export const updateProjects = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const deleteProject = async (req: Request, res: Response): Promise<void> => {
+export const deleteProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { params } = req;
 
   try {
     const deleted = await Project.destroy({
-      where: { id: params.id }
+      where: { id: params.id },
     });
     res.status(200).send(`Project with id: ${params.id} has been deleted.`);
   } catch (error) {

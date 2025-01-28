@@ -140,7 +140,6 @@ const Task = ({
                 <Box>
                   <LocalizationProvider dateAdapter={AdapterLuxon}>
                     <DatePicker
-                      format="dd/MM/yyyy"
                       slotProps={{
                         textField: { size: "small", fullWidth: true },
                       }}
@@ -217,7 +216,7 @@ const Task = ({
                 flexWrap="wrap"
               >
                 <DateAndLevel
-                  deadline={DateTime.fromISO(task.deadline).toFormat("MMMM, dd")}
+                  deadline={DateTime.fromISO(task.deadline).toFormat("MMMM, dd").toLocaleString()}
                   level={task.importance}
                 />
                 <Typography

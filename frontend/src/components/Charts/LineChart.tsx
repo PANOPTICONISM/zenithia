@@ -1,4 +1,5 @@
 import { ResponsiveLine } from "@nivo/line";
+import { currency } from "lib/currency";
 import { LineChartProps } from "./Charts.types";
 
 const LineChart = ({ result }: LineChartProps) => {
@@ -29,7 +30,7 @@ const LineChart = ({ result }: LineChartProps) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "DKK",
+        legend: currency(),
         legendOffset: -40,
         legendPosition: "middle",
       }}

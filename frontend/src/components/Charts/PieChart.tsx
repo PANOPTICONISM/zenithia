@@ -1,4 +1,5 @@
 import { ResponsivePie } from "@nivo/pie";
+import { currency } from "lib/currency";
 import { PieChartProps } from "./Charts.types";
 
 const PieChart = ({ logs }: { logs: PieChartProps }) => {
@@ -15,7 +16,7 @@ const PieChart = ({ logs }: { logs: PieChartProps }) => {
         from: "color",
         modifiers: [["darker", 0.2]],
       }}
-      arcLabel={(e) => "" + e.value + " DKK"}
+      arcLabel={(e) => "" + e.value + currency()}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor="#333333"
       arcLinkLabelsThickness={2}

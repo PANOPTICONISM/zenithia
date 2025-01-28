@@ -12,7 +12,7 @@ import { ProjectProps } from "../Projects/Projects.types";
 
 export type ColumnType = "TO DO" | "IN PROGRESS" | "DONE";
 
-const COLUMNS = {
+export const COLUMNS = {
   TO_DO: "TO DO",
   IN_PROGRESS: "IN PROGRESS",
   DONE: "DONE",
