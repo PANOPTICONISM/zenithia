@@ -1,18 +1,18 @@
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
+import PublicIcon from "@mui/icons-material/Public";
+import SavingsIcon from "@mui/icons-material/Savings";
+import TodayIcon from "@mui/icons-material/Today";
 import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, DataGridProps, GridFilterModel } from "@mui/x-data-grid";
+import { grey } from "App";
 import Main from "components/Main/Main";
+import { valueFormatter } from "lib/currency";
 import React from "react";
 import {
   finalizeTotals,
   logsByTimeline,
   useColumnsAndRows,
 } from "./Revenue.utils";
-import PublicIcon from "@mui/icons-material/Public";
-import TodayIcon from "@mui/icons-material/Today";
-import { grey } from "App";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import SavingsIcon from "@mui/icons-material/Savings";
-import { valueFormatter } from "lib/currency";
 
 export const EarningsTimeline = ({
   text,
@@ -106,50 +106,50 @@ const Revenue = () => {
         const filteringData =
           model.items[0].value !== undefined
             ? rows.filter((entry) => {
-                if (
-                  model.items[0].field === "start_date" &&
-                  model.items[0].operator === "onOrAfter"
-                ) {
-                  return model.items[0].value <= entry.start_date;
-                }
-                if (
-                  model.items[0].field === "start_date" &&
-                  model.items[0].operator === "is"
-                ) {
-                  return model.items[0].value === entry.start_date;
-                }
-                if (
-                  model.items[0].field === "start_date" &&
-                  model.items[0].operator === "not"
-                ) {
-                  return model.items[0].value !== entry.start_date;
-                }
+              if (
+                model.items[0].field === "start_date" &&
+                model.items[0].operator === "onOrAfter"
+              ) {
+                return model.items[0].value <= entry.start_date;
+              }
+              if (
+                model.items[0].field === "start_date" &&
+                model.items[0].operator === "is"
+              ) {
+                return model.items[0].value === entry.start_date;
+              }
+              if (
+                model.items[0].field === "start_date" &&
+                model.items[0].operator === "not"
+              ) {
+                return model.items[0].value !== entry.start_date;
+              }
 
-                if (
-                  model.items[0].field === "finish_date" &&
-                  model.items[0].operator === "onOrAfter"
-                ) {
-                  return model.items[0].value <= entry.finish_date;
-                }
-                if (
-                  model.items[0].field === "finish_date" &&
-                  model.items[0].operator === "onOrBefore"
-                ) {
-                  return model.items[0].value >= entry.finish_date;
-                }
-                if (
-                  model.items[0].field === "finish_date" &&
-                  model.items[0].operator === "is"
-                ) {
-                  return model.items[0].value === entry.finish_date;
-                }
-                if (
-                  model.items[0].field === "finish_date" &&
-                  model.items[0].operator === "not"
-                ) {
-                  return model.items[0].value !== entry.finish_date;
-                }
-              })
+              if (
+                model.items[0].field === "finish_date" &&
+                model.items[0].operator === "onOrAfter"
+              ) {
+                return model.items[0].value <= entry.finish_date;
+              }
+              if (
+                model.items[0].field === "finish_date" &&
+                model.items[0].operator === "onOrBefore"
+              ) {
+                return model.items[0].value >= entry.finish_date;
+              }
+              if (
+                model.items[0].field === "finish_date" &&
+                model.items[0].operator === "is"
+              ) {
+                return model.items[0].value === entry.finish_date;
+              }
+              if (
+                model.items[0].field === "finish_date" &&
+                model.items[0].operator === "not"
+              ) {
+                return model.items[0].value !== entry.finish_date;
+              }
+            })
             : filteredData;
         setFilteredData(filteringData);
 

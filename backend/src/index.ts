@@ -1,21 +1,31 @@
-import pkg from 'body-parser';
-import cors from 'cors';
-import type { Request, Response } from 'express';
-import express from 'express';
+import pkg from "body-parser";
+import cors from "cors";
+import type { Request, Response } from "express";
+import express from "express";
 import {
   deleteCalendar,
   getCalendar,
   postCalendar,
   updateCalendar,
 } from "./calendar";
-import { deleteClient, getClients, postClient, updateClient } from './clients';
+import { deleteClient, getClients, postClient, updateClient } from "./clients";
 import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
-import sequelize from './middleware/sequelize';
-import { deleteProject, getProjects, postProject, updateProjects } from './projects';
-import { deleteTask, getTasks, postTask, updateTask } from './tasks';
-import { deleteTimeTracker, getTimeTracker, postTimeTracker, updateTimeTracker } from './timetracker';
+import sequelize from "./middleware/sequelize";
+import {
+  deleteProject,
+  getProjects,
+  postProject,
+  updateProjects,
+} from "./projects";
+import { deleteTask, getTasks, postTask, updateTask } from "./tasks";
+import {
+  deleteTimeTracker,
+  getTimeTracker,
+  postTimeTracker,
+  updateTimeTracker,
+} from "./timetracker";
 
 const app = express();
 const port = 4000;
@@ -35,12 +45,15 @@ app.use(
 );
 
 (async () => {
-  await sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
-    sequelize.sync();
-  }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
-  });
+  await sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
+      sequelize.sync();
+    })
+    .catch((error) => {
+      console.error("Unable to connect to the database: ", error);
+    });
 })();
 
 app.get("/", auth, async (req: Request, res: Response) => {
@@ -78,7 +91,7 @@ app.delete("/api/calendar/:id", auth, deleteCalendar);
 app.post("/api/calendar", auth, postCalendar);
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
-})
+  console.log(`App running on port ${port}.`);
+});
 
 export default app;
