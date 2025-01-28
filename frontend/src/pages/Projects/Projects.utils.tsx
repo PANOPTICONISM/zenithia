@@ -1,16 +1,16 @@
-import { GridColDef, GridRowId } from "@mui/x-data-grid";
-import React from "react";
-import { ProjectProps } from "./Projects.types";
-import { Box, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteProject, getProjects } from "../../api/projects";
-import { lightBlue } from "../../App";
+import { Box, Button } from "@mui/material";
+import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { ClientId, ClientProps, getClients } from "api/clients";
 import StatusTag from "components/StatusTag/StatusTag";
-import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
-import { dateFromISOToLocaleString } from "lib/dates";
 import { currencyToLocale } from "lib/currency";
+import { dateFromISOToLocaleString } from "lib/dates";
+import React from "react";
+import { toast } from "react-toastify";
+import { deleteProject, getProjects } from "../../api/projects";
+import { lightBlue } from "../../App";
+import { ProjectProps } from "./Projects.types";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<ProjectProps[]>([]);

@@ -27,7 +27,7 @@ export const valueFormatter = Intl.NumberFormat(navigator.language, {
 
 export const currencyToCents = (
   amount: number | null,
-  currencyCode: string,
+  currencyCode: string
 ) => {
   if (!amount) {
     return null;
@@ -37,7 +37,7 @@ export const currencyToCents = (
   if (Object.prototype.hasOwnProperty.call(decimalPlaces, code)) {
     const multiplier = Math.pow(
       10,
-      decimalPlaces[code as keyof typeof decimalPlaces],
+      decimalPlaces[code as keyof typeof decimalPlaces]
     );
 
     const cents = Math.round(amount * multiplier);
@@ -56,7 +56,7 @@ export const currencyFromCents = (cents: number) => {
   if (Object.prototype.hasOwnProperty.call(decimalPlaces, targetCurrency)) {
     const multiplier = Math.pow(
       10,
-      decimalPlaces[targetCurrency as keyof typeof decimalPlaces],
+      decimalPlaces[targetCurrency as keyof typeof decimalPlaces]
     );
 
     const realValue = cents / multiplier;

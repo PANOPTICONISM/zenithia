@@ -5,7 +5,7 @@ import {
   ProjectFormattedProps,
   useGetProjectsFormatted,
 } from "hooks/useGetProjectsFormatted";
-import { currencyToLocale, valueFormatter } from "lib/currency";
+import { currencyToLocale } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime, Duration } from "luxon";
 import { ProjectProps } from "pages/Projects/Projects.types";
@@ -98,7 +98,7 @@ export const useColumnsAndRows = () => {
       headerName: "Total",
       minWidth: 120,
       flex: 1,
-      valueFormatter: ({ value }) => valueFormatter.format(Number(value)),
+      valueFormatter: ({ value }) => currencyToLocale(value),
     },
   ];
 
@@ -111,7 +111,7 @@ export const finalizeTotals = (
   logs.map((entry) => {
     const initialValue = 0;
     const hoursTotal = entry?.time_tracker?.reduce(
-      (accumulator, currentValue) => accumulator + (currentValue?.total || 0),
+      (accumulator, currentValue) => accumulator + Number(currentValue?.total || 0),
       initialValue
     );
 

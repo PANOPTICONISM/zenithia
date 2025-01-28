@@ -6,7 +6,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, DataGridProps, GridFilterModel } from "@mui/x-data-grid";
 import { grey } from "App";
 import Main from "components/Main/Main";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale, valueFormatter } from "lib/currency";
 import React from "react";
 import {
   finalizeTotals,
@@ -185,7 +185,7 @@ const Revenue = () => {
         />
         <DataGridInfo
           text="Estimated total of earnings"
-          total={valueFormatter.format(Number(absoluteTotal))}
+          total={currencyToLocale(absoluteTotal)}
           icon={<SavingsIcon sx={{ height: "100%", width: "70px" }} />}
         />
       </Stack>
