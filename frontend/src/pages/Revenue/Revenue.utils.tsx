@@ -122,8 +122,7 @@ export const finalizeTotals = (
       if (entry.revenue === "Project") {
         totalPrice = entry.base_price;
       } else {
-        const totalFullHours = Math.ceil(Number(totalMinutes) / 60);
-        totalPrice = (entry.base_price / 100) * totalFullHours;
+        totalPrice = (entry.base_price / 100) * (Number(totalMinutes) / 60);
       }
     }
 
