@@ -75,6 +75,7 @@ const Task = ({
     if (!user) {
       return;
     }
+
     const updatedTask = {
       title: editableTask.title,
       importance: editableTask.importance,
@@ -83,7 +84,20 @@ const Task = ({
       project_id: editableTask.project_id,
     };
     updateTask(user.token, editableTask.id, updatedTask)
-      .then(() => setIsEdit(false))
+      .then(() => {
+        setIsEdit(false);
+        setColumns((prev) => {
+          const newColumns = new Map(prev);
+          const updatedColumn = newColumns.get(task.column_id) || [];
+          newColumns.set(
+            task.column_id,
+            updatedColumn.map((item) =>
+              item.id === task.id ? { ...item, ...updatedTask } : item,
+            ),
+          );
+          return newColumns;
+        });
+      })
       .catch((error) => toast.error(error));
   };
 
@@ -193,7 +207,7 @@ const Task = ({
                 <CloseIcon sx={{ width: "12px", height: "12px" }} />
               </IconButton>
               <Typography fontWeight={700} fontSize="16px">
-                {editableTask.title}
+                {task.title}
               </Typography>
               <Stack
                 direction="row"
@@ -203,17 +217,15 @@ const Task = ({
                 flexWrap="wrap"
               >
                 <DateAndLevel
-                  deadline={DateTime.fromISO(
-                    editableTask.deadline as string,
-                  ).toFormat("MMMM, dd")}
-                  level={editableTask.importance}
+                  deadline={DateTime.fromISO(task.deadline).toFormat("MMMM, dd")}
+                  level={task.importance}
                 />
                 <Typography
                   fontWeight={100}
                   fontSize="14px"
                   sx={{ marginLeft: "auto" }}
                 >
-                  {editableTask?.projects?.title}
+                  {task?.projects?.title}
                 </Typography>
               </Stack>
             </>
