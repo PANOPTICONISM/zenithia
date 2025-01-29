@@ -1,22 +1,23 @@
-import React from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
-import interactionPlugin from "@fullcalendar/interaction";
 import {
   DateSelectArg,
   EventApi,
   EventClickArg,
   EventSourceInput,
 } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import { Box, Stack, useMediaQuery } from "@mui/material";
 import { CalendarProps, getCalendar } from "api/calendar";
+import { useDialogEnqueue } from "contexts/DialogProvider";
+import { useUserData } from "contexts/UserProvider";
+import { DateTime } from "luxon";
+import React from "react";
 import { toast } from "react-toastify";
 import { EventItem } from "./EventItem";
-import { useDialogEnqueue } from "contexts/DialogProvider";
 import { EventAddModal, EventUpdateModal } from "./Modals";
-import { useUserData } from "contexts/UserProvider";
 
 const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const [currentEvents, setCurrentEvents] = React.useState<
@@ -31,8 +32,17 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
       return;
     }
     getCalendar(user.token)
-      .then((res) => setCurrentEvents(res))
-      .catch(() => toast.error("Could not add the event"));
+      .then((data) => {
+        const filteredData = isDashboard
+          ? data.filter(
+            (event) => DateTime.fromISO(event.end) >= DateTime.now()
+          )
+          : data;
+        setCurrentEvents(filteredData);
+      })
+      .catch(() =>
+        toast.error("Could not get calendar data. Try again later.")
+      );
   }, [user]);
 
   const handleDateClick = React.useCallback((selected: DateSelectArg) => {
@@ -73,12 +83,12 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
           headerToolbar={
             !isDashboard
               ? {
-                  left: tabletBreakpoint ? "title" : "prev,next today",
-                  center: !tabletBreakpoint ? "title" : "",
-                  right: tabletBreakpoint
-                    ? "prev,next"
-                    : "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-                }
+                left: tabletBreakpoint ? "title" : "prev,next today",
+                center: !tabletBreakpoint ? "title" : "",
+                right: tabletBreakpoint
+                  ? "prev,next"
+                  : "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              }
               : false
           }
           editable
