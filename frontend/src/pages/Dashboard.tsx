@@ -9,7 +9,7 @@ import LineChart from "components/Charts/LineChart";
 import { DateAndLevel } from "components/common/DateAndLevel";
 import { useUserData } from "contexts/UserProvider";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale } from "lib/currency";
 import lodash from "lodash";
 import { DateTime } from "luxon";
 import React from "react";
@@ -66,10 +66,11 @@ const Dashboard = () => {
     }
     getTasks(user.token)
       .then((data) => {
-        const sortedData = lodash.sortBy(data, "deadline");
+        const filteredOutDoneTasks = lodash.filter(data, (task) => task.column_id !== COLUMNS.DONE);
+        const sortedData = lodash.sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });
       })
-      .catch(() => toast.error("Could not get the tasks"));
+      .catch(() => toast.error("Could not get the tasks. Try again later."));
   }, [user]);
 
   return (
@@ -93,12 +94,12 @@ const Dashboard = () => {
           <Stack spacing={2}>
             <EarningsTimeline
               text="Earnings this year"
-              total={valueFormatter.format(Number(totalYearlySum))}
+              total={currencyToLocale(totalYearlySum)}
               icon={<PublicIcon sx={{ height: "100%", width: "70px" }} />}
             />
             <EarningsTimeline
               text="Earnings this month"
-              total={valueFormatter.format(Number(totalMonthlySum))}
+              total={currencyToLocale(totalMonthlySum)}
               icon={<TodayIcon sx={{ height: "100%", width: "70px" }} />}
             />
           </Stack>

@@ -1,5 +1,6 @@
 import { PieChartProps } from "components/Charts/Charts.types";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
+import { currencyFromCents, valueFormatterNoCurrency } from "lib/currency";
 import { DateTime } from "luxon";
 import React from "react";
 
@@ -11,7 +12,7 @@ export const useRevenueData = () => {
     return projects.filter((entry) =>
       entry.time_tracker
         ? entry?.time_tracker?.length > 0
-        : entry.time_tracker === undefined,
+        : entry.time_tracker === undefined
     );
   }, [projects]);
 
@@ -22,7 +23,7 @@ export const useRevenueData = () => {
           ...(entryMap.get(DateTime.fromISO(e.finish_date).year) || []),
           e,
         ]),
-      new Map(),
+      new Map()
     );
 
     const yearlyLogsTotals: PieChartProps = [];
@@ -31,12 +32,14 @@ export const useRevenueData = () => {
       const total = value.reduce(
         (accumulator: number, currentValue: { estimated_earnings: number }) =>
           accumulator + (currentValue?.estimated_earnings || 0),
-        initialValue,
+        initialValue
       );
       const obj = {
         id: key,
         label: key,
-        value: total,
+        value: Number(
+          valueFormatterNoCurrency.format(currencyFromCents(total))
+        ),
         color: "red",
       };
       yearlyLogsTotals.push(obj);
