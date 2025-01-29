@@ -66,10 +66,11 @@ const Dashboard = () => {
     }
     getTasks(user.token)
       .then((data) => {
-        const sortedData = lodash.sortBy(data, "deadline");
+        const filteredOutDoneTasks = lodash.filter(data, (task) => task.column_id !== COLUMNS.DONE);
+        const sortedData = lodash.sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });
       })
-      .catch(() => toast.error("Could not get the tasks"));
+      .catch(() => toast.error("Could not get the tasks. Try again later."));
   }, [user]);
 
   return (
