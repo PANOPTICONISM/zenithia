@@ -9,7 +9,7 @@ import LineChart from "components/Charts/LineChart";
 import { DateAndLevel } from "components/common/DateAndLevel";
 import { useUserData } from "contexts/UserProvider";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { valueFormatter } from "lib/currency";
+import { currencyToLocale } from "lib/currency";
 import lodash from "lodash";
 import { DateTime } from "luxon";
 import React from "react";
@@ -93,12 +93,12 @@ const Dashboard = () => {
           <Stack spacing={2}>
             <EarningsTimeline
               text="Earnings this year"
-              total={valueFormatter.format(Number(totalYearlySum))}
+              total={currencyToLocale(totalYearlySum)}
               icon={<PublicIcon sx={{ height: "100%", width: "70px" }} />}
             />
             <EarningsTimeline
               text="Earnings this month"
-              total={valueFormatter.format(Number(totalMonthlySum))}
+              total={currencyToLocale(totalMonthlySum)}
               icon={<TodayIcon sx={{ height: "100%", width: "70px" }} />}
             />
           </Stack>
