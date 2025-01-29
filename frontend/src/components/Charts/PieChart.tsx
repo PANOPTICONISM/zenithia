@@ -16,7 +16,7 @@ const PieChart = ({ logs }: { logs: PieChartProps }) => {
         from: "color",
         modifiers: [["darker", 0.2]],
       }}
-      arcLabel={(e) => "" + e.value + currency()}
+      arcLabel={(e) => e.value + " " + currency()}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor="#333333"
       arcLinkLabelsThickness={2}
