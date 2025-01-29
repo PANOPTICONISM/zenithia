@@ -25,6 +25,11 @@ export const valueFormatter = Intl.NumberFormat(navigator.language, {
   maximumFractionDigits: 2,
 });
 
+export const valueFormatterNoCurrency = Intl.NumberFormat(navigator.language, {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export const currencyToCents = (
   amount: number | null,
   currencyCode: string
