@@ -34,7 +34,7 @@ export const currencyToCents = (
   amount: number | null,
   currencyCode: string
 ) => {
-  if (!amount) {
+  if (amount === null || amount === undefined) {
     return null;
   }
 
@@ -45,12 +45,12 @@ export const currencyToCents = (
       decimalPlaces[code as keyof typeof decimalPlaces]
     );
 
-    const cents = Math.round(amount * multiplier);
+    const cents = amount * multiplier;
     return cents;
   } else {
     const multiplier = Math.pow(10, decimalPlaces.EUR);
 
-    const cents = Math.round(amount * multiplier);
+    const cents = amount * multiplier;
     return cents;
   }
 };

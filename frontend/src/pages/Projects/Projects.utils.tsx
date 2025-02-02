@@ -127,7 +127,7 @@ export const useColumnsAndRows = () => {
       minWidth: 80,
       type: "number",
       editable: true,
-      renderCell: ({ value }) => currencyToLocale(value),
+      valueFormatter: ({ value }) => currencyToLocale(value),
       renderEditCell: (params) => {
         const value = currencyFromCents(params.value);
         return <GridEditInputCell {...params} value={value} />;
