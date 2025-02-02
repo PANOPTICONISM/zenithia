@@ -1,7 +1,7 @@
 meta {
-  name: calendar
+  name: all events
   type: http
-  seq: 2
+  seq: 1
 }
 
 get {
@@ -14,6 +14,10 @@ params:query {
   user_id: c67ce95a-5259-4c84-82c7-0717a30a884b
 }
 
+headers {
+  : 
+}
+
 auth:bearer {
-  token: {{JWT_TOKEN_KEY}}
+  token: {{BEARER_TOKEN}}
 }
