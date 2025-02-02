@@ -1,10 +1,10 @@
 ## Guidelines
+
 1. `npm i`
 
 2. Create a file in the root folder titled `.env`
 
 ```
-REACT_APP_FRONTEND_URL=http://localhost:3000
 REACT_APP_API_URL=http://localhost:4000
 ```
 
