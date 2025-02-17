@@ -45,7 +45,6 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   }, [user]);
 
   const handleDateClick = React.useCallback((selected: DateSelectArg) => {
-    console.log(selected);
     return queueDialog({
       data: (close) => ({
         title: "Add event",
