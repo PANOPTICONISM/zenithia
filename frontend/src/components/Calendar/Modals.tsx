@@ -1,14 +1,15 @@
-import { EventClickArg, DateSelectArg } from "@fullcalendar/core";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import {
-  TextField,
-  Stack,
   Button,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  Stack,
+  TextField,
 } from "@mui/material";
+import { deleteCalendar, postCalendar, updateCalendar } from "api/calendar";
 import { darkBlue } from "App";
 import { useUserData } from "contexts/UserProvider";
-import { updateCalendar, deleteCalendar, postCalendar } from "api/calendar";
+import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
 
@@ -27,25 +28,25 @@ export const EventAddModal = ({
       const calendarApi = selected.view.calendar;
       calendarApi.unselect();
 
-      if (!user) {
+      const startDate = DateTime.fromJSDate(selected.start).toISO();
+      const endDate = DateTime.fromJSDate(selected.end).minus({ milliseconds: 1 }).toISO();
+      if (!user || !title || !startDate || !endDate) {
         return;
       }
-      if (title) {
-        const eventCalendar = {
-          title,
-          start: selected.startStr,
-          end: selected.endStr,
-        };
+      const eventCalendar = {
+        title,
+        start: startDate,
+        end: endDate,
+      };
 
-        calendarApi.addEvent(eventCalendar);
+      calendarApi.addEvent(eventCalendar);
 
-        postCalendar(user.token, eventCalendar)
-          .then(() => {
-            close();
-            toast.success("Event added");
-          })
-          .catch(() => toast.error("Could not add the event"));
-      }
+      postCalendar(user.token, eventCalendar)
+        .then(() => {
+          close();
+          toast.success("Event added");
+        })
+        .catch(() => toast.error("Could not add the event"));
     },
     [title, user],
   );

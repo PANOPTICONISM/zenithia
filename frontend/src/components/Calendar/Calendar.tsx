@@ -16,7 +16,6 @@ import { useUserData } from "contexts/UserProvider";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
-import { EventItem } from "./EventItem";
 import { EventAddModal, EventUpdateModal } from "./Modals";
 
 const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
@@ -46,6 +45,7 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   }, [user]);
 
   const handleDateClick = React.useCallback((selected: DateSelectArg) => {
+    console.log(selected);
     return queueDialog({
       data: (close) => ({
         title: "Add event",
@@ -97,7 +97,6 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
           dayMaxEvents
           select={handleDateClick}
           eventClick={handleEventClick}
-          eventContent={(info) => <EventItem info={info} />}
           events={currentEvents as EventSourceInput}
         />
       </Box>
