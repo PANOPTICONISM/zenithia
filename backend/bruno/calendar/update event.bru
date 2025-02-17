@@ -1,0 +1,29 @@
+meta {
+  name: update event
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{API_URL}}/api/calendar/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 684de4c3-9e78-4cfb-88a1-c10e504a97b6
+}
+
+headers {
+  : 
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}
+
+body:json {
+  {
+    "title": "Congrats on being born"
+  }
+}

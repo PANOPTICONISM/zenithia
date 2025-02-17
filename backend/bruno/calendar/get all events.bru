@@ -1,0 +1,23 @@
+meta {
+  name: get all events
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_URL}}/api/calendar?user_id=c67ce95a-5259-4c84-82c7-0717a30a884b
+  body: none
+  auth: bearer
+}
+
+params:query {
+  user_id: c67ce95a-5259-4c84-82c7-0717a30a884b
+}
+
+headers {
+  : 
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}

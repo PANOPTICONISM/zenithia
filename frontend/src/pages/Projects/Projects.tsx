@@ -1,16 +1,16 @@
-import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-import { useColumnsAndRows } from "./Projects.utils";
-import { ProjectProps } from "./Projects.types";
+import { DataGrid } from "@mui/x-data-grid";
+import { useUserData } from "contexts/UserProvider";
+import { currencyToCents } from "lib/currency";
+import { currentDate, dateFromJSDateToISOForApi } from "lib/dates";
+import React from "react";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import { postProject, updateProject } from "../../api/projects";
 import Main from "../../components/Main/Main";
 import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
-import { postProject, updateProject } from "../../api/projects";
-import { toast } from "react-toastify";
-import { useUserData } from "contexts/UserProvider";
-import { v4 as uuidv4 } from "uuid";
-import { currentDate, dateFromJSDateToISOForApi } from "lib/dates";
-import { currencyToCents } from "lib/currency";
+import { ProjectProps } from "./Projects.types";
+import { useColumnsAndRows } from "./Projects.utils";
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -26,16 +26,16 @@ const Projects = () => {
         return oldRow;
       }
 
+      const isBasePriceChanged = oldRow.base_price !== newRow.base_price;
+      const basePrice = isBasePriceChanged ? currencyToCents(newRow.base_price, newRow.currency || navigator.language) : newRow.base_price;
+
       const row = {
         title: newRow.title,
         start_date: dateFromJSDateToISOForApi(newRow.start_date),
         finish_date: dateFromJSDateToISOForApi(newRow.finish_date),
         status: newRow.status,
         revenue: newRow.revenue,
-        base_price: currencyToCents(
-          newRow.base_price,
-          newRow.currency || navigator.language,
-        ),
+        base_price: basePrice,
         currency: newRow.currency || navigator.language,
         client_id: newRow.client_id === "" ? null : newRow.client_id,
       };
@@ -44,10 +44,7 @@ const Projects = () => {
       );
       return {
         ...newRow,
-        base_price: currencyToCents(
-          newRow.base_price,
-          newRow.currency || navigator.language,
-        ),
+        base_price: basePrice,
       };
     },
     [user],

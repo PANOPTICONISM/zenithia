@@ -1,0 +1,23 @@
+meta {
+  name: delete event
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{API_URL}}/api/calendar/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 634c0fb6-ae7d-4fcc-b6a1-545cc895ec77
+}
+
+headers {
+  : 
+}
+
+auth:bearer {
+  token: {{BEARER_TOKEN}}
+}
