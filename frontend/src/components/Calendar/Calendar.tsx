@@ -1,4 +1,5 @@
 import {
+  CalendarApi,
   DateSelectArg,
   EventApi,
   EventClickArg,
@@ -13,6 +14,7 @@ import { Box, Stack, useMediaQuery } from "@mui/material";
 import { CalendarProps, getCalendar } from "api/calendar";
 import { useDialogEnqueue } from "contexts/DialogProvider";
 import { useUserData } from "contexts/UserProvider";
+import { debounce } from "lodash";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
@@ -66,10 +68,33 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
     });
   }, []);
 
+  const calendarRef = React.useRef<FullCalendar>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleResize = debounce(() => {
+      if (calendarRef.current) {
+        const calendarApi: CalendarApi = calendarRef.current.getApi();
+        calendarApi.updateSize();
+      }
+    }, 500);
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      handleResize.cancel();
+    };
+  }, []);
+
   return (
-    <Stack>
+    <Stack ref={containerRef}>
       <Box flex="1 1 100%">
         <FullCalendar
+          ref={calendarRef}
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
