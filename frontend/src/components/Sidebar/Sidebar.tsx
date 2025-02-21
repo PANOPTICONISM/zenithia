@@ -1,12 +1,3 @@
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import MenuIcon from "@mui/icons-material/Menu";
-import DonutLargeIcon from "@mui/icons-material/DonutLarge";
-import ContactsIcon from "@mui/icons-material/Contacts";
-import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
 import {
   AccountTreeOutlined,
   ArrowForwardIos,
@@ -16,15 +7,12 @@ import {
   InsightsOutlined,
   TrackChangesOutlined,
 } from "@mui/icons-material";
-import {
-  Drawer,
-  DrawerHeader,
-  ListLink,
-  Subtitle,
-  drawerWidth,
-  drawerWidthMobile,
-} from "./Sidebar.utils";
-import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
+import DonutLargeIcon from "@mui/icons-material/DonutLarge";
+import LoginIcon from "@mui/icons-material/Login";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Avatar,
@@ -35,12 +23,24 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { black, darkBlue, highlight, white, yellow } from "../../App";
-import { Logo } from "../../icons/logo";
-import LoginIcon from "@mui/icons-material/Login";
-import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import { useUserData } from "contexts/UserProvider";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { black, darkBlue, highlight, white, yellow } from "../../App";
+import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import { Logo } from "../../icons/logo";
+import {
+  Drawer,
+  DrawerHeader,
+  ListLink,
+  Subtitle,
+  drawerWidth,
+  drawerWidthMobile,
+} from "./Sidebar.utils";
 
 const BurgerMenu = ({
   icon,
@@ -218,9 +218,8 @@ export default function Sidebar() {
           <AppBar
             position="fixed"
             sx={{
-              width: `calc(100% - (${
-                open ? drawerWidth : drawerWidthMobile
-              }px))`,
+              width: `calc(100% - (${open ? drawerWidth : drawerWidthMobile
+                }px))`,
               background: "transparent",
               boxShadow: "none",
             }}
@@ -228,10 +227,12 @@ export default function Sidebar() {
             <Toolbar>
               <BurgerMenu
                 sx={{
+                  "&:hover": { background: "blue" },
                   position: "absolute",
                   left: "-16px",
                   zIndex: "101",
                   background: white,
+
                 }}
                 icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />}
               />
