@@ -59,7 +59,8 @@ const BurgerMenu = ({
       aria-label="open drawer"
       color={color}
       onClick={() => setOpen(!open)}
-      sx={sx}
+      sx={{ borderRadius: 0, ...sx }}
+      disableRipple
     >
       {icon}
     </IconButton>
@@ -218,8 +219,9 @@ export default function Sidebar() {
           <AppBar
             position="fixed"
             sx={{
-              width: `calc(100% - (${open ? drawerWidth : drawerWidthMobile
-                }px))`,
+              width: `calc(100% - (${
+                open ? drawerWidth : drawerWidthMobile
+              }px))`,
               background: "transparent",
               boxShadow: "none",
             }}
@@ -227,12 +229,12 @@ export default function Sidebar() {
             <Toolbar>
               <BurgerMenu
                 sx={{
-                  "&:hover": { background: "blue" },
+                  "&:hover": { background: darkBlue, color: white },
                   position: "absolute",
                   left: "-16px",
                   zIndex: "101",
                   background: white,
-
+                  color: black,
                 }}
                 icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />}
               />
