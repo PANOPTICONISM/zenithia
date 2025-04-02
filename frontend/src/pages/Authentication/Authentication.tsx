@@ -1,6 +1,8 @@
+import LoginIcon from "@mui/icons-material/Login";
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   Link,
   Stack,
@@ -8,16 +10,17 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React from "react";
-import LoginIcon from "@mui/icons-material/Login";
 import { darkBlue, grey, highlight, white } from "App";
 import { postLoginUser, signupUser } from "api/authentication";
-import { toast } from "react-toastify";
-import { Logo } from "icons/logo";
 import { useUserData } from "contexts/UserProvider";
+import { Logo } from "icons/logo";
+import React from "react";
+import { toast } from "react-toastify";
 
 const Authentication = () => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
@@ -27,32 +30,47 @@ const Authentication = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!username || !password) {
       return;
     }
 
-    if (!isSignup) {
-      return postLoginUser({
+    const loginUser = async () => {
+      await postLoginUser({
         username,
         password,
       })
-        .then((data) =>
+        .then((data) => {
           setUser({
             id: data.id,
-            username: data?.email?.split("@")[0] || "",
+            username: data.email.split("@")[0],
             token: data.token,
-          }),
-        )
-        .catch((error) => toast.error("" + error));
+          });
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          toast.error(String(error));
+          setIsLoading(false);
+        });
+    };
+
+    if (!isSignup) {
+      return loginUser();
     }
 
     return signupUser({
       username,
       password,
     })
-      .then(() => toast.success("Your account has been created."))
-      .catch((error) => toast.error("" + error));
+      .then(() => {
+        toast.success("Your account has been created.");
+        loginUser();
+      })
+      .catch((error) => {
+        toast.error(String(error));
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -169,7 +187,13 @@ const Authentication = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                startIcon={<LoginIcon />}
+                startIcon={
+                  isLoading ? (
+                    <CircularProgress color="info" size={20} />
+                  ) : (
+                    <LoginIcon />
+                  )
+                }
                 sx={{ background: darkBlue }}
               >
                 {isSignup ? "Create account" : "Login"}
