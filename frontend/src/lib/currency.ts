@@ -11,16 +11,46 @@ export const currency = () => {
   }
 };
 
+export const getCurrencyFromRegion = () => {
+  try {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    if (timeZone.startsWith("America/")) {
+      const americasCurrencies: Record<string, string> = {
+        "America/Toronto": "CAD",
+        "America/Vancouver": "CAD",
+        "America/Mexico_City": "MXN",
+        "America/Sao_Paulo": "BRL",
+        "America/New_York": "USD",
+      };
+
+      return americasCurrencies[timeZone] || currency();
+    }
+
+    const timeZoneToCurrency: Record<string, string> = {
+      "America/New_York": "USD",
+      "Europe/London": "GBP",
+      "Europe/Copenhagen": "DKK",
+      "Europe/Berlin": "EUR",
+      "Europe/Paris": "EUR",
+    };
+
+    return timeZoneToCurrency[timeZone] || currency();
+  } catch {
+    return currency();
+  }
+};
+
 const decimalPlaces = {
   USD: 2,
   EUR: 2,
   GBP: 2,
-  DA: 2,
+  DKK: 2,
 };
 
 export const valueFormatter = Intl.NumberFormat(navigator.language, {
   style: "currency",
-  currency: currency(),
+  currency: getCurrencyFromRegion(),
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
