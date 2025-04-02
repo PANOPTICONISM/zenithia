@@ -17,10 +17,17 @@ import { Logo } from "icons/logo";
 import React from "react";
 import { toast } from "react-toastify";
 
+const emailRegExp = new RegExp(
+  `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$`
+);
+
 const Authentication = () => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isEmailError, setIsEmailError] = React.useState<string | undefined>(
+    undefined
+  );
 
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
@@ -31,6 +38,12 @@ const Authentication = () => {
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!emailRegExp.test(username || "")) {
+      setIsEmailError("Your email is not valid.");
+      setIsLoading(false);
+      return;
+    }
 
     if (!username || !password) {
       return;
@@ -159,6 +172,9 @@ const Authentication = () => {
                 id="email"
                 label="Email"
                 name="email"
+                type="email"
+                error={isEmailError !== undefined}
+                helperText={isEmailError}
                 autoComplete="email"
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{ input: { color: white } }}
@@ -184,6 +200,7 @@ const Authentication = () => {
                 }}
               />
               <Button
+                disabled={isLoading || !username || !password}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -194,7 +211,12 @@ const Authentication = () => {
                     <LoginIcon />
                   )
                 }
-                sx={{ background: darkBlue }}
+                sx={{
+                  background: darkBlue,
+                  "&.Mui-disabled": {
+                    background: "#474747",
+                  },
+                }}
               >
                 {isSignup ? "Create account" : "Login"}
               </Button>
