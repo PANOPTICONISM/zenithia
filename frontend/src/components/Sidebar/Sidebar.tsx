@@ -7,7 +7,7 @@ import {
   InsightsOutlined,
   TrackChangesOutlined,
 } from "@mui/icons-material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import DomainVerificationIcon from "@mui/icons-material/DomainVerification";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
@@ -197,7 +197,7 @@ export default function Sidebar() {
             <Logo color={black} background={white} />
             <BurgerMenu
               color="inherit"
-              icon={open ? <ArrowBackIosIcon /> : <MenuIcon />}
+              icon={open ? <ArrowBackIosNewIcon /> : <MenuIcon />}
             />
           </Stack>
           <SwipeableDrawer
@@ -231,12 +231,13 @@ export default function Sidebar() {
                 sx={{
                   "&:hover": { background: darkBlue, color: white },
                   position: "absolute",
-                  left: "-16px",
+                  left: open ? "-20px" : "-16px",
+                  top: "18px",
                   zIndex: "101",
                   background: white,
                   color: black,
                 }}
-                icon={open ? <ArrowBackIosIcon /> : <ArrowForwardIos />}
+                icon={open ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}
               />
             </Toolbar>
           </AppBar>
