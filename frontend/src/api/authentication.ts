@@ -15,7 +15,7 @@ type UserResponse = {
 };
 
 export const postLoginUser = async (
-  credentials: User
+  credentials: User & { isAllowedToLogIn: boolean }
 ): Promise<UserResponse> => {
   const path = "/api/login";
 
