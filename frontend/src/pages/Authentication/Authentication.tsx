@@ -10,8 +10,8 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { darkBlue, grey, highlight, white } from "App";
 import { postLoginUser, signupUser } from "api/authentication";
+import { darkBlue, grey, highlight, white } from "App";
 import { useUserData } from "contexts/UserProvider";
 import { Logo } from "icons/logo";
 import React from "react";
@@ -29,7 +29,6 @@ const Authentication = () => {
   const [isEmailError, setIsEmailError] = React.useState<string | undefined>(
     undefined
   );
-  const [isCaptchaCorrect, setIsCaptchaCorrect] = React.useState(false);
 
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
@@ -37,10 +36,14 @@ const Authentication = () => {
 
   const [, setUser] = useUserData();
 
+  const recaptchaRef = React.useRef<ReCAPTCHA>(null);
   const handleSubmit = React.useCallback(
-    (e: { preventDefault: () => void }) => {
+    async (e: { preventDefault: () => void }) => {
       e.preventDefault();
       setIsLoading(true);
+
+      const recaptchaToken = await recaptchaRef.current?.executeAsync();
+      recaptchaRef.current?.reset();
 
       if (!emailRegExp.test(username || "")) {
         setIsEmailError("Your email is not valid.");
@@ -48,7 +51,8 @@ const Authentication = () => {
         return;
       }
 
-      if (!username || !password) {
+      if (!username || !password || !recaptchaToken) {
+        setIsLoading(false);
         return;
       }
 
@@ -56,6 +60,7 @@ const Authentication = () => {
         await postLoginUser({
           username,
           password,
+          recaptchaToken,
         })
           .then((data) => {
             setUser({
@@ -78,6 +83,7 @@ const Authentication = () => {
       return signupUser({
         username,
         password,
+        recaptchaToken,
       })
         .then(() => {
           toast.success("Your account has been created.");
@@ -204,16 +210,13 @@ const Authentication = () => {
                 }}
               />
               <ReCAPTCHA
+                ref={recaptchaRef}
                 sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
-                onChange={(value) =>
-                  setIsCaptchaCorrect(typeof value === "string")
-                }
+                size="invisible"
                 style={{ margin: "10px 0" }}
               />
               <Button
-                disabled={
-                  isLoading || !username || !password || !isCaptchaCorrect
-                }
+                disabled={isLoading || !username || !password}
                 type="submit"
                 fullWidth
                 variant="contained"
