@@ -56,10 +56,15 @@ const Authentication = () => {
         return;
       }
 
-      const loginUser = async () => {
+      const loginUser = async ({
+        isAllowedToLogIn,
+      }: {
+        isAllowedToLogIn: boolean;
+      }) => {
         await postLoginUser({
           username,
           password,
+          isAllowedToLogIn,
           recaptchaToken,
         })
           .then((data) => {
@@ -77,7 +82,7 @@ const Authentication = () => {
       };
 
       if (!isSignup) {
-        return loginUser();
+        return loginUser({ isAllowedToLogIn: false });
       }
 
       return signupUser({
@@ -87,7 +92,7 @@ const Authentication = () => {
       })
         .then(() => {
           toast.success("Your account has been created.");
-          loginUser();
+          loginUser({ isAllowedToLogIn: true });
         })
         .catch((error) => {
           toast.error(String(error));

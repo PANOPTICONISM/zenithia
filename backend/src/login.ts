@@ -6,9 +6,10 @@ import { validateRecaptcha } from "./recaptcha";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const recaptchaToken: string = req.body.recaptchaToken;
+  const isAllowedToLogIn: boolean = req.body.isAllowedToLogIn;
   const isHuman = await validateRecaptcha(recaptchaToken);
 
-  if (!isHuman) {
+  if (!isHuman && !isAllowedToLogIn) {
     res.status(400).json({ message: "Validation failed." });
     return;
   }
