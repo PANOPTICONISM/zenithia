@@ -92,7 +92,7 @@ const Username = ({ open }: { open: boolean }) => {
       </Avatar>
       {open && (
         <>
-          <Typography sx={{ color: white }} noWrap>
+          <Typography sx={{ color: white, width: "100%" }} noWrap>
             {user?.username}
           </Typography>
           <IconButton sx={{ padding: 0 }} onClick={() => logout()}>

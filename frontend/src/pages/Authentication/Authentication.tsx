@@ -1,6 +1,8 @@
+import LoginIcon from "@mui/icons-material/Login";
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   Link,
   Stack,
@@ -8,16 +10,26 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React from "react";
-import LoginIcon from "@mui/icons-material/Login";
 import { darkBlue, grey, highlight, white } from "App";
 import { postLoginUser, signupUser } from "api/authentication";
-import { toast } from "react-toastify";
-import { Logo } from "icons/logo";
 import { useUserData } from "contexts/UserProvider";
+import { Logo } from "icons/logo";
+import React from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { toast } from "react-toastify";
+
+const emailRegExp = new RegExp(
+  `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$`
+);
 
 const Authentication = () => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isEmailError, setIsEmailError] = React.useState<string | undefined>(
+    undefined
+  );
+  const [isCaptchaCorrect, setIsCaptchaCorrect] = React.useState(false);
 
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
@@ -25,35 +37,59 @@ const Authentication = () => {
 
   const [, setUser] = useUserData();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const handleSubmit = React.useCallback(
+    (e: { preventDefault: () => void }) => {
+      e.preventDefault();
+      setIsLoading(true);
 
-    if (!username || !password) {
-      return;
-    }
+      if (!emailRegExp.test(username || "")) {
+        setIsEmailError("Your email is not valid.");
+        setIsLoading(false);
+        return;
+      }
 
-    if (!isSignup) {
-      return postLoginUser({
+      if (!username || !password) {
+        return;
+      }
+
+      const loginUser = async () => {
+        await postLoginUser({
+          username,
+          password,
+        })
+          .then((data) => {
+            setUser({
+              id: data.id,
+              username: data.email.split("@")[0],
+              token: data.token,
+            });
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            toast.error(String(error));
+            setIsLoading(false);
+          });
+      };
+
+      if (!isSignup) {
+        return loginUser();
+      }
+
+      return signupUser({
         username,
         password,
       })
-        .then((data) =>
-          setUser({
-            id: data.id,
-            username: data?.email?.split("@")[0] || "",
-            token: data.token,
-          }),
-        )
-        .catch((error) => toast.error("" + error));
-    }
-
-    return signupUser({
-      username,
-      password,
-    })
-      .then(() => toast.success("Your account has been created."))
-      .catch((error) => toast.error("" + error));
-  };
+        .then(() => {
+          toast.success("Your account has been created.");
+          loginUser();
+        })
+        .catch((error) => {
+          toast.error(String(error));
+          setIsLoading(false);
+        });
+    },
+    [username, password, isSignup, setUser]
+  );
 
   return (
     <Stack
@@ -141,13 +177,15 @@ const Authentication = () => {
                 id="email"
                 label="Email"
                 name="email"
+                type="email"
+                error={isEmailError !== undefined}
+                helperText={isEmailError}
                 autoComplete="email"
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{ input: { color: white } }}
                 InputLabelProps={{
                   style: { color: white },
                 }}
-                InputProps={{ autoFocus: true }}
               />
               <TextField
                 margin="normal"
@@ -160,17 +198,38 @@ const Authentication = () => {
                 id="password"
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
-                sx={{ input: { color: white } }}
+                sx={{ input: { color: white }, margin: "8px 0" }}
                 InputLabelProps={{
                   style: { color: white },
                 }}
               />
+              <ReCAPTCHA
+                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
+                onChange={(value) =>
+                  setIsCaptchaCorrect(typeof value === "string")
+                }
+                style={{ margin: "10px 0" }}
+              />
               <Button
+                disabled={
+                  isLoading || !username || !password || !isCaptchaCorrect
+                }
                 type="submit"
                 fullWidth
                 variant="contained"
-                startIcon={<LoginIcon />}
-                sx={{ background: darkBlue }}
+                startIcon={
+                  isLoading ? (
+                    <CircularProgress color="info" size={20} />
+                  ) : (
+                    <LoginIcon />
+                  )
+                }
+                sx={{
+                  background: darkBlue,
+                  "&.Mui-disabled": {
+                    background: "#474747",
+                  },
+                }}
               >
                 {isSignup ? "Create account" : "Login"}
               </Button>
