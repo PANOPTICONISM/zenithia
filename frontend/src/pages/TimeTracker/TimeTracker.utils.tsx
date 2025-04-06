@@ -1,22 +1,22 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import NotStartedIcon from "@mui/icons-material/NotStarted";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import { Box, IconButton } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
+import { useUserData } from "contexts/UserProvider";
+import { dateFromISOToLocaleString } from "lib/dates";
+import { DateTime, Duration } from "luxon";
 import React from "react";
+import { toast } from "react-toastify";
+import { getProjects } from "../../api/projects";
 import {
   TimeTrackerProps,
   deleteTimeTracker,
   getTimeTracker,
   updateTimeTracker,
 } from "../../api/timetracker";
-import { DateTime, Duration } from "luxon";
-import { Box, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { lightBlue } from "../../App";
-import NotStartedIcon from "@mui/icons-material/NotStarted";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { getProjects } from "../../api/projects";
 import { ProjectProps } from "../Projects/Projects.types";
-import { toast } from "react-toastify";
-import { useUserData } from "contexts/UserProvider";
-import { dateFromISOToLocaleString } from "lib/dates";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<TimeTrackerProps[]>([]);
@@ -32,13 +32,13 @@ export const useColumnsAndRows = () => {
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
 
-    getProjects(user.token)
+    getProjects<ProjectProps[]>(user.token)
       .then((res) => setProjects(res))
       .catch((error) => toast.error(error));
   }, [user]);
 
   const [selectedId, setSelectedId] = React.useState<string | undefined>(
-    undefined,
+    undefined
   );
   const [count, setCount] = React.useState(0);
   const [isRunning, setIsRunning] = React.useState(false);
@@ -103,11 +103,11 @@ export const useColumnsAndRows = () => {
       }
       deleteTimeTracker(user.token, id)
         .then(() =>
-          setRows((prevRows) => prevRows.filter((row) => row.id !== id)),
+          setRows((prevRows) => prevRows.filter((row) => row.id !== id))
         )
         .catch((error) => toast.error(error));
     },
-    [user],
+    [user]
   );
 
   const formatHours = (finish: string, start: string) => {
@@ -135,7 +135,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: (params) =>
         DateTime.fromISO(params.value).toLocaleString(
-          DateTime.TIME_WITH_SECONDS,
+          DateTime.TIME_WITH_SECONDS
         ),
     },
     {
@@ -145,7 +145,7 @@ export const useColumnsAndRows = () => {
       valueFormatter: (params) =>
         params.value
           ? DateTime.fromISO(params.value).toLocaleString(
-              DateTime.TIME_WITH_SECONDS,
+              DateTime.TIME_WITH_SECONDS
             )
           : "",
     },

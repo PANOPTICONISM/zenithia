@@ -27,9 +27,15 @@ const Projects = () => {
       }
 
       const isBasePriceChanged = oldRow.base_price !== newRow.base_price;
-      const basePrice = isBasePriceChanged ? currencyToCents(newRow.base_price, newRow.currency || navigator.language) : newRow.base_price;
+      const basePrice = isBasePriceChanged
+        ? currencyToCents(
+            newRow.base_price,
+            newRow.currency || navigator.language
+          )
+        : newRow.base_price;
 
       const row = {
+        id: oldRow.id,
         title: newRow.title,
         start_date: dateFromJSDateToISOForApi(newRow.start_date),
         finish_date: dateFromJSDateToISOForApi(newRow.finish_date),
@@ -40,14 +46,14 @@ const Projects = () => {
         client_id: newRow.client_id === "" ? null : newRow.client_id,
       };
       updateProject(user.token, oldRow.id, row).catch((error) =>
-        toast.error(error),
+        toast.error(error)
       );
       return {
         ...newRow,
         base_price: basePrice,
       };
     },
-    [user],
+    [user]
   );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {

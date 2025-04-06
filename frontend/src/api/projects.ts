@@ -5,10 +5,12 @@ import { ServerError } from "./api.types";
 import { requester } from "./axios";
 import { ProjectTaskProps } from "./tasks";
 
-export const getProjects = async (
+export const getProjects = async <
+  T extends ProjectProps[] | ProjectTaskProps[],
+>(
   token: string,
-  attributes: string[]
-): Promise<ProjectProps[] | ProjectTaskProps[]> => {
+  attributes?: string[]
+): Promise<T> => {
   const path = "/api/projects";
 
   try {

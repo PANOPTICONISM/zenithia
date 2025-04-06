@@ -1,6 +1,7 @@
 import { getProjects } from "api/projects";
 import { TimeTrackerProps } from "api/timetracker";
 import { useUserData } from "contexts/UserProvider";
+import { ProjectProps } from "pages/Projects/Projects.types";
 import { finalizeTotals } from "pages/Revenue/Revenue.utils";
 import React from "react";
 import { toast } from "react-toastify";
@@ -28,7 +29,7 @@ export const useGetProjectsFormatted = () => {
       if (!user) {
         return;
       }
-      getProjects(user.token, "*").then((allProjects) => {
+      getProjects<ProjectProps[]>(user.token).then((allProjects) => {
         const result = allProjects.map((project) => {
           const obj = {
             id: project.id,
