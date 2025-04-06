@@ -16,7 +16,7 @@ export type ProjectTaskProps = Pick<ProjectProps, "id" | "title">;
 
 export type TaskProps = TaskBaseProps & {
   id: string;
-  projects?: ProjectTaskProps | null;
+  project?: ProjectTaskProps | null;
 };
 
 export const getTasks = async (token: string): Promise<TaskProps[]> => {

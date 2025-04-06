@@ -36,7 +36,7 @@ type EditableTask = {
   project_id: string | null;
   column_id: ColumnType;
   deadline: string | null;
-  projects?: ProjectTaskProps | null;
+  project?: ProjectTaskProps | null;
 };
 
 const Task = ({
@@ -89,6 +89,11 @@ const Task = ({
       column_id: editableTask.column_id,
       project_id: editableTask.project_id,
     };
+
+    const visibleTask = {
+      ...updatedTask,
+      project: editableTask.project,
+    };
     updateTask(user.token, editableTask.id, updatedTask)
       .then(() => {
         setIsEdit(false);
@@ -98,7 +103,7 @@ const Task = ({
           newColumns.set(
             task.column_id,
             updatedColumn.map((item) =>
-              item.id === task.id ? { ...item, ...updatedTask } : item
+              item.id === task.id ? { ...item, ...visibleTask } : item
             )
           );
           return newColumns;
@@ -183,21 +188,21 @@ const Task = ({
                   </Select>
                 </FormControl>
                 <Autocomplete
-                  value={editableTask?.projects}
+                  value={editableTask?.project}
                   disablePortal
-                  id="combo-box"
-                  options={projects.map((project) => ({
-                    id: project.id,
-                    title: project.title,
-                  }))}
+                  id="projects-box"
+                  options={projects}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
                   getOptionLabel={(option) => option.title || ""}
                   renderInput={(params) => (
-                    <TextField {...params} label="Project" />
+                    <TextField {...params} label="Project's title" />
                   )}
                   onChange={(event, newValue) =>
                     setEditableTask((current) => ({
                       ...current,
-                      projects: newValue,
+                      project: newValue,
                       project_id: newValue?.id || null,
                     }))
                   }
@@ -238,7 +243,7 @@ const Task = ({
                   fontSize="14px"
                   sx={{ marginLeft: "auto" }}
                 >
-                  {task?.projects?.title}
+                  {task?.project?.title}
                 </Typography>
               </Stack>
             </>
