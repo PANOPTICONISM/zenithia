@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
+import { ProjectProps } from "pages/Projects/Projects.types";
 import { ColumnType } from "pages/Tasks/Tasks";
-import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
 import { requester } from "./axios";
 
@@ -12,9 +12,11 @@ export type TaskBaseProps = {
   deadline: string;
 };
 
+export type ProjectTaskProps = Pick<ProjectProps, "id" | "title">;
+
 export type TaskProps = TaskBaseProps & {
   id: string;
-  projects?: ProjectProps | null;
+  projects?: ProjectTaskProps | null;
 };
 
 export const getTasks = async (token: string): Promise<TaskProps[]> => {
@@ -36,7 +38,7 @@ export const getTasks = async (token: string): Promise<TaskProps[]> => {
 
 export const postTask = async (
   token: string,
-  body: TaskProps,
+  body: TaskProps
 ): Promise<string> => {
   const path = "/api/tasks/all";
 
@@ -57,7 +59,7 @@ export const postTask = async (
 export const updateTask = async (
   token: string,
   id: string,
-  body: TaskBaseProps | { column_id: ColumnType },
+  body: TaskBaseProps | { column_id: ColumnType }
 ): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
 
@@ -77,7 +79,7 @@ export const updateTask = async (
 
 export const deleteTask = async (
   token: string,
-  id: string,
+  id: string
 ): Promise<string> => {
   const path = `/api/tasks/all/${id}`;
 

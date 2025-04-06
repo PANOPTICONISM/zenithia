@@ -1,20 +1,15 @@
 import { Droppable } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import {
-  IconButton,
-  Stack,
-  Typography
-} from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import { useUserData } from "contexts/UserProvider";
 import { currentDate } from "lib/dates";
 import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { postTask, TaskProps } from "../../api/tasks";
+import { postTask, ProjectTaskProps, TaskProps } from "../../api/tasks";
 import { grey } from "../../App";
-import { ProjectProps } from "../../pages/Projects/Projects.types";
 import Task from "./components/Task";
 
 const KanbanColumn = ({
@@ -25,8 +20,10 @@ const KanbanColumn = ({
 }: {
   columnName: ColumnType;
   entries: TaskProps[];
-  setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
-  projects: ProjectProps[];
+  setColumns: React.Dispatch<
+    React.SetStateAction<Map<ColumnType, TaskProps[]>>
+  >;
+  projects: ProjectTaskProps[];
 }) => {
   const [user] = useUserData();
 
