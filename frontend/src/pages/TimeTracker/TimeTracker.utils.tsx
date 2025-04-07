@@ -192,7 +192,10 @@ export const useColumnsAndRows = () => {
                 ? stopWatch(row.start_time, row.id)
                 : startWatch(row.start_time, row.id)
             }
-            disabled={row.finish_time !== null && selectedId !== row.id}
+            disabled={
+              (row.finish_time !== null && selectedId !== row.id) ||
+              (isRunning && row.id !== selectedId)
+            }
           >
             {isRunning && row.id === selectedId ? (
               <StopCircleIcon />
