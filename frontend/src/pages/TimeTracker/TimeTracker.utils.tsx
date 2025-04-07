@@ -5,7 +5,7 @@ import { Box, IconButton } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { useUserData } from "contexts/UserProvider";
 import { dateFromISOToLocaleString } from "lib/dates";
-import { DateTime, Duration } from "luxon";
+import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
 import { getProjects } from "../../api/projects";
@@ -51,46 +51,42 @@ export const useColumnsAndRows = () => {
       setRows((currentRows) => {
         return currentRows.map((entry) => {
           if (entry.id === selectedId) {
-            const datestamp = DateTime.fromISO(entry.date).toISODate();
-            const finishTime =
-              datestamp + "T" + Duration.fromMillis(count).toISOTime();
+            const startTime = DateTime.fromISO(entry.start_time);
+            const finishTime = startTime
+              .plus({ milliseconds: count })
+              .toUTC()
+              .toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             return { ...entry, finish_time: finishTime };
           }
           return entry;
         });
       });
-      return () => {
-        clearInterval(interval);
-      };
+      return () => clearInterval(interval);
     }
   }, [isRunning, count]);
 
   const startWatch = (time: string, id: string) => {
-    const dateTime = DateTime.fromISO(time);
-    const startOfDay = dateTime.startOf("day");
-
-    const diff = dateTime.diff(startOfDay, "milliseconds");
-    setCount(diff.milliseconds);
+    setCount(0);
     setSelectedId(id);
-
     setIsRunning(true);
   };
 
-  const stopWatch = (time: string, id: string, date: string) => {
-    const datestamp = DateTime.fromISO(date).toISODate();
-    const finalTimestamp =
-      datestamp + "T" + Duration.fromMillis(count).toISOTime();
-    setSelectedId(undefined);
+  const stopWatch = (time: string, id: string) => {
+    const startTime = DateTime.fromISO(time);
+    const finalTime = startTime.plus({ milliseconds: count });
+    const finalTimestamp = finalTime
+      .toUTC()
+      .toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    const duration = DateTime.fromISO(finalTimestamp)
-      .diff(DateTime.fromISO(time), ["hours", "minutes", "seconds"])
-      .as("milliseconds");
+    setSelectedId(undefined);
+    setIsRunning(false);
+
     if (!user) {
       return;
     }
     updateTimeTracker(user.token, id, {
       finish_time: finalTimestamp,
-      total: duration,
+      total: count,
     }).catch((error) => toast.error(error));
 
     setIsRunning(false);
@@ -134,9 +130,9 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       flex: 1,
       valueFormatter: (params) =>
-        DateTime.fromISO(params.value).toLocaleString(
-          DateTime.TIME_WITH_SECONDS
-        ),
+        DateTime.fromISO(params.value)
+          .toLocal()
+          .toLocaleString(DateTime.TIME_WITH_SECONDS),
     },
     {
       field: "finish_time",
@@ -144,9 +140,9 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: (params) =>
         params.value
-          ? DateTime.fromISO(params.value).toLocaleString(
-              DateTime.TIME_WITH_SECONDS
-            )
+          ? DateTime.fromISO(params.value)
+              .toLocal()
+              .toLocaleString(DateTime.TIME_WITH_SECONDS)
           : "",
     },
     {
@@ -193,7 +189,7 @@ export const useColumnsAndRows = () => {
             color="success"
             onClick={() =>
               isRunning
-                ? stopWatch(row.start_time, row.id, row.date)
+                ? stopWatch(row.start_time, row.id)
                 : startWatch(row.start_time, row.id)
             }
             disabled={row.finish_time !== null && selectedId !== row.id}
