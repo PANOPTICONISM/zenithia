@@ -2,7 +2,7 @@ import { ClientProps } from "api/clients";
 import { TimeTrackerProps } from "api/timetracker";
 
 export type ProjectProps = {
-  id?: string;
+  id: string;
   title: string;
   start_date: string;
   finish_date: string;

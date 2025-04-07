@@ -23,12 +23,13 @@ export const useColumnsAndRows = () => {
       if (!user) {
         return;
       }
-      await Promise.all([getClients(user.token), getProjects(user.token)]).then(
-        ([clientsRes, projectsRes]) => {
-          setClients(clientsRes);
-          setRows(projectsRes);
-        },
-      );
+      await Promise.all([
+        getClients(user.token),
+        getProjects<ProjectProps[]>(user.token),
+      ]).then(([clientsRes, projectsRes]) => {
+        setClients(clientsRes);
+        setRows(projectsRes);
+      });
     };
     fetchAll().catch((error) => toast.error(error));
   }, [user]);
@@ -41,12 +42,12 @@ export const useColumnsAndRows = () => {
         }
         deleteProject(user.token, id)
           .then(() =>
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id)),
+            setRows((prevRows) => prevRows.filter((row) => row.id !== id))
           )
           .catch((error) => toast.error(error));
       });
     },
-    [user],
+    [user]
   );
 
   const columns: GridColDef[] = [
@@ -124,7 +125,7 @@ export const useColumnsAndRows = () => {
     {
       field: "base_price",
       headerName: "Base Price",
-      minWidth: 80,
+      minWidth: 120,
       type: "number",
       editable: true,
       valueFormatter: ({ value }) => currencyToLocale(value),

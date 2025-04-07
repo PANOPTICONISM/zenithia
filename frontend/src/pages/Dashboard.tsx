@@ -45,8 +45,8 @@ const Dashboard = () => {
   const desktopBreakpoint = useMediaQuery("(min-width:1200px)");
 
   const [tasks, setTasks] = React.useState<{
-    data: TaskProps[],
-    isLoading: boolean,
+    data: TaskProps[];
+    isLoading: boolean;
   }>({ data: exampleData, isLoading: true });
 
   const date = new Date();
@@ -66,7 +66,10 @@ const Dashboard = () => {
     }
     getTasks(user.token)
       .then((data) => {
-        const filteredOutDoneTasks = lodash.filter(data, (task) => task.column_id !== COLUMNS.DONE);
+        const filteredOutDoneTasks = lodash.filter(
+          data,
+          (task) => task.column_id !== COLUMNS.DONE
+        );
         const sortedData = lodash.sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });
       })
@@ -134,37 +137,39 @@ const Dashboard = () => {
               <Typography>Urgent</Typography>
             </Stack>
             <Stack padding="24px" spacing={2}>
-              {tasks.isLoading ? null : tasks.data.map((task) => (
-                <Stack
-                  key={task.id}
-                  sx={{ background: lightBlue, padding: "24px" }}
-                >
-                  <Typography fontWeight={700} fontSize="16px">
-                    {task.title}
-                  </Typography>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    paddingTop="16px"
-                    flexWrap="wrap"
-                  >
-                    <DateAndLevel
-                      deadline={DateTime.fromISO(
-                        task.deadline,
-                      ).toFormat("MMM, dd").toLocaleString()}
-                      level={task.importance}
-                    />
-                    <Typography
-                      fontWeight={100}
-                      fontSize="14px"
-                      sx={{ marginLeft: "auto" }}
+              {tasks.isLoading
+                ? null
+                : tasks.data.map((task) => (
+                    <Stack
+                      key={task.id}
+                      sx={{ background: lightBlue, padding: "24px" }}
                     >
-                      {task.projects?.title}
-                    </Typography>
-                  </Stack>
-                </Stack>
-              ))}
+                      <Typography fontWeight={700} fontSize="16px">
+                        {task.title}
+                      </Typography>
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        paddingTop="16px"
+                        flexWrap="wrap"
+                      >
+                        <DateAndLevel
+                          deadline={DateTime.fromISO(task.deadline)
+                            .toFormat("MMM, dd")
+                            .toLocaleString()}
+                          level={task.importance}
+                        />
+                        <Typography
+                          fontWeight={100}
+                          fontSize="14px"
+                          sx={{ marginLeft: "auto" }}
+                        >
+                          {task.project?.title}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  ))}
             </Stack>
           </Stack>
         </Box>

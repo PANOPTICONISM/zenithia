@@ -8,26 +8,29 @@ export const getProjects = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const attributes = req.query.attributes as string[];
   try {
     const projects = await Project.findAll({
       where: { user_id: userToken.id },
-      include: [
-        {
-          model: Client,
-          as: "client",
-          attributes: ["id", "name"],
-        },
-        {
-          model: TimeTracker,
-          as: "time_tracker",
-          attributes: ["id", "date", "total", "start_time", "finish_time"],
-        },
-      ],
+      include: !attributes
+        ? [
+            {
+              model: Client,
+              as: "client",
+              attributes: ["id", "name"],
+            },
+            {
+              model: TimeTracker,
+              as: "time_tracker",
+              attributes: ["id", "date", "total", "start_time", "finish_time"],
+            },
+          ]
+        : undefined,
+      attributes: attributes || undefined,
     });
 
     res.status(200).json(projects);
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ error: "An error occurred while retrieving your projects." });

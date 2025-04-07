@@ -1,10 +1,20 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 import { userToken } from "./middleware/auth";
-import Task from './models/Task';
+import Project from "./models/Project";
+import Task from "./models/Task";
 
 export const getTasks = async (req: Request, res: Response): Promise<void> => {
   try {
-    const tasks = await Task.findAll({ where: { user_id: userToken.id } });
+    const tasks = await Task.findAll({
+      where: { user_id: userToken.id },
+      include: [
+        {
+          model: Project,
+          as: "project",
+          attributes: ["id", "title"],
+        },
+      ],
+    });
     res.status(200).json(tasks);
   } catch (error) {
     res
@@ -20,11 +30,16 @@ export const postTask = async (req: Request, res: Response): Promise<void> => {
     await Task.create({ ...body, user_id: userToken.id });
     res.status(200).send(`Task added successfully.`);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while adding your task." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding your task." });
   }
 };
 
-export const updateTask = async (req: Request, res: Response): Promise<void> => {
+export const updateTask = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { body, params } = req;
 
   try {
@@ -37,7 +52,10 @@ export const updateTask = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const deleteTask = async (req: Request, res: Response): Promise<void> => {
+export const deleteTask = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { params } = req;
 
   try {

@@ -20,9 +20,13 @@ import { DateTime } from "luxon";
 import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
-import { deleteTask, TaskProps, updateTask } from "../../../api/tasks";
+import {
+  deleteTask,
+  ProjectTaskProps,
+  TaskProps,
+  updateTask,
+} from "../../../api/tasks";
 import { lightBlue } from "../../../App";
-import { ProjectProps } from "../../../pages/Projects/Projects.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
 type EditableTask = {
@@ -32,8 +36,8 @@ type EditableTask = {
   project_id: string | null;
   column_id: ColumnType;
   deadline: string | null;
-  projects?: ProjectProps | null;
-}
+  project?: ProjectTaskProps | null;
+};
 
 const Task = ({
   task,
@@ -43,8 +47,10 @@ const Task = ({
 }: {
   task: TaskProps;
   index: number;
-  projects: ProjectProps[];
-  setColumns: React.Dispatch<React.SetStateAction<Map<ColumnType, TaskProps[]>>>;
+  projects: ProjectTaskProps[];
+  setColumns: React.Dispatch<
+    React.SetStateAction<Map<ColumnType, TaskProps[]>>
+  >;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [editableTask, setEditableTask] = React.useState<EditableTask>(task);
@@ -63,7 +69,7 @@ const Task = ({
           const updatedColumn = newColumns.get(task.column_id) || [];
           newColumns.set(
             task.column_id,
-            updatedColumn.filter((item) => item.id !== task.id),
+            updatedColumn.filter((item) => item.id !== task.id)
           );
           return newColumns;
         });
@@ -83,6 +89,11 @@ const Task = ({
       column_id: editableTask.column_id,
       project_id: editableTask.project_id,
     };
+
+    const visibleTask = {
+      ...updatedTask,
+      project: editableTask.project,
+    };
     updateTask(user.token, editableTask.id, updatedTask)
       .then(() => {
         setIsEdit(false);
@@ -92,8 +103,8 @@ const Task = ({
           newColumns.set(
             task.column_id,
             updatedColumn.map((item) =>
-              item.id === task.id ? { ...item, ...updatedTask } : item,
-            ),
+              item.id === task.id ? { ...item, ...visibleTask } : item
+            )
           );
           return newColumns;
         });
@@ -144,14 +155,17 @@ const Task = ({
                         textField: { size: "small", fullWidth: true },
                       }}
                       label="Deadline"
-                      value={editableTask.deadline ? DateTime.fromISO(editableTask.deadline) : null}
+                      value={
+                        editableTask.deadline
+                          ? DateTime.fromISO(editableTask.deadline)
+                          : null
+                      }
                       onChange={(value) => {
                         setEditableTask((current) => ({
                           ...current,
                           deadline: value ? value.toISO() : null,
-                        }))
-                      }
-                      }
+                        }));
+                      }}
                     />
                   </LocalizationProvider>
                 </Box>
@@ -174,18 +188,21 @@ const Task = ({
                   </Select>
                 </FormControl>
                 <Autocomplete
-                  value={editableTask?.projects}
+                  value={editableTask?.project}
                   disablePortal
-                  id="combo-box"
+                  id="projects-box"
                   options={projects}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
                   getOptionLabel={(option) => option.title || ""}
                   renderInput={(params) => (
-                    <TextField {...params} label="Project" />
+                    <TextField {...params} label="Project's title" />
                   )}
                   onChange={(event, newValue) =>
                     setEditableTask((current) => ({
                       ...current,
-                      projects: newValue,
+                      project: newValue,
                       project_id: newValue?.id || null,
                     }))
                   }
@@ -216,7 +233,9 @@ const Task = ({
                 flexWrap="wrap"
               >
                 <DateAndLevel
-                  deadline={DateTime.fromISO(task.deadline).toFormat("MMMM, dd").toLocaleString()}
+                  deadline={DateTime.fromISO(task.deadline)
+                    .toFormat("MMMM, dd")
+                    .toLocaleString()}
                   level={task.importance}
                 />
                 <Typography
@@ -224,7 +243,7 @@ const Task = ({
                   fontSize="14px"
                   sx={{ marginLeft: "auto" }}
                 >
-                  {task?.projects?.title}
+                  {task?.project?.title}
                 </Typography>
               </Stack>
             </>

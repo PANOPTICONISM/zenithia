@@ -1,13 +1,13 @@
-import Main from "components/Main/Main";
-import React from "react";
-import { useColumnsAndRows } from "./Clients.utils";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ClientId, ClientProps, postClient, updateClient } from "api/clients";
-import { v4 as uuidv4 } from "uuid";
+import Main from "components/Main/Main";
 import { useFiltering } from "components/SearchBar/SearchBar.utils";
-import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
+import React from "react";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import { useColumnsAndRows } from "./Clients.utils";
 
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -53,12 +53,16 @@ const Clients = () => {
         phone_number: newRow.phone_number,
         company: newRow.company,
       };
-      updateClient(user.token, oldRow.id, client).catch((error) =>
-        toast.error(error),
-      );
+      updateClient(user.token, oldRow.id, client)
+        .then(() => {
+          setRows((current) =>
+            current.map((row) => (row.id === oldRow.id ? newRow : row))
+          );
+        })
+        .catch((error) => toast.error(error));
       return newRow;
     },
-    [user],
+    [user]
   );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {

@@ -1,15 +1,5 @@
-import React from "react";
-import Main from "../../components/Main/Main";
-import { useColumnsAndRows } from "./TimeTracker.utils";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import {
-  TimeTrackerProps,
-  postTimeTracker,
-  updateTimeTracker,
-} from "../../api/timetracker";
-import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
 import { useUserData } from "contexts/UserProvider";
 import {
   currentDate,
@@ -17,6 +7,16 @@ import {
   dateFromJSDateToISOForApi,
   timeFromISOToFormatForApi,
 } from "lib/dates";
+import React from "react";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import {
+  TimeTrackerProps,
+  postTimeTracker,
+  updateTimeTracker,
+} from "../../api/timetracker";
+import Main from "../../components/Main/Main";
+import { useColumnsAndRows } from "./TimeTracker.utils";
 
 const TimeTracker = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
@@ -70,12 +70,12 @@ const TimeTracker = () => {
               }
               return currentRow;
             });
-          }),
+          })
         )
         .catch((error) => toast.error(error));
       return newRow;
     },
-    [user],
+    [user]
   );
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {

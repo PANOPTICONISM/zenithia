@@ -3,10 +3,10 @@ import { DateTime } from "luxon";
 
 export const currentDate = () => DateTime.now().toLocal().toISODate() || "";
 export const currentTime = () =>
-  DateTime.now().toLocal().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS") || "";
+  DateTime.now().toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") || "";
 
 export const dateLuxonToISOForApi = (date: DateTime) => {
-  const dateFormattedToISO = date.toLocal().toISODate();
+  const dateFormattedToISO = date.toUTC().toISODate();
   if (dateFormattedToISO) {
     return dateFormattedToISO;
   }
@@ -33,9 +33,9 @@ export const dateFromJSDateToISOForApi = (date: Date | string) => {
 };
 
 export const timeFromISOToFormatForApi = (date: string) => {
-  const formattedTime = DateTime.fromISO(date).toFormat(
-    "yyyy-MM-dd'T'HH:mm:ss.SSS",
-  );
+  const formattedTime = DateTime.fromISO(date)
+    .toUTC()
+    .toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
   if (formattedTime) {
     return formattedTime;
   }

@@ -5,10 +5,14 @@ import lodash from "lodash";
 import React from "react";
 import { toast } from "react-toastify";
 import { getProjects } from "../../api/projects";
-import { getTasks, TaskProps, updateTask } from "../../api/tasks";
+import {
+  getTasks,
+  ProjectTaskProps,
+  TaskProps,
+  updateTask,
+} from "../../api/tasks";
 import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
 import Main from "../../components/Main/Main";
-import { ProjectProps } from "../Projects/Projects.types";
 
 export type ColumnType = "TO DO" | "IN PROGRESS" | "DONE";
 
@@ -19,8 +23,10 @@ export const COLUMNS = {
 } as const;
 
 const Tasks = () => {
-  const [columns, setColumns] = React.useState<Map<ColumnType, TaskProps[]>>(new Map());
-  const [projects, setProjects] = React.useState<ProjectProps[]>([]);
+  const [columns, setColumns] = React.useState<Map<ColumnType, TaskProps[]>>(
+    new Map()
+  );
+  const [projects, setProjects] = React.useState<ProjectTaskProps[]>([]);
 
   const [user] = useUserData();
 
@@ -31,14 +37,15 @@ const Tasks = () => {
       }
       const [tasksRes, projectsRes] = await Promise.all([
         getTasks(user.token),
-        getProjects(user.token),
+        getProjects(user.token, ["id", "title"]),
       ]);
 
       const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
 
       const jointArrays = new Map(
         Object.values(COLUMNS).map((column) => [
-          column, grouppedTasks[column] || [],
+          column,
+          grouppedTasks[column] || [],
         ])
       );
 
