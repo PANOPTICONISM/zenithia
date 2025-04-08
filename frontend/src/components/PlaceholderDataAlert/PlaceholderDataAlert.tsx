@@ -1,7 +1,7 @@
 import { Alert } from "@mui/material";
 
 const PlaceholderDataAlert = ({
-  isPlaceholderData,
+  isPlaceholderData
 }: {
   isPlaceholderData: boolean;
 }) => {

@@ -12,7 +12,7 @@ const Main = ({
   handleClick,
   buttonText,
   isSearch,
-  hideMargin,
+  hideMargin
 }: { children: React.ReactNode } & HeaderProps) => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
   const [open] = useIsSidebarOpen();
@@ -23,8 +23,7 @@ const Main = ({
         !tabletBreakpoint
           ? { display: "flex", justifyContent: "space-between" }
           : {}
-      }
-    >
+      }>
       <Sidebar />
       <Box
         sx={
@@ -34,10 +33,9 @@ const Main = ({
                 width: open
                   ? `calc(100% - (100px + ${drawerWidth}px))`
                   : "calc(100% - 225px)",
-                padding: "50px",
+                padding: "50px"
               }
-        }
-      >
+        }>
         <Header
           title={title}
           handleClick={handleClick}

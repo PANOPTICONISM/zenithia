@@ -19,7 +19,7 @@ export const SearchBar = () => {
           <InputAdornment position="start">
             <SearchIcon fontSize="small" />
           </InputAdornment>
-        ),
+        )
       }}
       sx={{ color: darkBlue }}
       focused

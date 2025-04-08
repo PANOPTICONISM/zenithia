@@ -27,7 +27,7 @@ export const useRevenueData = () => {
       (entryMap, e) =>
         entryMap.set(DateTime.fromISO(e.finish_date).monthLong, [
           ...(entryMap.get(DateTime.fromISO(e.finish_date).monthLong) || []),
-          e,
+          e
         ]),
       new Map()
     );
@@ -42,7 +42,7 @@ export const useRevenueData = () => {
       );
       const obj = {
         x: key,
-        y: Number(valueFormatterNoCurrency.format(currencyFromCents(total))),
+        y: Number(valueFormatterNoCurrency.format(currencyFromCents(total)))
       };
       totalData.push(obj);
     });
@@ -58,17 +58,17 @@ export const useRevenueData = () => {
         : [
             {
               x: "plane",
-              y: 175,
+              y: 175
             },
             {
               x: "helicopter",
-              y: 141,
+              y: 141
             },
             {
               x: "boat",
-              y: 298,
-            },
-          ],
+              y: 298
+            }
+          ]
     };
 
     return { ...result };

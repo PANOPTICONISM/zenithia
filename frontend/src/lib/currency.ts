@@ -21,7 +21,7 @@ export const getCurrencyFromRegion = () => {
         "America/Vancouver": "CAD",
         "America/Mexico_City": "MXN",
         "America/Sao_Paulo": "BRL",
-        "America/New_York": "USD",
+        "America/New_York": "USD"
       };
 
       return americasCurrencies[timeZone] || currency();
@@ -32,7 +32,7 @@ export const getCurrencyFromRegion = () => {
       "Europe/London": "GBP",
       "Europe/Copenhagen": "DKK",
       "Europe/Berlin": "EUR",
-      "Europe/Paris": "EUR",
+      "Europe/Paris": "EUR"
     };
 
     return timeZoneToCurrency[timeZone] || currency();
@@ -45,19 +45,19 @@ const decimalPlaces = {
   USD: 2,
   EUR: 2,
   GBP: 2,
-  DKK: 2,
+  DKK: 2
 };
 
 export const valueFormatter = Intl.NumberFormat(navigator.language, {
   style: "currency",
   currency: getCurrencyFromRegion(),
   minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
 
 export const valueFormatterNoCurrency = Intl.NumberFormat(navigator.language, {
   minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
 
 export const currencyToCents = (

@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   Stack,
-  TextField,
+  TextField
 } from "@mui/material";
 import { deleteCalendar, postCalendar, updateCalendar } from "api/calendar";
 import { darkBlue } from "App";
@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 export const EventAddModal = ({
   close,
-  selected,
+  selected
 }: {
   close: () => unknown;
   selected: DateSelectArg;
@@ -29,14 +29,16 @@ export const EventAddModal = ({
       calendarApi.unselect();
 
       const startDate = DateTime.fromJSDate(selected.start).toISO();
-      const endDate = DateTime.fromJSDate(selected.end).minus({ milliseconds: 1 }).toISO();
+      const endDate = DateTime.fromJSDate(selected.end)
+        .minus({ milliseconds: 1 })
+        .toISO();
       if (!user || !title || !startDate || !endDate) {
         return;
       }
       const eventCalendar = {
         title,
         start: startDate,
-        end: endDate,
+        end: endDate
       };
 
       calendarApi.addEvent(eventCalendar);
@@ -48,7 +50,7 @@ export const EventAddModal = ({
         })
         .catch(() => toast.error("Could not add the event"));
     },
-    [title, user],
+    [title, user]
   );
 
   return (
@@ -64,8 +66,7 @@ export const EventAddModal = ({
         <Button
           variant="contained"
           sx={{ background: darkBlue }}
-          onClick={() => handleAddEvent(close)}
-        >
+          onClick={() => handleAddEvent(close)}>
           Confirm
         </Button>
       </DialogActions>
@@ -75,7 +76,7 @@ export const EventAddModal = ({
 
 export const EventUpdateModal = ({
   close,
-  selected,
+  selected
 }: {
   close: () => unknown;
   selected: EventClickArg;
@@ -88,7 +89,7 @@ export const EventUpdateModal = ({
       const eventCalendarUpdated = {
         title: title,
         start: selected.event.startStr,
-        end: selected.event.endStr,
+        end: selected.event.endStr
       };
 
       const calendarApi = selected.view.calendar;
@@ -108,7 +109,7 @@ export const EventUpdateModal = ({
         })
         .catch(() => toast.error("Could not update the event"));
     },
-    [title],
+    [title]
   );
 
   const handleDeleteEvent = React.useCallback((close: () => unknown) => {
@@ -140,16 +141,14 @@ export const EventUpdateModal = ({
             variant="contained"
             sx={{ background: darkBlue }}
             fullWidth
-            onClick={() => handleUpdateEvent(close)}
-          >
+            onClick={() => handleUpdateEvent(close)}>
             Update
           </Button>
           <Button
             variant="outlined"
             color="error"
             fullWidth
-            onClick={() => handleDeleteEvent(close)}
-          >
+            onClick={() => handleDeleteEvent(close)}>
             Delete
           </Button>
         </Stack>

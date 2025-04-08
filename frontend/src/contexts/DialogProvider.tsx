@@ -4,7 +4,7 @@ import {
   DialogContent,
   DialogProps,
   DialogTitle,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,7 +24,7 @@ const CustomDialog = React.forwardRef<
 >(
   (
     { children, open, title, actions, close, overwriteContentAndActions },
-    ref,
+    ref
   ) => {
     return (
       <Dialog
@@ -32,11 +32,10 @@ const CustomDialog = React.forwardRef<
         sx={{
           fontSize: "14px",
           lineHeight: "20px",
-          fontWeight: 400,
+          fontWeight: 400
         }}
         onClose={close}
-        ref={ref}
-      >
+        ref={ref}>
         <DialogTitle
           sx={{
             fontSize: "20px",
@@ -46,10 +45,9 @@ const CustomDialog = React.forwardRef<
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingBottom: 0,
+            paddingBottom: 0
           }}
-          noWrap
-        >
+          noWrap>
           {title}
           {close ? (
             <IconButton
@@ -57,9 +55,8 @@ const CustomDialog = React.forwardRef<
               onClick={close}
               sx={{
                 color: "#667084",
-                marginLeft: "20px",
-              }}
-            >
+                marginLeft: "20px"
+              }}>
               <CloseIcon />
             </IconButton>
           ) : null}
@@ -72,9 +69,8 @@ const CustomDialog = React.forwardRef<
               padding: "24px",
               maxWidth: "500px",
               width: "100%",
-              paddingTop: "24px!important",
-            }}
-          >
+              paddingTop: "24px!important"
+            }}>
             {children}
           </DialogContent>
         )}
@@ -85,7 +81,7 @@ const CustomDialog = React.forwardRef<
         )}
       </Dialog>
     );
-  },
+  }
 );
 
 CustomDialog.displayName = "Dialog";
@@ -103,16 +99,16 @@ type DialogContextType = {
 };
 
 export const DialogContext = React.createContext<DialogContextType | null>(
-  null,
+  null
 );
 
 export const GLOBAL_DIALOG_CONTEXT = {
-  current: null as DialogContextType | null,
+  current: null as DialogContextType | null
 };
 
 export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentDialog, setCurrentDialog] = React.useState(
-    null as null | DialogQueueEntry,
+    null as null | DialogQueueEntry
   );
   const [queue, setQueue] = React.useState<DialogQueueEntry[]>([]);
 
@@ -130,13 +126,13 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   }, [currentDialog, queue]);
 
   const [currentDialogData, setCurrentDialogData] = React.useState(
-    null as null | ReturnType<DialogQueueEntry["data"]>,
+    null as null | ReturnType<DialogQueueEntry["data"]>
   );
   const [open, setOpen] = React.useState(false);
 
   const value = React.useMemo(
     () => ({ queue, enqueue, dialogOpen: open }),
-    [queue, enqueue, open],
+    [queue, enqueue, open]
   );
 
   React.useEffect(() => {
@@ -146,7 +142,7 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
           setOpen(false);
           currentDialog.onClose?.();
           setCurrentDialog(null);
-        }),
+        })
       );
     }
   }, [currentDialog]);

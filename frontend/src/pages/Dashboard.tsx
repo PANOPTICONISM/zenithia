@@ -35,10 +35,10 @@ const exampleData = [
       revenue: "10000",
       base_price: 5000,
       currency: "USD",
-      client_id: "client123",
+      client_id: "client123"
     },
-    project_id: "0000",
-  },
+    project_id: "0000"
+  }
 ];
 
 const Dashboard = () => {
@@ -86,14 +86,12 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="auto"
         gap={2}
-        padding="24px 0"
-      >
+        padding="24px 0">
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto",
-          }}
-        >
+            gridRow: desktopBreakpoint ? "1/2" : "auto"
+          }}>
           <Stack spacing={2}>
             <EarningsTimeline
               text="Earnings this year"
@@ -110,29 +108,25 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto",
-          }}
-        >
+            gridRow: desktopBreakpoint ? "1/2" : "auto"
+          }}>
           <Calendar isDashboard />
         </Box>
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/3" : "auto",
-          }}
-        >
+            gridRow: desktopBreakpoint ? "1/3" : "auto"
+          }}>
           <Stack
             sx={{
               border: `1px solid ${grey}`,
               height: "100%",
-              overflow: "auto",
-            }}
-          >
+              overflow: "auto"
+            }}>
             <Stack
               direction="row"
               spacing={1}
-              sx={{ padding: "24px 24px 0 24px" }}
-            >
+              sx={{ padding: "24px 24px 0 24px" }}>
               <ReceiptLongIcon />
               <Typography>Urgent</Typography>
             </Stack>
@@ -142,8 +136,7 @@ const Dashboard = () => {
                 : tasks.data.map((task) => (
                     <Stack
                       key={task.id}
-                      sx={{ background: lightBlue, padding: "24px" }}
-                    >
+                      sx={{ background: lightBlue, padding: "24px" }}>
                       <Typography fontWeight={700} fontSize="16px">
                         {task.title}
                       </Typography>
@@ -152,8 +145,7 @@ const Dashboard = () => {
                         justifyContent="space-between"
                         alignItems="center"
                         paddingTop="16px"
-                        flexWrap="wrap"
-                      >
+                        flexWrap="wrap">
                         <DateAndLevel
                           deadline={DateTime.fromISO(task.deadline)
                             .toFormat("MMM, dd")
@@ -163,8 +155,7 @@ const Dashboard = () => {
                         <Typography
                           fontWeight={100}
                           fontSize="14px"
-                          sx={{ marginLeft: "auto" }}
-                        >
+                          sx={{ marginLeft: "auto" }}>
                           {task.project?.title}
                         </Typography>
                       </Stack>
@@ -179,9 +170,8 @@ const Dashboard = () => {
             gridRow: desktopBreakpoint ? "2/3" : "auto",
             maxHeight: "326px",
             border: `1px solid ${grey}`,
-            height: "100%",
-          }}
-        >
+            height: "100%"
+          }}>
           <LineChart result={result} />
         </Box>
       </Box>

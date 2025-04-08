@@ -12,7 +12,7 @@ import { useColumnsAndRows } from "./Clients.utils";
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({
-    columnField: "name",
+    columnField: "name"
   });
 
   const [user] = useUserData();
@@ -30,7 +30,7 @@ const Clients = () => {
       location: "",
       company: null,
       email: null,
-      phone_number: null,
+      phone_number: null
     };
 
     postClient(user.token, obj)
@@ -51,7 +51,7 @@ const Clients = () => {
         location: newRow.location,
         email: newRow.email,
         phone_number: newRow.phone_number,
-        company: newRow.company,
+        company: newRow.company
       };
       updateClient(user.token, oldRow.id, client)
         .then(() => {
@@ -74,8 +74,7 @@ const Clients = () => {
       title="Clients"
       handleClick={addUser}
       buttonText="Add client"
-      isSearch
-    >
+      isSearch>
       <Box sx={{ height: 620, width: "100%" }}>
         <DataGrid
           columns={columns}
