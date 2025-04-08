@@ -18,7 +18,7 @@ export type ClientProps = {
 };
 
 export const getClients = async (
-  token: string,
+  token: string
 ): Promise<(ClientProps & ClientId)[]> => {
   const path = "/api/clients";
 
@@ -26,8 +26,8 @@ export const getClients = async (
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as (ClientProps & ClientId)[];
   } catch (err) {
@@ -38,7 +38,7 @@ export const getClients = async (
 
 export const postClient = async (
   token: string,
-  body: ClientProps & ClientId,
+  body: ClientProps & ClientId
 ): Promise<string> => {
   const path = "/api/clients";
 
@@ -46,8 +46,8 @@ export const postClient = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -59,7 +59,7 @@ export const postClient = async (
 export const updateClient = async (
   token: string,
   id: string,
-  body: ClientProps,
+  body: ClientProps
 ): Promise<string> => {
   const path = `/api/clients/${id}`;
 
@@ -67,8 +67,8 @@ export const updateClient = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -79,7 +79,7 @@ export const updateClient = async (
 
 export const deleteClient = async (
   token: string,
-  id: GridRowId,
+  id: GridRowId
 ): Promise<string> => {
   const path = `/api/clients/${id}`;
 
@@ -87,8 +87,8 @@ export const deleteClient = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {

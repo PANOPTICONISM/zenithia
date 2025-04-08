@@ -11,13 +11,13 @@ import React from "react";
 import {
   finalizeTotals,
   logsByTimeline,
-  useColumnsAndRows,
+  useColumnsAndRows
 } from "./Revenue.utils";
 
 export const EarningsTimeline = ({
   text,
   total,
-  icon,
+  icon
 }: {
   text: string;
   total: string;
@@ -30,8 +30,7 @@ export const EarningsTimeline = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center"
-    >
+      alignItems="center">
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>
@@ -44,7 +43,7 @@ export const EarningsTimeline = ({
 const SuggestionBox = ({
   title,
   tagline,
-  icon,
+  icon
 }: {
   title: string;
   tagline: string;
@@ -56,8 +55,7 @@ const SuggestionBox = ({
       spacing={1}
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center"
-    >
+      alignItems="center">
       {icon}
       <Box>
         <Typography fontWeight={700}>{title}</Typography>
@@ -70,7 +68,7 @@ const SuggestionBox = ({
 const DataGridInfo = ({
   text,
   total,
-  icon,
+  icon
 }: {
   text: string;
   total: string;
@@ -82,8 +80,7 @@ const DataGridInfo = ({
       spacing={1}
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center"
-    >
+      alignItems="center">
       {icon}
       <Box>
         <Typography>{text}</Typography>
@@ -96,7 +93,7 @@ const DataGridInfo = ({
 const Revenue = () => {
   const { columns, rows, filteredData, setFilteredData } = useColumnsAndRows();
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [],
+    items: []
   });
   const { totalMonthlySum, totalYearlySum } = logsByTimeline(rows);
 
@@ -106,61 +103,61 @@ const Revenue = () => {
         const filteringData =
           model.items[0].value !== undefined
             ? rows.filter((entry) => {
-              if (
-                model.items[0].field === "start_date" &&
-                model.items[0].operator === "onOrAfter"
-              ) {
-                return model.items[0].value <= entry.start_date;
-              }
-              if (
-                model.items[0].field === "start_date" &&
-                model.items[0].operator === "is"
-              ) {
-                return model.items[0].value === entry.start_date;
-              }
-              if (
-                model.items[0].field === "start_date" &&
-                model.items[0].operator === "not"
-              ) {
-                return model.items[0].value !== entry.start_date;
-              }
+                if (
+                  model.items[0].field === "start_date" &&
+                  model.items[0].operator === "onOrAfter"
+                ) {
+                  return model.items[0].value <= entry.start_date;
+                }
+                if (
+                  model.items[0].field === "start_date" &&
+                  model.items[0].operator === "is"
+                ) {
+                  return model.items[0].value === entry.start_date;
+                }
+                if (
+                  model.items[0].field === "start_date" &&
+                  model.items[0].operator === "not"
+                ) {
+                  return model.items[0].value !== entry.start_date;
+                }
 
-              if (
-                model.items[0].field === "finish_date" &&
-                model.items[0].operator === "onOrAfter"
-              ) {
-                return model.items[0].value <= entry.finish_date;
-              }
-              if (
-                model.items[0].field === "finish_date" &&
-                model.items[0].operator === "onOrBefore"
-              ) {
-                return model.items[0].value >= entry.finish_date;
-              }
-              if (
-                model.items[0].field === "finish_date" &&
-                model.items[0].operator === "is"
-              ) {
-                return model.items[0].value === entry.finish_date;
-              }
-              if (
-                model.items[0].field === "finish_date" &&
-                model.items[0].operator === "not"
-              ) {
-                return model.items[0].value !== entry.finish_date;
-              }
-            })
+                if (
+                  model.items[0].field === "finish_date" &&
+                  model.items[0].operator === "onOrAfter"
+                ) {
+                  return model.items[0].value <= entry.finish_date;
+                }
+                if (
+                  model.items[0].field === "finish_date" &&
+                  model.items[0].operator === "onOrBefore"
+                ) {
+                  return model.items[0].value >= entry.finish_date;
+                }
+                if (
+                  model.items[0].field === "finish_date" &&
+                  model.items[0].operator === "is"
+                ) {
+                  return model.items[0].value === entry.finish_date;
+                }
+                if (
+                  model.items[0].field === "finish_date" &&
+                  model.items[0].operator === "not"
+                ) {
+                  return model.items[0].value !== entry.finish_date;
+                }
+              })
             : filteredData;
         setFilteredData(filteringData);
 
         setFilterModel(model);
       },
-      [filteredData],
+      [filteredData]
     );
 
   const absoluteTotal = finalizeTotals(filteredData).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,
-    0,
+    0
   );
 
   return (

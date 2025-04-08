@@ -3,7 +3,7 @@ import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 
 const StatusTag = ({
   color,
-  value,
+  value
 }: {
   color: "inherit" | "success" | "warning";
   value: string;
@@ -13,8 +13,7 @@ const StatusTag = ({
       sx={{ padding: 0 }}
       variant="text"
       color="inherit"
-      endIcon={<HdrStrongIcon color={color} />}
-    >
+      endIcon={<HdrStrongIcon color={color} />}>
       {value}
     </Button>
   );

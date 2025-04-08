@@ -31,12 +31,12 @@ export const useColumnsAndRows = () => {
         }
         deleteClient(user.token, id)
           .then(() =>
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id)),
+            setRows((prevRows) => prevRows.filter((row) => row.id !== id))
           )
           .catch((error) => toast.error(error));
       });
     },
-    [user],
+    [user]
   );
 
   const columns: GridColDef[] = [
@@ -53,21 +53,20 @@ export const useColumnsAndRows = () => {
               bgcolor: deepOrange[500],
               width: 26,
               height: 26,
-              fontSize: "12px",
+              fontSize: "12px"
             }}
-            alt={value}
-          >
+            alt={value}>
             {value?.slice(0, 1)}
           </Avatar>
           <Typography fontSize="14px">{value}</Typography>
         </Stack>
-      ),
+      )
     },
     {
       field: "occupation",
       headerName: "Occupation",
       minWidth: 120,
-      editable: true,
+      editable: true
     },
     {
       field: "status",
@@ -86,13 +85,13 @@ export const useColumnsAndRows = () => {
         }
 
         return <StatusTag color="success" value={value} />;
-      },
+      }
     },
     {
       field: "location",
       headerName: "Location",
       minWidth: 80,
-      editable: true,
+      editable: true
     },
     {
       field: "company",
@@ -104,26 +103,25 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px",
-            }}
-          >
+              borderRadius: "4px"
+            }}>
             {value}
           </Box>
         ),
-      editable: true,
+      editable: true
     },
     {
       field: "email",
       headerName: "Email",
       minWidth: 100,
       flex: 1,
-      editable: true,
+      editable: true
     },
     {
       field: "phone_number",
       headerName: "Phone-number",
       minWidth: 120,
-      editable: true,
+      editable: true
     },
     {
       field: "actions",
@@ -134,12 +132,11 @@ export const useColumnsAndRows = () => {
           onClick={deleteUser(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error"
-        >
+          color="error">
           Delete
         </Button>
-      ),
-    },
+      )
+    }
   ];
 
   return { columns, rows, setRows };

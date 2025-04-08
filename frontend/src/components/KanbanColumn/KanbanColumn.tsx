@@ -16,7 +16,7 @@ const KanbanColumn = ({
   columnName,
   entries,
   setColumns,
-  projects,
+  projects
 }: {
   columnName: ColumnType;
   entries: TaskProps[];
@@ -38,7 +38,7 @@ const KanbanColumn = ({
       importance: null,
       deadline: currentDate(),
       column_id: columnName,
-      project_id: null,
+      project_id: null
     };
 
     postTask(user.token, task)
@@ -60,8 +60,7 @@ const KanbanColumn = ({
         direction="row"
         spacing={1}
         justifyContent="space-between"
-        alignItems="center"
-      >
+        alignItems="center">
         <Stack direction="row" spacing={1}>
           <ReceiptLongIcon />
           <Typography>{columnName}</Typography>
@@ -76,8 +75,7 @@ const KanbanColumn = ({
             sx={{ padding: "24px" }}
             spacing={2}
             ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+            {...provided.droppableProps}>
             {entries.map((task, index) => (
               <Task
                 task={task}

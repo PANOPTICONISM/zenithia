@@ -13,7 +13,7 @@ import {
   TimeTrackerProps,
   deleteTimeTracker,
   getTimeTracker,
-  updateTimeTracker,
+  updateTimeTracker
 } from "../../api/timetracker";
 import { lightBlue } from "../../App";
 import { ProjectProps } from "../Projects/Projects.types";
@@ -86,7 +86,7 @@ export const useColumnsAndRows = () => {
     }
     updateTimeTracker(user.token, id, {
       finish_time: finalTimestamp,
-      total: count,
+      total: count
     }).catch((error) => toast.error(error));
 
     setIsRunning(false);
@@ -110,7 +110,7 @@ export const useColumnsAndRows = () => {
     const duration = DateTime.fromISO(finish).diff(DateTime.fromISO(start), [
       "hours",
       "minutes",
-      "seconds",
+      "seconds"
     ]);
 
     return duration.hours + "h " + duration.minutes + "m";
@@ -123,7 +123,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
-      editable: true,
+      editable: true
     },
     {
       field: "start_time",
@@ -132,7 +132,7 @@ export const useColumnsAndRows = () => {
       valueFormatter: (params) =>
         DateTime.fromISO(params.value)
           .toLocal()
-          .toLocaleString(DateTime.TIME_WITH_SECONDS),
+          .toLocaleString(DateTime.TIME_WITH_SECONDS)
     },
     {
       field: "finish_time",
@@ -143,7 +143,7 @@ export const useColumnsAndRows = () => {
           ? DateTime.fromISO(params.value)
               .toLocal()
               .toLocaleString(DateTime.TIME_WITH_SECONDS)
-          : "",
+          : ""
     },
     {
       field: "hours",
@@ -152,7 +152,7 @@ export const useColumnsAndRows = () => {
       valueGetter: (params) =>
         params.row.finish_time
           ? formatHours(params.row.finish_time, params.row.start_time)
-          : "",
+          : ""
     },
     {
       field: "project_id",
@@ -163,7 +163,7 @@ export const useColumnsAndRows = () => {
       type: "singleSelect",
       valueOptions: projects.map((project) => ({
         value: project.id,
-        label: project.title,
+        label: project.title
       })),
       valueGetter: (params) => params.value || "",
       renderCell: (params) =>
@@ -172,12 +172,11 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px",
-            }}
-          >
+              borderRadius: "4px"
+            }}>
             {params.formattedValue}
           </Box>
-        ),
+        )
     },
     {
       field: "actions",
@@ -195,8 +194,7 @@ export const useColumnsAndRows = () => {
             disabled={
               (row.finish_time !== null && selectedId !== row.id) ||
               (isRunning && row.id !== selectedId)
-            }
-          >
+            }>
             {isRunning && row.id === selectedId ? (
               <StopCircleIcon />
             ) : (
@@ -207,8 +205,8 @@ export const useColumnsAndRows = () => {
             <DeleteIcon />
           </IconButton>
         </>
-      ),
-    },
+      )
+    }
   ];
 
   return { columns, rows, setRows };

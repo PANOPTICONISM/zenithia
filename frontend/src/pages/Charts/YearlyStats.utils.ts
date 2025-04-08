@@ -21,7 +21,7 @@ export const useRevenueData = () => {
       (entryMap, e) =>
         entryMap.set(DateTime.fromISO(e.finish_date).year, [
           ...(entryMap.get(DateTime.fromISO(e.finish_date).year) || []),
-          e,
+          e
         ]),
       new Map()
     );
@@ -40,7 +40,7 @@ export const useRevenueData = () => {
         value: Number(
           valueFormatterNoCurrency.format(currencyFromCents(total))
         ),
-        color: "red",
+        color: "red"
       };
       yearlyLogsTotals.push(obj);
     });
@@ -55,20 +55,20 @@ export const useRevenueData = () => {
             id: "php",
             label: "php",
             value: 202,
-            color: "hsl(306, 70%, 50%)",
+            color: "hsl(306, 70%, 50%)"
           },
           {
             id: "java",
             label: "java",
             value: 244,
-            color: "hsl(343, 70%, 50%)",
+            color: "hsl(343, 70%, 50%)"
           },
           {
             id: "hack",
             label: "hack",
             value: 369,
-            color: "hsl(87, 70%, 50%)",
-          },
+            color: "hsl(87, 70%, 50%)"
+          }
         ];
 
     return result;
@@ -78,6 +78,6 @@ export const useRevenueData = () => {
     data: projects,
     setData: setProjects,
     yearlyLogsTotals: result,
-    isPlaceholderData,
+    isPlaceholderData
   };
 };

@@ -3,7 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { lightBlue } from "App";
 import {
   ProjectFormattedProps,
-  useGetProjectsFormatted,
+  useGetProjectsFormatted
 } from "hooks/useGetProjectsFormatted";
 import { currencyToLocale } from "lib/currency";
 import { dateFromISOToLocaleString } from "lib/dates";
@@ -28,7 +28,7 @@ export const useColumnsAndRows = () => {
       field: "id",
       headerName: "ID",
       width: 80,
-      valueFormatter: ({ value }) => value?.slice(0, 8),
+      valueFormatter: ({ value }) => value?.slice(0, 8)
     },
     {
       field: "title",
@@ -45,45 +45,44 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px",
-            }}
-          >
+              borderRadius: "4px"
+            }}>
             {value}
           </Box>
         );
-      },
+      }
     },
     {
       field: "client",
       headerName: "Client",
       minWidth: 120,
-      flex: 1,
+      flex: 1
     },
     {
       field: "start_date",
       headerName: "Start",
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
-      type: "date",
+      type: "date"
     },
     {
       field: "finish_date",
       headerName: "Finish",
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
-      type: "date",
+      type: "date"
     },
     {
       field: "base_price",
       headerName: "Base Price",
       flex: 1,
       type: "number",
-      valueFormatter: ({ value }) => currencyToLocale(value),
+      valueFormatter: ({ value }) => currencyToLocale(value)
     },
     {
       field: "revenue",
       headerName: "Revenue",
-      flex: 1,
+      flex: 1
     },
     {
       field: "tracked_time_in_milliseconds",
@@ -91,15 +90,15 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       flex: 1,
       valueFormatter: ({ value }) =>
-        Duration.fromMillis(value).toFormat("hh:mm"),
+        Duration.fromMillis(value).toFormat("hh:mm")
     },
     {
       field: "estimated_earnings",
       headerName: "Total",
       minWidth: 120,
       flex: 1,
-      valueFormatter: ({ value }) => currencyToLocale(value),
-    },
+      valueFormatter: ({ value }) => currencyToLocale(value)
+    }
   ];
 
   return { columns, rows, setRows, filteredData, setFilteredData };
@@ -143,7 +142,9 @@ export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
 
   const currentMonth = new Date().getMonth();
   const thisMonthLogs = rows.filter(
-    (entry) => DateTime.fromISO(entry.finish_date).month === currentMonth + 1 && DateTime.fromISO(entry.finish_date).year === currentYear
+    (entry) =>
+      DateTime.fromISO(entry.finish_date).month === currentMonth + 1 &&
+      DateTime.fromISO(entry.finish_date).year === currentYear
   );
   const totalMonthlySum = finalizeTotals(thisMonthLogs).reduce(
     (partialSum, { totalPrice }) => partialSum + totalPrice,

@@ -17,13 +17,15 @@ export default defineConfig([
       react: pluginReact
     },
     rules: {
-      ...pluginPrettier.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off"
+      ...pluginPrettier.configs.recommended.rules
     }
   },
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
+    rules: {
+      "react/react-in-jsx-scope": "off"
+    },
     settings: {
       react: {
         version: "detect"

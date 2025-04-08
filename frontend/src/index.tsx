@@ -6,7 +6,7 @@ import App from "./App";
 import { UserProvider } from "contexts/UserProvider";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 
 root.render(
@@ -16,5 +16,5 @@ root.render(
         <App />
       </UserProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

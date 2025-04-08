@@ -3,7 +3,7 @@ import { green, grey, highlight, red, white, yellow } from "App";
 
 export const DateAndLevel = ({
   level,
-  deadline,
+  deadline
 }: {
   level: string | null;
   deadline: string;
@@ -18,9 +18,8 @@ export const DateAndLevel = ({
             background: green,
             color: white,
             padding: "8px",
-            borderRadius: "4px",
-          }}
-        >
+            borderRadius: "4px"
+          }}>
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -29,7 +28,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: green,
+              background: green
             }}
           />
           <Box
@@ -37,7 +36,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: grey,
+              background: grey
             }}
           />
           <Box
@@ -45,7 +44,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: grey,
+              background: grey
             }}
           />
         </Stack>
@@ -62,9 +61,8 @@ export const DateAndLevel = ({
             background: yellow,
             color: white,
             padding: "8px",
-            borderRadius: "4px",
-          }}
-        >
+            borderRadius: "4px"
+          }}>
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -73,7 +71,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: yellow,
+              background: yellow
             }}
           />
           <Box
@@ -81,7 +79,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: yellow,
+              background: yellow
             }}
           />
           <Box
@@ -89,7 +87,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: grey,
+              background: grey
             }}
           />
         </Stack>
@@ -106,9 +104,8 @@ export const DateAndLevel = ({
             background: red,
             color: white,
             padding: "8px",
-            borderRadius: "4px",
-          }}
-        >
+            borderRadius: "4px"
+          }}>
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -117,7 +114,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: red,
+              background: red
             }}
           />
           <Box
@@ -125,7 +122,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: red,
+              background: red
             }}
           />
           <Box
@@ -133,7 +130,7 @@ export const DateAndLevel = ({
               width: "24px",
               height: "12px",
               borderRadius: "0 0 60px 0",
-              background: red,
+              background: red
             }}
           />
         </Stack>
@@ -149,9 +146,8 @@ export const DateAndLevel = ({
           background: highlight,
           color: white,
           padding: "8px",
-          borderRadius: "4px",
-        }}
-      >
+          borderRadius: "4px"
+        }}>
         {deadline}
       </Typography>
       <Stack spacing={0.5} direction="row">
@@ -160,7 +156,7 @@ export const DateAndLevel = ({
             width: "24px",
             height: "12px",
             borderRadius: "0 0 60px 0",
-            background: grey,
+            background: grey
           }}
         />
         <Box
@@ -168,7 +164,7 @@ export const DateAndLevel = ({
             width: "24px",
             height: "12px",
             borderRadius: "0 0 60px 0",
-            background: grey,
+            background: grey
           }}
         />
         <Box
@@ -176,7 +172,7 @@ export const DateAndLevel = ({
             width: "24px",
             height: "12px",
             borderRadius: "0 0 60px 0",
-            background: grey,
+            background: grey
           }}
         />
       </Stack>

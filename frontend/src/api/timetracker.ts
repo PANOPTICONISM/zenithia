@@ -18,7 +18,7 @@ export type TimeTrackerProps = TimeTrackerBaseProps & {
 };
 
 export const getTimeTracker = async (
-  token: string,
+  token: string
 ): Promise<TimeTrackerProps[]> => {
   const path = "/api/timetracker";
 
@@ -26,8 +26,8 @@ export const getTimeTracker = async (
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as TimeTrackerProps[];
   } catch (err) {
@@ -38,7 +38,7 @@ export const getTimeTracker = async (
 
 export const postTimeTracker = async (
   token: string,
-  body: TimeTrackerProps,
+  body: TimeTrackerProps
 ): Promise<string> => {
   const path = "/api/timetracker";
 
@@ -46,8 +46,8 @@ export const postTimeTracker = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -66,7 +66,7 @@ type TimeTrackerUpdateProps =
 export const updateTimeTracker = async (
   token: string,
   id: string,
-  body: TimeTrackerUpdateProps,
+  body: TimeTrackerUpdateProps
 ): Promise<string> => {
   const path = `/api/timetracker/${id}`;
 
@@ -74,8 +74,8 @@ export const updateTimeTracker = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -86,7 +86,7 @@ export const updateTimeTracker = async (
 
 export const deleteTimeTracker = async (
   token: string,
-  id: GridRowId,
+  id: GridRowId
 ): Promise<string> => {
   const path = `/api/timetracker/${id}`;
 
@@ -94,8 +94,8 @@ export const deleteTimeTracker = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {

@@ -9,21 +9,21 @@ type SidebarContextValues = {
 const SidebarContext = React.createContext<SidebarContextValues | null>(null);
 
 export const SidebarProvider = ({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) => {
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
   const [isOpen, setIsOpen] = React.useState<boolean>(
-    tabletBreakpoint ? false : true,
+    tabletBreakpoint ? false : true
   );
 
   const value = React.useMemo(
     () => ({
       isOpen,
-      setIsOpen,
+      setIsOpen
     }),
-    [isOpen],
+    [isOpen]
   );
 
   return (
