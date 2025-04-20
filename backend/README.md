@@ -14,6 +14,7 @@ MYSQL_USER=
 MYSQL_PASSWORD=
 MYSQL_DATABASE=
 JWT_TOKEN_KEY=
+RECAPTCHA_SECRET_KEY=
 ```
 
 4. `npm run dev` - This command uses `nodemon` to hot reload the application on save
