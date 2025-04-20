@@ -96,6 +96,7 @@ export const useColumnsAndRows = () => {
     {
       field: "company",
       headerName: "Company",
+      minWidth: 120,
       flex: 1,
       renderCell: ({ value }) =>
         value && (
