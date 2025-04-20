@@ -121,6 +121,7 @@ export const useColumnsAndRows = () => {
       field: "date",
       headerName: "Date",
       flex: 1,
+      minWidth: 100,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
       editable: true
@@ -129,6 +130,7 @@ export const useColumnsAndRows = () => {
       field: "start_time",
       headerName: "Start",
       flex: 1,
+      minWidth: 120,
       valueFormatter: (params) =>
         DateTime.fromISO(params.value)
           .toLocal()
@@ -138,6 +140,7 @@ export const useColumnsAndRows = () => {
       field: "finish_time",
       headerName: "Finish",
       flex: 1,
+      minWidth: 120,
       valueFormatter: (params) =>
         params.value
           ? DateTime.fromISO(params.value)
@@ -149,6 +152,7 @@ export const useColumnsAndRows = () => {
       field: "hours",
       headerName: "Hours",
       flex: 1,
+      minWidth: 100,
       valueGetter: (params) =>
         params.row.finish_time
           ? formatHours(params.row.finish_time, params.row.start_time)
@@ -157,7 +161,7 @@ export const useColumnsAndRows = () => {
     {
       field: "project_id",
       headerName: "Project",
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       editable: true,
       type: "singleSelect",
@@ -181,7 +185,7 @@ export const useColumnsAndRows = () => {
     {
       field: "actions",
       headerName: "Actions",
-      flex: 1,
+      minWidth: 100,
       renderCell: ({ row }) => (
         <>
           <IconButton
