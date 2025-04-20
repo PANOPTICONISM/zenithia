@@ -113,71 +113,81 @@ const Navigation = ({ open }: { open: boolean }) => {
           path="/"
         />
       </List>
-      {open ? (
-        <Subtitle text="Pages" />
-      ) : (
-        <Divider sx={{ background: white }} />
-      )}
-      <List disablePadding={open}>
-        <ListLink
-          open={open}
-          text="Calendar"
-          icon={<CalendarMonthOutlined sx={{ color: white }} />}
-          path="/calendar"
-        />
-        <ListLink
-          open={open}
-          text="Tasks"
-          icon={<DomainVerificationIcon sx={{ color: white }} />}
-          path="/tasks"
-        />
-      </List>
-      {open ? <Subtitle text="Data" /> : <Divider sx={{ background: white }} />}
-      <List disablePadding={open}>
-        <ListLink
-          open={open}
-          text="Clients"
-          icon={<ContactsIcon sx={{ color: white }} />}
-          path="/clients"
-        />
-        <ListLink
-          open={open}
-          text="Projects"
-          icon={<AccountTreeOutlined sx={{ color: white }} />}
-          path="/projects"
-        />
-        <ListLink
-          open={open}
-          text="Time Tracker"
-          icon={<HourglassBottomOutlined sx={{ color: white }} />}
-          path="/timetracker"
-        />
-      </List>
-      {open ? (
-        <Subtitle text="Performance" />
-      ) : (
-        <Divider sx={{ background: white }} />
-      )}
-      <List disablePadding={open}>
-        <ListLink
-          open={open}
-          text="Revenue"
-          icon={<TrackChangesOutlined sx={{ color: white }} />}
-          path="/revenue"
-        />
-        <ListLink
-          open={open}
-          text="Monthly"
-          icon={<InsightsOutlined sx={{ color: white }} />}
-          path="/monthly"
-        />
-        <ListLink
-          open={open}
-          text="Yearly"
-          icon={<DonutLargeIcon sx={{ color: white }} />}
-          path="/yearly"
-        />
-      </List>
+      <Box>
+        {open ? (
+          <Subtitle text="Pages" />
+        ) : (
+          <Divider sx={{ background: white }} />
+        )}
+        <List disablePadding={open}>
+          <ListLink
+            open={open}
+            text="Calendar"
+            icon={<CalendarMonthOutlined sx={{ color: white }} />}
+            path="/calendar"
+          />
+          <ListLink
+            open={open}
+            text="Tasks"
+            icon={<DomainVerificationIcon sx={{ color: white }} />}
+            path="/tasks"
+          />
+        </List>
+      </Box>
+      <Box>
+        {open ? (
+          <Subtitle text="Data" />
+        ) : (
+          <Divider sx={{ background: white }} />
+        )}
+        <List disablePadding={open}>
+          <ListLink
+            open={open}
+            text="Clients"
+            icon={<ContactsIcon sx={{ color: white }} />}
+            path="/clients"
+          />
+          <ListLink
+            open={open}
+            text="Projects"
+            icon={<AccountTreeOutlined sx={{ color: white }} />}
+            path="/projects"
+          />
+          <ListLink
+            open={open}
+            text="Time Tracker"
+            icon={<HourglassBottomOutlined sx={{ color: white }} />}
+            path="/timetracker"
+          />
+        </List>
+      </Box>
+      <Box>
+        {open ? (
+          <Subtitle text="Performance" />
+        ) : (
+          <Divider sx={{ background: white }} />
+        )}
+        <List disablePadding={open}>
+          <ListLink
+            open={open}
+            text="Revenue"
+            icon={<TrackChangesOutlined sx={{ color: white }} />}
+            path="/revenue"
+          />
+          <ListLink
+            open={open}
+            text="Monthly"
+            icon={<InsightsOutlined sx={{ color: white }} />}
+            path="/monthly"
+          />
+          <ListLink
+            open={open}
+            text="Yearly"
+            icon={<DonutLargeIcon sx={{ color: white }} />}
+            path="/yearly"
+          />
+        </List>
+      </Box>
     </>
   );
 };
