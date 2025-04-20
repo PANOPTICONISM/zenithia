@@ -1,13 +1,13 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { ClientId, ClientProps, deleteClient, getClients } from "api/clients";
-import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import StatusTag from "components/StatusTag/StatusTag";
 import { lightBlue } from "App";
-import { deepOrange } from "@mui/material/colors";
-import { toast } from "react-toastify";
+import StatusTag from "components/StatusTag/StatusTag";
 import { useUserData } from "contexts/UserProvider";
+import React from "react";
+import { toast } from "react-toastify";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<(ClientProps & ClientId)[]>([]);
@@ -90,12 +90,13 @@ export const useColumnsAndRows = () => {
     {
       field: "location",
       headerName: "Location",
-      minWidth: 80,
+      minWidth: 100,
       editable: true
     },
     {
       field: "company",
       headerName: "Company",
+      minWidth: 120,
       flex: 1,
       renderCell: ({ value }) =>
         value && (
