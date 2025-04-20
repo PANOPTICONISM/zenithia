@@ -89,6 +89,7 @@ export const useColumnsAndRows = () => {
     {
       field: "start_date",
       headerName: "Start",
+      minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
@@ -97,6 +98,7 @@ export const useColumnsAndRows = () => {
     {
       field: "finish_date",
       headerName: "Finish",
+      minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
@@ -105,6 +107,7 @@ export const useColumnsAndRows = () => {
     {
       field: "status",
       headerName: "Status",
+      minWidth: 120,
       flex: 1,
       type: "singleSelect",
       valueOptions: ["Active", "Standby", "Archived"],
@@ -124,6 +127,7 @@ export const useColumnsAndRows = () => {
     {
       field: "base_price",
       headerName: "Base Price",
+      flex: 1,
       minWidth: 120,
       type: "number",
       editable: true,
