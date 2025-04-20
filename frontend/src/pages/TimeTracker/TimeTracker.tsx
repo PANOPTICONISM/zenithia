@@ -84,22 +84,13 @@ const TimeTracker = () => {
 
   return (
     <Main title="Time Tracker" handleClick={addTracking} buttonText="Add hours">
-      <Box
-        sx={{
-          height: 620,
-          width: "100%",
-          overflowX: { xs: "auto", sm: "unset" }
-        }}>
+      <Box sx={{ height: 620, width: "100%" }}>
         <DataGrid
           columns={columns}
           rows={rows}
-          getRowId={(row) => row.id}
           editMode="row"
           processRowUpdate={handleProcessRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
-          sx={{
-            minWidth: { xs: 600, sm: "unset" }
-          }}
         />
       </Box>
     </Main>
