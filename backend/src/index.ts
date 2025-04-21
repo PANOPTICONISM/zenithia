@@ -31,8 +31,26 @@ const app = express();
 const port = 4000;
 const { json, urlencoded } = pkg;
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:3000"];
+
+interface CorsOptions {
+  origin: (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void
+  ) => void;
+}
+
+const corsOptions: CorsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void
+  ) {
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
 };
 
 app.use(cors(corsOptions));
