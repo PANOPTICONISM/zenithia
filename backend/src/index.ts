@@ -31,7 +31,7 @@ const app = express();
 const port = 4000;
 const { json, urlencoded } = pkg;
 
-const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:3000"];
+const allowedOrigins = process.env.FRONTEND_URLS?.split(",") || [];
 
 interface CorsOptions {
   origin: (
@@ -45,7 +45,7 @@ const corsOptions: CorsOptions = {
     origin: string | undefined,
     callback: (error: Error | null, allow?: boolean) => void
   ) {
-    if (allowedOrigins.includes(origin)) {
+    if (origin && allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error("Not allowed by CORS"));
