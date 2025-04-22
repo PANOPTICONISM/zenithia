@@ -27,7 +27,7 @@ export const useColumnsAndRows = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 80,
+      width: 85,
       valueFormatter: ({ value }) => value?.slice(0, 8)
     },
     {
@@ -61,6 +61,7 @@ export const useColumnsAndRows = () => {
     {
       field: "start_date",
       headerName: "Start",
+      minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date"
@@ -68,6 +69,7 @@ export const useColumnsAndRows = () => {
     {
       field: "finish_date",
       headerName: "Finish",
+      minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date"
@@ -75,6 +77,7 @@ export const useColumnsAndRows = () => {
     {
       field: "base_price",
       headerName: "Base Price",
+      minWidth: 120,
       flex: 1,
       type: "number",
       valueFormatter: ({ value }) => currencyToLocale(value)
@@ -82,12 +85,13 @@ export const useColumnsAndRows = () => {
     {
       field: "revenue",
       headerName: "Revenue",
+      minWidth: 80,
       flex: 1
     },
     {
       field: "tracked_time_in_milliseconds",
       headerName: "Time",
-      minWidth: 120,
+      minWidth: 80,
       flex: 1,
       valueFormatter: ({ value }) =>
         Duration.fromMillis(value).toFormat("hh:mm")
