@@ -53,6 +53,7 @@ const SuggestionBox = ({
     <Stack
       direction="row"
       spacing={1}
+      boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
       alignItems="center">
@@ -60,31 +61,6 @@ const SuggestionBox = ({
       <Box>
         <Typography fontWeight={700}>{title}</Typography>
         <Typography>{tagline}</Typography>
-      </Box>
-    </Stack>
-  );
-};
-
-const DataGridInfo = ({
-  text,
-  total,
-  icon
-}: {
-  text: string;
-  total: string;
-  icon: React.ReactNode;
-}) => {
-  return (
-    <Stack
-      direction="row"
-      spacing={1}
-      padding="24px"
-      sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center">
-      {icon}
-      <Box>
-        <Typography>{text}</Typography>
-        <Typography fontSize="30px">{total}</Typography>
       </Box>
     </Stack>
   );
@@ -180,7 +156,7 @@ const Revenue = () => {
           tagline="Add date filters in the table below to find out how much you earned under a specific timeframe."
           icon={<EmojiObjectsIcon sx={{ height: "100%", width: "70px" }} />}
         />
-        <DataGridInfo
+        <EarningsTimeline
           text="Estimated total of earnings"
           total={currencyToLocale(absoluteTotal)}
           icon={<SavingsIcon sx={{ height: "100%", width: "70px" }} />}
