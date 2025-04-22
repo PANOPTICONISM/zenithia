@@ -1,11 +1,11 @@
 import { ResponsivePie } from "@nivo/pie";
-import { currency } from "lib/currency";
+import { getCurrencyFromRegion } from "lib/currency";
 import { PieChartProps } from "./Charts.types";
 
-const PieChart = ({ logs }: { logs: PieChartProps }) => {
+const PieChart = ({ result }: { result: PieChartProps }) => {
   return (
     <ResponsivePie
-      data={logs}
+      data={result}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
       innerRadius={0.5}
       padAngle={0.7}
@@ -16,7 +16,7 @@ const PieChart = ({ logs }: { logs: PieChartProps }) => {
         from: "color",
         modifiers: [["darker", 0.2]]
       }}
-      arcLabel={(e) => e.value + " " + currency()}
+      arcLabel={(e) => e.value + " " + getCurrencyFromRegion()}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor="#333333"
       arcLinkLabelsThickness={2}

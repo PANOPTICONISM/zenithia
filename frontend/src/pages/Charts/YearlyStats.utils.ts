@@ -1,6 +1,6 @@
 import { PieChartProps } from "components/Charts/Charts.types";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { currencyFromCents, valueFormatterNoCurrency } from "lib/currency";
+import { currencyFromCents } from "lib/currency";
 import { DateTime } from "luxon";
 import React from "react";
 
@@ -34,12 +34,11 @@ export const useRevenueData = () => {
           accumulator + (currentValue?.estimated_earnings || 0),
         initialValue
       );
+
       const obj = {
         id: key,
         label: key,
-        value: Number(
-          valueFormatterNoCurrency.format(currencyFromCents(total))
-        ),
+        value: Number(currencyFromCents(total).toFixed(2)),
         color: "red"
       };
       yearlyLogsTotals.push(obj);
@@ -77,7 +76,7 @@ export const useRevenueData = () => {
   return {
     data: projects,
     setData: setProjects,
-    yearlyLogsTotals: result,
+    result,
     isPlaceholderData
   };
 };

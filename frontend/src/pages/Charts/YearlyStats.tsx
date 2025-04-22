@@ -1,14 +1,14 @@
-import Main from "components/Main/Main";
 import { Box } from "@mui/material";
 import PieChart from "components/Charts/PieChart";
+import Loading from "components/Loading/Loading";
+import Main from "components/Main/Main";
 import PlaceholderDataAlert from "components/PlaceholderDataAlert/PlaceholderDataAlert";
 import { useRevenueData } from "./YearlyStats.utils";
-import Loading from "components/Loading/Loading";
 
 const YearlyStats = () => {
-  const { yearlyLogsTotals, isPlaceholderData } = useRevenueData();
+  const { result, isPlaceholderData } = useRevenueData();
 
-  if (!yearlyLogsTotals) {
+  if (!result) {
     return <Loading />;
   }
 
@@ -16,7 +16,7 @@ const YearlyStats = () => {
     <Main title="Yearly Revenue">
       <PlaceholderDataAlert isPlaceholderData={isPlaceholderData} />
       <Box height="500px">
-        <PieChart logs={yearlyLogsTotals} />
+        <PieChart result={result} />
       </Box>
     </Main>
   );
