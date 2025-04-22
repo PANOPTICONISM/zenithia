@@ -109,24 +109,25 @@ export const finalizeTotals = (
 ) =>
   logs.map((entry) => {
     const initialValue = 0;
-    const hoursTotal = entry?.time_tracker?.reduce(
+    const totalMilliseconds = entry?.time_tracker?.reduce(
       (accumulator, currentValue) =>
         accumulator + Number(currentValue?.total || 0),
       initialValue
     );
 
     const totalMinutes =
-      hoursTotal && Duration.fromMillis(hoursTotal).toFormat("mm");
+      totalMilliseconds &&
+      Math.floor(Duration.fromMillis(totalMilliseconds).as("minutes"));
     let totalPrice = 0;
-    if (entry.base_price && hoursTotal) {
+    if (entry.base_price && totalMinutes) {
       if (entry.revenue === "Project") {
         totalPrice = entry.base_price;
       } else {
-        totalPrice = (entry.base_price / 100) * (Number(totalMinutes) / 60);
+        totalPrice = (entry.base_price * totalMinutes) / 60;
       }
     }
 
-    return { totalPrice, hoursTotal };
+    return { totalPrice, totalMilliseconds };
   });
 
 export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
