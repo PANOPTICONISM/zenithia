@@ -1,78 +1,66 @@
 import { darkBlue } from "App";
 import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
 import { currencyFromCents, valueFormatterNoCurrency } from "lib/currency";
-import lodash from "lodash";
 import { DateTime } from "luxon";
 import React from "react";
+
+const getPlaceholderData = () => ({
+  id: "monthlyRevenue",
+  color: darkBlue,
+  data: [
+    { x: "plane", y: 175 },
+    { x: "helicopter", y: 141 },
+    { x: "boat", y: 298 }
+  ]
+});
 
 export const useRevenueData = () => {
   const [isPlaceholderData, setIsPlaceholderData] = React.useState(false);
   const { projects, setProjects } = useGetProjectsFormatted();
 
   const profitableEntries = React.useMemo(() => {
-    const profitableProjects = projects.filter((entry) =>
-      entry.time_tracker
-        ? entry?.time_tracker?.length > 0
-        : entry.time_tracker === undefined
-    );
     const currentYear = new Date().getFullYear();
-    return profitableProjects.filter(
-      (entry) => DateTime.fromISO(entry.finish_date).year === currentYear
-    );
+    return projects
+      .filter((entry) =>
+        entry.time_tracker
+          ? entry?.time_tracker?.length > 0
+          : entry.time_tracker === undefined
+      )
+      .filter((entry) => {
+        const date = DateTime.fromISO(entry.finish_date);
+        return date.isValid && date.year === currentYear;
+      })
+      .sort((a, b) => a.finish_date.localeCompare(b.finish_date));
   }, [projects]);
 
   const result = React.useMemo(() => {
-    const sortedEntries = lodash.sortBy(profitableEntries, "finish_date");
-    const groupedByLogs = sortedEntries.reduce(
-      (entryMap, e) =>
-        entryMap.set(DateTime.fromISO(e.finish_date).monthLong, [
-          ...(entryMap.get(DateTime.fromISO(e.finish_date).monthLong) || []),
-          e
-        ]),
-      new Map()
-    );
+    const monthlyTotals: Record<string, number> = {};
 
-    const totalData: { x: string; y: number }[] = [];
-    groupedByLogs.forEach((value, key) => {
-      const initialValue = 0;
-      const total = value.reduce(
-        (accumulator: number, currentValue: { estimated_earnings: number }) =>
-          accumulator + (currentValue?.estimated_earnings || 0),
-        initialValue
-      );
-      const obj = {
-        x: key,
-        y: Number(valueFormatterNoCurrency.format(currencyFromCents(total)))
-      };
-      totalData.push(obj);
+    profitableEntries.forEach((entry) => {
+      const date = DateTime.fromISO(entry.finish_date);
+      if (!date.isValid) {
+        return;
+      }
+
+      const month = date.monthLong;
+      if (month) {
+        monthlyTotals[month] =
+          (monthlyTotals[month] || 0) + (entry?.estimated_earnings || 0);
+      }
     });
+
+    const totalData = Object.entries(monthlyTotals).map(([month, total]) => ({
+      x: month,
+      y: Number(valueFormatterNoCurrency.format(currencyFromCents(total)))
+    }));
 
     const containsData = totalData.length > 0;
     setIsPlaceholderData(!containsData);
 
-    const result = {
-      id: "monthlyRevenue",
-      color: darkBlue,
-      data: containsData
-        ? totalData
-        : [
-            {
-              x: "plane",
-              y: 175
-            },
-            {
-              x: "helicopter",
-              y: 141
-            },
-            {
-              x: "boat",
-              y: 298
-            }
-          ]
-    };
-
-    return { ...result };
-  }, [projects]);
+    return containsData
+      ? { id: "monthlyRevenue", color: darkBlue, data: totalData }
+      : getPlaceholderData();
+  }, [profitableEntries]);
 
   return { data: projects, setData: setProjects, result, isPlaceholderData };
 };
