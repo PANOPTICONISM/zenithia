@@ -45,13 +45,9 @@ const Projects = () => {
         currency: newRow.currency || navigator.language,
         client_id: newRow.client_id === "" ? null : newRow.client_id
       };
-      updateProject(user.token, oldRow.id, row)
-        .then(() => {
-          setRows((current) =>
-            current.map((row) => (row.id === oldRow.id ? newRow : row))
-          );
-        })
-        .catch((error) => toast.error(error));
+      updateProject(user.token, oldRow.id, row).catch((error) =>
+        toast.error(error)
+      );
       return {
         ...newRow,
         base_price: basePrice

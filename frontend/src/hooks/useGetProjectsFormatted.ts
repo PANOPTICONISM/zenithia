@@ -20,7 +20,9 @@ export type ProjectFormattedProps = {
 };
 
 export const useGetProjectsFormatted = () => {
-  const [projects, setProjects] = React.useState<ProjectFormattedProps[]>([]);
+  const [projects, setProjects] = React.useState<
+    ProjectFormattedProps[] | undefined
+  >(undefined);
 
   const [user] = useUserData();
 
@@ -40,7 +42,7 @@ export const useGetProjectsFormatted = () => {
             base_price: project.base_price,
             revenue: project.revenue,
             tracked_time_in_milliseconds: finalizeTotals([project])?.[0]
-              .hoursTotal,
+              .totalMilliseconds,
             estimated_earnings: finalizeTotals([project])?.[0].totalPrice,
             time_tracker:
               project.time_tracker?.[0]?.id === null ? [] : project.time_tracker
