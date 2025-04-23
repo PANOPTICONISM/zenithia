@@ -8,16 +8,18 @@ import { useRevenueData } from "./YearlyStats.utils";
 const YearlyStats = () => {
   const { result, isPlaceholderData } = useRevenueData();
 
-  if (!result) {
-    return <Loading />;
-  }
-
   return (
     <Main title="Yearly Revenue">
-      <PlaceholderDataAlert isPlaceholderData={isPlaceholderData} />
-      <Box height="500px">
-        <PieChart result={result} />
-      </Box>
+      {result ? (
+        <>
+          <PlaceholderDataAlert isPlaceholderData={isPlaceholderData} />
+          <Box height="500px">
+            <PieChart result={result} />
+          </Box>
+        </>
+      ) : (
+        <Loading />
+      )}
     </Main>
   );
 };
