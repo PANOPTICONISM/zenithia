@@ -30,7 +30,7 @@ export const useRevenueData = () => {
 
   const profitableEntries = React.useMemo(
     () =>
-      projects.filter((entry) =>
+      projects?.filter((entry) =>
         entry.time_tracker
           ? entry?.time_tracker?.length > 0
           : entry.time_tracker === undefined
@@ -39,6 +39,10 @@ export const useRevenueData = () => {
   );
 
   const result = React.useMemo(() => {
+    if (!profitableEntries) {
+      return;
+    }
+
     const yearlyTotals: Record<number, number> = {};
 
     profitableEntries.forEach((entry) => {

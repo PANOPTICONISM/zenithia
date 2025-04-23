@@ -20,7 +20,9 @@ export type ProjectFormattedProps = {
 };
 
 export const useGetProjectsFormatted = () => {
-  const [projects, setProjects] = React.useState<ProjectFormattedProps[]>([]);
+  const [projects, setProjects] = React.useState<
+    ProjectFormattedProps[] | undefined
+  >(undefined);
 
   const [user] = useUserData();
 
