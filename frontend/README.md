@@ -9,5 +9,5 @@ REACT_APP_API_URL=http://localhost:4000
 REACT_APP_RECAPTCHA_SITE_KEY=
 ```
 
-3. `npm start`
-4. Visit <http://localhost:3000>.
+3. `npm run dev`
+4. Visit <http://localhost:5173>.

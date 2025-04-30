@@ -11,22 +11,22 @@ import {
   Select,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { useUserData } from "contexts/UserProvider";
 import { DateTime } from "luxon";
-import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
 import {
   deleteTask,
   ProjectTaskProps,
   TaskProps,
-  updateTask
+  updateTask,
 } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
+import { useUserData } from "../../../contexts/UserProvider";
+import { ColumnType } from "../../../pages/Tasks/Tasks";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
 type EditableTask = {
@@ -43,7 +43,7 @@ const Task = ({
   task,
   index,
   setColumns,
-  projects
+  projects,
 }: {
   task: TaskProps;
   index: number;
@@ -87,12 +87,12 @@ const Task = ({
       importance: editableTask.importance,
       deadline: editableTask.deadline || "",
       column_id: editableTask.column_id,
-      project_id: editableTask.project_id
+      project_id: editableTask.project_id,
     };
 
     const visibleTask = {
       ...updatedTask,
-      project: editableTask.project
+      project: editableTask.project,
     };
     updateTask(user.token, editableTask.id, updatedTask)
       .then(() => {
@@ -123,14 +123,16 @@ const Task = ({
             background: lightBlue,
             padding: "24px",
             position: "relative",
-            ...provided.draggableProps.style
+            ...provided.draggableProps.style,
           }}
-          onDoubleClick={() => setIsEdit(true)}>
+          onDoubleClick={() => setIsEdit(true)}
+        >
           {isEdit ? (
             <>
               <IconButton
                 onClick={() => setIsEdit(false)}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}>
+                sx={{ position: "absolute", right: "4px", top: "4px" }}
+              >
                 <CloseIcon fontSize="small" />
               </IconButton>
               <Stack spacing={2}>
@@ -142,7 +144,7 @@ const Task = ({
                   onChange={(event) =>
                     setEditableTask((current) => ({
                       ...current,
-                      title: event.target.value
+                      title: event.target.value,
                     }))
                   }
                 />
@@ -150,7 +152,7 @@ const Task = ({
                   <LocalizationProvider dateAdapter={AdapterLuxon}>
                     <DatePicker
                       slotProps={{
-                        textField: { size: "small", fullWidth: true }
+                        textField: { size: "small", fullWidth: true },
                       }}
                       label="Deadline"
                       value={
@@ -161,7 +163,7 @@ const Task = ({
                       onChange={(value) => {
                         setEditableTask((current) => ({
                           ...current,
-                          deadline: value ? value.toISO() : null
+                          deadline: value ? value.toISO() : null,
                         }));
                       }}
                     />
@@ -175,9 +177,10 @@ const Task = ({
                     onChange={(event) =>
                       setEditableTask((current) => ({
                         ...current,
-                        importance: event.target.value
+                        importance: event.target.value,
                       }))
-                    }>
+                    }
+                  >
                     <MenuItem value="personal">Blank</MenuItem>
                     <MenuItem value="low">Low</MenuItem>
                     <MenuItem value="medium">Medium</MenuItem>
@@ -200,7 +203,7 @@ const Task = ({
                     setEditableTask((current) => ({
                       ...current,
                       project: newValue,
-                      project_id: newValue?.id || null
+                      project_id: newValue?.id || null,
                     }))
                   }
                 />
@@ -215,7 +218,8 @@ const Task = ({
             <>
               <IconButton
                 onClick={handleDelete}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}>
+                sx={{ position: "absolute", right: "4px", top: "4px" }}
+              >
                 <CloseIcon sx={{ width: "12px", height: "12px" }} />
               </IconButton>
               <Typography fontWeight={700} fontSize="16px">
@@ -226,7 +230,8 @@ const Task = ({
                 justifyContent="space-between"
                 alignItems="center"
                 paddingTop="16px"
-                flexWrap="wrap">
+                flexWrap="wrap"
+              >
                 <DateAndLevel
                   deadline={DateTime.fromISO(task.deadline)
                     .toFormat("MMMM, dd")
@@ -236,7 +241,8 @@ const Task = ({
                 <Typography
                   fontWeight={100}
                   fontSize="14px"
-                  sx={{ marginLeft: "auto" }}>
+                  sx={{ marginLeft: "auto" }}
+                >
                   {task?.project?.title}
                 </Typography>
               </Stack>

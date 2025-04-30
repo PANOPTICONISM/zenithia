@@ -1,14 +1,14 @@
 import { DataGridProps, GridFilterModel } from "@mui/x-data-grid";
 import * as React from "react";
+import { useLocation } from "react-router";
 import { useSearchBar } from "../../contexts/SearchBarProvider";
-import { useLocation } from "react-router-dom";
 
 export const useFiltering = ({ columnField }: { columnField: string }) => {
   const [search, setSearch] = useSearchBar();
   const { pathname } = useLocation();
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: []
+    items: [],
   });
 
   React.useEffect(() => {
@@ -20,7 +20,7 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
         filters.push({
           field: columnField,
           operator: "contains",
-          value: search
+          value: search,
         });
       }
       return { ...model, items: filters };
@@ -52,6 +52,6 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
 
   return {
     filterModel,
-    handleFilterChange
+    handleFilterChange,
   };
 };

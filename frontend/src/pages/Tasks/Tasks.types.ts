@@ -1,4 +1,4 @@
-import { TaskProps } from "api/tasks";
+import { TaskProps } from "../../api/tasks";
 
 export type ColumnProps = {
   id: string;

@@ -1,6 +1,5 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Grid } from "@mui/material";
-import { useUserData } from "contexts/UserProvider";
 import lodash from "lodash";
 import React from "react";
 import { toast } from "react-toastify";
@@ -9,17 +8,18 @@ import {
   getTasks,
   ProjectTaskProps,
   TaskProps,
-  updateTask
+  updateTask,
 } from "../../api/tasks";
 import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
 import Main from "../../components/Main/Main";
+import { useUserData } from "../../contexts/UserProvider";
 
 export type ColumnType = "TO DO" | "IN PROGRESS" | "DONE";
 
 export const COLUMNS = {
   TO_DO: "TO DO",
   IN_PROGRESS: "IN PROGRESS",
-  DONE: "DONE"
+  DONE: "DONE",
 } as const;
 
 const Tasks = () => {
@@ -37,7 +37,7 @@ const Tasks = () => {
       }
       const [tasksRes, projectsRes] = await Promise.all([
         getTasks(user.token),
-        getProjects(user.token, ["id", "title"])
+        getProjects(user.token, ["id", "title"]),
       ]);
 
       const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
@@ -45,7 +45,7 @@ const Tasks = () => {
       const jointArrays = new Map(
         Object.values(COLUMNS).map((column) => [
           column,
-          grouppedTasks[column] || []
+          grouppedTasks[column] || [],
         ])
       );
 
@@ -83,7 +83,7 @@ const Tasks = () => {
       });
 
       updateTask(user.token, draggableId, {
-        column_id: destination.droppableId as ColumnType
+        column_id: destination.droppableId as ColumnType,
       }).catch((error) => toast.error("Update single field: " + error));
     } else {
       const copiedItems = Array.from(sourceColumn);

@@ -1,13 +1,17 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+import { deepOrange, lightBlue } from "@mui/material/colors";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
-import { ClientId, ClientProps, deleteClient, getClients } from "api/clients";
-import { lightBlue } from "App";
-import StatusTag from "components/StatusTag/StatusTag";
-import { useUserData } from "contexts/UserProvider";
 import React from "react";
 import { toast } from "react-toastify";
+import {
+  ClientId,
+  ClientProps,
+  deleteClient,
+  getClients,
+} from "../../api/clients";
+import StatusTag from "../../components/StatusTag/StatusTag";
+import { useUserData } from "../../contexts/UserProvider";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<(ClientProps & ClientId)[]>([]);
@@ -53,20 +57,21 @@ export const useColumnsAndRows = () => {
               bgcolor: deepOrange[500],
               width: 26,
               height: 26,
-              fontSize: "12px"
+              fontSize: "12px",
             }}
-            alt={value}>
+            alt={value}
+          >
             {value?.slice(0, 1)}
           </Avatar>
           <Typography fontSize="14px">{value}</Typography>
         </Stack>
-      )
+      ),
     },
     {
       field: "occupation",
       headerName: "Occupation",
       minWidth: 120,
-      editable: true
+      editable: true,
     },
     {
       field: "status",
@@ -85,13 +90,13 @@ export const useColumnsAndRows = () => {
         }
 
         return <StatusTag color="success" value={value} />;
-      }
+      },
     },
     {
       field: "location",
       headerName: "Location",
       minWidth: 100,
-      editable: true
+      editable: true,
     },
     {
       field: "company",
@@ -104,25 +109,26 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
+              borderRadius: "4px",
+            }}
+          >
             {value}
           </Box>
         ),
-      editable: true
+      editable: true,
     },
     {
       field: "email",
       headerName: "Email",
       minWidth: 100,
       flex: 1,
-      editable: true
+      editable: true,
     },
     {
       field: "phone_number",
       headerName: "Phone-number",
       minWidth: 120,
-      editable: true
+      editable: true,
     },
     {
       field: "actions",
@@ -133,11 +139,12 @@ export const useColumnsAndRows = () => {
           onClick={deleteUser(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error">
+          color="error"
+        >
           Delete
         </Button>
-      )
-    }
+      ),
+    },
   ];
 
   return { columns, rows, setRows };

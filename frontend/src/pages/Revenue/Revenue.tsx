@@ -4,20 +4,20 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import TodayIcon from "@mui/icons-material/Today";
 import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, DataGridProps, GridFilterModel } from "@mui/x-data-grid";
-import { grey } from "App";
-import Main from "components/Main/Main";
-import { currencyToLocale } from "lib/currency";
 import React from "react";
+import { grey } from "../../App";
+import Main from "../../components/Main/Main";
+import { currencyToLocale } from "../../lib/currency";
 import {
   finalizeTotals,
   logsByTimeline,
-  useColumnsAndRows
+  useColumnsAndRows,
 } from "./Revenue.utils";
 
 export const EarningsTimeline = ({
   text,
   total,
-  icon
+  icon,
 }: {
   text: string;
   total: string;
@@ -30,7 +30,8 @@ export const EarningsTimeline = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center">
+      alignItems="center"
+    >
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>
@@ -43,7 +44,7 @@ export const EarningsTimeline = ({
 const SuggestionBox = ({
   title,
   tagline,
-  icon
+  icon,
 }: {
   title: string;
   tagline: string;
@@ -56,7 +57,8 @@ const SuggestionBox = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center">
+      alignItems="center"
+    >
       {icon}
       <Box>
         <Typography fontWeight={700}>{title}</Typography>
@@ -69,7 +71,7 @@ const SuggestionBox = ({
 const Revenue = () => {
   const { columns, rows, filteredData, setFilteredData } = useColumnsAndRows();
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: []
+    items: [],
   });
   const { totalMonthlySum, totalYearlySum } = logsByTimeline(rows);
 

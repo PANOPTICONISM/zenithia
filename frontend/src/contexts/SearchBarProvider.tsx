@@ -10,7 +10,7 @@ const SearchBarContext = React.createContext<SearchBarContextValues | null>(
 );
 
 export const SearchBarProvider = ({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) => {
@@ -19,7 +19,7 @@ export const SearchBarProvider = ({
   const value = React.useMemo(
     () => ({
       searchValue,
-      setSearchValue
+      setSearchValue,
     }),
     [searchValue]
   );

@@ -4,18 +4,22 @@ import {
   DialogActions,
   DialogContent,
   Stack,
-  TextField
+  TextField,
 } from "@mui/material";
-import { deleteCalendar, postCalendar, updateCalendar } from "api/calendar";
-import { darkBlue } from "App";
-import { useUserData } from "contexts/UserProvider";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import {
+  deleteCalendar,
+  postCalendar,
+  updateCalendar,
+} from "../../api/calendar";
+import { darkBlue } from "../../App";
+import { useUserData } from "../../contexts/UserProvider";
 
 export const EventAddModal = ({
   close,
-  selected
+  selected,
 }: {
   close: () => unknown;
   selected: DateSelectArg;
@@ -38,7 +42,7 @@ export const EventAddModal = ({
       const eventCalendar = {
         title,
         start: startDate,
-        end: endDate
+        end: endDate,
       };
 
       calendarApi.addEvent(eventCalendar);
@@ -66,7 +70,8 @@ export const EventAddModal = ({
         <Button
           variant="contained"
           sx={{ background: darkBlue }}
-          onClick={() => handleAddEvent(close)}>
+          onClick={() => handleAddEvent(close)}
+        >
           Confirm
         </Button>
       </DialogActions>
@@ -76,7 +81,7 @@ export const EventAddModal = ({
 
 export const EventUpdateModal = ({
   close,
-  selected
+  selected,
 }: {
   close: () => unknown;
   selected: EventClickArg;
@@ -89,7 +94,7 @@ export const EventUpdateModal = ({
       const eventCalendarUpdated = {
         title: title,
         start: selected.event.startStr,
-        end: selected.event.endStr
+        end: selected.event.endStr,
       };
 
       const calendarApi = selected.view.calendar;
@@ -141,14 +146,16 @@ export const EventUpdateModal = ({
             variant="contained"
             sx={{ background: darkBlue }}
             fullWidth
-            onClick={() => handleUpdateEvent(close)}>
+            onClick={() => handleUpdateEvent(close)}
+          >
             Update
           </Button>
           <Button
             variant="outlined"
             color="error"
             fullWidth
-            onClick={() => handleDeleteEvent(close)}>
+            onClick={() => handleDeleteEvent(close)}
+          >
             Delete
           </Button>
         </Stack>

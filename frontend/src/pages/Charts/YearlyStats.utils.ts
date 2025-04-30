@@ -1,27 +1,27 @@
-import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { currencyFromCents } from "lib/currency";
 import { DateTime } from "luxon";
 import React from "react";
+import { useGetProjectsFormatted } from "../../hooks/useGetProjectsFormatted";
+import { currencyFromCents } from "../../lib/currency";
 
 const PLACEHOLDER_DATA = [
   {
     id: "php",
     label: "php",
     value: 202,
-    color: "hsl(306, 70%, 50%)"
+    color: "hsl(306, 70%, 50%)",
   },
   {
     id: "java",
     label: "java",
     value: 244,
-    color: "hsl(343, 70%, 50%)"
+    color: "hsl(343, 70%, 50%)",
   },
   {
     id: "hack",
     label: "hack",
     value: 369,
-    color: "hsl(87, 70%, 50%)"
-  }
+    color: "hsl(87, 70%, 50%)",
+  },
 ];
 
 export const useRevenueData = () => {
@@ -56,7 +56,7 @@ export const useRevenueData = () => {
         id: year,
         label: year,
         value: Number(currencyFromCents(total).toFixed(2)),
-        color: "red"
+        color: "red",
       })
     );
 
@@ -70,6 +70,6 @@ export const useRevenueData = () => {
     data: projects,
     setData: setProjects,
     result,
-    isPlaceholderData
+    isPlaceholderData,
   };
 };

@@ -5,7 +5,7 @@ import {
   GridViewOutlined,
   HourglassBottomOutlined,
   InsightsOutlined,
-  TrackChangesOutlined
+  TrackChangesOutlined,
 } from "@mui/icons-material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ContactsIcon from "@mui/icons-material/Contacts";
@@ -21,17 +21,17 @@ import {
   SxProps,
   Toolbar,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import { useUserData } from "contexts/UserProvider";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { black, darkBlue, highlight, white, yellow } from "../../App";
 import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import { useUserData } from "../../contexts/UserProvider";
 import { Logo } from "../../icons/logo";
 import {
   Drawer,
@@ -39,13 +39,13 @@ import {
   ListLink,
   Subtitle,
   drawerWidth,
-  drawerWidthMobile
+  drawerWidthMobile,
 } from "./Sidebar.utils";
 
 const BurgerMenu = ({
   icon,
   color,
-  sx
+  sx,
 }: {
   icon: React.ReactNode;
   edge?: "start";
@@ -60,7 +60,8 @@ const BurgerMenu = ({
       color={color}
       onClick={() => setOpen(!open)}
       sx={{ borderRadius: 0, ...sx }}
-      disableRipple>
+      disableRipple
+    >
       {icon}
     </IconButton>
   );
@@ -83,8 +84,9 @@ const Username = ({ open }: { open: boolean }) => {
       sx={{
         border: `1px solid ${highlight}`,
         padding: "20px",
-        marginTop: "16px"
-      }}>
+        marginTop: "16px",
+      }}
+    >
       <Avatar sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: "12px" }}>
         {user?.username?.slice(0, 1).toUpperCase()}
       </Avatar>
@@ -211,10 +213,12 @@ export default function Sidebar() {
           <SwipeableDrawer
             open={open}
             onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}>
+            onClose={() => setOpen(false)}
+          >
             <Stack
               sx={{ background: darkBlue, height: "100%", padding: "12px" }}
-              justifyContent="space-between">
+              justifyContent="space-between"
+            >
               <Navigation open={open} />
               <Username open={open} />
             </Stack>
@@ -229,8 +233,9 @@ export default function Sidebar() {
                 open ? drawerWidth : drawerWidthMobile
               }px))`,
               background: "transparent",
-              boxShadow: "none"
-            }}>
+              boxShadow: "none",
+            }}
+          >
             <Toolbar>
               <BurgerMenu
                 sx={{
@@ -240,7 +245,7 @@ export default function Sidebar() {
                   top: "18px",
                   zIndex: "101",
                   background: white,
-                  color: black
+                  color: black,
                 }}
                 icon={open ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}
               />

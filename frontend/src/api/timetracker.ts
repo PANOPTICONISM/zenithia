@@ -1,8 +1,8 @@
-import { AxiosError } from "axios";
-import { requester } from "./axios";
 import { GridRowId } from "@mui/x-data-grid";
+import { AxiosError } from "axios";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
+import { requester } from "./axios";
 
 type TimeTrackerBaseProps = {
   date: string;
@@ -26,8 +26,8 @@ export const getTimeTracker = async (
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as TimeTrackerProps[];
   } catch (err) {
@@ -46,8 +46,8 @@ export const postTimeTracker = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -74,8 +74,8 @@ export const updateTimeTracker = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -94,8 +94,8 @@ export const deleteTimeTracker = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {

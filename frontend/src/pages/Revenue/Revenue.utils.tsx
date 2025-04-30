@@ -1,15 +1,15 @@
 import { Box } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { lightBlue } from "App";
+import { DateTime, Duration } from "luxon";
+import React from "react";
+import { lightBlue } from "../../App";
 import {
   ProjectFormattedProps,
-  useGetProjectsFormatted
-} from "hooks/useGetProjectsFormatted";
-import { currencyToLocale } from "lib/currency";
-import { dateFromISOToLocaleString } from "lib/dates";
-import { DateTime, Duration } from "luxon";
-import { ProjectProps } from "pages/Projects/Projects.types";
-import React from "react";
+  useGetProjectsFormatted,
+} from "../../hooks/useGetProjectsFormatted";
+import { currencyToLocale } from "../../lib/currency";
+import { dateFromISOToLocaleString } from "../../lib/dates";
+import { ProjectProps } from "../Projects/Projects.types";
 
 export const useColumnsAndRows = () => {
   const { projects } = useGetProjectsFormatted();
@@ -28,7 +28,7 @@ export const useColumnsAndRows = () => {
       field: "id",
       headerName: "ID",
       width: 85,
-      valueFormatter: ({ value }) => value?.slice(0, 8)
+      valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: "title",
@@ -45,18 +45,19 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
+              borderRadius: "4px",
+            }}
+          >
             {value}
           </Box>
         );
-      }
+      },
     },
     {
       field: "client",
       headerName: "Client",
       minWidth: 120,
-      flex: 1
+      flex: 1,
     },
     {
       field: "start_date",
@@ -64,7 +65,7 @@ export const useColumnsAndRows = () => {
       minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
-      type: "date"
+      type: "date",
     },
     {
       field: "finish_date",
@@ -72,7 +73,7 @@ export const useColumnsAndRows = () => {
       minWidth: 100,
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
-      type: "date"
+      type: "date",
     },
     {
       field: "base_price",
@@ -80,13 +81,13 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       flex: 1,
       type: "number",
-      valueFormatter: ({ value }) => currencyToLocale(value)
+      valueFormatter: ({ value }) => currencyToLocale(value),
     },
     {
       field: "revenue",
       headerName: "Revenue",
       minWidth: 80,
-      flex: 1
+      flex: 1,
     },
     {
       field: "tracked_time_in_milliseconds",
@@ -94,15 +95,15 @@ export const useColumnsAndRows = () => {
       minWidth: 80,
       flex: 1,
       valueFormatter: ({ value }) =>
-        Duration.fromMillis(value).toFormat("hh:mm")
+        Duration.fromMillis(value).toFormat("hh:mm"),
     },
     {
       field: "estimated_earnings",
       headerName: "Total",
       minWidth: 120,
       flex: 1,
-      valueFormatter: ({ value }) => currencyToLocale(value)
-    }
+      valueFormatter: ({ value }) => currencyToLocale(value),
+    },
   ];
 
   return { columns, rows, setRows, filteredData, setFilteredData };

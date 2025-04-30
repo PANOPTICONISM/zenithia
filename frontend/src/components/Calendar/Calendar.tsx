@@ -3,7 +3,7 @@ import {
   DateSelectArg,
   EventApi,
   EventClickArg,
-  EventSourceInput
+  EventSourceInput,
 } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -11,13 +11,13 @@ import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { Box, Stack, useMediaQuery } from "@mui/material";
-import { CalendarProps, getCalendar } from "api/calendar";
-import { useDialogEnqueue } from "contexts/DialogProvider";
-import { useUserData } from "contexts/UserProvider";
 import { debounce } from "lodash";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import { CalendarProps, getCalendar } from "../../api/calendar";
+import { useDialogEnqueue } from "../../contexts/DialogProvider";
+import { useUserData } from "../../contexts/UserProvider";
 import { EventAddModal, EventUpdateModal } from "./Modals";
 
 const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
@@ -52,8 +52,8 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
         title: "Add event",
         overwriteContentAndActions: (
           <EventAddModal close={close} selected={selected} />
-        )
-      })
+        ),
+      }),
     });
   }, []);
 
@@ -63,8 +63,8 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
         title: "Edit Event",
         overwriteContentAndActions: (
           <EventUpdateModal close={close} selected={selected} />
-        )
-      })
+        ),
+      }),
     });
   }, []);
 
@@ -99,7 +99,7 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
             dayGridPlugin,
             timeGridPlugin,
             listPlugin,
-            interactionPlugin
+            interactionPlugin,
           ]}
           initialView={
             tabletBreakpoint || isDashboard ? "listMonth" : "dayGridMonth"
@@ -111,7 +111,7 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
                   center: !tabletBreakpoint ? "title" : "",
                   right: tabletBreakpoint
                     ? "prev,next"
-                    : "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+                    : "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
                 }
               : false
           }

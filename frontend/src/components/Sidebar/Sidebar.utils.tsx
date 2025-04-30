@@ -1,14 +1,14 @@
-import { styled, Theme, CSSObject } from "@mui/material/styles";
 import {
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography
+  Typography,
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
 import MuiDrawer from "@mui/material/Drawer";
+import { CSSObject, styled, Theme } from "@mui/material/styles";
 import React from "react";
+import { Link, useLocation } from "react-router";
 import { darkBlue, highlight, white } from "../../App";
 
 export const drawerWidth = 260;
@@ -21,11 +21,11 @@ const openedMixin = (theme: Theme): CSSObject => ({
   padding: "30px",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen
+    duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
   display: "flex",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -34,42 +34,42 @@ const closedMixin = (theme: Theme): CSSObject => ({
   padding: "30px",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen
+    duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
   display: "flex",
   justifyContent: "space-between",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: drawerWidthMobile + "px"
-  }
+    width: drawerWidthMobile + "px",
+  },
 });
 
 export const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   padding: theme.spacing(0, 1),
-  minHeight: "100px"
+  minHeight: "100px",
 }));
 
 export const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open"
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   ...(open && {
     ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme)
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
     ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme)
-  })
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
 }));
 
 export const ListLink = ({
   open,
   text,
   icon,
-  path
+  path,
 }: {
   open: boolean;
   text: string;
@@ -88,14 +88,16 @@ export const ListLink = ({
             px: 2.5,
             color: white,
             background: path === pathname ? highlight : "inherit",
-            borderRadius: "4px"
-          }}>
+            borderRadius: "4px",
+          }}
+        >
           <ListItemIcon
             sx={{
               minWidth: 0,
               mr: open ? 3 : "auto",
-              justifyContent: "center"
-            }}>
+              justifyContent: "center",
+            }}
+          >
             {icon}
           </ListItemIcon>
           <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />

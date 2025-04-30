@@ -1,21 +1,21 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUserData } from "contexts/UserProvider";
-import { currencyToCents } from "lib/currency";
-import { currentDate, dateFromJSDateToISOForApi } from "lib/dates";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { postProject, updateProject } from "../../api/projects";
 import Main from "../../components/Main/Main";
 import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
+import { useUserData } from "../../contexts/UserProvider";
+import { currencyToCents } from "../../lib/currency";
+import { currentDate, dateFromJSDateToISOForApi } from "../../lib/dates";
 import { ProjectProps } from "./Projects.types";
 import { useColumnsAndRows } from "./Projects.utils";
 
 const Projects = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({
-    columnField: "title"
+    columnField: "title",
   });
 
   const [user] = useUserData();
@@ -43,14 +43,14 @@ const Projects = () => {
         revenue: newRow.revenue,
         base_price: basePrice,
         currency: newRow.currency || navigator.language,
-        client_id: newRow.client_id === "" ? null : newRow.client_id
+        client_id: newRow.client_id === "" ? null : newRow.client_id,
       };
       updateProject(user.token, oldRow.id, row).catch((error) =>
         toast.error(error)
       );
       return {
         ...newRow,
-        base_price: basePrice
+        base_price: basePrice,
       };
     },
     [user]
@@ -73,7 +73,7 @@ const Projects = () => {
       revenue: "Hourly",
       base_price: null,
       currency: null,
-      client_id: null
+      client_id: null,
     };
 
     postProject(user.token, obj)
@@ -86,7 +86,8 @@ const Projects = () => {
       title="Projects"
       handleClick={addProject}
       buttonText="Add project"
-      isSearch>
+      isSearch
+    >
       <Box sx={{ height: 620, width: "100%" }}>
         <DataGrid
           columns={columns}

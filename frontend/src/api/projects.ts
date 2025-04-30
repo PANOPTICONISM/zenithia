@@ -17,9 +17,9 @@ export const getProjects = async <
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
+        Authorization: "Bearer " + token,
       },
-      params: { attributes }
+      params: { attributes },
     });
     return response.data;
   } catch (err) {
@@ -38,8 +38,8 @@ export const postProject = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -59,8 +59,8 @@ export const updateProject = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {
@@ -79,8 +79,8 @@ export const deleteProject = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return response.data as string;
   } catch (err) {

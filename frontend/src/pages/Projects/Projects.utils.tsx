@@ -1,15 +1,15 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button } from "@mui/material";
 import { GridColDef, GridEditInputCell, GridRowId } from "@mui/x-data-grid";
-import { ClientId, ClientProps, getClients } from "api/clients";
-import StatusTag from "components/StatusTag/StatusTag";
-import { useUserData } from "contexts/UserProvider";
-import { currencyFromCents, currencyToLocale } from "lib/currency";
-import { dateFromISOToLocaleString } from "lib/dates";
 import React from "react";
 import { toast } from "react-toastify";
+import { ClientId, ClientProps, getClients } from "../../api/clients";
 import { deleteProject, getProjects } from "../../api/projects";
 import { lightBlue } from "../../App";
+import StatusTag from "../../components/StatusTag/StatusTag";
+import { useUserData } from "../../contexts/UserProvider";
+import { currencyFromCents, currencyToLocale } from "../../lib/currency";
+import { dateFromISOToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "./Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -25,7 +25,7 @@ export const useColumnsAndRows = () => {
       }
       await Promise.all([
         getClients(user.token),
-        getProjects<ProjectProps[]>(user.token)
+        getProjects<ProjectProps[]>(user.token),
       ]).then(([clientsRes, projectsRes]) => {
         setClients(clientsRes);
         setRows(projectsRes);
@@ -54,13 +54,13 @@ export const useColumnsAndRows = () => {
     {
       field: "id",
       headerName: "ID",
-      valueFormatter: ({ value }) => value?.slice(0, 8)
+      valueFormatter: ({ value }) => value?.slice(0, 8),
     },
     {
       field: "title",
       headerName: "Title",
       minWidth: 100,
-      editable: true
+      editable: true,
     },
     {
       field: "client_id",
@@ -71,7 +71,7 @@ export const useColumnsAndRows = () => {
       editable: true,
       valueOptions: clients.map((client) => ({
         value: client.id,
-        label: client.name
+        label: client.name,
       })),
       valueGetter: (params) => params.value || "",
       renderCell: (params) =>
@@ -80,11 +80,12 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
+              borderRadius: "4px",
+            }}
+          >
             {params.formattedValue}
           </Box>
-        )
+        ),
     },
     {
       field: "start_date",
@@ -93,7 +94,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
-      editable: true
+      editable: true,
     },
     {
       field: "finish_date",
@@ -102,7 +103,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       valueFormatter: (params) => dateFromISOToLocaleString(params.value),
       type: "date",
-      editable: true
+      editable: true,
     },
     {
       field: "status",
@@ -122,7 +123,7 @@ export const useColumnsAndRows = () => {
         }
 
         return <StatusTag color="success" value={value} />;
-      }
+      },
     },
     {
       field: "base_price",
@@ -135,7 +136,7 @@ export const useColumnsAndRows = () => {
       renderEditCell: (params) => {
         const value = currencyFromCents(params.value);
         return <GridEditInputCell {...params} value={value} />;
-      }
+      },
     },
     {
       field: "revenue",
@@ -143,7 +144,7 @@ export const useColumnsAndRows = () => {
       minWidth: 80,
       type: "singleSelect",
       valueOptions: ["Hourly", "Project"],
-      editable: true
+      editable: true,
     },
     {
       field: "actions",
@@ -154,11 +155,12 @@ export const useColumnsAndRows = () => {
           onClick={deleteEntry(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error">
+          color="error"
+        >
           Delete
         </Button>
-      )
-    }
+      ),
+    },
   ];
 
   return { columns, rows, setRows };

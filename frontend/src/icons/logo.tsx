@@ -6,7 +6,7 @@ export const Logo = ({
   background,
   sx,
   width,
-  height
+  height,
 }: {
   color: string;
   background?: string;
@@ -21,7 +21,8 @@ export const Logo = ({
         height={height || 68}
         viewBox="0 0 92 68"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg">
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <g clipPath="url(#clip0_319_7530)">
           <path
             d="M23.83 35.02C18.76 35.02 14.73 39.05 14.73 44.12C14.73 49.19 18.76 53.22 23.83 53.22C28.9 53.22 32.93 49.19 32.93 44.12C32.93 39.05 28.9 35.02 23.83 35.02ZM23.83 50.62C20.19 50.62 17.33 47.76 17.33 44.12C17.33 40.48 20.19 37.62 23.83 37.62C27.47 37.62 30.33 40.48 30.33 44.12C30.33 47.76 27.47 50.62 23.83 50.62Z"

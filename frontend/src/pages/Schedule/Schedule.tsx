@@ -1,5 +1,5 @@
-import Calendar from "components/Calendar/Calendar";
-import Main from "components/Main/Main";
+import Calendar from "../../components/Calendar/Calendar";
+import Main from "../../components/Main/Main";
 
 const Schedule = () => {
   return (
