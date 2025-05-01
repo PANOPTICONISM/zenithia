@@ -104,7 +104,13 @@ const Tasks = () => {
         <Grid container spacing={2}>
           {[...columns.entries()].map(([key, entries]) => {
             return (
-              <Grid item key={key} xs={12} lg={4}>
+              <Grid
+                size={{
+                  xs: 12,
+                  lg: 4,
+                }}
+                key={key}
+              >
                 <KanbanColumn
                   columnName={key}
                   entries={entries}
