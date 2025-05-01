@@ -1,4 +1,4 @@
-import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import type { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import {
   Button,
   DialogActions,
