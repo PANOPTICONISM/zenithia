@@ -89,7 +89,7 @@ const Dashboard = () => {
         gap={2}
         padding="24px 0">
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
+          gridColumn={desktopBreakpoint ? "1/5" : "span 12"}
           gridRow={desktopBreakpoint ? "1/2" : "auto"}>
           <Stack spacing={2} height="100%">
             <EarningsTimeline
@@ -105,13 +105,13 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
+          gridColumn={desktopBreakpoint ? "5/9" : "span 12"}
           gridRow={desktopBreakpoint ? "1/2" : "auto"}>
           <Calendar isDashboard />
         </Box>
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
-          gridRow={desktopBreakpoint ? "1/4" : "auto"}>
+          gridColumn={desktopBreakpoint ? "9/-1" : "span 12"}
+          gridRow={desktopBreakpoint ? "1/5" : "auto"}>
           <Stack
             sx={{
               border: `1px solid ${grey}`,

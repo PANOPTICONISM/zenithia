@@ -57,6 +57,7 @@ const SuggestionBox = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
+      flex={1}
       alignItems="center">
       {icon}
       <Box>
@@ -163,14 +164,12 @@ const Revenue = () => {
           icon={<SavingsIcon sx={{ height: "100%", width: "70px" }} />}
         />
       </Stack>
-      <Box sx={{ height: 350, width: "100%" }}>
-        <DataGrid
-          columns={columns}
-          rows={rows}
-          filterModel={filterModel}
-          onFilterModelChange={handleFilterChange}
-        />
-      </Box>
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        filterModel={filterModel}
+        onFilterModelChange={handleFilterChange}
+      />
     </Main>
   );
 };
