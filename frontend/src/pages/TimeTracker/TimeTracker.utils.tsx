@@ -3,8 +3,6 @@ import NotStartedIcon from "@mui/icons-material/NotStarted";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import { Box, IconButton } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
-import { useUserData } from "contexts/UserProvider";
-import { dateFromISOToLocaleString } from "lib/dates";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
@@ -16,6 +14,8 @@ import {
   updateTimeTracker
 } from "../../api/timetracker";
 import { lightBlue } from "../../App";
+import { useUserData } from "../../contexts/UserProvider";
+import { dateFromISOToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "../Projects/Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -63,9 +63,9 @@ export const useColumnsAndRows = () => {
       });
       return () => clearInterval(interval);
     }
-  }, [isRunning, count]);
+  }, [isRunning, count, selectedId]);
 
-  const startWatch = (time: string, id: string) => {
+  const startWatch = (id: string) => {
     setCount(0);
     setSelectedId(id);
     setIsRunning(true);
@@ -122,7 +122,7 @@ export const useColumnsAndRows = () => {
       headerName: "Date",
       flex: 1,
       minWidth: 100,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
       editable: true
     },
@@ -131,8 +131,8 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       flex: 1,
       minWidth: 120,
-      valueFormatter: (params) =>
-        DateTime.fromISO(params.value)
+      valueFormatter: (value) =>
+        DateTime.fromISO(value)
           .toLocal()
           .toLocaleString(DateTime.TIME_WITH_SECONDS)
     },
@@ -141,9 +141,9 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       flex: 1,
       minWidth: 120,
-      valueFormatter: (params) =>
-        params.value
-          ? DateTime.fromISO(params.value)
+      valueFormatter: (value) =>
+        value
+          ? DateTime.fromISO(value)
               .toLocal()
               .toLocaleString(DateTime.TIME_WITH_SECONDS)
           : ""
@@ -153,7 +153,7 @@ export const useColumnsAndRows = () => {
       headerName: "Hours",
       flex: 1,
       minWidth: 100,
-      valueGetter: (params) =>
+      renderCell: (params) =>
         params.row.finish_time
           ? formatHours(params.row.finish_time, params.row.start_time)
           : ""
@@ -169,15 +169,15 @@ export const useColumnsAndRows = () => {
         value: project.id,
         label: project.title
       })),
-      valueGetter: (params) => params.value || "",
+      valueGetter: (value) => value || "",
       renderCell: (params) =>
         params.formattedValue && (
           <Box
             sx={{
               background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
+              padding: "0 10px"
+            }}
+          >
             {params.formattedValue}
           </Box>
         )
@@ -191,14 +191,13 @@ export const useColumnsAndRows = () => {
           <IconButton
             color="success"
             onClick={() =>
-              isRunning
-                ? stopWatch(row.start_time, row.id)
-                : startWatch(row.start_time, row.id)
+              isRunning ? stopWatch(row.start_time, row.id) : startWatch(row.id)
             }
             disabled={
               (row.finish_time !== null && selectedId !== row.id) ||
               (isRunning && row.id !== selectedId)
-            }>
+            }
+          >
             {isRunning && row.id === selectedId ? (
               <StopCircleIcon />
             ) : (

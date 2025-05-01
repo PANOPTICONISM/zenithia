@@ -1,7 +1,7 @@
-import { InputAdornment, TextField } from "@mui/material";
-import { useSearchBar } from "../../contexts/SearchBarProvider";
 import SearchIcon from "@mui/icons-material/Search";
+import { InputAdornment, TextField } from "@mui/material";
 import { darkBlue } from "../../App";
+import { useSearchBar } from "../../contexts/SearchBarProvider";
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useSearchBar();

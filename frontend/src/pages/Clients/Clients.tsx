@@ -1,12 +1,17 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { ClientId, ClientProps, postClient, updateClient } from "api/clients";
-import Main from "components/Main/Main";
-import { useFiltering } from "components/SearchBar/SearchBar.utils";
-import { useUserData } from "contexts/UserProvider";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import {
+  ClientId,
+  ClientProps,
+  postClient,
+  updateClient
+} from "../../api/clients";
+import Main from "../../components/Main/Main";
+import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
+import { useUserData } from "../../contexts/UserProvider";
 import { useColumnsAndRows } from "./Clients.utils";
 
 const Clients = () => {
@@ -74,7 +79,8 @@ const Clients = () => {
       title="Clients"
       handleClick={addUser}
       buttonText="Add client"
-      isSearch>
+      isSearch
+    >
       <Box sx={{ height: 620, width: "100%" }}>
         <DataGrid
           columns={columns}

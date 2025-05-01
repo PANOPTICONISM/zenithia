@@ -10,13 +10,13 @@ import {
   Typography,
   useMediaQuery
 } from "@mui/material";
-import { postLoginUser, signupUser } from "api/authentication";
-import { darkBlue, grey, highlight, white } from "App";
-import { useUserData } from "contexts/UserProvider";
-import { Logo } from "icons/logo";
 import React from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-toastify";
+import { postLoginUser, signupUser } from "../../api/authentication";
+import { darkBlue, grey, highlight, white } from "../../App";
+import { useUserData } from "../../contexts/UserProvider";
+import { Logo } from "../../icons/logo";
 
 const emailRegExp = new RegExp(
   `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$`
@@ -110,17 +110,20 @@ const Authentication = () => {
         padding: tabletBreakpoint ? "50px" : 0
       }}
       justifyContent="center"
-      alignItems="center">
+      alignItems="center"
+    >
       <Grid
         container
         sx={{
           height: tabletBreakpoint ? "auto" : "80%",
           width: tabletBreakpoint ? "auto" : "80%"
-        }}>
+        }}
+      >
         <Grid
-          item
-          xs={12}
-          md={6}
+          size={{
+            xs: 12,
+            md: 6
+          }}
           sx={{
             background: highlight,
             display: "flex",
@@ -128,26 +131,26 @@ const Authentication = () => {
             alignItems: "center",
             flexDirection: "column",
             padding: "50px 0"
-          }}>
+          }}
+        >
           <Logo color={white} background={highlight} width={180} height={180} />
-          <Typography
-            variant="h2"
-            fontFamily="'Bungee Outline', cursive"
-            color={grey}>
+          <Typography variant="h1" color={grey} fontWeight={300}>
             Zenithia
           </Typography>
         </Grid>
         <Grid
-          item
-          xs={12}
-          md={6}
+          size={{
+            xs: 12,
+            md: 6
+          }}
           sx={{
             backgroundImage: "url(/background-image.png)",
             backgroundRepeat: "no-repeat",
             backgroundColor: highlight,
             backgroundSize: "contain",
             backgroundPosition: "center"
-          }}>
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -158,20 +161,23 @@ const Authentication = () => {
               width: "100%",
               height: tabletBreakpoint ? "auto" : "100%",
               padding: tabletBreakpoint ? "50px 0" : "0"
-            }}>
+            }}
+          >
             <Typography
               component="h1"
               variant="h2"
               color={white}
               fontWeight={700}
-              fontFamily="'DM Sans', sans-serif">
+              fontFamily="'DM Sans', sans-serif"
+            >
               {isSignup ? "Sign up" : "Login"}
             </Typography>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1, color: white, padding: "0 60px" }}>
+              sx={{ mt: 1, color: white, padding: "0 60px" }}
+            >
               <TextField
                 variant="filled"
                 margin="normal"
@@ -208,7 +214,7 @@ const Authentication = () => {
               />
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || ""}
                 size="invisible"
                 style={{ margin: "10px 0" }}
               />
@@ -229,12 +235,13 @@ const Authentication = () => {
                   "&.Mui-disabled": {
                     background: "#474747"
                   }
-                }}>
+                }}
+              >
                 {isSignup ? "Create account" : "Login"}
               </Button>
               <Grid container justifyContent="end" marginTop="6px">
                 {isSignup ? (
-                  <Grid item>
+                  <Grid>
                     {"Have an account already? "}
                     <Link
                       onClick={() => setIsSignup(false)}
@@ -243,12 +250,13 @@ const Authentication = () => {
                         cursor: "pointer",
                         color: white,
                         textDecoration: "underline"
-                      }}>
+                      }}
+                    >
                       {"Login."}
                     </Link>
                   </Grid>
                 ) : (
-                  <Grid item>
+                  <Grid>
                     {"Don't have an account? "}
                     <Link
                       onClick={() => setIsSignup(true)}
@@ -257,7 +265,8 @@ const Authentication = () => {
                         cursor: "pointer",
                         color: white,
                         textDecoration: "underline"
-                      }}>
+                      }}
+                    >
                       {"Sign up."}
                     </Link>
                   </Grid>

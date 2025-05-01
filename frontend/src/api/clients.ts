@@ -1,7 +1,7 @@
+import type { GridRowId } from "@mui/x-data-grid";
 import { AxiosError } from "axios";
-import { requester } from "./axios";
-import { GridRowId } from "@mui/x-data-grid";
 import { ServerError } from "./api.types";
+import { requester } from "./axios";
 
 export type ClientId = {
   id: string;

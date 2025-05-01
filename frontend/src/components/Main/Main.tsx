@@ -1,10 +1,10 @@
-import React from "react";
-import Header from "../Header/Header";
 import { Box, useMediaQuery } from "@mui/material";
+import React from "react";
+import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import Header from "../Header/Header";
+import { HeaderProps } from "../Header/Header.types";
 import Sidebar from "../Sidebar/Sidebar";
 import { drawerWidth } from "../Sidebar/Sidebar.utils";
-import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
-import { HeaderProps } from "components/Header/Header.types";
 
 const Main = ({
   children,
@@ -31,8 +31,8 @@ const Main = ({
             ? { padding: "20px" }
             : {
                 width: open
-                  ? `calc(100% - (100px + ${drawerWidth}px))`
-                  : "calc(100% - 225px)",
+                  ? `calc(100% - (${drawerWidth}px))`
+                  : "calc(100% - 125px)",
                 padding: "50px"
               }
         }>

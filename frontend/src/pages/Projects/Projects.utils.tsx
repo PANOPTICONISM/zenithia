@@ -1,15 +1,15 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button } from "@mui/material";
 import { GridColDef, GridEditInputCell, GridRowId } from "@mui/x-data-grid";
-import { ClientId, ClientProps, getClients } from "api/clients";
-import StatusTag from "components/StatusTag/StatusTag";
-import { useUserData } from "contexts/UserProvider";
-import { currencyFromCents, currencyToLocale } from "lib/currency";
-import { dateFromISOToLocaleString } from "lib/dates";
 import React from "react";
 import { toast } from "react-toastify";
+import { ClientId, ClientProps, getClients } from "../../api/clients";
 import { deleteProject, getProjects } from "../../api/projects";
 import { lightBlue } from "../../App";
+import StatusTag from "../../components/StatusTag/StatusTag";
+import { useUserData } from "../../contexts/UserProvider";
+import { currencyFromCents, currencyToLocale } from "../../lib/currency";
+import { dateFromISOToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "./Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -54,7 +54,7 @@ export const useColumnsAndRows = () => {
     {
       field: "id",
       headerName: "ID",
-      valueFormatter: ({ value }) => value?.slice(0, 8)
+      valueFormatter: (value: string | undefined) => value?.slice(0, 8)
     },
     {
       field: "title",
@@ -73,15 +73,15 @@ export const useColumnsAndRows = () => {
         value: client.id,
         label: client.name
       })),
-      valueGetter: (params) => params.value || "",
+      valueGetter: (value) => value || "",
       renderCell: (params) =>
         params.formattedValue && (
           <Box
             sx={{
               background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
+              padding: "0 10px"
+            }}
+          >
             {params.formattedValue}
           </Box>
         )
@@ -91,7 +91,7 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
       editable: true
     },
@@ -100,7 +100,7 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
       editable: true
     },
@@ -131,7 +131,7 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       type: "number",
       editable: true,
-      valueFormatter: ({ value }) => currencyToLocale(value),
+      valueFormatter: (value) => currencyToLocale(value),
       renderEditCell: (params) => {
         const value = currencyFromCents(params.value);
         return <GridEditInputCell {...params} value={value} />;
@@ -148,13 +148,14 @@ export const useColumnsAndRows = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 135,
       renderCell: (params) => (
         <Button
           onClick={deleteEntry(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error">
+          color="error"
+        >
           Delete
         </Button>
       )

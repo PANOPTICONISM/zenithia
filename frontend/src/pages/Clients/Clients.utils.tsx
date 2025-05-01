@@ -1,13 +1,16 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+import { Avatar, Button, colors, Stack, Typography } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
-import { ClientId, ClientProps, deleteClient, getClients } from "api/clients";
-import { lightBlue } from "App";
-import StatusTag from "components/StatusTag/StatusTag";
-import { useUserData } from "contexts/UserProvider";
 import React from "react";
 import { toast } from "react-toastify";
+import {
+  ClientId,
+  ClientProps,
+  deleteClient,
+  getClients
+} from "../../api/clients";
+import StatusTag from "../../components/StatusTag/StatusTag";
+import { useUserData } from "../../contexts/UserProvider";
 
 export const useColumnsAndRows = () => {
   const [rows, setRows] = React.useState<(ClientProps & ClientId)[]>([]);
@@ -21,7 +24,7 @@ export const useColumnsAndRows = () => {
     getClients(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
@@ -47,15 +50,16 @@ export const useColumnsAndRows = () => {
       flex: 1,
       editable: true,
       renderCell: ({ value }) => (
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} height="100%" alignItems="center">
           <Avatar
             sx={{
-              bgcolor: deepOrange[500],
+              bgcolor: colors.deepOrange[500],
               width: 26,
               height: 26,
               fontSize: "12px"
             }}
-            alt={value}>
+            alt={value}
+          >
             {value?.slice(0, 1)}
           </Avatar>
           <Typography fontSize="14px">{value}</Typography>
@@ -98,17 +102,6 @@ export const useColumnsAndRows = () => {
       headerName: "Company",
       minWidth: 120,
       flex: 1,
-      renderCell: ({ value }) =>
-        value && (
-          <Box
-            sx={{
-              background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px"
-            }}>
-            {value}
-          </Box>
-        ),
       editable: true
     },
     {
@@ -127,13 +120,14 @@ export const useColumnsAndRows = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 135,
       renderCell: (params) => (
         <Button
           onClick={deleteUser(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error">
+          color="error"
+        >
           Delete
         </Button>
       )

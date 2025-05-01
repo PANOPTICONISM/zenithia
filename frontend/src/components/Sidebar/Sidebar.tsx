@@ -16,6 +16,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Avatar,
+  Box,
+  Divider,
+  IconButton,
+  List,
   Stack,
   SwipeableDrawer,
   SxProps,
@@ -23,15 +27,11 @@ import {
   Typography,
   useMediaQuery
 } from "@mui/material";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import { useUserData } from "contexts/UserProvider";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { black, darkBlue, highlight, white, yellow } from "../../App";
 import { useIsSidebarOpen } from "../../contexts/SidebarProvider";
+import { useUserData } from "../../contexts/UserProvider";
 import { Logo } from "../../icons/logo";
 import {
   Drawer,
@@ -198,7 +198,7 @@ export default function Sidebar() {
   const [open, setOpen] = useIsSidebarOpen();
 
   return (
-    <Box>
+    <Box component="nav">
       {tabletBreakpoint ? (
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>

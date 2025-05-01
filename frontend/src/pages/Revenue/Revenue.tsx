@@ -4,10 +4,10 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import TodayIcon from "@mui/icons-material/Today";
 import { Box, Stack, Typography } from "@mui/material";
 import { DataGrid, DataGridProps, GridFilterModel } from "@mui/x-data-grid";
-import { grey } from "App";
-import Main from "components/Main/Main";
-import { currencyToLocale } from "lib/currency";
 import React from "react";
+import { grey } from "../../App";
+import Main from "../../components/Main/Main";
+import { currencyToLocale } from "../../lib/currency";
 import {
   finalizeTotals,
   logsByTimeline,
@@ -30,7 +30,8 @@ export const EarningsTimeline = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center">
+      alignItems="center"
+      flex={1}>
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>

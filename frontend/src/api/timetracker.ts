@@ -1,8 +1,8 @@
+import type { GridRowId } from "@mui/x-data-grid";
 import { AxiosError } from "axios";
-import { requester } from "./axios";
-import { GridRowId } from "@mui/x-data-grid";
 import { ProjectProps } from "../pages/Projects/Projects.types";
 import { ServerError } from "./api.types";
+import { requester } from "./axios";
 
 type TimeTrackerBaseProps = {
   date: string;

@@ -1,20 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "pages/Dashboard";
-import Projects from "pages/Projects/Projects";
-import { SearchBarProvider } from "contexts/SearchBarProvider";
-import { SidebarProvider } from "contexts/SidebarProvider";
-import Tasks from "pages/Tasks/Tasks";
-import TimeTracker from "pages/TimeTracker/TimeTracker";
-import Revenue from "pages/Revenue/Revenue";
-import Clients from "pages/Clients/Clients";
-import YearlyStats from "pages/Charts/YearlyStats";
-import MonthlyStats from "pages/Charts/MonthlyStats";
-import Schedule from "pages/Schedule/Schedule";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DialogProvider } from "contexts/DialogProvider";
-import Authentication from "pages/Authentication/Authentication";
-import { useUserData } from "contexts/UserProvider";
+import { DialogProvider } from "./contexts/DialogProvider";
+import { SearchBarProvider } from "./contexts/SearchBarProvider";
+import { SidebarProvider } from "./contexts/SidebarProvider";
+import { useUserData } from "./contexts/UserProvider";
+import Authentication from "./pages/Authentication/Authentication";
+import MonthlyStats from "./pages/Charts/MonthlyStats";
+import YearlyStats from "./pages/Charts/YearlyStats";
+import Clients from "./pages/Clients/Clients";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects/Projects";
+import Revenue from "./pages/Revenue/Revenue";
+import Schedule from "./pages/Schedule/Schedule";
+import Tasks from "./pages/Tasks/Tasks";
+import TimeTracker from "./pages/TimeTracker/TimeTracker";
 
 export const black = "#000";
 export const white = "#fff";
@@ -34,17 +34,19 @@ function App() {
       <SearchBarProvider>
         <DialogProvider>
           {user ? (
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="calendar" element={<Schedule />} />
-              <Route path="tasks" element={<Tasks />} />
-              <Route path="projects" element={<Projects />} />
-              <Route path="clients" element={<Clients />} />
-              <Route path="timetracker" element={<TimeTracker />} />
-              <Route path="revenue" element={<Revenue />} />
-              <Route path="monthly" element={<MonthlyStats />} />
-              <Route path="yearly" element={<YearlyStats />} />
-            </Routes>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="calendar" element={<Schedule />} />
+                <Route path="tasks" element={<Tasks />} />
+                <Route path="projects" element={<Projects />} />
+                <Route path="clients" element={<Clients />} />
+                <Route path="timetracker" element={<TimeTracker />} />
+                <Route path="revenue" element={<Revenue />} />
+                <Route path="monthly" element={<MonthlyStats />} />
+                <Route path="yearly" element={<YearlyStats />} />
+              </Routes>
+            </BrowserRouter>
           ) : (
             <Authentication />
           )}

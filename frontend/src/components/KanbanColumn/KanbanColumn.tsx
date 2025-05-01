@@ -2,14 +2,14 @@ import { Droppable } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import { IconButton, Stack, Typography } from "@mui/material";
-import { useUserData } from "contexts/UserProvider";
-import { currentDate } from "lib/dates";
-import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { postTask, ProjectTaskProps, TaskProps } from "../../api/tasks";
 import { grey } from "../../App";
+import { useUserData } from "../../contexts/UserProvider";
+import { currentDate } from "../../lib/dates";
+import { ColumnType } from "../../pages/Tasks/Tasks";
 import Task from "./components/Task";
 
 const KanbanColumn = ({
@@ -60,7 +60,8 @@ const KanbanColumn = ({
         direction="row"
         spacing={1}
         justifyContent="space-between"
-        alignItems="center">
+        alignItems="center"
+      >
         <Stack direction="row" spacing={1}>
           <ReceiptLongIcon />
           <Typography>{columnName}</Typography>
@@ -75,7 +76,8 @@ const KanbanColumn = ({
             sx={{ padding: "24px" }}
             spacing={2}
             ref={provided.innerRef}
-            {...provided.droppableProps}>
+            {...provided.droppableProps}
+          >
             {entries.map((task, index) => (
               <Task
                 task={task}

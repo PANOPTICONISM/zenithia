@@ -1,7 +1,7 @@
-import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { currencyFromCents } from "lib/currency";
 import { DateTime } from "luxon";
 import React from "react";
+import { useGetProjectsFormatted } from "../../hooks/useGetProjectsFormatted";
+import { currencyFromCents } from "../../lib/currency";
 
 const PLACEHOLDER_DATA = [
   {

@@ -1,7 +1,6 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Grid } from "@mui/material";
-import { useUserData } from "contexts/UserProvider";
-import lodash from "lodash";
+import groupBy from "lodash/groupBy";
 import React from "react";
 import { toast } from "react-toastify";
 import { getProjects } from "../../api/projects";
@@ -13,6 +12,7 @@ import {
 } from "../../api/tasks";
 import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
 import Main from "../../components/Main/Main";
+import { useUserData } from "../../contexts/UserProvider";
 
 export type ColumnType = "TO DO" | "IN PROGRESS" | "DONE";
 
@@ -40,7 +40,7 @@ const Tasks = () => {
         getProjects(user.token, ["id", "title"])
       ]);
 
-      const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
+      const grouppedTasks = groupBy(tasksRes, "column_id");
 
       const jointArrays = new Map(
         Object.values(COLUMNS).map((column) => [
@@ -104,7 +104,13 @@ const Tasks = () => {
         <Grid container spacing={2}>
           {[...columns.entries()].map(([key, entries]) => {
             return (
-              <Grid item key={key} xs={12} lg={4}>
+              <Grid
+                size={{
+                  xs: 12,
+                  lg: 4
+                }}
+                key={key}
+              >
                 <KanbanColumn
                   columnName={key}
                   entries={entries}

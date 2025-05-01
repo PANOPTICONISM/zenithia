@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import LineChart from "components/Charts/LineChart";
-import Loading from "components/Loading/Loading";
-import Main from "components/Main/Main";
-import PlaceholderDataAlert from "components/PlaceholderDataAlert/PlaceholderDataAlert";
+import PlaceholderDataAlert from "../../components/Charts/components/PlaceholderDataAlert";
+import LineChart from "../../components/Charts/LineChart";
+import Loading from "../../components/Loading/Loading";
+import Main from "../../components/Main/Main";
 import { useRevenueData } from "./MonthlyStats.utils";
 
 const MonthlyStats = () => {

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
-import { ProjectProps } from "pages/Projects/Projects.types";
-import { ColumnType } from "pages/Tasks/Tasks";
+import { ProjectProps } from "../pages/Projects/Projects.types";
+import { ColumnType } from "../pages/Tasks/Tasks";
 import { ServerError } from "./api.types";
 import { requester } from "./axios";
 

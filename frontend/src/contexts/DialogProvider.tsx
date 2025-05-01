@@ -1,3 +1,4 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
   DialogActions,
@@ -7,7 +8,6 @@ import {
   IconButton
 } from "@mui/material";
 import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
 
 type DialogContentProps = React.PropsWithChildren<
   {
@@ -35,7 +35,8 @@ const CustomDialog = React.forwardRef<
           fontWeight: 400
         }}
         onClose={close}
-        ref={ref}>
+        ref={ref}
+      >
         <DialogTitle
           sx={{
             fontSize: "20px",
@@ -47,7 +48,8 @@ const CustomDialog = React.forwardRef<
             alignItems: "center",
             paddingBottom: 0
           }}
-          noWrap>
+          noWrap
+        >
           {title}
           {close ? (
             <IconButton
@@ -56,7 +58,8 @@ const CustomDialog = React.forwardRef<
               sx={{
                 color: "#667084",
                 marginLeft: "20px"
-              }}>
+              }}
+            >
               <CloseIcon />
             </IconButton>
           ) : null}
@@ -70,7 +73,8 @@ const CustomDialog = React.forwardRef<
               maxWidth: "500px",
               width: "100%",
               paddingTop: "24px!important"
-            }}>
+            }}
+          >
             {children}
           </DialogContent>
         )}

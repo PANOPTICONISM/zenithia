@@ -1,5 +1,5 @@
 import { ResponsivePie } from "@nivo/pie";
-import { getCurrencyFromRegion } from "lib/currency";
+import { getCurrencyFromRegion } from "../../lib/currency";
 import { PieChartProps } from "./Charts.types";
 
 const PieChart = ({ result }: { result: PieChartProps }) => {

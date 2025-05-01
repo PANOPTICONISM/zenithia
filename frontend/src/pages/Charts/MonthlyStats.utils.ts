@@ -1,8 +1,11 @@
-import { darkBlue } from "App";
-import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { currencyFromCents, valueFormatterNoCurrency } from "lib/currency";
 import { DateTime } from "luxon";
 import React from "react";
+import { darkBlue } from "../../App";
+import { useGetProjectsFormatted } from "../../hooks/useGetProjectsFormatted";
+import {
+  currencyFromCents,
+  valueFormatterNoCurrency
+} from "../../lib/currency";
 
 const getPlaceholderData = () => ({
   id: "monthlyRevenue",

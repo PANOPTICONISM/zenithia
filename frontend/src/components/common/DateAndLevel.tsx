@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { green, grey, highlight, red, white, yellow } from "App";
+import { green, grey, highlight, red, white, yellow } from "../../App";
 
 export const DateAndLevel = ({
   level,
@@ -19,7 +19,8 @@ export const DateAndLevel = ({
             color: white,
             padding: "8px",
             borderRadius: "4px"
-          }}>
+          }}
+        >
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -62,7 +63,8 @@ export const DateAndLevel = ({
             color: white,
             padding: "8px",
             borderRadius: "4px"
-          }}>
+          }}
+        >
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -105,7 +107,8 @@ export const DateAndLevel = ({
             color: white,
             padding: "8px",
             borderRadius: "4px"
-          }}>
+          }}
+        >
           {deadline}
         </Typography>
         <Stack spacing={0.5} direction="row">
@@ -147,7 +150,8 @@ export const DateAndLevel = ({
           color: white,
           padding: "8px",
           borderRadius: "4px"
-        }}>
+        }}
+      >
         {deadline}
       </Typography>
       <Stack spacing={0.5} direction="row">

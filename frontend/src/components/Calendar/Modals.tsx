@@ -1,4 +1,4 @@
-import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import type { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import {
   Button,
   DialogActions,
@@ -6,12 +6,16 @@ import {
   Stack,
   TextField
 } from "@mui/material";
-import { deleteCalendar, postCalendar, updateCalendar } from "api/calendar";
-import { darkBlue } from "App";
-import { useUserData } from "contexts/UserProvider";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import {
+  deleteCalendar,
+  postCalendar,
+  updateCalendar
+} from "../../api/calendar";
+import { darkBlue } from "../../App";
+import { useUserData } from "../../contexts/UserProvider";
 
 export const EventAddModal = ({
   close,
@@ -66,7 +70,8 @@ export const EventAddModal = ({
         <Button
           variant="contained"
           sx={{ background: darkBlue }}
-          onClick={() => handleAddEvent(close)}>
+          onClick={() => handleAddEvent(close)}
+        >
           Confirm
         </Button>
       </DialogActions>
@@ -141,14 +146,16 @@ export const EventUpdateModal = ({
             variant="contained"
             sx={{ background: darkBlue }}
             fullWidth
-            onClick={() => handleUpdateEvent(close)}>
+            onClick={() => handleUpdateEvent(close)}
+          >
             Update
           </Button>
           <Button
             variant="outlined"
             color="error"
             fullWidth
-            onClick={() => handleDeleteEvent(close)}>
+            onClick={() => handleDeleteEvent(close)}
+          >
             Delete
           </Button>
         </Stack>

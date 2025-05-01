@@ -1,4 +1,4 @@
-import {
+import type {
   CalendarApi,
   DateSelectArg,
   EventApi,
@@ -11,13 +11,13 @@ import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { Box, Stack, useMediaQuery } from "@mui/material";
-import { CalendarProps, getCalendar } from "api/calendar";
-import { useDialogEnqueue } from "contexts/DialogProvider";
-import { useUserData } from "contexts/UserProvider";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import { CalendarProps, getCalendar } from "../../api/calendar";
+import { useDialogEnqueue } from "../../contexts/DialogProvider";
+import { useUserData } from "../../contexts/UserProvider";
 import { EventAddModal, EventUpdateModal } from "./Modals";
 
 const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {

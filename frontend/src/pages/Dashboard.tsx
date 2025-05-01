@@ -2,19 +2,20 @@ import PublicIcon from "@mui/icons-material/Public";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import TodayIcon from "@mui/icons-material/Today";
 import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
-import { getTasks, TaskProps } from "api/tasks";
-import { grey, lightBlue } from "App";
-import Calendar from "components/Calendar/Calendar";
-import LineChart from "components/Charts/LineChart";
-import { DateAndLevel } from "components/common/DateAndLevel";
-import { useUserData } from "contexts/UserProvider";
-import { useGetProjectsFormatted } from "hooks/useGetProjectsFormatted";
-import { currencyToLocale } from "lib/currency";
-import lodash from "lodash";
+import filter from "lodash/filter";
+import sortBy from "lodash/sortBy";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
+import { TaskProps, getTasks } from "../api/tasks";
+import { grey, lightBlue } from "../App";
+import Calendar from "../components/Calendar/Calendar";
+import LineChart from "../components/Charts/LineChart";
+import { DateAndLevel } from "../components/common/DateAndLevel";
 import Main from "../components/Main/Main";
+import { useUserData } from "../contexts/UserProvider";
+import { useGetProjectsFormatted } from "../hooks/useGetProjectsFormatted";
+import { currencyToLocale } from "../lib/currency";
 import { useRevenueData } from "./Charts/MonthlyStats.utils";
 import { EarningsTimeline } from "./Revenue/Revenue";
 import { logsByTimeline } from "./Revenue/Revenue.utils";
@@ -66,11 +67,11 @@ const Dashboard = () => {
     }
     getTasks(user.token)
       .then((data) => {
-        const filteredOutDoneTasks = lodash.filter(
+        const filteredOutDoneTasks = filter(
           data,
           (task) => task.column_id !== COLUMNS.DONE
         );
-        const sortedData = lodash.sortBy(filteredOutDoneTasks, "deadline");
+        const sortedData = sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });
       })
       .catch(() => toast.error("Could not get the tasks. Try again later."));
@@ -88,11 +89,9 @@ const Dashboard = () => {
         gap={2}
         padding="24px 0">
         <Box
-          sx={{
-            gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto"
-          }}>
-          <Stack spacing={2}>
+          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
+          gridRow={desktopBreakpoint ? "1/2" : "auto"}>
+          <Stack spacing={2} height="100%">
             <EarningsTimeline
               text="Earnings this year"
               total={currencyToLocale(totalYearlySum)}
@@ -106,17 +105,13 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box
-          sx={{
-            gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto"
-          }}>
+          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
+          gridRow={desktopBreakpoint ? "1/2" : "auto"}>
           <Calendar isDashboard />
         </Box>
         <Box
-          sx={{
-            gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/3" : "auto"
-          }}>
+          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
+          gridRow={desktopBreakpoint ? "1/4" : "auto"}>
           <Stack
             sx={{
               border: `1px solid ${grey}`,
@@ -164,16 +159,16 @@ const Dashboard = () => {
             </Stack>
           </Stack>
         </Box>
-        <Box
-          sx={{
-            gridColumn: desktopBreakpoint ? "span 8" : "span 12",
-            gridRow: desktopBreakpoint ? "2/3" : "auto",
-            maxHeight: "326px",
-            border: `1px solid ${grey}`,
-            height: "100%"
-          }}>
-          <LineChart result={result} />
-        </Box>
+        {result ? (
+          <Box
+            height="100%"
+            maxHeight="326px"
+            gridColumn={desktopBreakpoint ? "span 8" : "span 12"}
+            gridRow={desktopBreakpoint ? "2/4" : "auto"}
+            border={`1px solid ${grey}`}>
+            <LineChart result={result} />
+          </Box>
+        ) : null}
       </Box>
     </Main>
   );

@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import PieChart from "components/Charts/PieChart";
-import Loading from "components/Loading/Loading";
-import Main from "components/Main/Main";
-import PlaceholderDataAlert from "components/PlaceholderDataAlert/PlaceholderDataAlert";
+import PlaceholderDataAlert from "../../components/Charts/components/PlaceholderDataAlert";
+import PieChart from "../../components/Charts/PieChart";
+import Loading from "../../components/Loading/Loading";
+import Main from "../../components/Main/Main";
 import { useRevenueData } from "./YearlyStats.utils";
 
 const YearlyStats = () => {

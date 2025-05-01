@@ -15,9 +15,7 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { useUserData } from "contexts/UserProvider";
 import { DateTime } from "luxon";
-import { ColumnType } from "pages/Tasks/Tasks";
 import React from "react";
 import { toast } from "react-toastify";
 import {
@@ -27,6 +25,8 @@ import {
   updateTask
 } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
+import { useUserData } from "../../../contexts/UserProvider";
+import { ColumnType } from "../../../pages/Tasks/Tasks";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
 type EditableTask = {
@@ -125,12 +125,14 @@ const Task = ({
             position: "relative",
             ...provided.draggableProps.style
           }}
-          onDoubleClick={() => setIsEdit(true)}>
+          onDoubleClick={() => setIsEdit(true)}
+        >
           {isEdit ? (
             <>
               <IconButton
                 onClick={() => setIsEdit(false)}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}>
+                sx={{ position: "absolute", right: "4px", top: "4px" }}
+              >
                 <CloseIcon fontSize="small" />
               </IconButton>
               <Stack spacing={2}>
@@ -177,7 +179,8 @@ const Task = ({
                         ...current,
                         importance: event.target.value
                       }))
-                    }>
+                    }
+                  >
                     <MenuItem value="personal">Blank</MenuItem>
                     <MenuItem value="low">Low</MenuItem>
                     <MenuItem value="medium">Medium</MenuItem>
@@ -196,7 +199,7 @@ const Task = ({
                   renderInput={(params) => (
                     <TextField {...params} label="Project's title" />
                   )}
-                  onChange={(event, newValue) =>
+                  onChange={(_, newValue) =>
                     setEditableTask((current) => ({
                       ...current,
                       project: newValue,
@@ -215,7 +218,8 @@ const Task = ({
             <>
               <IconButton
                 onClick={handleDelete}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}>
+                sx={{ position: "absolute", right: "4px", top: "4px" }}
+              >
                 <CloseIcon sx={{ width: "12px", height: "12px" }} />
               </IconButton>
               <Typography fontWeight={700} fontSize="16px">
@@ -226,7 +230,8 @@ const Task = ({
                 justifyContent="space-between"
                 alignItems="center"
                 paddingTop="16px"
-                flexWrap="wrap">
+                flexWrap="wrap"
+              >
                 <DateAndLevel
                   deadline={DateTime.fromISO(task.deadline)
                     .toFormat("MMMM, dd")
@@ -236,7 +241,8 @@ const Task = ({
                 <Typography
                   fontWeight={100}
                   fontSize="14px"
-                  sx={{ marginLeft: "auto" }}>
+                  sx={{ marginLeft: "auto" }}
+                >
                   {task?.project?.title}
                 </Typography>
               </Stack>

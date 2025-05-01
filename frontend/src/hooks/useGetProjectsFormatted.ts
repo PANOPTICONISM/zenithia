@@ -1,10 +1,10 @@
-import { getProjects } from "api/projects";
-import { TimeTrackerProps } from "api/timetracker";
-import { useUserData } from "contexts/UserProvider";
-import { ProjectProps } from "pages/Projects/Projects.types";
-import { finalizeTotals } from "pages/Revenue/Revenue.utils";
 import React from "react";
 import { toast } from "react-toastify";
+import { getProjects } from "../api/projects";
+import { TimeTrackerProps } from "../api/timetracker";
+import { useUserData } from "../contexts/UserProvider";
+import { ProjectProps } from "../pages/Projects/Projects.types";
+import { finalizeTotals } from "../pages/Revenue/Revenue.utils";
 
 export type ProjectFormattedProps = {
   id?: string;

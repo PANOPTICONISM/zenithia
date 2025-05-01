@@ -1,12 +1,5 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUserData } from "contexts/UserProvider";
-import {
-  currentDate,
-  currentTime,
-  dateFromJSDateToISOForApi,
-  timeFromISOToFormatForApi
-} from "lib/dates";
 import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -16,6 +9,13 @@ import {
   updateTimeTracker
 } from "../../api/timetracker";
 import Main from "../../components/Main/Main";
+import { useUserData } from "../../contexts/UserProvider";
+import {
+  currentDate,
+  currentTime,
+  dateFromJSDateToISOForApi,
+  timeFromISOToFormatForApi
+} from "../../lib/dates";
 import { useColumnsAndRows } from "./TimeTracker.utils";
 
 const TimeTracker = () => {

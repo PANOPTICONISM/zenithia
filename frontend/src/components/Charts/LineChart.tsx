@@ -1,5 +1,5 @@
 import { ResponsiveLine } from "@nivo/line";
-import { getCurrencyFromRegion } from "lib/currency";
+import { getCurrencyFromRegion } from "../../lib/currency";
 import { LineChartProps } from "./Charts.types";
 
 const LineChart = ({ result }: LineChartProps) => {

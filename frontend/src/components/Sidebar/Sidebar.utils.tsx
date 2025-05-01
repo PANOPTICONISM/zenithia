@@ -1,14 +1,16 @@
-import { styled, Theme, CSSObject } from "@mui/material/styles";
 import {
+  CSSObject,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Drawer as MuiDrawer,
+  styled,
+  Theme,
   Typography
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
-import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
+import { Link, useLocation } from "react-router";
 import { darkBlue, highlight, white } from "../../App";
 
 export const drawerWidth = 260;
@@ -89,13 +91,15 @@ export const ListLink = ({
             color: white,
             background: path === pathname ? highlight : "inherit",
             borderRadius: "4px"
-          }}>
+          }}
+        >
           <ListItemIcon
             sx={{
               minWidth: 0,
               mr: open ? 3 : "auto",
               justifyContent: "center"
-            }}>
+            }}
+          >
             {icon}
           </ListItemIcon>
           <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
