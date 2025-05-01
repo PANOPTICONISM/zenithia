@@ -60,8 +60,7 @@ const BurgerMenu = ({
       color={color}
       onClick={() => setOpen(!open)}
       sx={{ borderRadius: 0, ...sx }}
-      disableRipple
-    >
+      disableRipple>
       {icon}
     </IconButton>
   );
@@ -85,8 +84,7 @@ const Username = ({ open }: { open: boolean }) => {
         border: `1px solid ${highlight}`,
         padding: "20px",
         marginTop: "16px"
-      }}
-    >
+      }}>
       <Avatar sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: "12px" }}>
         {user?.username?.slice(0, 1).toUpperCase()}
       </Avatar>
@@ -200,7 +198,7 @@ export default function Sidebar() {
   const [open, setOpen] = useIsSidebarOpen();
 
   return (
-    <Box>
+    <Box component="nav">
       {tabletBreakpoint ? (
         <>
           <Stack direction="row" justifyContent="space-between" padding={2}>
@@ -213,12 +211,10 @@ export default function Sidebar() {
           <SwipeableDrawer
             open={open}
             onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
-          >
+            onClose={() => setOpen(false)}>
             <Stack
               sx={{ background: darkBlue, height: "100%", padding: "12px" }}
-              justifyContent="space-between"
-            >
+              justifyContent="space-between">
               <Navigation open={open} />
               <Username open={open} />
             </Stack>
@@ -234,8 +230,7 @@ export default function Sidebar() {
               }px))`,
               background: "transparent",
               boxShadow: "none"
-            }}
-          >
+            }}>
             <Toolbar>
               <BurgerMenu
                 sx={{
