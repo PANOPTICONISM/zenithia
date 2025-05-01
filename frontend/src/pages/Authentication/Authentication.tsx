@@ -134,7 +134,7 @@ const Authentication = () => {
           }}
         >
           <Logo color={white} background={highlight} width={180} height={180} />
-          <Typography variant="h1" color={grey}>
+          <Typography variant="h1" color={grey} fontWeight={300}>
             Zenithia
           </Typography>
         </Grid>
