@@ -1,4 +1,4 @@
-import { DataGridProps, GridFilterModel } from "@mui/x-data-grid";
+import type { DataGridProps, GridFilterModel } from "@mui/x-data-grid";
 import * as React from "react";
 import { useLocation } from "react-router";
 import { useSearchBar } from "../../contexts/SearchBarProvider";

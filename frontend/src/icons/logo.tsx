@@ -1,5 +1,4 @@
-import { SxProps } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, SxProps } from "@mui/material";
 
 export const Logo = ({
   color,

@@ -10,12 +10,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("@mui")) return "mui";
-            if (id.includes("@emotion")) return "emotion";
+            if (id.includes("@mui") || id.includes("@emotion")) return "mui";
             if (id.includes("@fullcalendar")) return "fullcalendar";
             if (id.includes("@nivo")) return "nivo";
             if (id.includes("luxon")) return "luxon";
             if (id.includes("axios")) return "axios";
+            if (id.includes("lodash")) return "lodash";
+            if (id.includes("hello-pangea")) return "hello-pangea";
             if (id.includes("react-toastify")) return "toastify";
             if (id.includes("uuid")) return "uuid";
             if (id.includes("react-google-recaptcha")) return "recaptcha";

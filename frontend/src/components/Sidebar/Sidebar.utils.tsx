@@ -1,12 +1,14 @@
 import {
+  CSSObject,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Drawer as MuiDrawer,
+  styled,
+  Theme,
   Typography,
 } from "@mui/material";
-import MuiDrawer from "@mui/material/Drawer";
-import { CSSObject, styled, Theme } from "@mui/material/styles";
 import React from "react";
 import { Link, useLocation } from "react-router";
 import { darkBlue, highlight, white } from "../../App";

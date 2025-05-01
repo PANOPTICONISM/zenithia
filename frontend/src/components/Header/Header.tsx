@@ -1,6 +1,5 @@
 import { AddBoxOutlined } from "@mui/icons-material";
-import { Button, Stack } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { Button, Stack, useMediaQuery } from "@mui/material";
 import { highlight } from "../../App";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { HeaderProps } from "./Header.types";

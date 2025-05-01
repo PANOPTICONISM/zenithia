@@ -1,4 +1,4 @@
-import { GridRowId } from "@mui/x-data-grid";
+import type { GridRowId } from "@mui/x-data-grid";
 import { AxiosError } from "axios";
 import { ServerError } from "./api.types";
 import { requester } from "./axios";

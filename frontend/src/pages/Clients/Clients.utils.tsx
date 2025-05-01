@@ -1,6 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Avatar, Button, Stack, Typography } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+import { Avatar, Button, colors, Stack, Typography } from "@mui/material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import React from "react";
 import { toast } from "react-toastify";
@@ -54,7 +53,7 @@ export const useColumnsAndRows = () => {
         <Stack direction="row" spacing={1} height="100%" alignItems="center">
           <Avatar
             sx={{
-              bgcolor: deepOrange[500],
+              bgcolor: colors.deepOrange[500],
               width: 26,
               height: 26,
               fontSize: "12px",

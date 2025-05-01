@@ -16,6 +16,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Avatar,
+  Box,
+  Divider,
+  IconButton,
+  List,
   Stack,
   SwipeableDrawer,
   SxProps,
@@ -23,10 +27,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
 import React from "react";
 import { useNavigate } from "react-router";
 import { black, darkBlue, highlight, white, yellow } from "../../App";
