@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { toast } from "react-toastify";
@@ -84,15 +83,13 @@ const TimeTracker = () => {
 
   return (
     <Main title="Time Tracker" handleClick={addTracking} buttonText="Add hours">
-      <Box sx={{ height: 620, width: "100%" }}>
-        <DataGrid
-          columns={columns}
-          rows={rows}
-          editMode="row"
-          processRowUpdate={handleProcessRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-        />
-      </Box>
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        editMode="row"
+        processRowUpdate={handleProcessRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
+      />
     </Main>
   );
 };
