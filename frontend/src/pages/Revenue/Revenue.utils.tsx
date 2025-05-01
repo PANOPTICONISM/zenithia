@@ -19,6 +19,10 @@ export const useColumnsAndRows = () => {
   >([]);
 
   React.useEffect(() => {
+    if (!projects) {
+      return;
+    }
+
     setRows(projects);
     setFilteredData(projects);
   }, [projects]);
@@ -28,27 +32,23 @@ export const useColumnsAndRows = () => {
       field: "id",
       headerName: "ID",
       width: 85,
-      valueFormatter: ({ value }) => value?.slice(0, 8),
+      valueFormatter: (value: string | undefined) => value?.slice(0, 8),
     },
     {
       field: "title",
       headerName: "Project",
       minWidth: 120,
       flex: 1,
-      renderCell: ({ value }) => {
-        if (!value) {
-          return null;
-        }
-
+      renderCell: (params) => {
+        if (!params.value) return null;
         return (
           <Box
             sx={{
               background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px",
+              padding: "0 10px",
             }}
           >
-            {value}
+            {params.value}
           </Box>
         );
       },
@@ -64,7 +64,7 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
     },
     {
@@ -72,7 +72,7 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
     },
     {
@@ -81,7 +81,7 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       flex: 1,
       type: "number",
-      valueFormatter: ({ value }) => currencyToLocale(value),
+      valueFormatter: (value) => currencyToLocale(value),
     },
     {
       field: "revenue",
@@ -94,15 +94,14 @@ export const useColumnsAndRows = () => {
       headerName: "Time",
       minWidth: 80,
       flex: 1,
-      valueFormatter: ({ value }) =>
-        Duration.fromMillis(value).toFormat("hh:mm"),
+      valueFormatter: (value) => Duration.fromMillis(value).toFormat("hh:mm"),
     },
     {
       field: "estimated_earnings",
       headerName: "Total",
       minWidth: 120,
       flex: 1,
-      valueFormatter: ({ value }) => currencyToLocale(value),
+      valueFormatter: (value) => currencyToLocale(value),
     },
   ];
 
@@ -135,7 +134,11 @@ export const finalizeTotals = (
     return { totalPrice, totalMilliseconds };
   });
 
-export const logsByTimeline = (rows: ProjectFormattedProps[]) => {
+export const logsByTimeline = (rows: ProjectFormattedProps[] | undefined) => {
+  if (!rows) {
+    return { totalMonthlySum: 0, totalYearlySum: 0 };
+  }
+
   const currentYear = new Date().getFullYear();
   const thisYearLogs = rows.filter(
     (entry) => DateTime.fromISO(entry.finish_date).year === currentYear

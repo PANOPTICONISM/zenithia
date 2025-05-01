@@ -54,7 +54,7 @@ export const useColumnsAndRows = () => {
     {
       field: "id",
       headerName: "ID",
-      valueFormatter: ({ value }) => value?.slice(0, 8),
+      valueFormatter: (value: string | undefined) => value?.slice(0, 8),
     },
     {
       field: "title",
@@ -73,7 +73,7 @@ export const useColumnsAndRows = () => {
         value: client.id,
         label: client.name,
       })),
-      valueGetter: (params) => params.value || "",
+      valueGetter: (params: { value?: string | null }) => params?.value || "",
       renderCell: (params) =>
         params.formattedValue && (
           <Box
@@ -92,7 +92,7 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
       editable: true,
     },
@@ -101,7 +101,7 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (params) => dateFromISOToLocaleString(params.value),
+      valueFormatter: (value) => dateFromISOToLocaleString(value),
       type: "date",
       editable: true,
     },
@@ -132,7 +132,7 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       type: "number",
       editable: true,
-      valueFormatter: ({ value }) => currencyToLocale(value),
+      valueFormatter: (value) => currencyToLocale(value),
       renderEditCell: (params) => {
         const value = currencyFromCents(params.value);
         return <GridEditInputCell {...params} value={value} />;
