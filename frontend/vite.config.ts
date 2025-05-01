@@ -10,7 +10,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("react")) return "react";
             if (id.includes("@mui")) return "mui";
             if (id.includes("@emotion")) return "emotion";
             if (id.includes("@fullcalendar")) return "fullcalendar";
