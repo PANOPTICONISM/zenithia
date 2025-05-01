@@ -120,9 +120,10 @@ const Authentication = () => {
         }}
       >
         <Grid
-          item
-          xs={12}
-          md={6}
+          size={{
+            xs: 12,
+            md: 6,
+          }}
           sx={{
             background: highlight,
             display: "flex",
@@ -134,7 +135,7 @@ const Authentication = () => {
         >
           <Logo color={white} background={highlight} width={180} height={180} />
           <Typography
-            variant="h2"
+            variant="h1"
             fontFamily="'Bungee Outline', cursive"
             color={grey}
           >
@@ -142,9 +143,10 @@ const Authentication = () => {
           </Typography>
         </Grid>
         <Grid
-          item
-          xs={12}
-          md={6}
+          size={{
+            xs: 12,
+            md: 6,
+          }}
           sx={{
             backgroundImage: "url(/background-image.png)",
             backgroundRepeat: "no-repeat",
@@ -243,7 +245,7 @@ const Authentication = () => {
               </Button>
               <Grid container justifyContent="end" marginTop="6px">
                 {isSignup ? (
-                  <Grid item>
+                  <Grid>
                     {"Have an account already? "}
                     <Link
                       onClick={() => setIsSignup(false)}
@@ -258,7 +260,7 @@ const Authentication = () => {
                     </Link>
                   </Grid>
                 ) : (
-                  <Grid item>
+                  <Grid>
                     {"Don't have an account? "}
                     <Link
                       onClick={() => setIsSignup(true)}

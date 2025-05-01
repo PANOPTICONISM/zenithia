@@ -182,7 +182,7 @@ const Dashboard = () => {
             height: "100%",
           }}
         >
-          <LineChart result={result} />
+          {result ? <LineChart result={result} /> : null}
         </Box>
       </Box>
     </Main>
