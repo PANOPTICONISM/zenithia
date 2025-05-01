@@ -63,9 +63,9 @@ export const useColumnsAndRows = () => {
       });
       return () => clearInterval(interval);
     }
-  }, [isRunning, count]);
+  }, [isRunning, count, selectedId]);
 
-  const startWatch = (time: string, id: string) => {
+  const startWatch = (id: string) => {
     setCount(0);
     setSelectedId(id);
     setIsRunning(true);
@@ -191,9 +191,7 @@ export const useColumnsAndRows = () => {
           <IconButton
             color="success"
             onClick={() =>
-              isRunning
-                ? stopWatch(row.start_time, row.id)
-                : startWatch(row.start_time, row.id)
+              isRunning ? stopWatch(row.start_time, row.id) : startWatch(row.id)
             }
             disabled={
               (row.finish_time !== null && selectedId !== row.id) ||

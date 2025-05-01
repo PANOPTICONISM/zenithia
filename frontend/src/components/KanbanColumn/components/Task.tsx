@@ -199,7 +199,7 @@ const Task = ({
                   renderInput={(params) => (
                     <TextField {...params} label="Project's title" />
                   )}
-                  onChange={(event, newValue) =>
+                  onChange={(_, newValue) =>
                     setEditableTask((current) => ({
                       ...current,
                       project: newValue,
