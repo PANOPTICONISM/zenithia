@@ -31,7 +31,7 @@ export const EarningsTimeline = ({
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
       alignItems="center"
-    >
+      flex={1}>
       {icon}
       <Box>
         <Typography fontWeight={700}>{text}</Typography>
@@ -57,8 +57,7 @@ const SuggestionBox = ({
       boxSizing="border-box"
       padding="24px"
       sx={{ border: `1px solid ${grey}`, width: "100%" }}
-      alignItems="center"
-    >
+      alignItems="center">
       {icon}
       <Box>
         <Typography fontWeight={700}>{title}</Typography>
