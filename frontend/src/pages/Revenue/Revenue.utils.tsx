@@ -40,7 +40,9 @@ export const useColumnsAndRows = () => {
       minWidth: 120,
       flex: 1,
       renderCell: (params) => {
-        if (!params.value) return null;
+        if (!params.value) {
+          return null;
+        }
         return (
           <Box
             sx={{

@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
-import { deepOrange, lightBlue } from "@mui/material/colors";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 import { GridColDef, GridRowId } from "@mui/x-data-grid";
 import React from "react";
 import { toast } from "react-toastify";
@@ -25,7 +25,7 @@ export const useColumnsAndRows = () => {
     getClients(user.token)
       .then((res) => setRows(res))
       .catch((error) => toast.error(error));
-  }, []);
+  }, [user]);
 
   const deleteUser = React.useCallback(
     (id: GridRowId) => () => {
@@ -51,7 +51,7 @@ export const useColumnsAndRows = () => {
       flex: 1,
       editable: true,
       renderCell: ({ value }) => (
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} height="100%" alignItems="center">
           <Avatar
             sx={{
               bgcolor: deepOrange[500],
@@ -103,18 +103,6 @@ export const useColumnsAndRows = () => {
       headerName: "Company",
       minWidth: 120,
       flex: 1,
-      renderCell: ({ value }) =>
-        value && (
-          <Box
-            sx={{
-              background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px",
-            }}
-          >
-            {value}
-          </Box>
-        ),
       editable: true,
     },
     {
@@ -133,7 +121,7 @@ export const useColumnsAndRows = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 135,
       renderCell: (params) => (
         <Button
           onClick={deleteUser(params.id)}

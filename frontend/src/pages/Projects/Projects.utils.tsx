@@ -73,14 +73,13 @@ export const useColumnsAndRows = () => {
         value: client.id,
         label: client.name,
       })),
-      valueGetter: (params: { value?: string | null }) => params?.value || "",
+      valueGetter: (value) => value || "",
       renderCell: (params) =>
         params.formattedValue && (
           <Box
             sx={{
               background: lightBlue,
-              padding: "6px 10px",
-              borderRadius: "4px",
+              padding: "0 10px",
             }}
           >
             {params.formattedValue}
@@ -149,7 +148,7 @@ export const useColumnsAndRows = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 135,
       renderCell: (params) => (
         <Button
           onClick={deleteEntry(params.id)}
