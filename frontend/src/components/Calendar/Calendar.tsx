@@ -11,7 +11,7 @@ import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { Box, Stack, useMediaQuery } from "@mui/material";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";

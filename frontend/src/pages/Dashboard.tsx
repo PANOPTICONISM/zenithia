@@ -2,7 +2,8 @@ import PublicIcon from "@mui/icons-material/Public";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import TodayIcon from "@mui/icons-material/Today";
 import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
-import lodash from "lodash";
+import filter from "lodash/filter";
+import sortBy from "lodash/sortBy";
 import { DateTime } from "luxon";
 import React from "react";
 import { toast } from "react-toastify";
@@ -66,11 +67,11 @@ const Dashboard = () => {
     }
     getTasks(user.token)
       .then((data) => {
-        const filteredOutDoneTasks = lodash.filter(
+        const filteredOutDoneTasks = filter(
           data,
           (task) => task.column_id !== COLUMNS.DONE
         );
-        const sortedData = lodash.sortBy(filteredOutDoneTasks, "deadline");
+        const sortedData = sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });
       })
       .catch(() => toast.error("Could not get the tasks. Try again later."));

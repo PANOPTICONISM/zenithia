@@ -1,6 +1,6 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Grid } from "@mui/material";
-import lodash from "lodash";
+import groupBy from "lodash/groupBy";
 import React from "react";
 import { toast } from "react-toastify";
 import { getProjects } from "../../api/projects";
@@ -40,7 +40,7 @@ const Tasks = () => {
         getProjects(user.token, ["id", "title"]),
       ]);
 
-      const grouppedTasks = lodash.groupBy(tasksRes, "column_id");
+      const grouppedTasks = groupBy(tasksRes, "column_id");
 
       const jointArrays = new Map(
         Object.values(COLUMNS).map((column) => [

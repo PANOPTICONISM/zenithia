@@ -1,4 +1,4 @@
-import { isString } from "lodash";
+import isString from "lodash/isString";
 import { DateTime } from "luxon";
 
 export const currentDate = () => DateTime.now().toLocal().toISODate() || "";
