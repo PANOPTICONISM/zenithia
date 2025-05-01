@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogProps,
   DialogTitle,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import React from "react";
 
@@ -32,7 +32,7 @@ const CustomDialog = React.forwardRef<
         sx={{
           fontSize: "14px",
           lineHeight: "20px",
-          fontWeight: 400,
+          fontWeight: 400
         }}
         onClose={close}
         ref={ref}
@@ -46,7 +46,7 @@ const CustomDialog = React.forwardRef<
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingBottom: 0,
+            paddingBottom: 0
           }}
           noWrap
         >
@@ -57,7 +57,7 @@ const CustomDialog = React.forwardRef<
               onClick={close}
               sx={{
                 color: "#667084",
-                marginLeft: "20px",
+                marginLeft: "20px"
               }}
             >
               <CloseIcon />
@@ -72,7 +72,7 @@ const CustomDialog = React.forwardRef<
               padding: "24px",
               maxWidth: "500px",
               width: "100%",
-              paddingTop: "24px!important",
+              paddingTop: "24px!important"
             }}
           >
             {children}
@@ -107,7 +107,7 @@ export const DialogContext = React.createContext<DialogContextType | null>(
 );
 
 export const GLOBAL_DIALOG_CONTEXT = {
-  current: null as DialogContextType | null,
+  current: null as DialogContextType | null
 };
 
 export const DialogProvider = ({ children }: { children: React.ReactNode }) => {

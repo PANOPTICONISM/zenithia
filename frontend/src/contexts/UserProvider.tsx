@@ -36,7 +36,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const value = React.useMemo(
     () => ({
       user,
-      setUser,
+      setUser
     }),
     [user]
   );

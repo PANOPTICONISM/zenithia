@@ -22,8 +22,8 @@ export default defineConfig({
             if (id.includes("react-google-recaptcha")) return "recaptcha";
             return "vendor";
           }
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

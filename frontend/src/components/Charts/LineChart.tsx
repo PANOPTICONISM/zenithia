@@ -13,7 +13,7 @@ const LineChart = ({ result }: LineChartProps) => {
         min: "auto",
         max: "auto",
         stacked: true,
-        reverse: false,
+        reverse: false
       }}
       yFormat=" >-.2f"
       axisTop={null}
@@ -24,7 +24,7 @@ const LineChart = ({ result }: LineChartProps) => {
         tickRotation: 0,
         legend: "Monthly Revenue Insights",
         legendOffset: 36,
-        legendPosition: "middle",
+        legendPosition: "middle"
       }}
       axisLeft={{
         tickSize: 5,
@@ -32,7 +32,7 @@ const LineChart = ({ result }: LineChartProps) => {
         tickRotation: 0,
         legend: getCurrencyFromRegion(),
         legendOffset: -40,
-        legendPosition: "middle",
+        legendPosition: "middle"
       }}
       pointSize={10}
       pointColor={{ theme: "background" }}
@@ -60,11 +60,11 @@ const LineChart = ({ result }: LineChartProps) => {
               on: "hover",
               style: {
                 itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
+                itemOpacity: 1
+              }
+            }
+          ]
+        }
       ]}
     />
   );

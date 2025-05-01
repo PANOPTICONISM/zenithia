@@ -26,8 +26,8 @@ export const getTasks = async (token: string): Promise<TaskProps[]> => {
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as TaskProps[];
   } catch (err) {
@@ -46,8 +46,8 @@ export const postTask = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -67,8 +67,8 @@ export const updateTask = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -87,8 +87,8 @@ export const deleteTask = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {

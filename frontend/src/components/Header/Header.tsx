@@ -9,7 +9,7 @@ const Header = ({
   handleClick,
   buttonText,
   isSearch = false,
-  hideMargin = false,
+  hideMargin = false
 }: HeaderProps) => {
   const mobileBreakpoint = useMediaQuery("(max-width:500px)");
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
@@ -21,7 +21,7 @@ const Header = ({
           ? {
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "baseline",
+              alignItems: "baseline"
             }
           : undefined
       }
@@ -30,7 +30,7 @@ const Header = ({
         style={{
           fontSize: "48px",
           marginTop: 0,
-          marginBottom: hideMargin ? 0 : "32px",
+          marginBottom: hideMargin ? 0 : "32px"
         }}
       >
         {title}

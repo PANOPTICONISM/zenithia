@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import React from "react";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -57,7 +57,7 @@ const Authentication = () => {
       }
 
       const loginUser = async ({
-        isAllowedToLogIn,
+        isAllowedToLogIn
       }: {
         isAllowedToLogIn: boolean;
       }) => {
@@ -65,13 +65,13 @@ const Authentication = () => {
           username,
           password,
           isAllowedToLogIn,
-          recaptchaToken,
+          recaptchaToken
         })
           .then((data) => {
             setUser({
               id: data.id,
               username: data.email.split("@")[0],
-              token: data.token,
+              token: data.token
             });
             setIsLoading(false);
           })
@@ -88,7 +88,7 @@ const Authentication = () => {
       return signupUser({
         username,
         password,
-        recaptchaToken,
+        recaptchaToken
       })
         .then(() => {
           toast.success("Your account has been created.");
@@ -107,7 +107,7 @@ const Authentication = () => {
       sx={{
         height: tabletBreakpoint ? "auto" : "100vh",
         background: darkBlue,
-        padding: tabletBreakpoint ? "50px" : 0,
+        padding: tabletBreakpoint ? "50px" : 0
       }}
       justifyContent="center"
       alignItems="center"
@@ -116,13 +116,13 @@ const Authentication = () => {
         container
         sx={{
           height: tabletBreakpoint ? "auto" : "80%",
-          width: tabletBreakpoint ? "auto" : "80%",
+          width: tabletBreakpoint ? "auto" : "80%"
         }}
       >
         <Grid
           size={{
             xs: 12,
-            md: 6,
+            md: 6
           }}
           sx={{
             background: highlight,
@@ -130,7 +130,7 @@ const Authentication = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            padding: "50px 0",
+            padding: "50px 0"
           }}
         >
           <Logo color={white} background={highlight} width={180} height={180} />
@@ -141,14 +141,14 @@ const Authentication = () => {
         <Grid
           size={{
             xs: 12,
-            md: 6,
+            md: 6
           }}
           sx={{
             backgroundImage: "url(/background-image.png)",
             backgroundRepeat: "no-repeat",
             backgroundColor: highlight,
             backgroundSize: "contain",
-            backgroundPosition: "center",
+            backgroundPosition: "center"
           }}
         >
           <Box
@@ -160,7 +160,7 @@ const Authentication = () => {
               background: "rgba(0, 87, 145, 0.8)",
               width: "100%",
               height: tabletBreakpoint ? "auto" : "100%",
-              padding: tabletBreakpoint ? "50px 0" : "0",
+              padding: tabletBreakpoint ? "50px 0" : "0"
             }}
           >
             <Typography
@@ -193,7 +193,7 @@ const Authentication = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{ input: { color: white } }}
                 InputLabelProps={{
-                  style: { color: white },
+                  style: { color: white }
                 }}
               />
               <TextField
@@ -209,7 +209,7 @@ const Authentication = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 sx={{ input: { color: white }, margin: "8px 0" }}
                 InputLabelProps={{
-                  style: { color: white },
+                  style: { color: white }
                 }}
               />
               <ReCAPTCHA
@@ -233,8 +233,8 @@ const Authentication = () => {
                 sx={{
                   background: darkBlue,
                   "&.Mui-disabled": {
-                    background: "#474747",
-                  },
+                    background: "#474747"
+                  }
                 }}
               >
                 {isSignup ? "Create account" : "Login"}
@@ -249,7 +249,7 @@ const Authentication = () => {
                       sx={{
                         cursor: "pointer",
                         color: white,
-                        textDecoration: "underline",
+                        textDecoration: "underline"
                       }}
                     >
                       {"Login."}
@@ -264,7 +264,7 @@ const Authentication = () => {
                       sx={{
                         cursor: "pointer",
                         color: white,
-                        textDecoration: "underline",
+                        textDecoration: "underline"
                       }}
                     >
                       {"Sign up."}

@@ -7,7 +7,7 @@ import {
   ClientId,
   ClientProps,
   postClient,
-  updateClient,
+  updateClient
 } from "../../api/clients";
 import Main from "../../components/Main/Main";
 import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
@@ -17,7 +17,7 @@ import { useColumnsAndRows } from "./Clients.utils";
 const Clients = () => {
   const { columns, rows, setRows } = useColumnsAndRows();
   const { filterModel, handleFilterChange } = useFiltering({
-    columnField: "name",
+    columnField: "name"
   });
 
   const [user] = useUserData();
@@ -35,7 +35,7 @@ const Clients = () => {
       location: "",
       company: null,
       email: null,
-      phone_number: null,
+      phone_number: null
     };
 
     postClient(user.token, obj)
@@ -56,7 +56,7 @@ const Clients = () => {
         location: newRow.location,
         email: newRow.email,
         phone_number: newRow.phone_number,
-        company: newRow.company,
+        company: newRow.company
       };
       updateClient(user.token, oldRow.id, client)
         .then(() => {

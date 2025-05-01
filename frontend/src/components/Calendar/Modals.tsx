@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   Stack,
-  TextField,
+  TextField
 } from "@mui/material";
 import { DateTime } from "luxon";
 import React from "react";
@@ -12,14 +12,14 @@ import { toast } from "react-toastify";
 import {
   deleteCalendar,
   postCalendar,
-  updateCalendar,
+  updateCalendar
 } from "../../api/calendar";
 import { darkBlue } from "../../App";
 import { useUserData } from "../../contexts/UserProvider";
 
 export const EventAddModal = ({
   close,
-  selected,
+  selected
 }: {
   close: () => unknown;
   selected: DateSelectArg;
@@ -42,7 +42,7 @@ export const EventAddModal = ({
       const eventCalendar = {
         title,
         start: startDate,
-        end: endDate,
+        end: endDate
       };
 
       calendarApi.addEvent(eventCalendar);
@@ -81,7 +81,7 @@ export const EventAddModal = ({
 
 export const EventUpdateModal = ({
   close,
-  selected,
+  selected
 }: {
   close: () => unknown;
   selected: EventClickArg;
@@ -94,7 +94,7 @@ export const EventUpdateModal = ({
       const eventCalendarUpdated = {
         title: title,
         start: selected.event.startStr,
-        end: selected.event.endStr,
+        end: selected.event.endStr
       };
 
       const calendarApi = selected.view.calendar;

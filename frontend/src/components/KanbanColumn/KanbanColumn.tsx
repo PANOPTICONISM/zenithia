@@ -16,7 +16,7 @@ const KanbanColumn = ({
   columnName,
   entries,
   setColumns,
-  projects,
+  projects
 }: {
   columnName: ColumnType;
   entries: TaskProps[];
@@ -38,7 +38,7 @@ const KanbanColumn = ({
       importance: null,
       deadline: currentDate(),
       column_id: columnName,
-      project_id: null,
+      project_id: null
     };
 
     postTask(user.token, task)

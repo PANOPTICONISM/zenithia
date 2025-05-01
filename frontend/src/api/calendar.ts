@@ -20,8 +20,8 @@ export const getCalendar = async (token: string): Promise<CalendarProps[]> => {
     const response = await requester.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as CalendarProps[];
   } catch (err) {
@@ -40,8 +40,8 @@ export const postCalendar = async (
     const response = await requester.post(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -61,8 +61,8 @@ export const updateCalendar = async (
     const response = await requester.put(path, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {
@@ -81,8 +81,8 @@ export const deleteCalendar = async (
     const response = await requester.delete(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+        Authorization: "Bearer " + token
+      }
     });
     return response.data as string;
   } catch (err) {

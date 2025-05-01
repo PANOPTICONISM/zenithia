@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 
 const StatusTag = ({
   color,
-  value,
+  value
 }: {
   color: "inherit" | "success" | "warning";
   value: string;

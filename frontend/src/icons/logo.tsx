@@ -5,7 +5,7 @@ export const Logo = ({
   background,
   sx,
   width,
-  height,
+  height
 }: {
   color: string;
   background?: string;

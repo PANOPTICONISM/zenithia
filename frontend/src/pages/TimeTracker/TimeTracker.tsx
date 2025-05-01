@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   TimeTrackerProps,
   postTimeTracker,
-  updateTimeTracker,
+  updateTimeTracker
 } from "../../api/timetracker";
 import Main from "../../components/Main/Main";
 import { useUserData } from "../../contexts/UserProvider";
@@ -14,7 +14,7 @@ import {
   currentDate,
   currentTime,
   dateFromJSDateToISOForApi,
-  timeFromISOToFormatForApi,
+  timeFromISOToFormatForApi
 } from "../../lib/dates";
 import { useColumnsAndRows } from "./TimeTracker.utils";
 
@@ -34,7 +34,7 @@ const TimeTracker = () => {
       total: null,
       start_time: currentTime(),
       finish_time: null,
-      project_id: null,
+      project_id: null
     };
     postTimeTracker(user.token, obj)
       .then(() => setRows((current) => [...current, obj]))
@@ -54,7 +54,7 @@ const TimeTracker = () => {
           oldRow.finish_time !== null
             ? timeFromISOToFormatForApi(oldRow.finish_time)
             : null,
-        project_id: newRow.project_id || null,
+        project_id: newRow.project_id || null
       };
 
       updateTimeTracker(user.token, oldRow.id, row)
@@ -65,7 +65,7 @@ const TimeTracker = () => {
                 return {
                   ...currentRow,
                   date: dateFromJSDateToISOForApi(newRow.date),
-                  project_id: newRow.project_id || null,
+                  project_id: newRow.project_id || null
                 };
               }
               return currentRow;

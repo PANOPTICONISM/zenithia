@@ -9,7 +9,7 @@ type SidebarContextValues = {
 const SidebarContext = React.createContext<SidebarContextValues | null>(null);
 
 export const SidebarProvider = ({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) => {
@@ -21,7 +21,7 @@ export const SidebarProvider = ({
   const value = React.useMemo(
     () => ({
       isOpen,
-      setIsOpen,
+      setIsOpen
     }),
     [isOpen]
   );

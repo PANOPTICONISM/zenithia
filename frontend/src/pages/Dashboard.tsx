@@ -36,10 +36,10 @@ const exampleData = [
       revenue: "10000",
       base_price: 5000,
       currency: "USD",
-      client_id: "client123",
+      client_id: "client123"
     },
-    project_id: "0000",
-  },
+    project_id: "0000"
+  }
 ];
 
 const Dashboard = () => {
@@ -92,7 +92,7 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto",
+            gridRow: desktopBreakpoint ? "1/2" : "auto"
           }}
         >
           <Stack spacing={2}>
@@ -111,7 +111,7 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/2" : "auto",
+            gridRow: desktopBreakpoint ? "1/2" : "auto"
           }}
         >
           <Calendar isDashboard />
@@ -119,14 +119,14 @@ const Dashboard = () => {
         <Box
           sx={{
             gridColumn: desktopBreakpoint ? "span 4" : "span 12",
-            gridRow: desktopBreakpoint ? "1/3" : "auto",
+            gridRow: desktopBreakpoint ? "1/3" : "auto"
           }}
         >
           <Stack
             sx={{
               border: `1px solid ${grey}`,
               height: "100%",
-              overflow: "auto",
+              overflow: "auto"
             }}
           >
             <Stack
@@ -180,7 +180,7 @@ const Dashboard = () => {
             gridRow: desktopBreakpoint ? "2/3" : "auto",
             maxHeight: "326px",
             border: `1px solid ${grey}`,
-            height: "100%",
+            height: "100%"
           }}
         >
           {result ? <LineChart result={result} /> : null}

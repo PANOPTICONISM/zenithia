@@ -5,7 +5,7 @@ import {
   GridViewOutlined,
   HourglassBottomOutlined,
   InsightsOutlined,
-  TrackChangesOutlined,
+  TrackChangesOutlined
 } from "@mui/icons-material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ContactsIcon from "@mui/icons-material/Contacts";
@@ -25,7 +25,7 @@ import {
   SxProps,
   Toolbar,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router";
@@ -39,13 +39,13 @@ import {
   ListLink,
   Subtitle,
   drawerWidth,
-  drawerWidthMobile,
+  drawerWidthMobile
 } from "./Sidebar.utils";
 
 const BurgerMenu = ({
   icon,
   color,
-  sx,
+  sx
 }: {
   icon: React.ReactNode;
   edge?: "start";
@@ -84,7 +84,7 @@ const Username = ({ open }: { open: boolean }) => {
       sx={{
         border: `1px solid ${highlight}`,
         padding: "20px",
-        marginTop: "16px",
+        marginTop: "16px"
       }}
     >
       <Avatar sx={{ bgcolor: yellow, width: 26, height: 26, fontSize: "12px" }}>
@@ -233,7 +233,7 @@ export default function Sidebar() {
                 open ? drawerWidth : drawerWidthMobile
               }px))`,
               background: "transparent",
-              boxShadow: "none",
+              boxShadow: "none"
             }}
           >
             <Toolbar>
@@ -245,7 +245,7 @@ export default function Sidebar() {
                   top: "18px",
                   zIndex: "101",
                   background: white,
-                  color: black,
+                  color: black
                 }}
                 icon={open ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}
               />

@@ -11,13 +11,13 @@ import { currencyToLocale } from "../../lib/currency";
 import {
   finalizeTotals,
   logsByTimeline,
-  useColumnsAndRows,
+  useColumnsAndRows
 } from "./Revenue.utils";
 
 export const EarningsTimeline = ({
   text,
   total,
-  icon,
+  icon
 }: {
   text: string;
   total: string;
@@ -44,7 +44,7 @@ export const EarningsTimeline = ({
 const SuggestionBox = ({
   title,
   tagline,
-  icon,
+  icon
 }: {
   title: string;
   tagline: string;
@@ -71,7 +71,7 @@ const SuggestionBox = ({
 const Revenue = () => {
   const { columns, rows, filteredData, setFilteredData } = useColumnsAndRows();
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [],
+    items: []
   });
   const { totalMonthlySum, totalYearlySum } = logsByTimeline(rows);
 

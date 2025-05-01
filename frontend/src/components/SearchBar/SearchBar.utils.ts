@@ -8,7 +8,7 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
   const { pathname } = useLocation();
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [],
+    items: []
   });
 
   React.useEffect(() => {
@@ -20,7 +20,7 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
         filters.push({
           field: columnField,
           operator: "contains",
-          value: search,
+          value: search
         });
       }
       return { ...model, items: filters };
@@ -52,6 +52,6 @@ export const useFiltering = ({ columnField }: { columnField: string }) => {
 
   return {
     filterModel,
-    handleFilterChange,
+    handleFilterChange
   };
 };

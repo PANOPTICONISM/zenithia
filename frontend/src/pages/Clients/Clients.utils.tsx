@@ -7,7 +7,7 @@ import {
   ClientId,
   ClientProps,
   deleteClient,
-  getClients,
+  getClients
 } from "../../api/clients";
 import StatusTag from "../../components/StatusTag/StatusTag";
 import { useUserData } from "../../contexts/UserProvider";
@@ -56,7 +56,7 @@ export const useColumnsAndRows = () => {
               bgcolor: colors.deepOrange[500],
               width: 26,
               height: 26,
-              fontSize: "12px",
+              fontSize: "12px"
             }}
             alt={value}
           >
@@ -64,13 +64,13 @@ export const useColumnsAndRows = () => {
           </Avatar>
           <Typography fontSize="14px">{value}</Typography>
         </Stack>
-      ),
+      )
     },
     {
       field: "occupation",
       headerName: "Occupation",
       minWidth: 120,
-      editable: true,
+      editable: true
     },
     {
       field: "status",
@@ -89,33 +89,33 @@ export const useColumnsAndRows = () => {
         }
 
         return <StatusTag color="success" value={value} />;
-      },
+      }
     },
     {
       field: "location",
       headerName: "Location",
       minWidth: 100,
-      editable: true,
+      editable: true
     },
     {
       field: "company",
       headerName: "Company",
       minWidth: 120,
       flex: 1,
-      editable: true,
+      editable: true
     },
     {
       field: "email",
       headerName: "Email",
       minWidth: 100,
       flex: 1,
-      editable: true,
+      editable: true
     },
     {
       field: "phone_number",
       headerName: "Phone-number",
       minWidth: 120,
-      editable: true,
+      editable: true
     },
     {
       field: "actions",
@@ -130,8 +130,8 @@ export const useColumnsAndRows = () => {
         >
           Delete
         </Button>
-      ),
-    },
+      )
+    }
   ];
 
   return { columns, rows, setRows };

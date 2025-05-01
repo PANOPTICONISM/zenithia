@@ -14,7 +14,7 @@ const PieChart = ({ result }: { result: PieChartProps }) => {
       borderWidth={1}
       borderColor={{
         from: "color",
-        modifiers: [["darker", 0.2]],
+        modifiers: [["darker", 0.2]]
       }}
       arcLabel={(e) => e.value + " " + getCurrencyFromRegion()}
       arcLinkLabelsSkipAngle={10}
@@ -24,7 +24,7 @@ const PieChart = ({ result }: { result: PieChartProps }) => {
       arcLabelsSkipAngle={10}
       arcLabelsTextColor={{
         from: "color",
-        modifiers: [["darker", 2]],
+        modifiers: [["darker", 2]]
       }}
       defs={[
         {
@@ -34,7 +34,7 @@ const PieChart = ({ result }: { result: PieChartProps }) => {
           color: "rgba(255, 255, 255, 0.3)",
           size: 4,
           padding: 1,
-          stagger: true,
+          stagger: true
         },
         {
           id: "lines",
@@ -43,58 +43,58 @@ const PieChart = ({ result }: { result: PieChartProps }) => {
           color: "rgba(255, 255, 255, 0.3)",
           rotation: -45,
           lineWidth: 6,
-          spacing: 10,
-        },
+          spacing: 10
+        }
       ]}
       fill={[
         {
           match: {
-            id: "ruby",
+            id: "ruby"
           },
-          id: "dots",
+          id: "dots"
         },
         {
           match: {
-            id: "c",
+            id: "c"
           },
-          id: "dots",
+          id: "dots"
         },
         {
           match: {
-            id: "go",
+            id: "go"
           },
-          id: "dots",
+          id: "dots"
         },
         {
           match: {
-            id: "python",
+            id: "python"
           },
-          id: "dots",
+          id: "dots"
         },
         {
           match: {
-            id: "scala",
+            id: "scala"
           },
-          id: "lines",
+          id: "lines"
         },
         {
           match: {
-            id: "lisp",
+            id: "lisp"
           },
-          id: "lines",
+          id: "lines"
         },
         {
           match: {
-            id: "elixir",
+            id: "elixir"
           },
-          id: "lines",
+          id: "lines"
         },
         {
           match: {
-            id: "javascript",
+            id: "javascript"
           },
-          id: "lines",
-        },
+          id: "lines"
+        }
       ]}
       legends={[
         {
@@ -115,11 +115,11 @@ const PieChart = ({ result }: { result: PieChartProps }) => {
             {
               on: "hover",
               style: {
-                itemTextColor: "#000",
-              },
-            },
-          ],
-        },
+                itemTextColor: "#000"
+              }
+            }
+          ]
+        }
       ]}
     />
   );
