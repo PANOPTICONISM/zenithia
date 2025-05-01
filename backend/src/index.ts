@@ -45,10 +45,16 @@ const corsOptions: CorsOptions = {
     origin: string | undefined,
     callback: (error: Error | null, allow?: boolean) => void
   ) {
+    if (
+      process.env.ENVIRONMENT === "development" ||
+      process.env.ENVIRONMENT === "staging"
+    ) {
+      return callback(null, true);
+    }
     if (origin && allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
-      return callback(new Error("Not allowed by CORS"));
+      return callback(new Error("Not allowed by CORS."));
     }
   },
 };
