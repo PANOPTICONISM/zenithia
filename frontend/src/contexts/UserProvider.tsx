@@ -1,9 +1,14 @@
+import { jwtDecode } from "jwt-decode";
 import React from "react";
 
 type UserProps = {
   id: string;
   username: string;
   token: string;
+};
+
+type JWTPayload = {
+  exp: number;
 };
 
 type UserContextValues = {
@@ -14,23 +19,37 @@ type UserContextValues = {
 const UserContext = React.createContext<UserContextValues | null>(null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const isValidToken = (token: string) => {
+    try {
+      const { exp } = jwtDecode<JWTPayload>(token);
+      return exp && exp > Date.now() / 1000;
+    } catch {
+      return false;
+    }
+  };
+
   const getUser = () => {
-    const userDetails = sessionStorage.getItem("user");
+    const userDetails = localStorage.getItem("user");
     if (!userDetails) {
       return;
     }
-    const userParsed = JSON.parse(userDetails);
-    return userParsed;
+
+    const userParsed: UserProps = JSON.parse(userDetails);
+    return isValidToken(userParsed.token) ? userParsed : undefined;
   };
 
   const [user, setUser] = React.useState<UserProps | undefined>(getUser());
 
   React.useEffect(() => {
-    if (user) {
-      return sessionStorage.setItem("user", JSON.stringify(user));
+    if (user && !isValidToken(user.token)) {
+      setUser(undefined);
+      return localStorage.removeItem("user");
     }
 
-    return sessionStorage.removeItem("user");
+    if (user) {
+      return localStorage.setItem("user", JSON.stringify(user));
+    }
+    return localStorage.removeItem("user");
   }, [user]);
 
   const value = React.useMemo(
