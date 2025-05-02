@@ -2,10 +2,7 @@ import { DateTime } from "luxon";
 import React from "react";
 import { darkBlue } from "../../App";
 import { useGetProjectsFormatted } from "../../hooks/useGetProjectsFormatted";
-import {
-  currencyFromCents,
-  valueFormatterNoCurrency
-} from "../../lib/currency";
+import { currencyFromCents } from "../../lib/currency";
 
 const getPlaceholderData = () => ({
   id: "monthlyRevenue",
@@ -58,7 +55,7 @@ export const useRevenueData = () => {
 
     const totalData = Object.entries(monthlyTotals).map(([month, total]) => ({
       x: month,
-      y: Number(valueFormatterNoCurrency.format(currencyFromCents(total)))
+      y: Number(currencyFromCents(total).toFixed(2))
     }));
 
     const containsData = totalData.length > 0;

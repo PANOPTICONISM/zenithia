@@ -85,21 +85,19 @@ export const ListLink = ({
       <ListItem disablePadding>
         <ListItemButton
           sx={{
-            minHeight: 48,
+            height: 48,
             justifyContent: open ? "initial" : "center",
             px: 2.5,
             color: white,
             background: path === pathname ? highlight : "inherit",
             borderRadius: "4px"
-          }}
-        >
+          }}>
           <ListItemIcon
             sx={{
               minWidth: 0,
               mr: open ? 3 : "auto",
               justifyContent: "center"
-            }}
-          >
+            }}>
             {icon}
           </ListItemIcon>
           <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
