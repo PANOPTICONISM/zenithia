@@ -54,14 +54,18 @@ const KanbanColumn = ({
   };
 
   return (
-    <Stack sx={{ border: `1px solid ${grey}`, width: "100%" }}>
+    <Stack
+      sx={{
+        border: `1px solid ${grey}`,
+        width: "100%",
+        height: "100%"
+      }}>
       <Stack
         sx={{ padding: "24px 24px 0 24px" }}
         direction="row"
         spacing={1}
         justifyContent="space-between"
-        alignItems="center"
-      >
+        alignItems="center">
         <Stack direction="row" spacing={1}>
           <ReceiptLongIcon />
           <Typography>{columnName}</Typography>
@@ -73,11 +77,10 @@ const KanbanColumn = ({
       <Droppable droppableId={columnName}>
         {(provided) => (
           <Stack
-            sx={{ padding: "24px" }}
+            sx={{ padding: "24px", height: "100%", overflow: "auto" }}
             spacing={2}
             ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+            {...provided.droppableProps}>
             {entries.map((task, index) => (
               <Task
                 task={task}

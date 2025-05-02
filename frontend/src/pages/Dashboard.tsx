@@ -87,7 +87,7 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(3, 1fr)"
         gridTemplateRows="auto 1fr"
         gridAutoRows="auto"
-        maxHeight="calc(100% - 80px)"
+        maxHeight={desktopBreakpoint ? "calc(100% - 80px)" : "auto"}
         gap={2}
         padding="24px 0">
         <Box
@@ -115,7 +115,7 @@ const Dashboard = () => {
           gridColumn={desktopBreakpoint ? "3" : "span 12"}
           gridRow={desktopBreakpoint ? "1 / span 2" : "auto"}
           overflow="auto"
-          maxHeight={desktopBreakpoint ? "100%" : "auto"}>
+          height={desktopBreakpoint ? "100%" : "auto"}>
           <Stack
             sx={{
               border: `1px solid ${grey}`,

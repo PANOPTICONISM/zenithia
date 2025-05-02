@@ -1,5 +1,5 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import groupBy from "lodash/groupBy";
 import React from "react";
 import { toast } from "react-toastify";
@@ -23,6 +23,8 @@ export const COLUMNS = {
 } as const;
 
 const Tasks = () => {
+  const desktopBreakpoint = useMediaQuery("(min-width:1200px)");
+
   const [columns, setColumns] = React.useState<Map<ColumnType, TaskProps[]>>(
     new Map()
   );
@@ -101,7 +103,10 @@ const Tasks = () => {
   return (
     <Main title="Tasks">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={2}
+          maxHeight={desktopBreakpoint ? "calc(100% - 80px)" : "auto"}>
           {[...columns.entries()].map(([key, entries]) => {
             return (
               <Grid
@@ -109,8 +114,8 @@ const Tasks = () => {
                   xs: 12,
                   lg: 4
                 }}
-                key={key}
-              >
+                maxHeight="100%"
+                key={key}>
                 <KanbanColumn
                   columnName={key}
                   entries={entries}
