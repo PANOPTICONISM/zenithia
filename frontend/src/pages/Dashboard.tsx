@@ -84,13 +84,15 @@ const Dashboard = () => {
       </Typography>
       <Box
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridTemplateRows="auto"
+        gridTemplateColumns="repeat(3, 1fr)"
+        gridTemplateRows="auto 1fr"
+        gridAutoRows="auto"
+        maxHeight={desktopBreakpoint ? "calc(100% - 80px)" : "auto"}
         gap={2}
         padding="24px 0">
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
-          gridRow={desktopBreakpoint ? "1/2" : "auto"}>
+          gridColumn={desktopBreakpoint ? "1" : "span 12"}
+          gridRow={desktopBreakpoint ? "1" : "auto"}>
           <Stack spacing={2} height="100%">
             <EarningsTimeline
               text="Earnings this year"
@@ -105,13 +107,15 @@ const Dashboard = () => {
           </Stack>
         </Box>
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
-          gridRow={desktopBreakpoint ? "1/2" : "auto"}>
+          gridColumn={desktopBreakpoint ? "2" : "span 12"}
+          gridRow={desktopBreakpoint ? "1" : "auto"}>
           <Calendar isDashboard />
         </Box>
         <Box
-          gridColumn={desktopBreakpoint ? "span 4" : "span 12"}
-          gridRow={desktopBreakpoint ? "1/4" : "auto"}>
+          gridColumn={desktopBreakpoint ? "3" : "span 12"}
+          gridRow={desktopBreakpoint ? "1 / span 2" : "auto"}
+          overflow="auto"
+          height={desktopBreakpoint ? "100%" : "auto"}>
           <Stack
             sx={{
               border: `1px solid ${grey}`,
@@ -161,10 +165,10 @@ const Dashboard = () => {
         </Box>
         {result ? (
           <Box
-            height="100%"
             maxHeight="326px"
-            gridColumn={desktopBreakpoint ? "span 8" : "span 12"}
-            gridRow={desktopBreakpoint ? "2/4" : "auto"}
+            minHeight="200px"
+            gridColumn={desktopBreakpoint ? "1 / span 2" : "span 12"}
+            gridRow={desktopBreakpoint ? "2" : "auto"}
             border={`1px solid ${grey}`}>
             <LineChart result={result} />
           </Box>

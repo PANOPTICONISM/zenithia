@@ -17,25 +17,28 @@ const Main = ({
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
   const [open] = useIsSidebarOpen();
 
+  const wrapperBoxBaseStyles = {
+    display: "flex",
+    flexDirection: "column",
+    height: tabletBreakpoint ? "auto" : "100vh",
+    padding: tabletBreakpoint ? "20px" : "50px",
+    ...(!tabletBreakpoint && {
+      width: open ? `calc(100% - (${drawerWidth}px))` : "calc(100% - 125px)"
+    })
+  };
+
   return (
     <Box
       sx={
         !tabletBreakpoint
-          ? { display: "flex", justifyContent: "space-between" }
+          ? {
+              display: "flex",
+              justifyContent: "space-between"
+            }
           : {}
       }>
       <Sidebar />
-      <Box
-        sx={
-          tabletBreakpoint
-            ? { padding: "20px" }
-            : {
-                width: open
-                  ? `calc(100% - (${drawerWidth}px))`
-                  : "calc(100% - 125px)",
-                padding: "50px"
-              }
-        }>
+      <Box sx={wrapperBoxBaseStyles}>
         <Header
           title={title}
           handleClick={handleClick}
@@ -43,7 +46,7 @@ const Main = ({
           isSearch={isSearch}
           hideMargin={hideMargin}
         />
-        <main>{children}</main>
+        {children}
       </Box>
     </Box>
   );

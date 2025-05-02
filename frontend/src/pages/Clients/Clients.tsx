@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { toast } from "react-toastify";
@@ -79,19 +78,16 @@ const Clients = () => {
       title="Clients"
       handleClick={addUser}
       buttonText="Add client"
-      isSearch
-    >
-      <Box sx={{ height: 620, width: "100%" }}>
-        <DataGrid
-          columns={columns}
-          rows={rows}
-          editMode="row"
-          processRowUpdate={handleProcessRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-          filterModel={filterModel}
-          onFilterModelChange={handleFilterChange}
-        />
-      </Box>
+      isSearch>
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        editMode="row"
+        processRowUpdate={handleProcessRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
+        filterModel={filterModel}
+        onFilterModelChange={handleFilterChange}
+      />
     </Main>
   );
 };
