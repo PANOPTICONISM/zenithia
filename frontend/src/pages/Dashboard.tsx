@@ -85,7 +85,7 @@ const Dashboard = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(3, 1fr)"
-        gridTemplateRows="auto auto"
+        gridTemplateRows="auto 1fr"
         gridAutoRows="auto"
         maxHeight="calc(100% - 80px)"
         gap={2}
