@@ -5,7 +5,6 @@ import type {
   EventClickArg,
   EventSourceInput
 } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
@@ -95,14 +94,9 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
       <Box flex="1 1 100%">
         <FullCalendar
           ref={calendarRef}
-          plugins={[
-            dayGridPlugin,
-            timeGridPlugin,
-            listPlugin,
-            interactionPlugin
-          ]}
+          plugins={[timeGridPlugin, listPlugin, interactionPlugin]}
           initialView={
-            tabletBreakpoint || isDashboard ? "listMonth" : "dayGridMonth"
+            tabletBreakpoint || isDashboard ? "timeGridDay" : "timeGridWeek"
           }
           headerToolbar={
             !isDashboard
@@ -111,7 +105,7 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
                   center: !tabletBreakpoint ? "title" : "",
                   right: tabletBreakpoint
                     ? "prev,next"
-                    : "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+                    : "timeGridWeek,timeGridDay,listMonth"
                 }
               : false
           }

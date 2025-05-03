@@ -33,9 +33,7 @@ export const EventAddModal = ({
       calendarApi.unselect();
 
       const startDate = DateTime.fromJSDate(selected.start).toISO();
-      const endDate = DateTime.fromJSDate(selected.end)
-        .minus({ milliseconds: 1 })
-        .toISO();
+      const endDate = DateTime.fromJSDate(selected.end).toISO();
       if (!user || !title || !startDate || !endDate) {
         return;
       }
@@ -54,7 +52,7 @@ export const EventAddModal = ({
         })
         .catch(() => toast.error("Could not add the event"));
     },
-    [title, user]
+    [selected, title, user]
   );
 
   return (
@@ -70,8 +68,7 @@ export const EventAddModal = ({
         <Button
           variant="contained"
           sx={{ background: darkBlue }}
-          onClick={() => handleAddEvent(close)}
-        >
+          onClick={() => handleAddEvent(close)}>
           Confirm
         </Button>
       </DialogActions>
@@ -114,21 +111,24 @@ export const EventUpdateModal = ({
         })
         .catch(() => toast.error("Could not update the event"));
     },
-    [title]
+    [title, selected, user]
   );
 
-  const handleDeleteEvent = React.useCallback((close: () => unknown) => {
-    if (!user) {
-      return;
-    }
-    deleteCalendar(user.token, selected.event.id)
-      .then(() => {
-        selected.event.remove();
-        close();
-        toast.success("Event deleted successfully");
-      })
-      .catch(() => toast.error("Could not delete the event"));
-  }, []);
+  const handleDeleteEvent = React.useCallback(
+    (close: () => unknown) => {
+      if (!user) {
+        return;
+      }
+      deleteCalendar(user.token, selected.event.id)
+        .then(() => {
+          selected.event.remove();
+          close();
+          toast.success("Event deleted successfully");
+        })
+        .catch(() => toast.error("Could not delete the event"));
+    },
+    [user, selected]
+  );
 
   return (
     <Stack width="400px">
@@ -146,16 +146,14 @@ export const EventUpdateModal = ({
             variant="contained"
             sx={{ background: darkBlue }}
             fullWidth
-            onClick={() => handleUpdateEvent(close)}
-          >
+            onClick={() => handleUpdateEvent(close)}>
             Update
           </Button>
           <Button
             variant="outlined"
             color="error"
             fullWidth
-            onClick={() => handleDeleteEvent(close)}
-          >
+            onClick={() => handleDeleteEvent(close)}>
             Delete
           </Button>
         </Stack>
