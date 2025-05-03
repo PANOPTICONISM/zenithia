@@ -115,7 +115,7 @@ const Navigation = ({ open }: { open: boolean }) => {
       </List>
       <Box>
         {open ? (
-          <Subtitle text="Pages" />
+          <Subtitle text="Productivity" />
         ) : (
           <Divider sx={{ background: white }} />
         )}
