@@ -80,8 +80,7 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "0 10px"
-            }}
-          >
+            }}>
             {params.formattedValue}
           </Box>
         )
@@ -154,8 +153,7 @@ export const useColumnsAndRows = () => {
           onClick={deleteEntry(params.id)}
           variant="contained"
           startIcon={<DeleteIcon />}
-          color="error"
-        >
+          color="error">
           Delete
         </Button>
       )
