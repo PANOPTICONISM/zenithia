@@ -6,38 +6,31 @@ export const currentTime = () =>
   DateTime.now().toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") || "";
 
 export const dateLuxonToISOForApi = (date: DateTime) => {
-  const dateFormattedToISO = date.toUTC().toISODate();
-  if (dateFormattedToISO) {
-    return dateFormattedToISO;
-  }
-  return "";
+  const dateFormattedToISO = date.setZone("local").toISODate();
+  return dateFormattedToISO ?? "";
 };
 
 export const dateFromISOToLocaleString = (date: Date | string) => {
   if (!isString(date)) {
-    return DateTime.fromJSDate(date).toLocaleString();
+    return DateTime.fromJSDate(date, { zone: "local" }).toLocaleString();
   }
-  const formatToLuxonDateToISO = DateTime.fromISO(date).toLocaleString();
-  if (formatToLuxonDateToISO) {
-    return formatToLuxonDateToISO;
-  }
-  return "";
+  const formatToLuxonDateToISO = DateTime.fromISO(date, {
+    zone: "local"
+  }).toLocaleString();
+  return formatToLuxonDateToISO ?? "";
 };
 
 export const dateFromJSDateToISOForApi = (date: Date | string) => {
   if (!isString(date)) {
-    const formatDateToLuxonObj = DateTime.fromJSDate(date);
+    const formatDateToLuxonObj = DateTime.fromJSDate(date, { zone: "local" });
     return dateLuxonToISOForApi(formatDateToLuxonObj);
   }
-  return dateLuxonToISOForApi(DateTime.fromISO(date));
+  return dateLuxonToISOForApi(DateTime.fromISO(date, { zone: "local" }));
 };
 
 export const timeFromISOToFormatForApi = (date: string) => {
-  const formattedTime = DateTime.fromISO(date)
+  const formattedTime = DateTime.fromISO(date, { zone: "local" })
     .toUTC()
     .toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  if (formattedTime) {
-    return formattedTime;
-  }
-  return "";
+  return formattedTime ?? "";
 };
