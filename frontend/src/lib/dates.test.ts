@@ -61,8 +61,23 @@ describe("dates utilities", () => {
     expect(dateToLocaleString(invalidDate)).toBe("");
   });
 
-  it("formatDateForApi", () => {
+  it("formatDateForApi - final format ", () => {
     const date = new Date("2025-01-29T00:00:00.000Z");
     expect(formatDateForApi(date)).toBe("2025-01-29T00:00:00.000Z");
+  });
+
+  it("formatDateForApi - invalid date", () => {
+    const invalidDate = "invalid-date-string";
+    expect(formatDateForApi(invalidDate)).toBe("");
+  });
+
+  it("timeFromISOToFormatForApi - final format", () => {
+    const date = "2025-01-29T00:00:00.000Z";
+    expect(formatDateForApi(date)).toBe("2025-01-29T00:00:00.000Z");
+  });
+
+  it("timeFromISOToFormatForApi - invalid date", () => {
+    const invalidDate = "invalid-date-string";
+    expect(formatDateForApi(invalidDate)).toBe("");
   });
 });
