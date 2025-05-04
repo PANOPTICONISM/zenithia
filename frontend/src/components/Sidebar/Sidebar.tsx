@@ -104,7 +104,7 @@ const Username = ({ open }: { open: boolean }) => {
 
 const Navigation = ({ open }: { open: boolean }) => {
   return (
-    <>
+    <Stack spacing={2} component="nav">
       <List disablePadding={open}>
         <ListLink
           open={open}
@@ -115,7 +115,7 @@ const Navigation = ({ open }: { open: boolean }) => {
       </List>
       <Box>
         {open ? (
-          <Subtitle text="Pages" />
+          <Subtitle text="Productivity" />
         ) : (
           <Divider sx={{ background: white }} />
         )}
@@ -188,7 +188,7 @@ const Navigation = ({ open }: { open: boolean }) => {
           />
         </List>
       </Box>
-    </>
+    </Stack>
   );
 };
 

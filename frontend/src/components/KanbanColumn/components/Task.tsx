@@ -26,7 +26,8 @@ import {
 } from "../../../api/tasks";
 import { lightBlue } from "../../../App";
 import { useUserData } from "../../../contexts/UserProvider";
-import { ColumnType } from "../../../pages/Tasks/Tasks";
+import { getTimeZoneToLocale } from "../../../lib/dates";
+import { ColumnType } from "../../../pages/KanbanBoard/KanbanBoard.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
 type EditableTask = {
@@ -125,14 +126,12 @@ const Task = ({
             position: "relative",
             ...provided.draggableProps.style
           }}
-          onDoubleClick={() => setIsEdit(true)}
-        >
+          onDoubleClick={() => setIsEdit(true)}>
           {isEdit ? (
             <>
               <IconButton
                 onClick={() => setIsEdit(false)}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}
-              >
+                sx={{ position: "absolute", right: "4px", top: "4px" }}>
                 <CloseIcon fontSize="small" />
               </IconButton>
               <Stack spacing={2}>
@@ -149,7 +148,9 @@ const Task = ({
                   }
                 />
                 <Box>
-                  <LocalizationProvider dateAdapter={AdapterLuxon}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterLuxon}
+                    adapterLocale={getTimeZoneToLocale()}>
                     <DatePicker
                       slotProps={{
                         textField: { size: "small", fullWidth: true }
@@ -179,8 +180,7 @@ const Task = ({
                         ...current,
                         importance: event.target.value
                       }))
-                    }
-                  >
+                    }>
                     <MenuItem value="personal">Blank</MenuItem>
                     <MenuItem value="low">Low</MenuItem>
                     <MenuItem value="medium">Medium</MenuItem>
@@ -218,8 +218,7 @@ const Task = ({
             <>
               <IconButton
                 onClick={handleDelete}
-                sx={{ position: "absolute", right: "4px", top: "4px" }}
-              >
+                sx={{ position: "absolute", right: "4px", top: "4px" }}>
                 <CloseIcon sx={{ width: "12px", height: "12px" }} />
               </IconButton>
               <Typography fontWeight={700} fontSize="16px">
@@ -230,8 +229,7 @@ const Task = ({
                 justifyContent="space-between"
                 alignItems="center"
                 paddingTop="16px"
-                flexWrap="wrap"
-              >
+                flexWrap="wrap">
                 <DateAndLevel
                   deadline={DateTime.fromISO(task.deadline)
                     .toFormat("MMMM, dd")
@@ -241,8 +239,7 @@ const Task = ({
                 <Typography
                   fontWeight={100}
                   fontSize="14px"
-                  sx={{ marginLeft: "auto" }}
-                >
+                  sx={{ marginLeft: "auto" }}>
                   {task?.project?.title}
                 </Typography>
               </Stack>

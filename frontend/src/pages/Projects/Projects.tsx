@@ -7,7 +7,7 @@ import Main from "../../components/Main/Main";
 import { useFiltering } from "../../components/SearchBar/SearchBar.utils";
 import { useUserData } from "../../contexts/UserProvider";
 import { currencyToCents } from "../../lib/currency";
-import { currentDate, dateFromJSDateToISOForApi } from "../../lib/dates";
+import { currentDate, formatDateForApi } from "../../lib/dates";
 import { ProjectProps } from "./Projects.types";
 import { useColumnsAndRows } from "./Projects.utils";
 
@@ -36,8 +36,8 @@ const Projects = () => {
       const row = {
         id: oldRow.id,
         title: newRow.title,
-        start_date: dateFromJSDateToISOForApi(newRow.start_date),
-        finish_date: dateFromJSDateToISOForApi(newRow.finish_date),
+        start_date: formatDateForApi(newRow.start_date),
+        finish_date: formatDateForApi(newRow.finish_date),
         status: newRow.status,
         revenue: newRow.revenue,
         base_price: basePrice,

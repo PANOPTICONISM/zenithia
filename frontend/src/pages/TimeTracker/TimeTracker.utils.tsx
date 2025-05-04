@@ -15,7 +15,7 @@ import {
 } from "../../api/timetracker";
 import { lightBlue } from "../../App";
 import { useUserData } from "../../contexts/UserProvider";
-import { dateFromISOToLocaleString } from "../../lib/dates";
+import { dateToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "../Projects/Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -122,7 +122,7 @@ export const useColumnsAndRows = () => {
       headerName: "Date",
       flex: 1,
       minWidth: 100,
-      valueFormatter: (value) => dateFromISOToLocaleString(value),
+      valueFormatter: (value) => dateToLocaleString(value),
       type: "date",
       editable: true
     },
@@ -176,8 +176,7 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "0 10px"
-            }}
-          >
+            }}>
             {params.formattedValue}
           </Box>
         )
@@ -196,8 +195,7 @@ export const useColumnsAndRows = () => {
             disabled={
               (row.finish_time !== null && selectedId !== row.id) ||
               (isRunning && row.id !== selectedId)
-            }
-          >
+            }>
             {isRunning && row.id === selectedId ? (
               <StopCircleIcon />
             ) : (

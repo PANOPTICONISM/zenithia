@@ -12,7 +12,7 @@ import { useUserData } from "../../contexts/UserProvider";
 import {
   currentDate,
   currentTime,
-  dateFromJSDateToISOForApi,
+  formatDateForApi,
   timeFromISOToFormatForApi
 } from "../../lib/dates";
 import { useColumnsAndRows } from "./TimeTracker.utils";
@@ -47,7 +47,7 @@ const TimeTracker = () => {
       }
 
       const row = {
-        date: dateFromJSDateToISOForApi(newRow.date),
+        date: formatDateForApi(newRow.date),
         start_time: timeFromISOToFormatForApi(oldRow.start_time),
         finish_time:
           oldRow.finish_time !== null
@@ -63,7 +63,7 @@ const TimeTracker = () => {
               if (currentRow.id === oldRow.id) {
                 return {
                   ...currentRow,
-                  date: dateFromJSDateToISOForApi(newRow.date),
+                  date: formatDateForApi(newRow.date),
                   project_id: newRow.project_id || null
                 };
               }

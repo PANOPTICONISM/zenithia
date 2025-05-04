@@ -10,10 +10,10 @@ import MonthlyStats from "./pages/Charts/MonthlyStats";
 import YearlyStats from "./pages/Charts/YearlyStats";
 import Clients from "./pages/Clients/Clients";
 import Dashboard from "./pages/Dashboard";
+import KanbanBoard from "./pages/KanbanBoard/KanbanBoard";
 import Projects from "./pages/Projects/Projects";
 import Revenue from "./pages/Revenue/Revenue";
 import Schedule from "./pages/Schedule/Schedule";
-import Tasks from "./pages/Tasks/Tasks";
 import TimeTracker from "./pages/TimeTracker/TimeTracker";
 
 export const black = "#000";
@@ -38,7 +38,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="calendar" element={<Schedule />} />
-                <Route path="tasks" element={<Tasks />} />
+                <Route path="tasks" element={<KanbanBoard />} />
                 <Route path="projects" element={<Projects />} />
                 <Route path="clients" element={<Clients />} />
                 <Route path="timetracker" element={<TimeTracker />} />
