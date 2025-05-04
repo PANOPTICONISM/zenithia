@@ -9,6 +9,7 @@ import MonthlyStats from "./pages/Charts/MonthlyStats";
 import YearlyStats from "./pages/Charts/YearlyStats";
 import Clients from "./pages/Clients/Clients";
 import Dashboard from "./pages/Dashboard";
+import { ErrorPage } from "./pages/ErrorPage";
 import KanbanBoard from "./pages/KanbanBoard/KanbanBoard";
 import Projects from "./pages/Projects/Projects";
 import Revenue from "./pages/Revenue/Revenue";
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AuthenticationWrapper />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
