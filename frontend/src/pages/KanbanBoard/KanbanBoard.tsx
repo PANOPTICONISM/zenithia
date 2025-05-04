@@ -68,7 +68,11 @@ const KanbanBoard = () => {
       const sourceItems = Array.from(sourceColumn);
       const destItems = Array.from(destColumn);
       const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
+      const removedWithUpdatedColumnId = {
+        ...removed,
+        column_id: destination.droppableId as ColumnType
+      };
+      destItems.splice(destination.index, 0, removedWithUpdatedColumnId);
 
       setColumns((prev) => {
         const newColumns = new Map(prev);
