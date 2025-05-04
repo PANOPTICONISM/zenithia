@@ -38,21 +38,28 @@ export const currentDate = () => DateTime.now().toLocal().toISODate() || "";
 export const currentTime = () =>
   DateTime.now().toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") || "";
 
+export const dateToLocaleString = (date: Date | string) => {
+  if (!isString(date)) {
+    return (
+      DateTime.fromJSDate(date, {
+        zone: timeZone
+      })
+        .setLocale(locale)
+        .toLocaleString(DateTime.DATE_SHORT) ?? ""
+    );
+  }
+  return (
+    DateTime.fromISO(date, {
+      zone: timeZone
+    })
+      .setLocale(locale)
+      .toLocaleString(DateTime.DATE_SHORT) ?? ""
+  );
+};
+
 export const dateLuxonToISOForApi = (date: DateTime) => {
   const dateFormattedToISO = date.setZone(timeZone).toISODate();
   return dateFormattedToISO ?? "";
-};
-
-export const dateFromISOToLocaleString = (date: Date | string) => {
-  if (!isString(date)) {
-    return DateTime.fromJSDate(date, {
-      zone: timeZone
-    }).setLocale(locale);
-  }
-  const formatToLuxonDateToISO = DateTime.fromISO(date, {
-    zone: timeZone
-  }).setLocale(locale);
-  return formatToLuxonDateToISO.toLocaleString(DateTime.DATE_SHORT) ?? "";
 };
 
 export const dateFromJSDateToISOForApi = (date: Date | string) => {

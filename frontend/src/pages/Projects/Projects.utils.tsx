@@ -9,7 +9,7 @@ import { lightBlue } from "../../App";
 import StatusTag from "../../components/StatusTag/StatusTag";
 import { useUserData } from "../../contexts/UserProvider";
 import { currencyFromCents, currencyToLocale } from "../../lib/currency";
-import { dateFromISOToLocaleString } from "../../lib/dates";
+import { dateToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "./Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -90,7 +90,7 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (value) => dateFromISOToLocaleString(value),
+      valueFormatter: (value) => dateToLocaleString(value),
       type: "date",
       editable: true
     },
@@ -99,7 +99,7 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (value) => dateFromISOToLocaleString(value),
+      valueFormatter: (value) => dateToLocaleString(value),
       type: "date",
       editable: true
     },

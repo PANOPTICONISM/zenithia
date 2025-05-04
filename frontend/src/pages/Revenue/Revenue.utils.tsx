@@ -8,7 +8,7 @@ import {
   useGetProjectsFormatted
 } from "../../hooks/useGetProjectsFormatted";
 import { currencyToLocale } from "../../lib/currency";
-import { dateFromISOToLocaleString } from "../../lib/dates";
+import { dateToLocaleString } from "../../lib/dates";
 import { ProjectProps } from "../Projects/Projects.types";
 
 export const useColumnsAndRows = () => {
@@ -48,8 +48,7 @@ export const useColumnsAndRows = () => {
             sx={{
               background: lightBlue,
               padding: "0 10px"
-            }}
-          >
+            }}>
             {params.value}
           </Box>
         );
@@ -66,7 +65,7 @@ export const useColumnsAndRows = () => {
       headerName: "Start",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (value) => dateFromISOToLocaleString(value),
+      valueFormatter: (value) => dateToLocaleString(value),
       type: "date"
     },
     {
@@ -74,7 +73,7 @@ export const useColumnsAndRows = () => {
       headerName: "Finish",
       minWidth: 100,
       flex: 1,
-      valueFormatter: (value) => dateFromISOToLocaleString(value),
+      valueFormatter: (value) => dateToLocaleString(value),
       type: "date"
     },
     {
