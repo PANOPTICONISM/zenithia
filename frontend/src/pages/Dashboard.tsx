@@ -17,9 +17,9 @@ import { useUserData } from "../contexts/UserProvider";
 import { useGetProjectsFormatted } from "../hooks/useGetProjectsFormatted";
 import { currencyToLocale } from "../lib/currency";
 import { useRevenueData } from "./Charts/MonthlyStats.utils";
+import { COLUMN_OPTIONS } from "./KanbanBoard/KanbanBoard.utils";
 import { EarningsTimeline } from "./Revenue/Revenue";
 import { logsByTimeline } from "./Revenue/Revenue.utils";
-import { COLUMNS } from "./Tasks/Tasks";
 
 const exampleData = [
   {
@@ -27,7 +27,7 @@ const exampleData = [
     title: "Example task",
     importance: "medium",
     deadline: "2023-10-05",
-    column_id: COLUMNS.TO_DO,
+    column_id: COLUMN_OPTIONS.TO_DO,
     projects: {
       title: "Ragnarock",
       start_date: "2023-01-01",
@@ -69,7 +69,7 @@ const Dashboard = () => {
       .then((data) => {
         const filteredOutDoneTasks = filter(
           data,
-          (task) => task.column_id !== COLUMNS.DONE
+          (task) => task.column_id !== COLUMN_OPTIONS.DONE
         );
         const sortedData = sortBy(filteredOutDoneTasks, "deadline");
         setTasks({ data: sortedData, isLoading: false });

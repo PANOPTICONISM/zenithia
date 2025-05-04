@@ -27,7 +27,7 @@ import {
 import { lightBlue } from "../../../App";
 import { useUserData } from "../../../contexts/UserProvider";
 import { getTimeZoneToLocale } from "../../../lib/dates";
-import { ColumnType } from "../../../pages/Tasks/Tasks";
+import { ColumnType } from "../../../pages/KanbanBoard/KanbanBoard.types";
 import { DateAndLevel } from "../../common/DateAndLevel";
 
 type EditableTask = {

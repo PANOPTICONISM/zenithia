@@ -13,24 +13,17 @@ import {
 import KanbanColumn from "../../components/KanbanColumn/KanbanColumn";
 import Main from "../../components/Main/Main";
 import { useUserData } from "../../contexts/UserProvider";
+import { ColumnType } from "./KanbanBoard.types";
+import { COLUMN_OPTIONS } from "./KanbanBoard.utils";
 
-export type ColumnType = "TO DO" | "IN PROGRESS" | "DONE";
-
-export const COLUMNS = {
-  TO_DO: "TO DO",
-  IN_PROGRESS: "IN PROGRESS",
-  DONE: "DONE"
-} as const;
-
-const Tasks = () => {
+const KanbanBoard = () => {
   const desktopBreakpoint = useMediaQuery("(min-width:1200px)");
+  const [user] = useUserData();
 
   const [columns, setColumns] = React.useState<Map<ColumnType, TaskProps[]>>(
     new Map()
   );
   const [projects, setProjects] = React.useState<ProjectTaskProps[]>([]);
-
-  const [user] = useUserData();
 
   React.useEffect(() => {
     const fetchAll = async () => {
@@ -45,7 +38,7 @@ const Tasks = () => {
       const grouppedTasks = groupBy(tasksRes, "column_id");
 
       const jointArrays = new Map(
-        Object.values(COLUMNS).map((column) => [
+        Object.values(COLUMN_OPTIONS).map((column) => [
           column,
           grouppedTasks[column] || []
         ])
@@ -131,4 +124,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default KanbanBoard;

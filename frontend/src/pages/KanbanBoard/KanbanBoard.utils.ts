@@ -1,0 +1,5 @@
+export const COLUMN_OPTIONS = {
+  TO_DO: "TO DO",
+  IN_PROGRESS: "IN PROGRESS",
+  DONE: "DONE"
+} as const;

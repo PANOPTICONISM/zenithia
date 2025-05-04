@@ -9,7 +9,7 @@ import { postTask, ProjectTaskProps, TaskProps } from "../../api/tasks";
 import { grey } from "../../App";
 import { useUserData } from "../../contexts/UserProvider";
 import { currentDate } from "../../lib/dates";
-import { ColumnType } from "../../pages/Tasks/Tasks";
+import { ColumnType } from "../../pages/KanbanBoard/KanbanBoard.types";
 import Task from "./components/Task";
 
 const KanbanColumn = ({
