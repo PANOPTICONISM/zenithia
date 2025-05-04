@@ -32,47 +32,23 @@ export const getTimeZoneToLocale = () => {
 };
 
 const locale = getTimeZoneToLocale();
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export const currentDate = () => DateTime.now().toLocal().toISODate() || "";
-export const currentTime = () =>
-  DateTime.now().toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") || "";
+export const currentDate = () => DateTime.now().toUTC().toISO() ?? "";
+
+export const currentTime = () => DateTime.now().toUTC().toISO() ?? "";
 
 export const dateToLocaleString = (date: Date | string) => {
-  if (!isString(date)) {
-    return (
-      DateTime.fromJSDate(date, {
-        zone: timeZone
-      })
-        .setLocale(locale)
-        .toLocaleString(DateTime.DATE_SHORT) ?? ""
-    );
+  const dt = DateTime.fromISO(isString(date) ? date : date.toISOString());
+  if (!dt.isValid) {
+    return "";
   }
-  return (
-    DateTime.fromISO(date, {
-      zone: timeZone
-    })
-      .setLocale(locale)
-      .toLocaleString(DateTime.DATE_SHORT) ?? ""
-  );
+  return dt.setLocale(locale).toLocaleString(DateTime.DATE_SHORT);
 };
 
-export const dateLuxonToISOForApi = (date: DateTime) => {
-  const dateFormattedToISO = date.setZone(timeZone).toISODate();
-  return dateFormattedToISO ?? "";
-};
-
-export const dateFromJSDateToISOForApi = (date: Date | string) => {
-  if (!isString(date)) {
-    const formatDateToLuxonObj = DateTime.fromJSDate(date, { zone: timeZone });
-    return dateLuxonToISOForApi(formatDateToLuxonObj);
-  }
-  return dateLuxonToISOForApi(DateTime.fromISO(date, { zone: timeZone }));
-};
-
-export const timeFromISOToFormatForApi = (date: string) => {
-  const formattedTime = DateTime.fromISO(date, { zone: timeZone })
+export const formatDateForApi = (date: Date | string) =>
+  DateTime.fromJSDate(isString(date) ? new Date(date) : date)
     .toUTC()
-    .toFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  return formattedTime ?? "";
-};
+    .toISO() ?? "";
+
+export const timeFromISOToFormatForApi = (date: string) =>
+  DateTime.fromISO(date).toUTC().toISO() ?? "";

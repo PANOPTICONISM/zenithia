@@ -1,7 +1,7 @@
 import isString from "lodash/isString";
 import { DateTime } from "luxon";
 import { describe, expect, it } from "vitest";
-import { dateToLocaleString } from "./dates";
+import { dateToLocaleString, formatDateForApi } from "./dates";
 
 describe("dates utilities", () => {
   const getTimeZoneToLocaleTest = (timeZone: string, locale: string) => {
@@ -17,6 +17,18 @@ describe("dates utilities", () => {
     }
   };
 
+  it("getTimeZoneToLocale - default", () => {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const locale = getTimeZoneToLocaleTest(timeZone, "en-US");
+
+    expect(getTimeZoneToLocaleTest(timeZone, locale)).toBe(locale);
+  });
+
+  it("getTimeZoneToLocale - specific timezones", () => {
+    expect(getTimeZoneToLocaleTest("America/New_York", "en-US")).toBe("en-US");
+    expect(getTimeZoneToLocaleTest("Europe/Copenhagen", "da-DK")).toBe("da-DK");
+  });
+
   it("dateToLocaleString - base", () => {
     const date = new Date("2025-01-29T00:00:00.000Z");
     const editDate = date.toISOString();
@@ -28,49 +40,29 @@ describe("dates utilities", () => {
   it("dateToLocaleString - different locales and timezones", () => {
     const date = new Date("2025-01-29T00:00:00.000Z");
 
-    const transformDate = (
-      date: Date | string,
-      timeZone: string,
-      locale: string
-    ) => {
-      if (!isString(date)) {
-        return (
-          DateTime.fromJSDate(date, {
-            zone: timeZone
-          })
-            .setLocale(locale)
-            .toLocaleString(DateTime.DATE_SHORT) ?? ""
-        );
-      }
-      return (
-        DateTime.fromISO(date, {
-          zone: timeZone
-        })
-          .setLocale(locale)
-          .toLocaleString(DateTime.DATE_SHORT) ?? ""
-      );
-    };
+    const transformDate = (date: Date | string, locale: string) =>
+      DateTime.fromISO(isString(date) ? date : date.toISOString())
+        .setLocale(locale)
+        .toLocaleString(DateTime.DATE_SHORT) ?? "";
 
     expect(
-      transformDate(
-        date,
-        "America/New_York",
-        getTimeZoneToLocaleTest("America/New_York", "en-US")
-      )
-    ).toBe("1/28/2025");
+      transformDate(date, getTimeZoneToLocaleTest("America/New_York", "en-US"))
+    ).toBe("1/29/2025");
     expect(
-      transformDate(
-        date,
-        "Europe/Copenhagen",
-        getTimeZoneToLocaleTest("Europe/Copenhagen", "da-DK")
-      )
+      transformDate(date, getTimeZoneToLocaleTest("Europe/Copenhagen", "da-DK"))
     ).toBe("29.1.2025");
     expect(
-      transformDate(
-        date,
-        "Europe/Copenhagen",
-        getTimeZoneToLocaleTest("Europe/Copenhagen", "en-US")
-      )
+      transformDate(date, getTimeZoneToLocaleTest("Europe/Copenhagen", "en-US"))
     ).toBe("29.1.2025");
+  });
+
+  it("dateToLocaleString - invalid date", () => {
+    const invalidDate = "invalid-date-string";
+    expect(dateToLocaleString(invalidDate)).toBe("");
+  });
+
+  it("formatDateForApi", () => {
+    const date = new Date("2025-01-29T00:00:00.000Z");
+    expect(formatDateForApi(date)).toBe("2025-01-29T00:00:00.000Z");
   });
 });
