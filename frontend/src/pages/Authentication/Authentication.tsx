@@ -23,6 +23,7 @@ const emailRegExp = new RegExp(
 );
 
 const Authentication = () => {
+  const mobileBreakpoint = useMediaQuery("(max-width:600px)");
   const tabletBreakpoint = useMediaQuery("(max-width:900px)");
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -107,18 +108,16 @@ const Authentication = () => {
       sx={{
         height: tabletBreakpoint ? "auto" : "100vh",
         background: darkBlue,
-        padding: tabletBreakpoint ? "50px" : 0
+        padding: mobileBreakpoint ? 0 : "50px"
       }}
       justifyContent="center"
-      alignItems="center"
-    >
+      alignItems="center">
       <Grid
         container
         sx={{
           height: tabletBreakpoint ? "auto" : "80%",
           width: tabletBreakpoint ? "auto" : "80%"
-        }}
-      >
+        }}>
         <Grid
           size={{
             xs: 12,
@@ -131,8 +130,7 @@ const Authentication = () => {
             alignItems: "center",
             flexDirection: "column",
             padding: "50px 0"
-          }}
-        >
+          }}>
           <Logo color={white} background={highlight} width={180} height={180} />
           <Typography variant="h1" color={grey} fontWeight={300}>
             Zenithia
@@ -149,8 +147,7 @@ const Authentication = () => {
             backgroundColor: highlight,
             backgroundSize: "contain",
             backgroundPosition: "center"
-          }}
-        >
+          }}>
           <Box
             sx={{
               display: "flex",
@@ -161,23 +158,19 @@ const Authentication = () => {
               width: "100%",
               height: tabletBreakpoint ? "auto" : "100%",
               padding: tabletBreakpoint ? "50px 0" : "0"
-            }}
-          >
+            }}>
             <Typography
-              component="h1"
               variant="h2"
               color={white}
               fontWeight={700}
-              fontFamily="'DM Sans', sans-serif"
-            >
+              fontFamily="'DM Sans', sans-serif">
               {isSignup ? "Sign up" : "Login"}
             </Typography>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1, color: white, padding: "0 60px" }}
-            >
+              sx={{ mt: 1, color: white, padding: "0 60px" }}>
               <TextField
                 variant="filled"
                 margin="normal"
@@ -235,8 +228,7 @@ const Authentication = () => {
                   "&.Mui-disabled": {
                     background: "#474747"
                   }
-                }}
-              >
+                }}>
                 {isSignup ? "Create account" : "Login"}
               </Button>
               <Grid container justifyContent="end" marginTop="6px">
@@ -250,8 +242,7 @@ const Authentication = () => {
                         cursor: "pointer",
                         color: white,
                         textDecoration: "underline"
-                      }}
-                    >
+                      }}>
                       {"Login."}
                     </Link>
                   </Grid>
@@ -265,8 +256,7 @@ const Authentication = () => {
                         cursor: "pointer",
                         color: white,
                         textDecoration: "underline"
-                      }}
-                    >
+                      }}>
                       {"Sign up."}
                     </Link>
                   </Grid>
