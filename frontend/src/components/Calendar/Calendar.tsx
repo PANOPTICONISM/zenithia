@@ -43,29 +43,35 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
       .catch(() =>
         toast.error("Could not get calendar data. Try again later.")
       );
-  }, [user]);
+  }, [isDashboard, user]);
 
-  const handleDateClick = React.useCallback((selected: DateSelectArg) => {
-    return queueDialog({
-      data: (close) => ({
-        title: "Add event",
-        overwriteContentAndActions: (
-          <EventAddModal close={close} selected={selected} />
-        )
-      })
-    });
-  }, []);
+  const handleDateClick = React.useCallback(
+    (selected: DateSelectArg) => {
+      return queueDialog({
+        data: (close) => ({
+          title: "Add event",
+          overwriteContentAndActions: (
+            <EventAddModal close={close} selected={selected} />
+          )
+        })
+      });
+    },
+    [queueDialog]
+  );
 
-  const handleEventClick = React.useCallback((selected: EventClickArg) => {
-    return queueDialog({
-      data: (close) => ({
-        title: "Edit Event",
-        overwriteContentAndActions: (
-          <EventUpdateModal close={close} selected={selected} />
-        )
-      })
-    });
-  }, []);
+  const handleEventClick = React.useCallback(
+    (selected: EventClickArg) => {
+      return queueDialog({
+        data: (close) => ({
+          title: "Edit Event",
+          overwriteContentAndActions: (
+            <EventUpdateModal close={close} selected={selected} />
+          )
+        })
+      });
+    },
+    [queueDialog]
+  );
 
   const calendarRef = React.useRef<FullCalendar>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -96,7 +102,7 @@ const Calendar = ({ isDashboard = false }: { isDashboard?: boolean }) => {
           ref={calendarRef}
           plugins={[timeGridPlugin, listPlugin, interactionPlugin]}
           initialView={
-            tabletBreakpoint || isDashboard ? "timeGridDay" : "timeGridWeek"
+            tabletBreakpoint || isDashboard ? "listMonth" : "timeGridWeek"
           }
           headerToolbar={
             !isDashboard
