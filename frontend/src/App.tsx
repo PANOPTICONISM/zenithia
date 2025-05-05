@@ -1,15 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthenticationWrapper } from "./contexts/AuthenticationWrapper";
 import { DialogProvider } from "./contexts/DialogProvider";
 import { SearchBarProvider } from "./contexts/SearchBarProvider";
 import { SidebarProvider } from "./contexts/SidebarProvider";
-import { useUserData } from "./contexts/UserProvider";
-import Authentication from "./pages/Authentication/Authentication";
 import MonthlyStats from "./pages/Charts/MonthlyStats";
 import YearlyStats from "./pages/Charts/YearlyStats";
 import Clients from "./pages/Clients/Clients";
 import Dashboard from "./pages/Dashboard";
+import { ErrorPage } from "./pages/ErrorPage";
 import KanbanBoard from "./pages/KanbanBoard/KanbanBoard";
 import Projects from "./pages/Projects/Projects";
 import Revenue from "./pages/Revenue/Revenue";
@@ -26,30 +26,58 @@ export const green = "#007D58";
 export const yellow = "#ECB800";
 export const red = "#E42C2C";
 
-function App() {
-  const [user] = useUserData();
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AuthenticationWrapper />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "",
+        element: <Dashboard />
+      },
+      {
+        path: "calendar",
+        element: <Schedule />
+      },
+      {
+        path: "tasks",
+        element: <KanbanBoard />
+      },
+      {
+        path: "projects",
+        element: <Projects />
+      },
+      {
+        path: "clients",
+        element: <Clients />
+      },
+      {
+        path: "timetracker",
+        element: <TimeTracker />
+      },
+      {
+        path: "revenue",
+        element: <Revenue />
+      },
+      {
+        path: "monthly",
+        element: <MonthlyStats />
+      },
+      {
+        path: "yearly",
+        element: <YearlyStats />
+      }
+    ]
+  }
+]);
 
+function App() {
   return (
     <SidebarProvider>
       <SearchBarProvider>
         <DialogProvider>
-          {user ? (
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="calendar" element={<Schedule />} />
-                <Route path="tasks" element={<KanbanBoard />} />
-                <Route path="projects" element={<Projects />} />
-                <Route path="clients" element={<Clients />} />
-                <Route path="timetracker" element={<TimeTracker />} />
-                <Route path="revenue" element={<Revenue />} />
-                <Route path="monthly" element={<MonthlyStats />} />
-                <Route path="yearly" element={<YearlyStats />} />
-              </Routes>
-            </BrowserRouter>
-          ) : (
-            <Authentication />
-          )}
+          <RouterProvider router={router} />
           <ToastContainer
             position="bottom-right"
             autoClose={5000}
