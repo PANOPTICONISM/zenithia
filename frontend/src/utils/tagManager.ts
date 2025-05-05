@@ -12,7 +12,7 @@ export const usePageViewTracking = () => {
       dataLayer: {
         event: "pageview",
         page: location.pathname,
-        user: user?.id
+        user_id: user?.id
       }
     };
     TagManager.dataLayer(tagManagerArgs);
