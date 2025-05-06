@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import Authentication from "../pages/Authentication/Authentication";
-import { usePageViewTracking } from "../utils/tagManager";
+import { usePageViewTracking } from "../utils/eventManager";
 import { SearchBarProvider } from "./SearchBarProvider";
 import { SidebarProvider } from "./SidebarProvider";
 import { useUserData } from "./UserProvider";
