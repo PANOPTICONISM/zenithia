@@ -11,7 +11,6 @@ import {
   updateCalendar,
 } from "./calendar";
 import { deleteClient, getClients, postClient, updateClient } from "./clients";
-import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
 import corsMiddleware from "./middleware/cors";
@@ -23,6 +22,7 @@ import {
   postProject,
   updateProjects,
 } from "./projects";
+import { signUp } from "./signUp";
 import { deleteTask, getTasks, postTask, updateTask } from "./tasks";
 import {
   deleteTimeTracker,
