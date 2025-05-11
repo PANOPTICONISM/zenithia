@@ -1,4 +1,3 @@
-import pkg from "body-parser";
 import type { Request, Response } from "express";
 import express from "express";
 import {
@@ -28,29 +27,25 @@ import {
 } from "./timetracker";
 
 const app = express();
-const port = 4000;
-const { json, urlencoded } = pkg;
+const port = process.env.PORT || 4000;
 
 app.use(corsMiddleware);
 
-app.use(json());
-app.use(
-  urlencoded({
-    extended: true,
-  })
-);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-(async () => {
-  await sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Connection has been established successfully.");
-      sequelize.sync();
-    })
-    .catch((error) => {
-      console.error("Unable to connect to the database: ", error);
-    });
-})();
+const initializeDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connected.");
+    await sequelize.sync();
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
+};
+
+initializeDatabase();
 
 app.get("/", auth, async (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/html");
