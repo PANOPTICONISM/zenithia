@@ -1,5 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import type { Request, Response } from "express";
 import express from "express";
+import helmet from "helmet";
 import {
   deleteCalendar,
   getCalendar,
@@ -29,10 +33,16 @@ import {
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.use(helmet());
+
 app.use(corsMiddleware);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok" });
+});
 
 const initializeDatabase = async () => {
   try {
@@ -46,12 +56,6 @@ const initializeDatabase = async () => {
 };
 
 initializeDatabase();
-
-app.get("/", auth, async (req: Request, res: Response) => {
-  res.setHeader("Content-Type", "text/html");
-  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
-  res.end("You have the correct credentials.");
-});
 
 app.post("/api/signup", signUp);
 app.post("/api/login", login);

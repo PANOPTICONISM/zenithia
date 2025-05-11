@@ -4,7 +4,7 @@ const allowedOrigins = process.env.FRONTEND_URLS?.split(",") || [];
 
 const corsMiddleware = cors({
   origin: (origin, callback) => {
-    const isDev = process.env.NODE_ENV === "development";
+    const isDev = process.env.ENVIRONMENT === "development";
 
     if (!origin) {
       return isDev
