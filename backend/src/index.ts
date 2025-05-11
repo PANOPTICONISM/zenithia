@@ -15,6 +15,7 @@ import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
 import corsMiddleware from "./middleware/cors";
+import { apiLimiter, authLimiter } from "./middleware/rateLimiter";
 import sequelize from "./middleware/sequelize";
 import {
   deleteProject,
@@ -57,8 +58,10 @@ const initializeDatabase = async () => {
 
 initializeDatabase();
 
-app.post("/api/signup", signUp);
-app.post("/api/login", login);
+app.use("/api", apiLimiter);
+
+app.post("/api/signup", authLimiter, signUp);
+app.post("/api/login", authLimiter, login);
 
 app.get("/api/projects", auth, getProjects);
 app.put("/api/projects/:id", auth, updateProjects);
