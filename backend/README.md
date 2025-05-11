@@ -4,10 +4,10 @@
 
 2. `npm i`
 
-3. Create a file in the root folder titled `.env`
+3. Create a file in the root folder titled `.env` and set the following variables:
 
 ```
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 MYSQL_HOST=
 MYSQL_PORT=
 MYSQL_USER=
