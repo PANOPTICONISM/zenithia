@@ -1,5 +1,4 @@
 import pkg from "body-parser";
-import cors from "cors";
 import type { Request, Response } from "express";
 import express from "express";
 import {
@@ -12,6 +11,7 @@ import { deleteClient, getClients, postClient, updateClient } from "./clients";
 import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
+import corsMiddleware from "./middleware/cors";
 import sequelize from "./middleware/sequelize";
 import {
   deleteProject,
@@ -31,35 +31,7 @@ const app = express();
 const port = 4000;
 const { json, urlencoded } = pkg;
 
-const allowedOrigins = process.env.FRONTEND_URLS?.split(",") || [];
-
-interface CorsOptions {
-  origin: (
-    origin: string | undefined,
-    callback: (error: Error | null, allow?: boolean) => void
-  ) => void;
-}
-
-const corsOptions: CorsOptions = {
-  origin: function (
-    origin: string | undefined,
-    callback: (error: Error | null, allow?: boolean) => void
-  ) {
-    if (
-      process.env.ENVIRONMENT === "development" ||
-      process.env.ENVIRONMENT === "staging"
-    ) {
-      return callback(null, true);
-    }
-    if (origin && allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS."));
-    }
-  },
-};
-
-app.use(cors(corsOptions));
+app.use(corsMiddleware);
 
 app.use(json());
 app.use(
