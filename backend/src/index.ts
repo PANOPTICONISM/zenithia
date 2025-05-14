@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import cors from "cors";
 import type { Request, Response } from "express";
 import express from "express";
 import helmet from "helmet";
@@ -13,7 +14,6 @@ import {
 import { deleteClient, getClients, postClient, updateClient } from "./clients";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
-import corsMiddleware from "./middleware/cors";
 import { apiLimiter, authLimiter } from "./middleware/rateLimiter";
 import sequelize from "./middleware/sequelize";
 import {
@@ -36,7 +36,44 @@ const port = process.env.PORT || 4000;
 
 app.use(helmet());
 
-app.use(corsMiddleware);
+const allowedOrigins = process.env.FRONTEND_URLS?.split(",") || [];
+
+interface CorsOptions {
+  origin: (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void
+  ) => void;
+}
+
+const corsOptions: CorsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void
+  ) {
+    const isDev = process.env.ENVIRONMENT === "development";
+
+    if (!origin) {
+      return isDev
+        ? callback(null, true)
+        : callback(new Error("CORS error: Missing origin."));
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS error: Origin ${origin} not allowed.`));
+  },
+};
+
+app.use(
+  cors({
+    ...corsOptions,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    maxAge: 86400, // 24 hours
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
