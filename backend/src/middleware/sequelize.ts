@@ -1,4 +1,7 @@
+import * as dotenv from "dotenv";
 import { Sequelize } from "sequelize-typescript";
+
+dotenv.config();
 
 const sequelize = new Sequelize(
   process.env.MYSQL_DATABASE || "ghost",
