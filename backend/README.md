@@ -7,7 +7,6 @@
 3. Create a file in the root folder titled `.env` and set the following variables:
 
 ```
-PORT=4000
 FRONTEND_URLS=http://localhost:5173
 MYSQL_HOST=
 MYSQL_PORT=
