@@ -4,10 +4,11 @@
 
 2. `npm i`
 
-3. Create a file in the root folder titled `.env`
+3. Create a file in the root folder titled `.env` and set the following variables:
 
 ```
-FRONTEND_URL=http://localhost:3000
+PORT=4000
+FRONTEND_URLS=http://localhost:5173
 MYSQL_HOST=
 MYSQL_PORT=
 MYSQL_USER=
@@ -15,6 +16,7 @@ MYSQL_PASSWORD=
 MYSQL_DATABASE=
 JWT_TOKEN_KEY=
 RECAPTCHA_SECRET_KEY=
+ENVIRONMENT=
 ```
 
 4. `npm run dev` - This command uses `nodemon` to hot reload the application on save

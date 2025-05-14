@@ -30,6 +30,7 @@ const Authentication = () => {
   const [isEmailError, setIsEmailError] = React.useState<string | undefined>(
     undefined
   );
+  const [isPasswordError, setIsPasswordError] = React.useState<boolean>(false);
 
   const [username, setUsername] = React.useState<string | undefined>(undefined);
   const [password, setPassword] = React.useState<string | undefined>(undefined);
@@ -38,6 +39,7 @@ const Authentication = () => {
   const [, setUser] = useUserData();
 
   const recaptchaRef = React.useRef<ReCAPTCHA>(null);
+
   const handleSubmit = React.useCallback(
     async (e: { preventDefault: () => void }) => {
       e.preventDefault();
@@ -48,6 +50,12 @@ const Authentication = () => {
 
       if (!emailRegExp.test(username || "")) {
         setIsEmailError("Your email is not valid.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (password && password.length < 8) {
+        setIsPasswordError(true);
         setIsLoading(false);
         return;
       }
@@ -200,6 +208,16 @@ const Authentication = () => {
                 id="password"
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
+                helperText="Password must be at least 8 characters"
+                error={isPasswordError}
+                slotProps={{
+                  input: {
+                    inputProps: {
+                      minLength: 8
+                    }
+                  },
+                  formHelperText: { sx: { color: () => "white" } }
+                }}
                 sx={{ input: { color: white }, margin: "8px 0" }}
                 InputLabelProps={{
                   style: { color: white }

@@ -1,7 +1,9 @@
-import pkg from "body-parser";
-import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
+
 import type { Request, Response } from "express";
 import express from "express";
+import helmet from "helmet";
 import {
   deleteCalendar,
   getCalendar,
@@ -9,9 +11,10 @@ import {
   updateCalendar,
 } from "./calendar";
 import { deleteClient, getClients, postClient, updateClient } from "./clients";
-import { signUp } from "./createUser";
 import { login } from "./login";
 import { auth } from "./middleware/auth";
+import corsMiddleware from "./middleware/cors";
+import { apiLimiter, authLimiter } from "./middleware/rateLimiter";
 import sequelize from "./middleware/sequelize";
 import {
   deleteProject,
@@ -19,6 +22,7 @@ import {
   postProject,
   updateProjects,
 } from "./projects";
+import { signUp } from "./signUp";
 import { deleteTask, getTasks, postTask, updateTask } from "./tasks";
 import {
   deleteTimeTracker,
@@ -28,66 +32,36 @@ import {
 } from "./timetracker";
 
 const app = express();
-const port = 4000;
-const { json, urlencoded } = pkg;
+const port = process.env.PORT || 4000;
 
-const allowedOrigins = process.env.FRONTEND_URLS?.split(",") || [];
+app.use(helmet());
 
-interface CorsOptions {
-  origin: (
-    origin: string | undefined,
-    callback: (error: Error | null, allow?: boolean) => void
-  ) => void;
-}
+app.use(corsMiddleware);
 
-const corsOptions: CorsOptions = {
-  origin: function (
-    origin: string | undefined,
-    callback: (error: Error | null, allow?: boolean) => void
-  ) {
-    if (
-      process.env.ENVIRONMENT === "development" ||
-      process.env.ENVIRONMENT === "staging"
-    ) {
-      return callback(null, true);
-    }
-    if (origin && allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS."));
-    }
-  },
-};
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cors(corsOptions));
-
-app.use(json());
-app.use(
-  urlencoded({
-    extended: true,
-  })
-);
-
-(async () => {
-  await sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Connection has been established successfully.");
-      sequelize.sync();
-    })
-    .catch((error) => {
-      console.error("Unable to connect to the database: ", error);
-    });
-})();
-
-app.get("/", auth, async (req: Request, res: Response) => {
-  res.setHeader("Content-Type", "text/html");
-  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
-  res.end("You have the correct credentials.");
+app.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok" });
 });
 
-app.post("/api/signup", signUp);
-app.post("/api/login", login);
+const initializeDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connected.");
+    await sequelize.sync();
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
+};
+
+initializeDatabase();
+
+app.use("/api", apiLimiter);
+
+app.post("/api/signup", authLimiter, signUp);
+app.post("/api/login", authLimiter, login);
 
 app.get("/api/projects", auth, getProjects);
 app.put("/api/projects/:id", auth, updateProjects);
