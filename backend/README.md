@@ -20,4 +20,4 @@ ENVIRONMENT=
 
 4. `npm run dev` - This command uses `nodemon` to hot reload the application on save
 
-5. Visit <http://localhost:4000>. If you see a message, the backend is ready to go
+5. Visit <http://localhost:4000>. If you see a message, the backend is ready to go.
