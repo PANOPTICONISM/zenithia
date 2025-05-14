@@ -36,6 +36,14 @@ const port = process.env.PORT || 4000;
 
 app.use(helmet());
 
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    corsMiddleware(req, res, next);
+  } else {
+    next();
+  }
+});
+
 app.use(corsMiddleware);
 
 app.use(express.json());
