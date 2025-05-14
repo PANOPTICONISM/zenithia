@@ -32,7 +32,7 @@ import {
 } from "./timetracker";
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
 
 app.use(helmet());
 
