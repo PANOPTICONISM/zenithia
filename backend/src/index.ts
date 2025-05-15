@@ -32,7 +32,11 @@ import {
 } from "./timetracker";
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
+
+app.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok" });
+});
 
 app.use(helmet());
 
@@ -40,10 +44,6 @@ app.use(corsMiddleware);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({ status: "ok" });
-});
 
 const initializeDatabase = async () => {
   try {
