@@ -32,7 +32,7 @@ import {
 } from "./timetracker";
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "ok" });
