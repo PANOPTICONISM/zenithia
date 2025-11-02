@@ -29,7 +29,7 @@
     "@nivo/core": "^0.92.2",
     "@nivo/line": "^0.92.2",
     "@nivo/pie": "^0.92.2",
-    "axios": "^1.9.0",
+    "axios": "^1.12.0",
     "jwt-decode": "^4.0.0",
     "luxon": "^3.6.1",
     "react": "^19.1.0",
@@ -58,7 +58,7 @@
     "rollup-plugin-visualizer": "^5.14.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.31.1",
-    "vite": "^6.3.4",
+    "vite": "^6.4.1",
     "vitest": "^3.1.2"
   }
 }
